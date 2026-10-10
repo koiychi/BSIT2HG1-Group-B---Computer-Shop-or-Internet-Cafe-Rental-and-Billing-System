@@ -9,7 +9,7 @@ package bsit2hg1groupb.billingSystem;
  * @author Koi
  */
 public class Session implements Billable {
- 
+ //implement Billable
     //CONSTRUCTORS
     
     //GETTERS
