@@ -18,6 +18,8 @@ public class Customer {
     //SETTERS
     
     //OTHER METHODS
-    
+/*
+ahhahahhhhhhhhhahahhahahahhahahhahaha
+ */
     
 } //END OF CLASS
