@@ -18,5 +18,6 @@ public class MemberCustomer extends Customer {
     
     //OTHER METHODS
     
+//edit MemberCustomer
     
 } //END OF CLASS
