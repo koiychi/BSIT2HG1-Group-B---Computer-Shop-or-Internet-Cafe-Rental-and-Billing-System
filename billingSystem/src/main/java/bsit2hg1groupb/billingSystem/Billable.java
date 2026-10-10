@@ -9,5 +9,6 @@ package bsit2hg1groupb.billingSystem;
  * @author Koi
  */
 public interface Billable {
-    
+    double calculateTotalCharge();
+    String generateInvoice();
 }

@@ -9,5 +9,14 @@ package bsit2hg1groupb.billingSystem;
  * @author Koi
  */
 public abstract class Station {
+ 
+    //CONSTRUCTORS
     
-}
+    //GETTERS
+    
+    //SETTERS
+    
+    //OTHER METHODS
+    
+    
+} //END OF CLASS

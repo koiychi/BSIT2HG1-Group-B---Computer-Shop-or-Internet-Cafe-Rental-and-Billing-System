@@ -9,5 +9,14 @@ package bsit2hg1groupb.billingSystem;
  * @author Koi
  */
 public class PrintJob implements Billable {
+ 
+    //CONSTRUCTORS
     
-}
+    //GETTERS
+    
+    //SETTERS
+    
+    //OTHER METHODS
+    
+    
+} //END OF CLASS
