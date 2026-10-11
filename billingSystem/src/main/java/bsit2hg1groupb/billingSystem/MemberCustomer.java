@@ -21,9 +21,9 @@ private double discountRate;
         setCreditAmount(creditAmount);
         setDiscountRate(discountRate);
     }
-    public MemberCustomer(){
-        this("Default Customer", "username", "pasasword", 0.0, 0.20);
-    };
+   public MemberCustomer(){
+        this("Default Customer", "username", "password", 0.0, 0.20);
+   };
 
     //GETTERS
     public String getUsername() {
