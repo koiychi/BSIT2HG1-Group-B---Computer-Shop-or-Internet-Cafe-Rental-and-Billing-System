@@ -21,6 +21,8 @@ private double discountRate;
         setCreditAmount(creditAmount);
         setDiscountRate(discountRate);
     }
+
+    //DEFAULT CONSTRUCTOR
    public MemberCustomer(){
         this("Default Customer", "username", "password", 0.0, 0.20);
    };

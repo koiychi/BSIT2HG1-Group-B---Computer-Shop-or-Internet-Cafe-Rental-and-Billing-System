@@ -15,6 +15,7 @@ public class Customer {
 public  Customer(String name) {
 setName(name);
 }
+//DEFAULT CONSTRUCTOR
 public Customer() {
     this("Default Customer");
 }
