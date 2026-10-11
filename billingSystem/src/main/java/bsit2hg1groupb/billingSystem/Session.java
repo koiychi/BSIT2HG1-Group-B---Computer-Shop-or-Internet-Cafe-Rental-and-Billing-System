@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+//@author Carlo
 package bsit2hg1groupb.billingSystem;
 
 public class Session implements Billable {
@@ -90,7 +91,7 @@ public class Session implements Billable {
         this.currentActivity = currentActivity;
 
         //METHODS
-        public void startSession() {
+        public void startSession () {
             if (isActive) {
                 throw new IllegalStateException("Session is already active.");
             }
@@ -101,7 +102,7 @@ public class Session implements Billable {
             isActive = true;
         }
 
-        public void endSession() {
+        public void endSession () {
             if (!isActive) {
                 throw new IllegalStateException("Session is not active.");
             }
@@ -111,7 +112,7 @@ public class Session implements Billable {
             duration = calculateDuration();
         }
 
-        public double calculateDuration() {
+        public double calculateDuration () {
             if (startTime == 0)
                 return 0.0;
             long end = isActive ? System.currentTimeMillis() : endTime;
@@ -119,12 +120,12 @@ public class Session implements Billable {
         }
 
         @Override
-        public double calculateTotalCharge() {
+        public double calculateTotalCharge () {
             return calculateDuration() * station.getHourlyRate();
         }
 
         @Override
-        public String generateInvoice() {
+        public String generateInvoice () {
             return "===== INVOICE =====\n"
                     + "Session ID: " + sessionID + "\n"
                     + "Customer: " + customer.getName() + "\n"
