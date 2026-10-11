@@ -15,6 +15,10 @@ public class Customer {
 public  Customer(String name) {
 setName(name);
 }
+
+public Customer() {
+    this("Default Customer");
+}
     //GETTERS
 public String getName() {
     return name;
