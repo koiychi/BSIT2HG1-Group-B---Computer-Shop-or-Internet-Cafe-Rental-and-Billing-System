@@ -88,12 +88,10 @@ public class MemberCustomer extends Customer {
     @Override
     public String getCustomerInfo() {
         return super.getCustomerInfo()
-        + "\nUsername: " + this.username
-        + "\nPassword: " + this.password
-        + "\nCredit Amount: " + this.creditAmount
-        + "\nDiscount Rate: " + this.discountRate;
-
+                + "\nUsername: " + this.username
+                + "\nPassword: " + this.password
+                + "\nCredit Amount: " + this.creditAmount
+                + "\nDiscount Rate: " + this.discountRate;
     }
-
-
+    
 } //END OF CLASS
