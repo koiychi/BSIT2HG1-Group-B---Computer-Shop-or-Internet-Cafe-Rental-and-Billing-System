@@ -1,5 +1,10 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package bsit2hg1groupb.billingSystem;
 
+<<<<<<< HEAD
 public abstract class Station {
 
 
@@ -63,3 +68,21 @@ public abstract class Station {
     public abstract String getStationInfo();
 
 } // END OF CLASS
+=======
+/**
+ *
+ * @author Koi
+ */
+public abstract class Station {
+ 
+    //CONSTRUCTORS
+    
+    //GETTERS
+    
+    //SETTERS
+    
+    //OTHER METHODS
+    
+    
+} //END OF CLASS
+>>>>>>> parent of 5804012 (Update Station.java)
