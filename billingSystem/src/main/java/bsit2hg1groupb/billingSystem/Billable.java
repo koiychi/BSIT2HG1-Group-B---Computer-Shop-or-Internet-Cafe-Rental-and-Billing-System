@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
 package bsit2hg1groupb.billingSystem;
-
 /**
  *
  * @author Koi

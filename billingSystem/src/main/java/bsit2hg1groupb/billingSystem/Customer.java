@@ -9,32 +9,32 @@ package bsit2hg1groupb.billingSystem;
  * @author hazyth (Theo)
  */
 public class Customer {
+    private String name;
 
-         private String name;
+    // CONSTRUCTORS
+    public Customer() {
+        this("Default Customer");
+    }
 
-         //CONSTRUCTORS
-         public Customer(String name) {
-                  setName(name);
-         }
-         //TODO: Add default constructor | DELETE this comment before pushing again
-         
-         //GETTERS
+    public Customer(String name) {
+        setName(name);
+    }
 
-         public String getName() {
-                  return name;
-         }
-         //SETTERS
+    // GETTERS
+    public String getName() {
+        return name;
+    }
 
-         public void setName(String name) {
-                  if (name == null || name.isBlank()) {
-                           throw new IllegalArgumentException("Name cannot be null or blank");
-                  }
-                  this.name = name;
-         }
-         //OTHER METHODS
+    // SETTERS
+    public void setName(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Name cannot be null or blank");
+        }
+        this.name = name;
+    }
 
-         public String getCustomerInfo() {
-                  return "Customer Name: " + name;
-         }
-
+    // OTHER METHODS
+    public String getCustomerInfo() {
+        return "Customer Name: " + name;
+    }
 } //END OF CLASS
