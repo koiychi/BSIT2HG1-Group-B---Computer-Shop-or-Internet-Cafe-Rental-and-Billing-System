@@ -93,5 +93,5 @@ public class MemberCustomer extends Customer {
                 + "\nCredit Amount: " + this.creditAmount
                 + "\nDiscount Rate: " + this.discountRate;
     }
-    
+
 } //END OF CLASS
