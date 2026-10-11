@@ -14,6 +14,11 @@ public class RegularStation extends Station {
         this.softwareList = new ArrayList<>(softwareList);
         this.hasPrinter = hasPrinter;
     }
+    public RegularStation(){
+        super(0, 20.0, true);
+        this.softwareList = new ArrayList<>();
+        this.hasPrinter = false;
+    }
     //GETTERS
     public List<String> getSoftwareList(){
         return new ArrayList<>(softwareList);

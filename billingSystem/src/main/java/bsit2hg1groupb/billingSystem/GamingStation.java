@@ -11,6 +11,10 @@ public class GamingStation extends Station {
         super(stationID, hourlyRate, hasInternet);
         this.gamesInstalled = new ArrayList<>(gamesInstalled);
     }
+    public GamingStation(){
+        super(0, 30.0, true);
+        this.gamesInstalled = new ArrayList<>();
+    }
     //GETTERS
     public List<String> getGamesInstalled(){
         return new ArrayList<>(gamesInstalled);
