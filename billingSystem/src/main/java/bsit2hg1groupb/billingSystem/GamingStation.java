@@ -20,6 +20,13 @@ public class GamingStation extends Station {
         return new ArrayList<>(gamesInstalled);
     }
     //SETTERS
+    public void setGamesInstalled(List<String> gamesInstalled){
+        if(gamesInstalled == null){
+            throw new IllegalArgumentException("Game Installed cannot be null");
+        }
+        this.gamesInstalled = gamesInstalled;
+    }
+    //OTHER METHODS
     public void playGame(String gameName){
         if(gamesInstalled.contains(gameName)){
             System.out.println("You are playing " + gameName);
@@ -28,6 +35,9 @@ public class GamingStation extends Station {
         }
     }
     public void addGame(String gameName){
+        if(gameName == null){
+            throw new IllegalArgumentException("Game name cannot be null");
+        }
         if(!gamesInstalled.contains(gameName)){
             gamesInstalled.add(gameName);
             System.out.println(gameName + " has been installed");
@@ -35,7 +45,6 @@ public class GamingStation extends Station {
             System.out.println(gameName + " is already installed");
         }
     }
-    //OTHER METHODS
     public String getStationInfo(){
         return super.getStationInfo() + "\nGames Installed: " + gamesInstalled;
     }

@@ -1,4 +1,3 @@
-
 package bsit2hg1groupb.billingSystem;
 
 import java.util.ArrayList;
@@ -30,6 +29,13 @@ public class RegularStation extends Station {
     public void setHasPrinter(boolean hasPrinter){
        this.hasPrinter = hasPrinter;
     }
+    public void setSoftwareList(List<String> softwareList){
+        if(softwareList == null){
+            throw new IllegalArgumentException("Software cannot be null");
+        }
+        this.softwareList = softwareList;
+    }
+    //OTHER METHODS
     public void addSoftware(String softwareName){
         if (!softwareList.contains(softwareName)) {
             softwareList.add(softwareName);
@@ -38,7 +44,6 @@ public class RegularStation extends Station {
             System.out.println(softwareName + " is already installed.");
         }
     }
-    //OTHER METHODS
     public String getStationInfo(){
         return super.getStationInfo() + "\nSoftware List: " + softwareList + "\nHas Printer: " + hasPrinter;
     }
