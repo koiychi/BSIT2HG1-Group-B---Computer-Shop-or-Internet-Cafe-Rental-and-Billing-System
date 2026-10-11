@@ -94,4 +94,6 @@ public class MemberCustomer extends Customer {
         + "\nDiscount Rate: " + this.discountRate;
 
     }
+
+
 } //END OF CLASS
