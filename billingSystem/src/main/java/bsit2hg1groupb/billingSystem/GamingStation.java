@@ -1,22 +1,39 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package bsit2hg1groupb.billingSystem;
 
-/**
- *
- * @author Koi
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class GamingStation extends Station {
- 
+    private List<String> gamesInstalled;
+
     //CONSTRUCTORS
-    
+    public GamingStation(int stationID, double hourlyRate, boolean hasInternet, List<String> gamesInstalled){
+        super(stationID, hourlyRate, hasInternet);
+        this.gamesInstalled = new ArrayList<>(gamesInstalled);
+    }
     //GETTERS
-    
+    public List<String> getGamesInstalled(){
+        return new ArrayList<>(gamesInstalled);
+    }
     //SETTERS
-    
+    public void playGame(String gameName){
+        if(gamesInstalled.contains(gameName)){
+            System.out.println("You are playing " + gameName);
+        } else {
+            System.out.println(gameName + " is not installed");
+        }
+    }
+    public void addGame(String gameName){
+        if(!gamesInstalled.contains(gameName)){
+            gamesInstalled.add(gameName);
+            System.out.println(gameName + " has been installed");
+        } else {
+            System.out.println(gameName + " is already installed");
+        }
+    }
     //OTHER METHODS
-    
+    public String getStationInfo(){
+        return super.getStationInfo() + "\nGames Installed: " + gamesInstalled;
+    }
     
 } //END OF CLASS
