@@ -2,3 +2,4 @@
 /billingSystem/target/
 .idea/workspace.xml
 /.idea
+*.xml
