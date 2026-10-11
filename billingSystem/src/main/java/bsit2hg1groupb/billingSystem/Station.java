@@ -1,15 +1,17 @@
 package bsit2hg1groupb.billingSystem;
+
 public abstract class Station {
 
 
+    private static int totalStationsCreated = 0;
     private String stationID;
     private double hourlyRate;
     private boolean hasInternet;
     private boolean isAvailable;
-    private static int totalStationsCreated = 0;
 
     // CONSTRUCTORS
     public Station(String stationID, double hourlyRate, boolean hasInternet, boolean isAvailable) {
+        //FIXME: Needs validated setters
         this.stationID = stationID;
         this.hourlyRate = hourlyRate;
         this.hasInternet = hasInternet;
@@ -20,8 +22,16 @@ public abstract class Station {
     public Station(String stationID, double hourlyRate) {
         this(stationID, hourlyRate, false, true);
     }
+    //TODO: Default Constructor
+
+
 
     // GETTERS
+
+    public static int getTotalStations() {
+        return totalStationsCreated;
+    }
+
     public String getStationID() {
         return stationID;
     }
@@ -38,17 +48,15 @@ public abstract class Station {
         return isAvailable;
     }
 
-    public static int getTotalStations() {
-        return totalStationsCreated;
-    }
-
     // SETTERS
-    public void setAvailable(boolean available) {
-        this.isAvailable = available;
-    }
-
+    //FIXME: Validate these setters
+    //TODO: No validated setters stationID, setInternet
     public void setHourlyRate(double hourlyRate) {
         this.hourlyRate = hourlyRate;
+    }
+
+    public void setAvailable(boolean available) {
+        this.isAvailable = available;
     }
 
     // OTHER METHODS
