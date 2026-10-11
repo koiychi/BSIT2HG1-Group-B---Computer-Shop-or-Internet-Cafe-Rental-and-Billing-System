@@ -88,5 +88,8 @@ public class MemberCustomer extends Customer {
     @Override
     public String getCustomerInfo() {
         return super.getCustomerInfo();
+        //TODO: Genuinely override getCustomerInfo()
+        //FIXME: Hindi na-override si getCustomerInfo() kasi ang nire-return niya pa rin is yung getCustomerInfo() ni Customer. Need din ni MemberCustomer i-return yung kaniyang username, password, and other related fields
+        // | Delete this after completion
     }
 } //END OF CLASS
