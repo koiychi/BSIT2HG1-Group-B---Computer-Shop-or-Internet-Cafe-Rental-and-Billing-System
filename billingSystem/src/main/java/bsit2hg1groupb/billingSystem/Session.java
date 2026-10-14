@@ -127,10 +127,11 @@ public class Session implements Billable {
 
     @Override
     public String generateInvoice() {
+        //TODO in UI: Invoice must only be generated after the session has ended.
         return "===== INVOICE =====\n"
                 + "Session ID: " + sessionID + "\n"
                 + "Customer: " + customer.getName() + "\n"
-                + "Station: " + station.getStationName() + "\n"
+                + "Station: " + station.getStationID() + "\n"
                 + String.format("Duration: %.2f hour(s)\n", calculateDuration())
                 + String.format("Rate: %.2f per hour\n", station.getHourlyRate())
                 + String.format("Total Charge: %.2f\n", calculateTotalCharge())

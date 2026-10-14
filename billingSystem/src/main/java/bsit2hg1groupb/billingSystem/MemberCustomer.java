@@ -89,7 +89,7 @@ public class MemberCustomer extends Customer {
     public String getCustomerInfo() {
         return super.getCustomerInfo()
                 + "\nUsername: " + this.username
-                + "\nPassword: " + this.password
+                + "\nPassword: " + this.password //FIXME: Dislaying password; security risk
                 + "\nCredit Amount: " + this.creditAmount
                 + "\nDiscount Rate: " + this.discountRate;
     }

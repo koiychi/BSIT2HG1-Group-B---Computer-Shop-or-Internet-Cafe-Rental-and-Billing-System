@@ -1,16 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package bsit2hg1groupb.billingSystem;
 
 public abstract class Station {
 
 
     private static int totalStationsCreated = 0;
-    private String stationID;
+    private final String stationID;
     private double hourlyRate;
-    private boolean hasInternet;
+    private final boolean hasInternet;
     private boolean isAvailable;
 
     // CONSTRUCTORS
@@ -25,6 +21,10 @@ public abstract class Station {
 
     public Station(String stationID, double hourlyRate) {
         this(stationID, hourlyRate, false, true);
+    }
+
+    public Station() {
+        this("PC 0", 0.00, false, false);
     }
     //TODO: Default Constructor
 

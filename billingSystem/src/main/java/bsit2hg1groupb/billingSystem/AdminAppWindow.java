@@ -5,7 +5,7 @@
 package bsit2hg1groupb.billingSystem;
 
 import javax.swing.UIManager;
-import com.formdev.flatlaf.intellijthemes.FlatArcDarkOrangeIJTheme;
+//import com.formdev.flatlaf.intellijthemes.FlatArcDarkOrangeIJTheme;
 
 /**
  *
@@ -142,7 +142,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    static void main(String[] args) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -161,11 +161,11 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
 
 
-            try {
-                FlatArcDarkOrangeIJTheme.setup();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            try {
+//                FlatArcDarkOrangeIJTheme.setup();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
             
             
         //</editor-fold>

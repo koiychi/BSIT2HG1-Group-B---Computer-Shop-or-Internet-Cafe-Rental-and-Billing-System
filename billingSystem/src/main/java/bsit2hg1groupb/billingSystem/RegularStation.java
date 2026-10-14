@@ -8,35 +8,41 @@ public class RegularStation extends Station {
     private boolean hasPrinter;
 
     //CONSTRUCTORS
-    public RegularStation(int stationID, double hourlyRate, boolean hasInternet, List<String> softwareList, boolean hasPrinter){
-        super(stationID, hourlyRate, hasInternet);
+    public RegularStation(String stationID, double hourlyRate, boolean hasInternet, boolean isAvailable, List<String> softwareList, boolean hasPrinter) {
+        super(stationID, hourlyRate, hasInternet, isAvailable);
         this.softwareList = new ArrayList<>(softwareList);
         this.hasPrinter = hasPrinter;
     }
-    public RegularStation(){
-        super(0, 20.0, true);
+
+    public RegularStation() {
+        super("PC 0", 0.00, false, false);
         this.softwareList = new ArrayList<>();
         this.hasPrinter = false;
     }
+
     //GETTERS
-    public List<String> getSoftwareList(){
+    public List<String> getSoftwareList() {
         return new ArrayList<>(softwareList);
     }
-    public boolean hasPrinter(){
+
+    public boolean hasPrinter() {
         return hasPrinter;
     }
-    //SETTERS
-    public void setHasPrinter(boolean hasPrinter){
-       this.hasPrinter = hasPrinter;
+
+    //SETTERS //TODO: VALIDATED SETTERS; After validating, use in the parameterized constructor
+    public void setHasPrinter(boolean hasPrinter) {
+        this.hasPrinter = hasPrinter;
     }
-    public void setSoftwareList(List<String> softwareList){
-        if(softwareList == null){
+
+    public void setSoftwareList(List<String> softwareList) {
+        if (softwareList == null) {
             throw new IllegalArgumentException("Software cannot be null");
         }
-        this.softwareList = softwareList;
+        this.softwareList = new ArrayList<>(softwareList);
     }
+
     //OTHER METHODS
-    public void addSoftware(String softwareName){
+    public void addSoftware(String softwareName) {
         if (!softwareList.contains(softwareName)) {
             softwareList.add(softwareName);
             System.out.println(softwareName + " has been installed.");
@@ -44,7 +50,8 @@ public class RegularStation extends Station {
             System.out.println(softwareName + " is already installed.");
         }
     }
-    public String getStationInfo(){
-        return super.getStationInfo() + "\nSoftware List: " + softwareList + "\nHas Printer: " + hasPrinter;
+
+    public String getStationInfo() {
+        return "\nSoftware List: " + softwareList + "\nHas Printer: " + hasPrinter;
     }
 } //END OF CLASS

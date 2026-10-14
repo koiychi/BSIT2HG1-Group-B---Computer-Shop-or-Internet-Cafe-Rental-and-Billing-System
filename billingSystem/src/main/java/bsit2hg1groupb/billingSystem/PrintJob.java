@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package bsit2hg1groupb.billingSystem;
 
 /**
@@ -15,6 +11,7 @@ public class PrintJob implements Billable {
     private Customer customer;
     private String serviceType;
     private String pageSize;
+    private String paperType;
     private int pageCount;
     private boolean isColored;
     private double pricePerPage;
@@ -97,11 +94,11 @@ public class PrintJob implements Billable {
         this.paperType = paperType;
     }
 
-    public void setPageCount(int PageCount) {
+    public void setPageCount(int pageCount) {
         this.pageCount = pageCount;
     }
 
-    public void setColored(boolean Colored) {
+    public void setColored(boolean colored) {
         isColored = colored;
     }
 
