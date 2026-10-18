@@ -4,22 +4,39 @@
  */
 package bsit2hg1groupb.billingSystem;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+import java.io.InputStream;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-//import com.formdev.flatlaf.intellijthemes.FlatArcDarkOrangeIJTheme;
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLaf;
 
 /**
  *
  * @author Koi
  */
 public class AdminAppWindow extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminAppWindow.class.getName());
 
-    /**
-     * Creates new form AdminAppWindow
-     */
     public AdminAppWindow() {
         initComponents();
+        this.setSize(1280, 720);
+        this.setLocationRelativeTo(null);
+
+        mainTabGroup.setTabLayoutPolicy(javax.swing.JTabbedPane.WRAP_TAB_LAYOUT);
+
+        mainTabGroup.putClientProperty("JTabbedPane.tabWidthMode", "fill");
+        mainTabGroup.putClientProperty("JTabbedPane.tabHeight", 44);
+        mainTabGroup.putClientProperty("JTabbedPane.tabAlignment", "center");
+        mainTabGroup.putClientProperty("JTabbedPane.tabUnderlineHeight", 3);
+        mainTabGroup.putClientProperty("JTabbedPane.underlineColor", java.awt.Color.decode("#FF6600"));
+
+        // 4. I-refresh ang rendering
+        mainTabGroup.revalidate();
+        mainTabGroup.repaint();
     }
 
     /**
@@ -31,26 +48,96 @@ public class AdminAppWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialog1 = new javax.swing.JDialog();
+        heading = new javax.swing.JPanel();
+        left = new javax.swing.JPanel();
+        appLogo = new javax.swing.JPanel();
+        names = new javax.swing.JPanel();
+        appName = new javax.swing.JLabel();
+        shopName = new javax.swing.JLabel();
+        right = new javax.swing.JPanel();
+        shopStatus = new javax.swing.JLabel();
+        logoutBtn = new javax.swing.JButton();
         mainTabGroup = new javax.swing.JTabbedPane();
         dashboardTab = new javax.swing.JPanel();
         dashboardHeading = new javax.swing.JPanel();
         dashboardHeadingText = new javax.swing.JLabel();
+        newSessionButton = new javax.swing.JButton();
         stationTab = new javax.swing.JPanel();
         stationsHeading = new javax.swing.JPanel();
         stationsHeadingText = new javax.swing.JLabel();
         usersTab = new javax.swing.JPanel();
         usersHeading = new javax.swing.JPanel();
         usersHeadingText = new javax.swing.JLabel();
+        printServices = new javax.swing.JPanel();
+        transactions = new javax.swing.JPanel();
+        shopSettings = new javax.swing.JPanel();
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("BillingSystem - Pending Name");
+        setBackground(new java.awt.Color(11, 11, 15));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         setIconImages(null);
         setName("mainFrame"); // NOI18N
-        setSize(new java.awt.Dimension(1280, 720));
+        setSize(new java.awt.Dimension(800, 400));
 
-        mainTabGroup.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        heading.setMinimumSize(new java.awt.Dimension(328, 25));
+        heading.setPreferredSize(new java.awt.Dimension(888, 50));
+        heading.setLayout(new java.awt.GridLayout(1, 3));
+
+        left.setLayout(new java.awt.GridLayout(1, 0));
+
+        javax.swing.GroupLayout appLogoLayout = new javax.swing.GroupLayout(appLogo);
+        appLogo.setLayout(appLogoLayout);
+        appLogoLayout.setHorizontalGroup(
+            appLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 222, Short.MAX_VALUE)
+        );
+        appLogoLayout.setVerticalGroup(
+            appLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
+        );
+
+        left.add(appLogo);
+
+        names.setLayout(new java.awt.GridLayout(2, 1));
+
+        appName.setText("App Name");
+        names.add(appName);
+
+        shopName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        shopName.setText("Computer Shop Name");
+        names.add(shopName);
+
+        left.add(names);
+
+        heading.add(left);
+
+        right.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        shopStatus.setText("Opened");
+        right.add(shopStatus);
+
+        logoutBtn.setText("Log Out");
+        right.add(logoutBtn);
+
+        heading.add(right);
+
+        getContentPane().add(heading, java.awt.BorderLayout.PAGE_START);
+
+        mainTabGroup.setFont(mainTabGroup.getFont().deriveFont(mainTabGroup.getFont().getStyle() & ~java.awt.Font.BOLD, 20));
         mainTabGroup.setInheritsPopupMenu(true);
         mainTabGroup.setName(""); // NOI18N
 
@@ -58,10 +145,17 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
         dashboardHeading.setLayout(new java.awt.BorderLayout());
 
-        dashboardHeadingText.setFont(new java.awt.Font("Minecraft", 0, 18)); // NOI18N
+        dashboardHeadingText.setFont(dashboardHeadingText.getFont().deriveFont(dashboardHeadingText.getFont().getStyle() | java.awt.Font.BOLD, 26));
         dashboardHeadingText.setText("Dashboard");
         dashboardHeadingText.setAlignmentX(0.5F);
         dashboardHeading.add(dashboardHeadingText, java.awt.BorderLayout.CENTER);
+
+        newSessionButton.setText("New Session");
+        newSessionButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                newSessionButtonMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout dashboardTabLayout = new javax.swing.GroupLayout(dashboardTab);
         dashboardTab.setLayout(dashboardTabLayout);
@@ -69,13 +163,19 @@ public class AdminAppWindow extends javax.swing.JFrame {
             dashboardTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dashboardTabLayout.createSequentialGroup()
                 .addComponent(dashboardHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 888, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 14, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(dashboardTabLayout.createSequentialGroup()
+                .addGap(134, 134, 134)
+                .addComponent(newSessionButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         dashboardTabLayout.setVerticalGroup(
             dashboardTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dashboardTabLayout.createSequentialGroup()
                 .addComponent(dashboardHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(345, Short.MAX_VALUE))
+                .addGap(82, 82, 82)
+                .addComponent(newSessionButton)
+                .addContainerGap(226, Short.MAX_VALUE))
         );
 
         mainTabGroup.addTab("Dashboard", dashboardTab);
@@ -93,13 +193,13 @@ public class AdminAppWindow extends javax.swing.JFrame {
             stationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(stationTabLayout.createSequentialGroup()
                 .addComponent(stationsHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 888, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 14, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         stationTabLayout.setVerticalGroup(
             stationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(stationTabLayout.createSequentialGroup()
                 .addComponent(stationsHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 345, Short.MAX_VALUE))
+                .addGap(0, 334, Short.MAX_VALUE))
         );
 
         mainTabGroup.addTab("Stations", stationTab);
@@ -115,7 +215,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         usersTab.setLayout(usersTabLayout);
         usersTabLayout.setHorizontalGroup(
             usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 902, Short.MAX_VALUE)
+            .addGap(0, 888, Short.MAX_VALUE)
             .addGroup(usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(usersTabLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -124,7 +224,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         );
         usersTabLayout.setVerticalGroup(
             usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 385, Short.MAX_VALUE)
+            .addGap(0, 374, Short.MAX_VALUE)
             .addGroup(usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(usersTabLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -134,54 +234,165 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
         mainTabGroup.addTab("Users", usersTab);
 
+        javax.swing.GroupLayout printServicesLayout = new javax.swing.GroupLayout(printServices);
+        printServices.setLayout(printServicesLayout);
+        printServicesLayout.setHorizontalGroup(
+            printServicesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 888, Short.MAX_VALUE)
+        );
+        printServicesLayout.setVerticalGroup(
+            printServicesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 374, Short.MAX_VALUE)
+        );
+
+        mainTabGroup.addTab("Print Services", printServices);
+
+        javax.swing.GroupLayout transactionsLayout = new javax.swing.GroupLayout(transactions);
+        transactions.setLayout(transactionsLayout);
+        transactionsLayout.setHorizontalGroup(
+            transactionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 888, Short.MAX_VALUE)
+        );
+        transactionsLayout.setVerticalGroup(
+            transactionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 374, Short.MAX_VALUE)
+        );
+
+        mainTabGroup.addTab("Transactions", transactions);
+
+        javax.swing.GroupLayout shopSettingsLayout = new javax.swing.GroupLayout(shopSettings);
+        shopSettings.setLayout(shopSettingsLayout);
+        shopSettingsLayout.setHorizontalGroup(
+            shopSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 888, Short.MAX_VALUE)
+        );
+        shopSettingsLayout.setVerticalGroup(
+            shopSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 374, Short.MAX_VALUE)
+        );
+
+        mainTabGroup.addTab("Shop Settings", shopSettings);
+
         getContentPane().add(mainTabGroup, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void newSessionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newSessionButtonMouseClicked
+        NewSession newSessionPanel = new NewSession();
+
+        Object[] customButtons = {"Start Session", "Cancel"};
+
+        int option = javax.swing.JOptionPane.showOptionDialog(
+                this,
+                newSessionPanel,
+                "Station Details", 
+                javax.swing.JOptionPane.DEFAULT_OPTION, 
+                javax.swing.JOptionPane.PLAIN_MESSAGE, 
+                null, 
+                customButtons, 
+                customButtons[0] 
+        );
+
+        if (option == 0) {
+            System.out.println("Session Started!!");
+        } else if (option == 1 || option == javax.swing.JOptionPane.CLOSED_OPTION) {
+            System.out.println("Transaction is cancelled");
+        }
+    }//GEN-LAST:event_newSessionButtonMouseClicked
+
     /**
      * @param args the command line arguments
      */
-    static void main(String[] args) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-//            logger.log(java.util.logging.Level.SEVERE, null, ex);
-//        }
+    public static void main(String args[]) {
+        try {
+            java.awt.GraphicsEnvironment ge = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
 
+            String[] fontPaths = {
+                "/fonts/GoogleSans-Regular.ttf",
+                "/fonts/GoogleSans-Medium.ttf",
+                "/fonts/GoogleSans-SemiBold.ttf",
+                "/fonts/GoogleSans-Bold.ttf"
+            };
 
+            java.awt.Font appFont = null;
 
-//            try {
-//                FlatArcDarkOrangeIJTheme.setup();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-            
-            
-        //</editor-fold>
+            for (String path : fontPaths) {
+                try (java.io.InputStream is = AdminAppWindow.class.getResourceAsStream(path)) {
+                    if (is != null) {
+                        java.awt.Font font = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, is);
+                        ge.registerFont(font);
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new AdminAppWindow().setVisible(true));
+                        if (path.contains("Regular")) {
+                            appFont = font.deriveFont(java.awt.Font.PLAIN, 14f);
+                        }
+                        System.out.println("Registered font: " + font.getFontName());
+                    } else {
+                        System.err.println("Not found: " + path);
+                    }
+                } catch (Exception ex) {
+                    System.err.println("Error loading " + path + ": " + ex.getMessage());
+                }
+            }
+
+            if (appFont == null) {
+                appFont = new java.awt.Font("Google Sans", java.awt.Font.PLAIN, 14);
+            }
+
+            javax.swing.UIManager.put("defaultFont", appFont);
+
+            com.formdev.flatlaf.FlatDarkLaf.setup();
+
+            // 4. I-apply sa standard Swing components
+            javax.swing.UIManager.put("defaultFont", appFont);
+            javax.swing.UIManager.put("Button.font", appFont);
+            javax.swing.UIManager.put("Label.font", appFont);
+            javax.swing.UIManager.put("TabbedPane.font", appFont);
+            javax.swing.UIManager.put("Table.font", appFont);
+            javax.swing.UIManager.put("TableHeader.font", appFont);
+            javax.swing.UIManager.put("TextField.font", appFont);
+            javax.swing.UIManager.put("PasswordField.font", appFont);
+            javax.swing.UIManager.put("TextArea.font", appFont);
+            javax.swing.UIManager.put("ComboBox.font", appFont);
+            javax.swing.UIManager.put("CheckBox.font", appFont);
+            javax.swing.UIManager.put("RadioButton.font", appFont);
+
+            com.formdev.flatlaf.FlatLaf.updateUI();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            com.formdev.flatlaf.FlatDarkLaf.setup();
+        }
+
+        java.awt.EventQueue.invokeLater(() -> {
+            new AdminAppWindow().setVisible(true);
+        });
+
     }
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel appLogo;
+    private javax.swing.JLabel appName;
     private javax.swing.JPanel dashboardHeading;
     private javax.swing.JLabel dashboardHeadingText;
     private javax.swing.JPanel dashboardTab;
+    private javax.swing.JPanel heading;
+    private javax.swing.JDialog jDialog1;
+    private javax.swing.JPanel left;
+    private javax.swing.JButton logoutBtn;
     private javax.swing.JTabbedPane mainTabGroup;
+    private javax.swing.JPanel names;
+    private javax.swing.JButton newSessionButton;
+    private javax.swing.JPanel printServices;
+    private javax.swing.JPanel right;
+    private javax.swing.JLabel shopName;
+    private javax.swing.JPanel shopSettings;
+    private javax.swing.JLabel shopStatus;
     private javax.swing.JPanel stationTab;
     private javax.swing.JPanel stationsHeading;
     private javax.swing.JLabel stationsHeadingText;
+    private javax.swing.JPanel transactions;
     private javax.swing.JPanel usersHeading;
     private javax.swing.JLabel usersHeadingText;
     private javax.swing.JPanel usersTab;
