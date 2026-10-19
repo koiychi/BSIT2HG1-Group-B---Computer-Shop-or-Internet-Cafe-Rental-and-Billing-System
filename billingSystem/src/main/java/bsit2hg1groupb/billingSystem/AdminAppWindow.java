@@ -8,7 +8,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.io.InputStream;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import java.awt.*;
 import javax.swing.UIManager;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
@@ -131,6 +132,11 @@ public class AdminAppWindow extends javax.swing.JFrame {
         right.add(shopStatus);
 
         logoutBtn.setText("Log Out");
+        logoutBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutBtnMouseClicked(evt);
+            }
+        });
         right.add(logoutBtn);
 
         heading.add(right);
@@ -175,7 +181,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
                 .addComponent(dashboardHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(82, 82, 82)
                 .addComponent(newSessionButton)
-                .addContainerGap(226, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         mainTabGroup.addTab("Dashboard", dashboardTab);
@@ -199,7 +205,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
             stationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(stationTabLayout.createSequentialGroup()
                 .addComponent(stationsHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 334, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         mainTabGroup.addTab("Stations", stationTab);
@@ -242,7 +248,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         );
         printServicesLayout.setVerticalGroup(
             printServicesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 374, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         mainTabGroup.addTab("Print Services", printServices);
@@ -255,7 +261,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         );
         transactionsLayout.setVerticalGroup(
             transactionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 374, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         mainTabGroup.addTab("Transactions", transactions);
@@ -268,7 +274,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         );
         shopSettingsLayout.setVerticalGroup(
             shopSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 374, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         mainTabGroup.addTab("Shop Settings", shopSettings);
@@ -286,12 +292,12 @@ public class AdminAppWindow extends javax.swing.JFrame {
         int option = javax.swing.JOptionPane.showOptionDialog(
                 this,
                 newSessionPanel,
-                "Station Details", 
-                javax.swing.JOptionPane.DEFAULT_OPTION, 
-                javax.swing.JOptionPane.PLAIN_MESSAGE, 
-                null, 
-                customButtons, 
-                customButtons[0] 
+                "Station Details",
+                javax.swing.JOptionPane.DEFAULT_OPTION,
+                javax.swing.JOptionPane.PLAIN_MESSAGE,
+                null,
+                customButtons,
+                customButtons[0]
         );
 
         if (option == 0) {
@@ -301,69 +307,27 @@ public class AdminAppWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_newSessionButtonMouseClicked
 
+    private void logoutBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutBtnMouseClicked
+        // TODO add your handling code here:
+        int response = JOptionPane.showConfirmDialog(
+                this,
+                "Are your sure you want to log out?",
+                "Confirm Log Out",
+                javax.swing.JOptionPane.YES_NO_OPTION,
+                javax.swing.JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (response == javax.swing.JOptionPane.YES_OPTION) {
+            new AdminLogin().setVisible(true);
+            this.dispose();
+        } 
+
+    }//GEN-LAST:event_logoutBtnMouseClicked
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        try {
-            java.awt.GraphicsEnvironment ge = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
-
-            String[] fontPaths = {
-                "/fonts/GoogleSans-Regular.ttf",
-                "/fonts/GoogleSans-Medium.ttf",
-                "/fonts/GoogleSans-SemiBold.ttf",
-                "/fonts/GoogleSans-Bold.ttf"
-            };
-
-            java.awt.Font appFont = null;
-
-            for (String path : fontPaths) {
-                try (java.io.InputStream is = AdminAppWindow.class.getResourceAsStream(path)) {
-                    if (is != null) {
-                        java.awt.Font font = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, is);
-                        ge.registerFont(font);
-
-                        if (path.contains("Regular")) {
-                            appFont = font.deriveFont(java.awt.Font.PLAIN, 14f);
-                        }
-                        System.out.println("Registered font: " + font.getFontName());
-                    } else {
-                        System.err.println("Not found: " + path);
-                    }
-                } catch (Exception ex) {
-                    System.err.println("Error loading " + path + ": " + ex.getMessage());
-                }
-            }
-
-            if (appFont == null) {
-                appFont = new java.awt.Font("Google Sans", java.awt.Font.PLAIN, 14);
-            }
-
-            javax.swing.UIManager.put("defaultFont", appFont);
-
-            com.formdev.flatlaf.FlatDarkLaf.setup();
-
-            // 4. I-apply sa standard Swing components
-            javax.swing.UIManager.put("defaultFont", appFont);
-            javax.swing.UIManager.put("Button.font", appFont);
-            javax.swing.UIManager.put("Label.font", appFont);
-            javax.swing.UIManager.put("TabbedPane.font", appFont);
-            javax.swing.UIManager.put("Table.font", appFont);
-            javax.swing.UIManager.put("TableHeader.font", appFont);
-            javax.swing.UIManager.put("TextField.font", appFont);
-            javax.swing.UIManager.put("PasswordField.font", appFont);
-            javax.swing.UIManager.put("TextArea.font", appFont);
-            javax.swing.UIManager.put("ComboBox.font", appFont);
-            javax.swing.UIManager.put("CheckBox.font", appFont);
-            javax.swing.UIManager.put("RadioButton.font", appFont);
-
-            com.formdev.flatlaf.FlatLaf.updateUI();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            com.formdev.flatlaf.FlatDarkLaf.setup();
-        }
-
         java.awt.EventQueue.invokeLater(() -> {
             new AdminAppWindow().setVisible(true);
         });
