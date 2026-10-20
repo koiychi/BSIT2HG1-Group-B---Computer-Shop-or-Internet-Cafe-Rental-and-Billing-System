@@ -28,6 +28,8 @@ public class AdminAppWindow extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
 
         mainTabGroup.setTabLayoutPolicy(javax.swing.JTabbedPane.WRAP_TAB_LAYOUT);
+        mainTabGroup.putClientProperty("JTabbedPane.tabWidthMode", "equal");
+        mainTabGroup.putClientProperty("JTabbedPane.tabAlignment", "center");
 
         mainTabGroup.putClientProperty("JTabbedPane.tabWidthMode", "fill");
         mainTabGroup.putClientProperty("JTabbedPane.tabHeight", 44);
@@ -35,7 +37,6 @@ public class AdminAppWindow extends javax.swing.JFrame {
         mainTabGroup.putClientProperty("JTabbedPane.tabUnderlineHeight", 3);
         mainTabGroup.putClientProperty("JTabbedPane.underlineColor", java.awt.Color.decode("#FF6600"));
 
-        // 4. I-refresh ang rendering
         mainTabGroup.revalidate();
         mainTabGroup.repaint();
     }
@@ -61,9 +62,26 @@ public class AdminAppWindow extends javax.swing.JFrame {
         logoutBtn = new javax.swing.JButton();
         mainTabGroup = new javax.swing.JTabbedPane();
         dashboardTab = new javax.swing.JPanel();
-        dashboardHeading = new javax.swing.JPanel();
+        quickStatistics = new javax.swing.JPanel();
+        quickStatisticsHeading = new javax.swing.JPanel();
         dashboardHeadingText = new javax.swing.JLabel();
+        statsCards = new javax.swing.JPanel();
+        availableStationsCard = new javax.swing.JPanel();
+        icon_AvailableStationsCard = new javax.swing.JLabel();
+        groupAvailableStationsCard = new javax.swing.JPanel();
+        intAvailableStations = new javax.swing.JLabel();
+        labelAvailableStations = new javax.swing.JLabel();
+        occupiedStationsCard = new javax.swing.JPanel();
+        todaysSalesCard = new javax.swing.JPanel();
+        pendingBillablesCard = new javax.swing.JPanel();
+        lowerSegments = new javax.swing.JPanel();
+        activeSessions = new javax.swing.JPanel();
+        quickActions = new javax.swing.JPanel();
         newSessionButton = new javax.swing.JButton();
+        shopToggle = new javax.swing.JButton();
+        printingServicesGroup = new javax.swing.JPanel();
+        shopMembersGroup = new javax.swing.JPanel();
+        shopManagementGroup = new javax.swing.JPanel();
         stationTab = new javax.swing.JPanel();
         stationsHeading = new javax.swing.JPanel();
         stationsHeadingText = new javax.swing.JLabel();
@@ -96,7 +114,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
         heading.setMinimumSize(new java.awt.Dimension(328, 25));
         heading.setPreferredSize(new java.awt.Dimension(888, 50));
-        heading.setLayout(new java.awt.GridLayout(1, 3));
+        heading.setLayout(new java.awt.GridLayout(1, 0));
 
         left.setLayout(new java.awt.GridLayout(1, 0));
 
@@ -118,6 +136,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         appName.setText("App Name");
         names.add(appName);
 
+        shopName.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
         shopName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         shopName.setText("Computer Shop Name");
         names.add(shopName);
@@ -128,9 +147,13 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
         right.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        shopStatus.setText("Opened");
+        shopStatus.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
+        shopStatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/door_open_18dp_E3E3E3_FILL0_wght400_GRAD0_opsz20.png"))); // NOI18N
+        shopStatus.setText("Closed");
+        shopStatus.addPropertyChangeListener(this::shopStatusPropertyChange);
         right.add(shopStatus);
 
+        logoutBtn.setFont(logoutBtn.getFont().deriveFont((float)18));
         logoutBtn.setText("Log Out");
         logoutBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -141,20 +164,109 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
         heading.add(right);
 
-        getContentPane().add(heading, java.awt.BorderLayout.PAGE_START);
+        getContentPane().add(heading, java.awt.BorderLayout.NORTH);
 
         mainTabGroup.setFont(mainTabGroup.getFont().deriveFont(mainTabGroup.getFont().getStyle() & ~java.awt.Font.BOLD, 20));
         mainTabGroup.setInheritsPopupMenu(true);
         mainTabGroup.setName(""); // NOI18N
 
         dashboardTab.setToolTipText("");
+        dashboardTab.setLayout(new java.awt.BorderLayout());
 
-        dashboardHeading.setLayout(new java.awt.BorderLayout());
+        quickStatistics.setPreferredSize(new java.awt.Dimension(100, 200));
+        quickStatistics.setLayout(new java.awt.BorderLayout());
 
-        dashboardHeadingText.setFont(dashboardHeadingText.getFont().deriveFont(dashboardHeadingText.getFont().getStyle() | java.awt.Font.BOLD, 26));
-        dashboardHeadingText.setText("Dashboard");
+        quickStatisticsHeading.setPreferredSize(new java.awt.Dimension(160, 30));
+        quickStatisticsHeading.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        dashboardHeadingText.setFont(dashboardHeadingText.getFont().deriveFont((float)24));
+        dashboardHeadingText.setText("Quick Statistics");
+        dashboardHeadingText.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         dashboardHeadingText.setAlignmentX(0.5F);
-        dashboardHeading.add(dashboardHeadingText, java.awt.BorderLayout.CENTER);
+        dashboardHeadingText.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        dashboardHeadingText.setPreferredSize(new java.awt.Dimension(500, 55));
+        dashboardHeadingText.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        quickStatisticsHeading.add(dashboardHeadingText);
+
+        quickStatistics.add(quickStatisticsHeading, java.awt.BorderLayout.NORTH);
+
+        statsCards.setPreferredSize(new java.awt.Dimension(888, 400));
+        statsCards.setLayout(new java.awt.GridLayout(1, 4, 5, 0));
+
+        availableStationsCard.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 153, 51), 5, true));
+        availableStationsCard.setPreferredSize(new java.awt.Dimension(222, 800));
+        availableStationsCard.setLayout(new java.awt.GridLayout(2, 1));
+
+        icon_AvailableStationsCard.setFont(new java.awt.Font("Inter", 0, 48)); // NOI18N
+        icon_AvailableStationsCard.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        icon_AvailableStationsCard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/check_box_50dp_E3E3E3_FILL0_wght400_GRAD0_opsz48.png"))); // NOI18N
+        availableStationsCard.add(icon_AvailableStationsCard);
+
+        groupAvailableStationsCard.setPreferredSize(new java.awt.Dimension(208, 50));
+        groupAvailableStationsCard.setLayout(new java.awt.GridLayout(2, 1));
+
+        intAvailableStations.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        intAvailableStations.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        intAvailableStations.setText("10/20");
+        intAvailableStations.setToolTipText("");
+        groupAvailableStationsCard.add(intAvailableStations);
+
+        labelAvailableStations.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
+        labelAvailableStations.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelAvailableStations.setText("Available Stations");
+        groupAvailableStationsCard.add(labelAvailableStations);
+
+        availableStationsCard.add(groupAvailableStationsCard);
+
+        statsCards.add(availableStationsCard);
+
+        javax.swing.GroupLayout occupiedStationsCardLayout = new javax.swing.GroupLayout(occupiedStationsCard);
+        occupiedStationsCard.setLayout(occupiedStationsCardLayout);
+        occupiedStationsCardLayout.setHorizontalGroup(
+            occupiedStationsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        occupiedStationsCardLayout.setVerticalGroup(
+            occupiedStationsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        statsCards.add(occupiedStationsCard);
+
+        javax.swing.GroupLayout todaysSalesCardLayout = new javax.swing.GroupLayout(todaysSalesCard);
+        todaysSalesCard.setLayout(todaysSalesCardLayout);
+        todaysSalesCardLayout.setHorizontalGroup(
+            todaysSalesCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        todaysSalesCardLayout.setVerticalGroup(
+            todaysSalesCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        statsCards.add(todaysSalesCard);
+
+        javax.swing.GroupLayout pendingBillablesCardLayout = new javax.swing.GroupLayout(pendingBillablesCard);
+        pendingBillablesCard.setLayout(pendingBillablesCardLayout);
+        pendingBillablesCardLayout.setHorizontalGroup(
+            pendingBillablesCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        pendingBillablesCardLayout.setVerticalGroup(
+            pendingBillablesCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        statsCards.add(pendingBillablesCard);
+
+        quickStatistics.add(statsCards, java.awt.BorderLayout.CENTER);
+
+        dashboardTab.add(quickStatistics, java.awt.BorderLayout.NORTH);
+
+        lowerSegments.setLayout(new java.awt.GridLayout(1, 2, 10, 0));
+        lowerSegments.add(activeSessions);
+
+        quickActions.setLayout(new java.awt.GridLayout(3, 0));
 
         newSessionButton.setText("New Session");
         newSessionButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -162,27 +274,24 @@ public class AdminAppWindow extends javax.swing.JFrame {
                 newSessionButtonMouseClicked(evt);
             }
         });
+        quickActions.add(newSessionButton);
 
-        javax.swing.GroupLayout dashboardTabLayout = new javax.swing.GroupLayout(dashboardTab);
-        dashboardTab.setLayout(dashboardTabLayout);
-        dashboardTabLayout.setHorizontalGroup(
-            dashboardTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(dashboardTabLayout.createSequentialGroup()
-                .addComponent(dashboardHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 888, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(dashboardTabLayout.createSequentialGroup()
-                .addGap(134, 134, 134)
-                .addComponent(newSessionButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        dashboardTabLayout.setVerticalGroup(
-            dashboardTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(dashboardTabLayout.createSequentialGroup()
-                .addComponent(dashboardHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(82, 82, 82)
-                .addComponent(newSessionButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        shopToggle.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        shopToggle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/door_open_18dp_E3E3E3_FILL0_wght400_GRAD0_opsz20.png"))); // NOI18N
+        shopToggle.setText("Open Shop");
+        shopToggle.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                shopToggleMouseClicked(evt);
+            }
+        });
+        quickActions.add(shopToggle);
+        quickActions.add(printingServicesGroup);
+        quickActions.add(shopMembersGroup);
+        quickActions.add(shopManagementGroup);
+
+        lowerSegments.add(quickActions);
+
+        dashboardTab.add(lowerSegments, java.awt.BorderLayout.CENTER);
 
         mainTabGroup.addTab("Dashboard", dashboardTab);
 
@@ -230,7 +339,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         );
         usersTabLayout.setVerticalGroup(
             usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 374, Short.MAX_VALUE)
+            .addGap(0, 312, Short.MAX_VALUE)
             .addGroup(usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(usersTabLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -324,38 +433,88 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
     }//GEN-LAST:event_logoutBtnMouseClicked
 
+    private void shopStatusPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_shopStatusPropertyChange
+        // TODO add your handling code here:
+    
+    }//GEN-LAST:event_shopStatusPropertyChange
+
+    private void shopToggleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_shopToggleMouseClicked
+        // TODO add your handling code here:
+        if (isShopOpen) {
+            openShop(false); //actually close the shop
+            shopToggle.setText("Open Shop"); //show Open since closed
+        } else {
+            openShop(true); //actually open the shop
+            shopToggle.setText("Close Shop"); // Show text to close since shop is opened
+        }
+        
+    }//GEN-LAST:event_shopToggleMouseClicked
+
     /**
      * @param args the command line arguments
      */
+    
+    
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             new AdminAppWindow().setVisible(true);
         });
-
+    }
+    
+    //SHOP MANAGEMENT
+    private boolean isShopOpen = false;
+    
+    private void openShop(boolean openShop) {
+        this.isShopOpen = openShop;
+        
+        if (openShop) {
+            shopStatus.setText("Opened");
+            //icon
+        } else {
+            shopStatus.setText("Closed");
+            //default
+        }
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel activeSessions;
     private javax.swing.JPanel appLogo;
     private javax.swing.JLabel appName;
-    private javax.swing.JPanel dashboardHeading;
+    private javax.swing.JPanel availableStationsCard;
     private javax.swing.JLabel dashboardHeadingText;
     private javax.swing.JPanel dashboardTab;
+    private javax.swing.JPanel groupAvailableStationsCard;
     private javax.swing.JPanel heading;
+    private javax.swing.JLabel icon_AvailableStationsCard;
+    private javax.swing.JLabel intAvailableStations;
     private javax.swing.JDialog jDialog1;
+    private javax.swing.JLabel labelAvailableStations;
     private javax.swing.JPanel left;
     private javax.swing.JButton logoutBtn;
+    private javax.swing.JPanel lowerSegments;
     private javax.swing.JTabbedPane mainTabGroup;
     private javax.swing.JPanel names;
     private javax.swing.JButton newSessionButton;
+    private javax.swing.JPanel occupiedStationsCard;
+    private javax.swing.JPanel pendingBillablesCard;
     private javax.swing.JPanel printServices;
+    private javax.swing.JPanel printingServicesGroup;
+    private javax.swing.JPanel quickActions;
+    private javax.swing.JPanel quickStatistics;
+    private javax.swing.JPanel quickStatisticsHeading;
     private javax.swing.JPanel right;
+    private javax.swing.JPanel shopManagementGroup;
+    private javax.swing.JPanel shopMembersGroup;
     private javax.swing.JLabel shopName;
     private javax.swing.JPanel shopSettings;
     private javax.swing.JLabel shopStatus;
+    private javax.swing.JButton shopToggle;
     private javax.swing.JPanel stationTab;
     private javax.swing.JPanel stationsHeading;
     private javax.swing.JLabel stationsHeadingText;
+    private javax.swing.JPanel statsCards;
+    private javax.swing.JPanel todaysSalesCard;
     private javax.swing.JPanel transactions;
     private javax.swing.JPanel usersHeading;
     private javax.swing.JLabel usersHeadingText;
