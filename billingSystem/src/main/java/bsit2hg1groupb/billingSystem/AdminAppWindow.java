@@ -83,8 +83,11 @@ public class AdminAppWindow extends javax.swing.JFrame {
         shopMembersGroup = new javax.swing.JPanel();
         shopManagementGroup = new javax.swing.JPanel();
         stationTab = new javax.swing.JPanel();
-        stationsHeading = new javax.swing.JPanel();
-        stationsHeadingText = new javax.swing.JLabel();
+        headingPanel = new javax.swing.JPanel();
+        leftPanel = new javax.swing.JPanel();
+        text = new javax.swing.JLabel();
+        rightPanel = new javax.swing.JPanel();
+        centerPanel = new javax.swing.JPanel();
         usersTab = new javax.swing.JPanel();
         usersHeading = new javax.swing.JPanel();
         usersHeadingText = new javax.swing.JLabel();
@@ -274,6 +277,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
                 newSessionButtonMouseClicked(evt);
             }
         });
+        newSessionButton.addActionListener(this::newSessionButtonActionPerformed);
         quickActions.add(newSessionButton);
 
         shopToggle.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
@@ -295,27 +299,63 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
         mainTabGroup.addTab("Dashboard", dashboardTab);
 
-        stationsHeading.setLayout(new java.awt.BorderLayout());
+        stationTab.setLayout(new java.awt.BorderLayout());
 
-        stationsHeadingText.setFont(new java.awt.Font("Minecraft", 0, 18)); // NOI18N
-        stationsHeadingText.setText("Stations");
-        stationsHeadingText.setAlignmentX(0.5F);
-        stationsHeading.add(stationsHeadingText, java.awt.BorderLayout.CENTER);
+        headingPanel.setLayout(new java.awt.GridLayout());
 
-        javax.swing.GroupLayout stationTabLayout = new javax.swing.GroupLayout(stationTab);
-        stationTab.setLayout(stationTabLayout);
-        stationTabLayout.setHorizontalGroup(
-            stationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(stationTabLayout.createSequentialGroup()
-                .addComponent(stationsHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 888, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+        text.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        text.setText("Hello");
+
+        javax.swing.GroupLayout leftPanelLayout = new javax.swing.GroupLayout(leftPanel);
+        leftPanel.setLayout(leftPanelLayout);
+        leftPanelLayout.setHorizontalGroup(
+            leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 444, Short.MAX_VALUE)
+            .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(leftPanelLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(text)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
-        stationTabLayout.setVerticalGroup(
-            stationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(stationTabLayout.createSequentialGroup()
-                .addComponent(stationsHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+        leftPanelLayout.setVerticalGroup(
+            leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(leftPanelLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(text)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
+
+        headingPanel.add(leftPanel);
+
+        javax.swing.GroupLayout rightPanelLayout = new javax.swing.GroupLayout(rightPanel);
+        rightPanel.setLayout(rightPanelLayout);
+        rightPanelLayout.setHorizontalGroup(
+            rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 444, Short.MAX_VALUE)
+        );
+        rightPanelLayout.setVerticalGroup(
+            rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        headingPanel.add(rightPanel);
+
+        stationTab.add(headingPanel, java.awt.BorderLayout.NORTH);
+
+        javax.swing.GroupLayout centerPanelLayout = new javax.swing.GroupLayout(centerPanel);
+        centerPanel.setLayout(centerPanelLayout);
+        centerPanelLayout.setHorizontalGroup(
+            centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 888, Short.MAX_VALUE)
+        );
+        centerPanelLayout.setVerticalGroup(
+            centerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 212, Short.MAX_VALUE)
+        );
+
+        stationTab.add(centerPanel, java.awt.BorderLayout.CENTER);
 
         mainTabGroup.addTab("Stations", stationTab);
 
@@ -450,6 +490,10 @@ public class AdminAppWindow extends javax.swing.JFrame {
         
     }//GEN-LAST:event_shopToggleMouseClicked
 
+    private void newSessionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSessionButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_newSessionButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -482,15 +526,18 @@ public class AdminAppWindow extends javax.swing.JFrame {
     private javax.swing.JPanel appLogo;
     private javax.swing.JLabel appName;
     private javax.swing.JPanel availableStationsCard;
+    private javax.swing.JPanel centerPanel;
     private javax.swing.JLabel dashboardHeadingText;
     private javax.swing.JPanel dashboardTab;
     private javax.swing.JPanel groupAvailableStationsCard;
     private javax.swing.JPanel heading;
+    private javax.swing.JPanel headingPanel;
     private javax.swing.JLabel icon_AvailableStationsCard;
     private javax.swing.JLabel intAvailableStations;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel labelAvailableStations;
     private javax.swing.JPanel left;
+    private javax.swing.JPanel leftPanel;
     private javax.swing.JButton logoutBtn;
     private javax.swing.JPanel lowerSegments;
     private javax.swing.JTabbedPane mainTabGroup;
@@ -504,6 +551,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
     private javax.swing.JPanel quickStatistics;
     private javax.swing.JPanel quickStatisticsHeading;
     private javax.swing.JPanel right;
+    private javax.swing.JPanel rightPanel;
     private javax.swing.JPanel shopManagementGroup;
     private javax.swing.JPanel shopMembersGroup;
     private javax.swing.JLabel shopName;
@@ -511,9 +559,8 @@ public class AdminAppWindow extends javax.swing.JFrame {
     private javax.swing.JLabel shopStatus;
     private javax.swing.JButton shopToggle;
     private javax.swing.JPanel stationTab;
-    private javax.swing.JPanel stationsHeading;
-    private javax.swing.JLabel stationsHeadingText;
     private javax.swing.JPanel statsCards;
+    private javax.swing.JLabel text;
     private javax.swing.JPanel todaysSalesCard;
     private javax.swing.JPanel transactions;
     private javax.swing.JPanel usersHeading;
