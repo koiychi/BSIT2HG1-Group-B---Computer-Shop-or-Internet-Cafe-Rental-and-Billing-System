@@ -82,6 +82,25 @@ public class AdminAppWindow extends javax.swing.JFrame {
         printingServicesGroup = new javax.swing.JPanel();
         shopMembersGroup = new javax.swing.JPanel();
         shopManagementGroup = new javax.swing.JPanel();
+        TesterTab = new javax.swing.JPanel();
+        BillPopup = new javax.swing.JPanel();
+        ControlPanel = new javax.swing.JPanel();
+        Pay = new javax.swing.JLabel();
+        SubtotalPanel = new javax.swing.JPanel();
+        PcType = new javax.swing.JTextField();
+        Calculation = new javax.swing.JTextField();
+        ToPay = new javax.swing.JTextField();
+        Subtotal1 = new javax.swing.JTextField();
+        TotalPanel1 = new javax.swing.JPanel();
+        Total = new javax.swing.JTextField();
+        Total2 = new javax.swing.JTextField();
+        PayMethod = new javax.swing.JLabel();
+        Credit = new javax.swing.JRadioButton();
+        Cash = new javax.swing.JRadioButton();
+        TotalPanel2 = new javax.swing.JPanel();
+        Payment = new javax.swing.JTextField();
+        Change = new javax.swing.JTextField();
+        Proceed = new javax.swing.JButton();
         stationTab = new javax.swing.JPanel();
         stationsHeading = new javax.swing.JPanel();
         stationsHeadingText = new javax.swing.JLabel();
@@ -228,7 +247,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         );
         occupiedStationsCardLayout.setVerticalGroup(
             occupiedStationsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 170, Short.MAX_VALUE)
         );
 
         statsCards.add(occupiedStationsCard);
@@ -241,7 +260,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         );
         todaysSalesCardLayout.setVerticalGroup(
             todaysSalesCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 170, Short.MAX_VALUE)
         );
 
         statsCards.add(todaysSalesCard);
@@ -254,7 +273,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         );
         pendingBillablesCardLayout.setVerticalGroup(
             pendingBillablesCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 170, Short.MAX_VALUE)
         );
 
         statsCards.add(pendingBillablesCard);
@@ -295,6 +314,203 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
         mainTabGroup.addTab("Dashboard", dashboardTab);
 
+        BillPopup.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        ControlPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout ControlPanelLayout = new javax.swing.GroupLayout(ControlPanel);
+        ControlPanel.setLayout(ControlPanelLayout);
+        ControlPanelLayout.setHorizontalGroup(
+            ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        ControlPanelLayout.setVerticalGroup(
+            ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 25, Short.MAX_VALUE)
+        );
+
+        Pay.setText("Pay Bill");
+
+        PcType.setText("Type PC");
+        PcType.addActionListener(this::PcTypeActionPerformed);
+
+        Calculation.setText("PHP");
+        Calculation.addActionListener(this::CalculationActionPerformed);
+
+        ToPay.setText("PHP");
+        ToPay.addActionListener(this::ToPayActionPerformed);
+
+        Subtotal1.setText("Subtotal");
+        Subtotal1.addActionListener(this::Subtotal1ActionPerformed);
+
+        javax.swing.GroupLayout SubtotalPanelLayout = new javax.swing.GroupLayout(SubtotalPanel);
+        SubtotalPanel.setLayout(SubtotalPanelLayout);
+        SubtotalPanelLayout.setHorizontalGroup(
+            SubtotalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SubtotalPanelLayout.createSequentialGroup()
+                .addGroup(SubtotalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(SubtotalPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(PcType, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, SubtotalPanelLayout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(Calculation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(ToPay, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(SubtotalPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Subtotal1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        SubtotalPanelLayout.setVerticalGroup(
+            SubtotalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SubtotalPanelLayout.createSequentialGroup()
+                .addComponent(Subtotal1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PcType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(SubtotalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Calculation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ToPay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(10, Short.MAX_VALUE))
+        );
+
+        TotalPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        Total.setText("Total Amount Due");
+        Total.addActionListener(this::TotalActionPerformed);
+
+        Total2.setText("PHP");
+        Total2.addActionListener(this::Total2ActionPerformed);
+
+        javax.swing.GroupLayout TotalPanel1Layout = new javax.swing.GroupLayout(TotalPanel1);
+        TotalPanel1.setLayout(TotalPanel1Layout);
+        TotalPanel1Layout.setHorizontalGroup(
+            TotalPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TotalPanel1Layout.createSequentialGroup()
+                .addComponent(Total, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(TotalPanel1Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(Total2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        TotalPanel1Layout.setVerticalGroup(
+            TotalPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TotalPanel1Layout.createSequentialGroup()
+                .addComponent(Total, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Total2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 8, Short.MAX_VALUE))
+        );
+
+        PayMethod.setText("Pay With");
+
+        Credit.setLabel("Shop Credit");
+
+        Cash.setText("Cash");
+        Cash.addActionListener(this::CashActionPerformed);
+
+        Payment.setText("PHP");
+        Payment.addActionListener(this::PaymentActionPerformed);
+
+        Change.setText("Change: ");
+        Change.addActionListener(this::ChangeActionPerformed);
+
+        javax.swing.GroupLayout TotalPanel2Layout = new javax.swing.GroupLayout(TotalPanel2);
+        TotalPanel2.setLayout(TotalPanel2Layout);
+        TotalPanel2Layout.setHorizontalGroup(
+            TotalPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TotalPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(TotalPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Payment)
+                    .addComponent(Change))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        TotalPanel2Layout.setVerticalGroup(
+            TotalPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TotalPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Payment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Change, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
+
+        Proceed.setLabel("FInish Payment");
+        Proceed.addActionListener(this::ProceedActionPerformed);
+
+        javax.swing.GroupLayout BillPopupLayout = new javax.swing.GroupLayout(BillPopup);
+        BillPopup.setLayout(BillPopupLayout);
+        BillPopupLayout.setHorizontalGroup(
+            BillPopupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(ControlPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(BillPopupLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(BillPopupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(SubtotalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(TotalPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(TotalPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(BillPopupLayout.createSequentialGroup()
+                        .addGroup(BillPopupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Pay)
+                            .addGroup(BillPopupLayout.createSequentialGroup()
+                                .addComponent(PayMethod)
+                                .addGap(62, 62, 62)
+                                .addComponent(Cash)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Credit)))
+                        .addGap(0, 17, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BillPopupLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(Proceed)))
+                .addContainerGap())
+        );
+        BillPopupLayout.setVerticalGroup(
+            BillPopupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BillPopupLayout.createSequentialGroup()
+                .addComponent(ControlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Pay)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(SubtotalPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(TotalPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(BillPopupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(PayMethod)
+                    .addComponent(Cash)
+                    .addComponent(Credit))
+                .addGap(18, 18, 18)
+                .addComponent(TotalPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Proceed)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        Pay.getAccessibleContext().setAccessibleName("Pay Bill");
+
+        javax.swing.GroupLayout TesterTabLayout = new javax.swing.GroupLayout(TesterTab);
+        TesterTab.setLayout(TesterTabLayout);
+        TesterTabLayout.setHorizontalGroup(
+            TesterTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TesterTabLayout.createSequentialGroup()
+                .addGap(302, 302, 302)
+                .addComponent(BillPopup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(308, Short.MAX_VALUE))
+        );
+        TesterTabLayout.setVerticalGroup(
+            TesterTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TesterTabLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(BillPopup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(101, 101, 101))
+        );
+
+        mainTabGroup.addTab("Tester", TesterTab);
+
         stationsHeading.setLayout(new java.awt.BorderLayout());
 
         stationsHeadingText.setFont(new java.awt.Font("Minecraft", 0, 18)); // NOI18N
@@ -314,7 +530,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
             stationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(stationTabLayout.createSequentialGroup()
                 .addComponent(stationsHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 434, Short.MAX_VALUE))
         );
 
         mainTabGroup.addTab("Stations", stationTab);
@@ -339,12 +555,12 @@ public class AdminAppWindow extends javax.swing.JFrame {
         );
         usersTabLayout.setVerticalGroup(
             usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 312, Short.MAX_VALUE)
+            .addGap(0, 474, Short.MAX_VALUE)
             .addGroup(usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(usersTabLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGap(0, 225, Short.MAX_VALUE)
                     .addComponent(usersHeading, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 225, Short.MAX_VALUE)))
         );
 
         mainTabGroup.addTab("Users", usersTab);
@@ -357,7 +573,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         );
         printServicesLayout.setVerticalGroup(
             printServicesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 474, Short.MAX_VALUE)
         );
 
         mainTabGroup.addTab("Print Services", printServices);
@@ -370,7 +586,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         );
         transactionsLayout.setVerticalGroup(
             transactionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 474, Short.MAX_VALUE)
         );
 
         mainTabGroup.addTab("Transactions", transactions);
@@ -383,7 +599,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         );
         shopSettingsLayout.setVerticalGroup(
             shopSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 474, Short.MAX_VALUE)
         );
 
         mainTabGroup.addTab("Shop Settings", shopSettings);
@@ -450,6 +666,46 @@ public class AdminAppWindow extends javax.swing.JFrame {
         
     }//GEN-LAST:event_shopToggleMouseClicked
 
+    private void CashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CashActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CashActionPerformed
+
+    private void ProceedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProceedActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ProceedActionPerformed
+
+    private void PaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PaymentActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PaymentActionPerformed
+
+    private void ChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChangeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ChangeActionPerformed
+
+    private void PcTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PcTypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PcTypeActionPerformed
+
+    private void TotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TotalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TotalActionPerformed
+
+    private void CalculationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CalculationActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CalculationActionPerformed
+
+    private void ToPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ToPayActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ToPayActionPerformed
+
+    private void Subtotal1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Subtotal1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Subtotal1ActionPerformed
+
+    private void Total2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Total2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Total2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -478,6 +734,25 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel BillPopup;
+    private javax.swing.JTextField Calculation;
+    private javax.swing.JRadioButton Cash;
+    private javax.swing.JTextField Change;
+    private javax.swing.JPanel ControlPanel;
+    private javax.swing.JRadioButton Credit;
+    private javax.swing.JLabel Pay;
+    private javax.swing.JLabel PayMethod;
+    private javax.swing.JTextField Payment;
+    private javax.swing.JTextField PcType;
+    private javax.swing.JButton Proceed;
+    private javax.swing.JTextField Subtotal1;
+    private javax.swing.JPanel SubtotalPanel;
+    private javax.swing.JPanel TesterTab;
+    private javax.swing.JTextField ToPay;
+    private javax.swing.JTextField Total;
+    private javax.swing.JTextField Total2;
+    private javax.swing.JPanel TotalPanel1;
+    private javax.swing.JPanel TotalPanel2;
     private javax.swing.JPanel activeSessions;
     private javax.swing.JPanel appLogo;
     private javax.swing.JLabel appName;
@@ -520,4 +795,4 @@ public class AdminAppWindow extends javax.swing.JFrame {
     private javax.swing.JLabel usersHeadingText;
     private javax.swing.JPanel usersTab;
     // End of variables declaration//GEN-END:variables
-}
+}   
