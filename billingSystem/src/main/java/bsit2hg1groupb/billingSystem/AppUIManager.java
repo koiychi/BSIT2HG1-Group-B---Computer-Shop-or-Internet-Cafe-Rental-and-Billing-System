@@ -12,8 +12,12 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import java.awt.Color;
+import javax.swing.UIManager;
+import java.awt.Color;
+import javax.swing.UIManager;
 
-public class UIManager {
+public class AppUIManager {
 
     private static AdminLogin loginFrame;
     private static AdminAppWindow appWindow;
@@ -70,8 +74,21 @@ public class UIManager {
             javax.swing.UIManager.put("ComboBox.font", appFont);
             javax.swing.UIManager.put("CheckBox.font", appFont);
             javax.swing.UIManager.put("RadioButton.font", appFont);
+            // Tab colors
+            UIManager.put("TabbedPane.selectedForeground", Color.decode("#FF6600"));
+            UIManager.put("TabbedPane.selectedBackground", Color.decode("#1E293B"));
+            UIManager.put("TabbedPane.background", Color.decode("#0F172A"));
+            UIManager.put("TabbedPane.underlineColor", Color.decode("#FF6600"));
+            UIManager.put("TabbedPane.inactiveUnderlineColor", Color.decode("#FF6600"));
+            UIManager.put("TabbedPane.contentAreaColor", Color.decode("#0F172A"));
+            UIManager.put("TabbedPane.hasFullBorder", false);
 
-            com.formdev.flatlaf.FlatLaf.updateUI();
+// Tab sizing
+            UIManager.put("TabbedPane.tabAreaAlignment", "fill");
+            UIManager.put("TabbedPane.tabWidthMode", "equal");
+
+// Frame / panel background
+            UIManager.put("Panel.background", Color.decode("#0B0B0F"));
 
         } catch (Exception e) {
             e.printStackTrace();
