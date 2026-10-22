@@ -85,9 +85,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         stationTab = new javax.swing.JPanel();
         stationsHeading = new javax.swing.JPanel();
         stationsHeadingText = new javax.swing.JLabel();
-        usersTab = new javax.swing.JPanel();
-        usersHeading = new javax.swing.JPanel();
-        usersHeadingText = new javax.swing.JLabel();
+        membersTab = new javax.swing.JPanel();
         printServices = new javax.swing.JPanel();
         transactions = new javax.swing.JPanel();
         shopSettings = new javax.swing.JPanel();
@@ -319,35 +317,18 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
         mainTabGroup.addTab("Stations", stationTab);
 
-        usersHeading.setLayout(new java.awt.BorderLayout());
-
-        usersHeadingText.setFont(new java.awt.Font("Minecraft", 0, 18)); // NOI18N
-        usersHeadingText.setText("Stations");
-        usersHeadingText.setAlignmentX(0.5F);
-        usersHeading.add(usersHeadingText, java.awt.BorderLayout.CENTER);
-
-        javax.swing.GroupLayout usersTabLayout = new javax.swing.GroupLayout(usersTab);
-        usersTab.setLayout(usersTabLayout);
-        usersTabLayout.setHorizontalGroup(
-            usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout membersTabLayout = new javax.swing.GroupLayout(membersTab);
+        membersTab.setLayout(membersTabLayout);
+        membersTabLayout.setHorizontalGroup(
+            membersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 888, Short.MAX_VALUE)
-            .addGroup(usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(usersTabLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(usersHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 888, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
         );
-        usersTabLayout.setVerticalGroup(
-            usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        membersTabLayout.setVerticalGroup(
+            membersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 312, Short.MAX_VALUE)
-            .addGroup(usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(usersTabLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(usersHeading, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
-        mainTabGroup.addTab("Users", usersTab);
+        mainTabGroup.addTab("Members", membersTab);
 
         javax.swing.GroupLayout printServicesLayout = new javax.swing.GroupLayout(printServices);
         printServices.setLayout(printServicesLayout);
@@ -494,6 +475,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
     private javax.swing.JButton logoutBtn;
     private javax.swing.JPanel lowerSegments;
     private javax.swing.JTabbedPane mainTabGroup;
+    private javax.swing.JPanel membersTab;
     private javax.swing.JPanel names;
     private javax.swing.JButton newSessionButton;
     private javax.swing.JPanel occupiedStationsCard;
@@ -516,8 +498,5 @@ public class AdminAppWindow extends javax.swing.JFrame {
     private javax.swing.JPanel statsCards;
     private javax.swing.JPanel todaysSalesCard;
     private javax.swing.JPanel transactions;
-    private javax.swing.JPanel usersHeading;
-    private javax.swing.JLabel usersHeadingText;
-    private javax.swing.JPanel usersTab;
     // End of variables declaration//GEN-END:variables
 }
