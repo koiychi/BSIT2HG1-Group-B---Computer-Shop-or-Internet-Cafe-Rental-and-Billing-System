@@ -13,6 +13,8 @@ import java.awt.*;
 import javax.swing.UIManager;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  *
@@ -24,6 +26,8 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
     public AdminAppWindow() {
         initComponents();
+        setupTesterTab();
+        setupTransactionsTab();
         this.setSize(1280, 720);
         this.setLocationRelativeTo(null);
 
@@ -35,7 +39,6 @@ public class AdminAppWindow extends javax.swing.JFrame {
         mainTabGroup.putClientProperty("JTabbedPane.tabHeight", 44);
         mainTabGroup.putClientProperty("JTabbedPane.tabAlignment", "center");
         mainTabGroup.putClientProperty("JTabbedPane.tabUnderlineHeight", 3);
-        mainTabGroup.putClientProperty("JTabbedPane.underlineColor", java.awt.Color.decode("#FF6600"));
 
         mainTabGroup.revalidate();
         mainTabGroup.repaint();
@@ -82,25 +85,6 @@ public class AdminAppWindow extends javax.swing.JFrame {
         printingServicesGroup = new javax.swing.JPanel();
         shopMembersGroup = new javax.swing.JPanel();
         shopManagementGroup = new javax.swing.JPanel();
-        TesterTab = new javax.swing.JPanel();
-        BillPopup = new javax.swing.JPanel();
-        ControlPanel = new javax.swing.JPanel();
-        Pay = new javax.swing.JLabel();
-        SubtotalPanel = new javax.swing.JPanel();
-        PcType = new javax.swing.JTextField();
-        Calculation = new javax.swing.JTextField();
-        ToPay = new javax.swing.JTextField();
-        Subtotal1 = new javax.swing.JTextField();
-        TotalPanel1 = new javax.swing.JPanel();
-        Total = new javax.swing.JTextField();
-        Total2 = new javax.swing.JTextField();
-        PayMethod = new javax.swing.JLabel();
-        Credit = new javax.swing.JRadioButton();
-        Cash = new javax.swing.JRadioButton();
-        TotalPanel2 = new javax.swing.JPanel();
-        Payment = new javax.swing.JTextField();
-        Change = new javax.swing.JTextField();
-        Proceed = new javax.swing.JButton();
         stationTab = new javax.swing.JPanel();
         stationsHeading = new javax.swing.JPanel();
         stationsHeadingText = new javax.swing.JLabel();
@@ -110,6 +94,31 @@ public class AdminAppWindow extends javax.swing.JFrame {
         printServices = new javax.swing.JPanel();
         transactions = new javax.swing.JPanel();
         shopSettings = new javax.swing.JPanel();
+        TesterTab = new javax.swing.JPanel();
+        BillPopup = new javax.swing.JPanel();
+        ControlPanel = new javax.swing.JPanel();
+        TypeCustomer = new javax.swing.JLabel();
+        Title1 = new javax.swing.JLabel();
+        SubtotalPanel = new javax.swing.JPanel();
+        Title2 = new javax.swing.JLabel();
+        PcType = new javax.swing.JLabel();
+        NumHours = new javax.swing.JLabel();
+        Discount = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        NumHours1 = new javax.swing.JLabel();
+        jSpinner1 = new javax.swing.JSpinner();
+        TotalPanel1 = new javax.swing.JPanel();
+        Title = new javax.swing.JLabel();
+        TotalAmount1 = new javax.swing.JLabel();
+        TotalPanel2 = new javax.swing.JPanel();
+        Payment = new javax.swing.JTextField();
+        Change = new javax.swing.JLabel();
+        Proceed = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        PayMethod = new javax.swing.JLabel();
+        Credit = new javax.swing.JRadioButton();
+        Cash = new javax.swing.JRadioButton();
+        CreditTotal = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -141,7 +150,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         appLogo.setLayout(appLogoLayout);
         appLogoLayout.setHorizontalGroup(
             appLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 222, Short.MAX_VALUE)
+            .addGap(0, 229, Short.MAX_VALUE)
         );
         appLogoLayout.setVerticalGroup(
             appLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -314,203 +323,6 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
         mainTabGroup.addTab("Dashboard", dashboardTab);
 
-        BillPopup.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        ControlPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        javax.swing.GroupLayout ControlPanelLayout = new javax.swing.GroupLayout(ControlPanel);
-        ControlPanel.setLayout(ControlPanelLayout);
-        ControlPanelLayout.setHorizontalGroup(
-            ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        ControlPanelLayout.setVerticalGroup(
-            ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 25, Short.MAX_VALUE)
-        );
-
-        Pay.setText("Pay Bill");
-
-        PcType.setText("Type PC");
-        PcType.addActionListener(this::PcTypeActionPerformed);
-
-        Calculation.setText("PHP");
-        Calculation.addActionListener(this::CalculationActionPerformed);
-
-        ToPay.setText("PHP");
-        ToPay.addActionListener(this::ToPayActionPerformed);
-
-        Subtotal1.setText("Subtotal");
-        Subtotal1.addActionListener(this::Subtotal1ActionPerformed);
-
-        javax.swing.GroupLayout SubtotalPanelLayout = new javax.swing.GroupLayout(SubtotalPanel);
-        SubtotalPanel.setLayout(SubtotalPanelLayout);
-        SubtotalPanelLayout.setHorizontalGroup(
-            SubtotalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(SubtotalPanelLayout.createSequentialGroup()
-                .addGroup(SubtotalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(SubtotalPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(PcType, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, SubtotalPanelLayout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(Calculation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ToPay, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(SubtotalPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Subtotal1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        SubtotalPanelLayout.setVerticalGroup(
-            SubtotalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(SubtotalPanelLayout.createSequentialGroup()
-                .addComponent(Subtotal1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(PcType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(SubtotalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Calculation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ToPay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(10, Short.MAX_VALUE))
-        );
-
-        TotalPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        Total.setText("Total Amount Due");
-        Total.addActionListener(this::TotalActionPerformed);
-
-        Total2.setText("PHP");
-        Total2.addActionListener(this::Total2ActionPerformed);
-
-        javax.swing.GroupLayout TotalPanel1Layout = new javax.swing.GroupLayout(TotalPanel1);
-        TotalPanel1.setLayout(TotalPanel1Layout);
-        TotalPanel1Layout.setHorizontalGroup(
-            TotalPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TotalPanel1Layout.createSequentialGroup()
-                .addComponent(Total, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(TotalPanel1Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(Total2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        TotalPanel1Layout.setVerticalGroup(
-            TotalPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TotalPanel1Layout.createSequentialGroup()
-                .addComponent(Total, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Total2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 8, Short.MAX_VALUE))
-        );
-
-        PayMethod.setText("Pay With");
-
-        Credit.setLabel("Shop Credit");
-
-        Cash.setText("Cash");
-        Cash.addActionListener(this::CashActionPerformed);
-
-        Payment.setText("PHP");
-        Payment.addActionListener(this::PaymentActionPerformed);
-
-        Change.setText("Change: ");
-        Change.addActionListener(this::ChangeActionPerformed);
-
-        javax.swing.GroupLayout TotalPanel2Layout = new javax.swing.GroupLayout(TotalPanel2);
-        TotalPanel2.setLayout(TotalPanel2Layout);
-        TotalPanel2Layout.setHorizontalGroup(
-            TotalPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TotalPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(TotalPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(Payment)
-                    .addComponent(Change))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        TotalPanel2Layout.setVerticalGroup(
-            TotalPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TotalPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Payment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Change, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
-        );
-
-        Proceed.setLabel("FInish Payment");
-        Proceed.addActionListener(this::ProceedActionPerformed);
-
-        javax.swing.GroupLayout BillPopupLayout = new javax.swing.GroupLayout(BillPopup);
-        BillPopup.setLayout(BillPopupLayout);
-        BillPopupLayout.setHorizontalGroup(
-            BillPopupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ControlPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(BillPopupLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(BillPopupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(SubtotalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(TotalPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(TotalPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(BillPopupLayout.createSequentialGroup()
-                        .addGroup(BillPopupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Pay)
-                            .addGroup(BillPopupLayout.createSequentialGroup()
-                                .addComponent(PayMethod)
-                                .addGap(62, 62, 62)
-                                .addComponent(Cash)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Credit)))
-                        .addGap(0, 17, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BillPopupLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(Proceed)))
-                .addContainerGap())
-        );
-        BillPopupLayout.setVerticalGroup(
-            BillPopupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(BillPopupLayout.createSequentialGroup()
-                .addComponent(ControlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Pay)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(SubtotalPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(TotalPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(BillPopupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(PayMethod)
-                    .addComponent(Cash)
-                    .addComponent(Credit))
-                .addGap(18, 18, 18)
-                .addComponent(TotalPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Proceed)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        Pay.getAccessibleContext().setAccessibleName("Pay Bill");
-
-        javax.swing.GroupLayout TesterTabLayout = new javax.swing.GroupLayout(TesterTab);
-        TesterTab.setLayout(TesterTabLayout);
-        TesterTabLayout.setHorizontalGroup(
-            TesterTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TesterTabLayout.createSequentialGroup()
-                .addGap(302, 302, 302)
-                .addComponent(BillPopup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(308, Short.MAX_VALUE))
-        );
-        TesterTabLayout.setVerticalGroup(
-            TesterTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TesterTabLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(BillPopup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(101, 101, 101))
-        );
-
-        mainTabGroup.addTab("Tester", TesterTab);
-
         stationsHeading.setLayout(new java.awt.BorderLayout());
 
         stationsHeadingText.setFont(new java.awt.Font("Minecraft", 0, 18)); // NOI18N
@@ -530,7 +342,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
             stationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(stationTabLayout.createSequentialGroup()
                 .addComponent(stationsHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 434, Short.MAX_VALUE))
+                .addGap(0, 479, Short.MAX_VALUE))
         );
 
         mainTabGroup.addTab("Stations", stationTab);
@@ -546,7 +358,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         usersTab.setLayout(usersTabLayout);
         usersTabLayout.setHorizontalGroup(
             usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 888, Short.MAX_VALUE)
+            .addGap(0, 918, Short.MAX_VALUE)
             .addGroup(usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(usersTabLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -555,12 +367,12 @@ public class AdminAppWindow extends javax.swing.JFrame {
         );
         usersTabLayout.setVerticalGroup(
             usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 474, Short.MAX_VALUE)
+            .addGap(0, 519, Short.MAX_VALUE)
             .addGroup(usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(usersTabLayout.createSequentialGroup()
-                    .addGap(0, 225, Short.MAX_VALUE)
+                    .addGap(0, 247, Short.MAX_VALUE)
                     .addComponent(usersHeading, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 225, Short.MAX_VALUE)))
+                    .addGap(0, 248, Short.MAX_VALUE)))
         );
 
         mainTabGroup.addTab("Users", usersTab);
@@ -569,11 +381,11 @@ public class AdminAppWindow extends javax.swing.JFrame {
         printServices.setLayout(printServicesLayout);
         printServicesLayout.setHorizontalGroup(
             printServicesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 888, Short.MAX_VALUE)
+            .addGap(0, 918, Short.MAX_VALUE)
         );
         printServicesLayout.setVerticalGroup(
             printServicesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 474, Short.MAX_VALUE)
+            .addGap(0, 519, Short.MAX_VALUE)
         );
 
         mainTabGroup.addTab("Print Services", printServices);
@@ -582,11 +394,11 @@ public class AdminAppWindow extends javax.swing.JFrame {
         transactions.setLayout(transactionsLayout);
         transactionsLayout.setHorizontalGroup(
             transactionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 888, Short.MAX_VALUE)
+            .addGap(0, 918, Short.MAX_VALUE)
         );
         transactionsLayout.setVerticalGroup(
             transactionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 474, Short.MAX_VALUE)
+            .addGap(0, 519, Short.MAX_VALUE)
         );
 
         mainTabGroup.addTab("Transactions", transactions);
@@ -595,14 +407,250 @@ public class AdminAppWindow extends javax.swing.JFrame {
         shopSettings.setLayout(shopSettingsLayout);
         shopSettingsLayout.setHorizontalGroup(
             shopSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 888, Short.MAX_VALUE)
+            .addGap(0, 918, Short.MAX_VALUE)
         );
         shopSettingsLayout.setVerticalGroup(
             shopSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 474, Short.MAX_VALUE)
+            .addGap(0, 519, Short.MAX_VALUE)
         );
 
         mainTabGroup.addTab("Shop Settings", shopSettings);
+
+        BillPopup.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        ControlPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        TypeCustomer.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        TypeCustomer.setText("Member");
+        TypeCustomer.setToolTipText("");
+
+        javax.swing.GroupLayout ControlPanelLayout = new javax.swing.GroupLayout(ControlPanel);
+        ControlPanel.setLayout(ControlPanelLayout);
+        ControlPanelLayout.setHorizontalGroup(
+            ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ControlPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(TypeCustomer)
+                .addGap(120, 120, 120))
+        );
+        ControlPanelLayout.setVerticalGroup(
+            ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ControlPanelLayout.createSequentialGroup()
+                .addGap(0, 9, Short.MAX_VALUE)
+                .addComponent(TypeCustomer))
+        );
+
+        Title1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Title1.setText("Pay Bill");
+
+        Title2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        Title2.setText("Subtotal");
+
+        PcType.setText("Type");
+
+        NumHours.setText("Hour(s)");
+
+        Discount.setText("Discount %10");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        NumHours1.setText("1 hour(s) x PHP 40.00");
+
+        javax.swing.GroupLayout SubtotalPanelLayout = new javax.swing.GroupLayout(SubtotalPanel);
+        SubtotalPanel.setLayout(SubtotalPanelLayout);
+        SubtotalPanelLayout.setHorizontalGroup(
+            SubtotalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SubtotalPanelLayout.createSequentialGroup()
+                .addGroup(SubtotalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Title2)
+                    .addGroup(SubtotalPanelLayout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addGroup(SubtotalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(PcType)
+                            .addComponent(Discount)
+                            .addComponent(NumHours)
+                            .addComponent(NumHours1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(SubtotalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jSpinner1))))
+                .addContainerGap())
+        );
+        SubtotalPanelLayout.setVerticalGroup(
+            SubtotalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SubtotalPanelLayout.createSequentialGroup()
+                .addComponent(Title2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(SubtotalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(PcType, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(SubtotalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(NumHours, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(NumHours1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Discount, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        TotalPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        Title.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        Title.setText("Total Amount Due");
+
+        TotalAmount1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        TotalAmount1.setText("PHP");
+
+        javax.swing.GroupLayout TotalPanel1Layout = new javax.swing.GroupLayout(TotalPanel1);
+        TotalPanel1.setLayout(TotalPanel1Layout);
+        TotalPanel1Layout.setHorizontalGroup(
+            TotalPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TotalPanel1Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(TotalAmount1)
+                .addContainerGap(249, Short.MAX_VALUE))
+            .addGroup(TotalPanel1Layout.createSequentialGroup()
+                .addComponent(Title, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        TotalPanel1Layout.setVerticalGroup(
+            TotalPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TotalPanel1Layout.createSequentialGroup()
+                .addComponent(Title)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(TotalAmount1)
+                .addContainerGap())
+        );
+
+        Payment.setText("PHP");
+        Payment.addActionListener(this::PaymentActionPerformed);
+
+        Change.setText("Change:");
+
+        javax.swing.GroupLayout TotalPanel2Layout = new javax.swing.GroupLayout(TotalPanel2);
+        TotalPanel2.setLayout(TotalPanel2Layout);
+        TotalPanel2Layout.setHorizontalGroup(
+            TotalPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TotalPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(TotalPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Change)
+                    .addComponent(Payment, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        TotalPanel2Layout.setVerticalGroup(
+            TotalPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TotalPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Payment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Change)
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
+
+        Proceed.setText("Finish Payment");
+        Proceed.addActionListener(this::ProceedActionPerformed);
+
+        PayMethod.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        PayMethod.setText("Pay With");
+
+        Credit.setLabel("Shop Credit");
+        Credit.addActionListener(this::CreditActionPerformed);
+
+        Cash.setText("Cash");
+        Cash.addActionListener(this::CashActionPerformed);
+
+        CreditTotal.setText("PHP");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(PayMethod)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Cash)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(CreditTotal))
+                    .addComponent(Credit))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(PayMethod)
+                    .addComponent(Cash)
+                    .addComponent(Credit))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(CreditTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout BillPopupLayout = new javax.swing.GroupLayout(BillPopup);
+        BillPopup.setLayout(BillPopupLayout);
+        BillPopupLayout.setHorizontalGroup(
+            BillPopupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(ControlPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(BillPopupLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(BillPopupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(SubtotalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(TotalPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(TotalPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BillPopupLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(Proceed))
+                    .addGroup(BillPopupLayout.createSequentialGroup()
+                        .addComponent(Title1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        BillPopupLayout.setVerticalGroup(
+            BillPopupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BillPopupLayout.createSequentialGroup()
+                .addComponent(ControlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Title1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(SubtotalPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(TotalPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(TotalPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(Proceed)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout TesterTabLayout = new javax.swing.GroupLayout(TesterTab);
+        TesterTab.setLayout(TesterTabLayout);
+        TesterTabLayout.setHorizontalGroup(
+            TesterTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TesterTabLayout.createSequentialGroup()
+                .addGap(302, 302, 302)
+                .addComponent(BillPopup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(296, Short.MAX_VALUE))
+        );
+        TesterTabLayout.setVerticalGroup(
+            TesterTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TesterTabLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(BillPopup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(86, Short.MAX_VALUE))
+        );
+
+        mainTabGroup.addTab("Tester", TesterTab);
 
         getContentPane().add(mainTabGroup, java.awt.BorderLayout.CENTER);
 
@@ -666,46 +714,99 @@ public class AdminAppWindow extends javax.swing.JFrame {
         
     }//GEN-LAST:event_shopToggleMouseClicked
 
-    private void CashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CashActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CashActionPerformed
-
     private void ProceedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProceedActionPerformed
-        // TODO add your handling code here:
+        // only cash is typed in, so only cash needs the check
+        if (Cash.isSelected()) {
+            java.math.BigDecimal amount;
+            try {
+                amount = new java.math.BigDecimal(
+                        Payment.getText().replace("PHP", "").replace(",", "").trim());
+            } catch (NumberFormatException ex) {
+                amount = java.math.BigDecimal.ZERO;
+            }
+
+            // 1. nothing entered
+            if (amount.compareTo(java.math.BigDecimal.ZERO) <= 0) {
+                javax.swing.JOptionPane.showMessageDialog(
+                        billDialog,
+                        "Please enter a payment amount greater than PHP 0.00.",
+                        "Invalid Payment",
+                        javax.swing.JOptionPane.WARNING_MESSAGE
+                );
+                Payment.requestFocusInWindow();
+                return;   // stop here, the bill stays open
+            }
+
+            // 2. less than the total due
+            if (amount.compareTo(pcTotal) < 0) {
+                javax.swing.JOptionPane.showMessageDialog(
+                        billDialog,
+                        "The amount paid is less than the total amount due.",
+                        "Insufficient Payment",
+                        javax.swing.JOptionPane.WARNING_MESSAGE
+                );
+                Payment.requestFocusInWindow();
+                return;   // stop here, the bill stays open
+            }
+        }
+
+        if (Credit.isSelected() && memberCredit.compareTo(pcTotal) < 0) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    billDialog,
+                    "Insufficient Shop Credit.\n\n"
+                    + "Credit Balance: PHP " + memberCredit.setScale(2, RoundingMode.HALF_UP) + "\n"
+                    + "Total Amount Due: PHP " + pcTotal.setScale(2, RoundingMode.HALF_UP),
+                    "Insufficient Credit",
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+            return;   // stop here, the bill stays open
+        }
+
+                String method = Cash.isSelected() ? "Cash" : "Shop Credit";
+
+        // build the confirmation text
+        StringBuilder receipt = new StringBuilder("Payment successful.\n\n");
+        receipt.append("Service: PC - ").append(currentMember ? "Member" : "Regular").append("\n");
+        receipt.append("Total Amount: PHP ").append(pcTotal.setScale(2, RoundingMode.HALF_UP)).append("\n");
+        receipt.append("Payment Method: ").append(method).append("\n");
+
+        if (Cash.isSelected()) {
+            BigDecimal cashPaid = parseAmount(Payment.getText());
+            receipt.append("Amount Received: PHP ").append(cashPaid.setScale(2, RoundingMode.HALF_UP)).append("\n");
+            receipt.append("Change: PHP ").append(cashPaid.subtract(pcTotal).setScale(2, RoundingMode.HALF_UP)).append("\n");
+        } else {
+            memberCredit = memberCredit.subtract(pcTotal);   // pay with credit: deduct it
+        }
+
+        if (currentMember) {
+            receipt.append("Remaining Credit: PHP ").append(memberCredit.setScale(2, RoundingMode.HALF_UP)).append("\n");
+        }
+        receipt.append("\nThis transaction has been recorded in Transactions.");
+
+        // TODO: save the transaction to your database / transactions list here
+
+        billDialog.setVisible(false);
+
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                receipt.toString(),
+                "Payment Confirmation",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE
+        );
     }//GEN-LAST:event_ProceedActionPerformed
 
     private void PaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PaymentActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_PaymentActionPerformed
 
-    private void ChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChangeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ChangeActionPerformed
+    private void CashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CashActionPerformed
+        updatePaymentField();
+    }//GEN-LAST:event_CashActionPerformed
 
-    private void PcTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PcTypeActionPerformed
+    private void CreditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreditActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_PcTypeActionPerformed
-
-    private void TotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TotalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TotalActionPerformed
-
-    private void CalculationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CalculationActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CalculationActionPerformed
-
-    private void ToPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ToPayActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ToPayActionPerformed
-
-    private void Subtotal1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Subtotal1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Subtotal1ActionPerformed
-
-    private void Total2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Total2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Total2ActionPerformed
-
+    }//GEN-LAST:event_CreditActionPerformed
+    
     /**
      * @param args the command line arguments
      */
@@ -731,28 +832,982 @@ public class AdminAppWindow extends javax.swing.JFrame {
             //default
         }
     }
+    
+    //TESTER TAB
+private javax.swing.JDialog billDialog;
+private BigDecimal memberCredit = new BigDecimal("1.00");
+private static final BigDecimal PC_RATE_GAMING = new BigDecimal("40.00");    // per hour
+private static final BigDecimal PC_RATE_REGULAR = new BigDecimal("30.00");   // per hour
+private boolean currentMember = false;   // set when the bill opens  // per hour
+private int pcHours = 1;                                                      // placeholder, set from the real session later// placeholder
+private BigDecimal pcTotal = new BigDecimal("1.00");        // placeholder, set this from your real computation later  // placeholder, replace with the real balance later
+
+private void setupTesterTab() {
+     setupPaymentField(Payment);
+          // PC type choices
+     jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gaming", "Regular" }));
+     jComboBox1.addActionListener(e -> updateBill());
+
+     // hours: starts at 1, minimum 1 (never 0 or negative), +1 / -1 per click
+     jSpinner1.setModel(new javax.swing.SpinnerNumberModel(1, 1, 24, 1));
+     jSpinner1.addChangeListener(e -> updateBill());
+  
+     Payment.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+    public void insertUpdate(javax.swing.event.DocumentEvent e) { updateChange(); }
+    public void removeUpdate(javax.swing.event.DocumentEvent e) { updateChange(); }
+    public void changedUpdate(javax.swing.event.DocumentEvent e) { updateChange(); }
+});
+
+    // only one payment method can be picked at a time
+    javax.swing.ButtonGroup payGroup = new javax.swing.ButtonGroup();
+    payGroup.add(Cash);
+    payGroup.add(Credit);
+    Cash.setSelected(true);
+    Credit.addActionListener(e -> updatePaymentField());
+    updatePaymentField();   // correct starting state (Cash selected)
+
+    // the start panel stays on screen the whole time
+    javax.swing.JPanel startPanel = new javax.swing.JPanel(new java.awt.BorderLayout());
+    startPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+    javax.swing.JLabel startTitle = new javax.swing.JLabel("Start Session");
+    startTitle.setFont(startTitle.getFont().deriveFont(java.awt.Font.BOLD, 24f));
+    startPanel.add(startTitle, java.awt.BorderLayout.NORTH);
+
+    javax.swing.JButton pcRegularBtn = new javax.swing.JButton("Pc - Regular");
+    pcRegularBtn.addActionListener(e -> showPcDialog(false));
+
+    javax.swing.JButton pcMemberBtn = new javax.swing.JButton("Pc - Member");
+    pcMemberBtn.addActionListener(e -> showPcDialog(true));
+    
+    javax.swing.JButton printRegularBtn = new javax.swing.JButton("Print - Regular");
+    printRegularBtn.addActionListener(e -> showPrintDialog(false));
+
+
+    javax.swing.JButton printMemberBtn = new javax.swing.JButton("Print - Member");
+    printMemberBtn.addActionListener(e -> showPrintDialog(true));
+
+
+    javax.swing.JButton topUpBtn = new javax.swing.JButton("Top Up");
+    topUpBtn.addActionListener(e -> showTopUpDialog());
+
+// 1 row, 5 equal-sized buttons, 10px apart
+    javax.swing.JPanel buttonGrid = new javax.swing.JPanel(new java.awt.GridLayout(1, 5, 10, 0));
+    buttonGrid.add(pcRegularBtn);
+    buttonGrid.add(pcMemberBtn);
+    buttonGrid.add(printRegularBtn);
+    buttonGrid.add(printMemberBtn);
+    buttonGrid.add(topUpBtn);
+
+    javax.swing.JPanel buttonRow = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 0, 0));
+    buttonRow.add(buttonGrid);
+    startPanel.add(buttonRow, java.awt.BorderLayout.SOUTH);
+
+    // take BillPopup out of the tab, the tab now only holds the start panel
+    TesterTab.removeAll();
+    TesterTab.setLayout(new java.awt.BorderLayout());
+    TesterTab.add(startPanel, java.awt.BorderLayout.CENTER);
+
+    // build the pop-up once and reuse it
+    billDialog = new javax.swing.JDialog(this, "Pay Bill", true); // true = modal
+    billDialog.getContentPane().add(BillPopup);
+    billDialog.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+    billDialog.setResizable(false);
+    billDialog.pack();
+}
+
+private void showBillDialog(boolean member) {
+    currentMember = member;
+
+    // header label, and PC type follows it
+    TypeCustomer.setText(member ? "Member" : "Regular");
+
+    // discount line only for members
+    Discount.setVisible(member);
+
+    // PC type choices: members get Gaming + Regular, regular customers get Regular only
+    if (member) {
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gaming", "Regular" }));
+    } else {
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Regular" }));
+    }
+    jComboBox1.setEnabled(member);   // regular customers have nothing to choose, so it's greyed out
+
+    // reset the inputs (their listeners call updateBill)
+    jComboBox1.setSelectedIndex(0);
+    jSpinner1.setValue(1);
+    updateBill();
+
+    // credit total is only shown for members
+    CreditTotal.setVisible(member);
+    CreditTotal.setText("PHP " + memberCredit.setScale(2, RoundingMode.HALF_UP));
+
+    // Shop Credit is clickable only for members who have credit above 0
+    Credit.setEnabled(member && memberCredit.compareTo(BigDecimal.ZERO) > 0);
+    Cash.setSelected(true);
+    Payment.setText("PHP 0.00");
+    updatePaymentField();
+
+    billDialog.pack();
+    billDialog.setLocationRelativeTo(this);
+    billDialog.setVisible(true);
+}
+
+// recomputes the whole bill from the combo box + spinner
+private void updateBill() {
+    BigDecimal rate = "Gaming".equals(jComboBox1.getSelectedItem())
+            ? PC_RATE_GAMING
+            : PC_RATE_REGULAR;
+
+    pcHours = (Integer) jSpinner1.getValue();
+
+    BigDecimal subtotal = rate.multiply(BigDecimal.valueOf(pcHours));
+    BigDecimal discount = currentMember
+            ? subtotal.multiply(MEMBER_DISCOUNT).setScale(2, RoundingMode.HALF_UP)
+            : BigDecimal.ZERO;
+    pcTotal = subtotal.subtract(discount);
+
+    NumHours1.setText(pcHours + " hour(s) x PHP " + rate.setScale(2, RoundingMode.HALF_UP));
+    Discount.setText("Discount %10 (- PHP " + discount.setScale(2, RoundingMode.HALF_UP) + ")");
+    TotalAmount1.setText("PHP " + pcTotal.setScale(2, RoundingMode.HALF_UP));
+
+    updateChange();   // keep the Change label in sync with the new total
+}
+
+private static final BigDecimal PRICE_BW = new BigDecimal("2.00");      // per page
+private static final BigDecimal PRICE_COLOR = new BigDecimal("5.00");   // per page
+private static final BigDecimal MEMBER_DISCOUNT = new BigDecimal("0.10");
+
+private BigDecimal parseAmount(String text) {
+    try {
+        return new BigDecimal(text.replace("PHP", "").replace(",", "").trim());
+    } catch (NumberFormatException ex) {
+        return BigDecimal.ZERO;
+    }
+}
+
+private JPanel printRow(java.awt.Component left, java.awt.Component right, int indent) {
+    JPanel p = new JPanel(new BorderLayout(10, 0));
+    p.setBorder(BorderFactory.createEmptyBorder(3, indent, 3, 0));
+    p.add(left, BorderLayout.WEST);
+    if (right != null) {
+        p.add(right, BorderLayout.EAST);
+    }
+    p.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+    return p;
+}
+
+private void showPrintDialog(boolean member) {
+    JDialog dialog = new JDialog(this, member ? "Print - Member" : "Print - Regular", true);
+
+    // header strip
+    JLabel header = new JLabel(member ? "Member" : "Regular", SwingConstants.CENTER);
+    header.setFont(header.getFont().deriveFont(Font.BOLD, 16f));
+    header.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(Color.BLACK),
+            BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+
+    // title + section label
+    JLabel title = new JLabel("Pay Bill");
+    title.setFont(title.getFont().deriveFont(Font.BOLD, 18f));
+    title.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+    JLabel subtotalTitle = new JLabel("Subtotal");
+    subtotalTitle.setFont(subtotalTitle.getFont().deriveFont(Font.BOLD));
+    subtotalTitle.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+
+    // print-specific inputs
+    JComboBox<String> typeBox = new JComboBox<>(new String[]{"Black & White", "Colored"});
+    JSpinner pagesSpin = new JSpinner(new SpinnerNumberModel(1, 1, 1000, 1));
+    JSpinner copiesSpin = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
+
+    JLabel qtyLbl = new JLabel("PHP");
+    JLabel subtotalLbl = new JLabel("PHP 0.00");
+    JLabel discountLbl = new JLabel("PHP 0.00");
+
+    // total box
+    JLabel totalTitle = new JLabel("Total Amount Due");
+    totalTitle.setFont(totalTitle.getFont().deriveFont(Font.BOLD));
+    JLabel totalLbl = new JLabel("PHP 0.00");
+    totalLbl.setFont(totalLbl.getFont().deriveFont(Font.BOLD, 20f));
+    totalLbl.setBorder(BorderFactory.createEmptyBorder(6, 12, 0, 0));
+    JPanel totalBox = new JPanel(new BorderLayout());
+    totalBox.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createEtchedBorder(),
+            BorderFactory.createEmptyBorder(6, 6, 8, 6)));
+    totalBox.add(totalTitle, BorderLayout.NORTH);
+    totalBox.add(totalLbl, BorderLayout.CENTER);
+    totalBox.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+
+    // pay with
+    JLabel payWith = new JLabel("Pay With");
+    payWith.setFont(payWith.getFont().deriveFont(Font.BOLD));
+    JRadioButton cashRb = new JRadioButton("Cash", true);
+    JRadioButton creditRb = new JRadioButton("Shop Credit");
+    ButtonGroup group = new ButtonGroup();
+    group.add(cashRb);
+    group.add(creditRb);
+    
+    creditRb.setEnabled(member && memberCredit.compareTo(BigDecimal.ZERO) > 0);
+    if (member) {
+    creditRb.setText("Shop Credit (PHP " + memberCredit.setScale(2, RoundingMode.HALF_UP) + ")");
+    }               // regular customers: cash only
+    
+    JPanel payRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
+    payRow.add(payWith);
+    payRow.add(cashRb);
+    payRow.add(creditRb);
+    payRow.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+
+    // payment field + change
+    JTextField payField = new JTextField(10);
+    setupPaymentField(payField);                 // same "PHP 0.00" behavior as the PC bill
+    JPanel payFieldRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+    payFieldRow.add(payField);
+    payFieldRow.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+    JLabel changeLbl = new JLabel("Change:");
+    changeLbl.setBorder(BorderFactory.createEmptyBorder(6, 2, 0, 0));
+    changeLbl.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+
+    BigDecimal[] total = {BigDecimal.ZERO};
+
+    Runnable refresh = () -> {
+        BigDecimal rate = typeBox.getSelectedIndex() == 0 ? PRICE_BW : PRICE_COLOR;
+        int qty = (Integer) pagesSpin.getValue() * (Integer) copiesSpin.getValue();
+        BigDecimal subtotal = rate.multiply(BigDecimal.valueOf(qty));
+        BigDecimal discount = member
+                ? subtotal.multiply(MEMBER_DISCOUNT).setScale(2, RoundingMode.HALF_UP)
+                : BigDecimal.ZERO;
+        total[0] = subtotal.subtract(discount);
+
+        qtyLbl.setText(qty + " page(s) x PHP " + rate);
+        subtotalLbl.setText("PHP " + subtotal.setScale(2, RoundingMode.HALF_UP));
+        discountLbl.setText("PHP -" + discount.setScale(2, RoundingMode.HALF_UP));
+        totalLbl.setText("PHP " + total[0].setScale(2, RoundingMode.HALF_UP));
+
+        BigDecimal paid = parseAmount(payField.getText());
+        changeLbl.setText(cashRb.isSelected() && paid.compareTo(total[0]) >= 0
+                ? "Change: PHP " + paid.subtract(total[0]).setScale(2, RoundingMode.HALF_UP)
+                : "Change:");
+    };
+
+    typeBox.addActionListener(e -> refresh.run());
+    pagesSpin.addChangeListener(e -> refresh.run());
+    copiesSpin.addChangeListener(e -> refresh.run());
+    payField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+        public void insertUpdate(javax.swing.event.DocumentEvent e) { refresh.run(); }
+        public void removeUpdate(javax.swing.event.DocumentEvent e) { refresh.run(); }
+        public void changedUpdate(javax.swing.event.DocumentEvent e) { refresh.run(); }
+    });
+    java.awt.event.ActionListener methodChanged = e -> {
+        payField.setEnabled(cashRb.isSelected());   // typing only for cash
+        if (!cashRb.isSelected()) {
+            payField.setText("PHP 0.00");
+        }
+        refresh.run();
+    };
+    cashRb.addActionListener(methodChanged);
+    creditRb.addActionListener(methodChanged);
+
+    // finish button
+    JButton finish = new JButton("Finish Payment");
+finish.addActionListener(e -> {
+    // cash check
+    if (cashRb.isSelected()) {
+        BigDecimal paid = parseAmount(payField.getText());
+        if (paid.compareTo(total[0]) < 0) {
+            JOptionPane.showMessageDialog(dialog,
+                    "The amount paid is less than the total amount due.",
+                    "Insufficient Payment", JOptionPane.WARNING_MESSAGE);
+            payField.requestFocusInWindow();
+            return;
+        }
+    }
+
+    // shop credit check (outside the cash block)
+    if (creditRb.isSelected() && memberCredit.compareTo(total[0]) < 0) {
+        JOptionPane.showMessageDialog(dialog,
+                "Insufficient Shop Credit.\n\n"
+                + "Credit Balance: PHP " + memberCredit.setScale(2, RoundingMode.HALF_UP) + "\n"
+                + "Total Amount Due: " + totalLbl.getText(),
+                "Insufficient Credit", JOptionPane.WARNING_MESSAGE);
+        return;   // stop here, the dialog stays open
+    }
+
+    // TODO: save the print transaction to your database / transactions list here
+
+        String method = cashRb.isSelected() ? "Cash" : "Shop Credit";
+
+    // build the confirmation text
+    StringBuilder receipt = new StringBuilder("Payment successful.\n\n");
+    receipt.append("Service: Print - ").append(member ? "Member" : "Regular").append("\n");
+    receipt.append("Total Amount: ").append(totalLbl.getText()).append("\n");
+    receipt.append("Payment Method: ").append(method).append("\n");
+
+    if (cashRb.isSelected()) {
+        BigDecimal cashPaid = parseAmount(payField.getText());
+        receipt.append("Amount Received: PHP ").append(cashPaid.setScale(2, RoundingMode.HALF_UP)).append("\n");
+        receipt.append("Change: PHP ").append(cashPaid.subtract(total[0]).setScale(2, RoundingMode.HALF_UP)).append("\n");
+    } else {
+        memberCredit = memberCredit.subtract(total[0]);   // pay with credit: deduct it
+    }
+
+    if (member) {
+        receipt.append("Remaining Credit: PHP ").append(memberCredit.setScale(2, RoundingMode.HALF_UP)).append("\n");
+    }
+    receipt.append("\nThis transaction has been recorded in Transactions.");
+
+    // TODO: save the print transaction to your database / transactions list here
+    recordTransaction(member, "Printing", total[0], "Paid");
+
+    dialog.dispose();
+    JOptionPane.showMessageDialog(this, receipt.toString(),
+            "Payment Confirmation", JOptionPane.INFORMATION_MESSAGE);
+    });
+
+    JPanel buttonRow = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+    buttonRow.add(finish);
+
+    // assemble, top to bottom like the PC bill
+    JPanel content = new JPanel();
+    content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
+    content.setBorder(BorderFactory.createEmptyBorder(10, 12, 0, 12));
+    content.add(title);
+    content.add(Box.createVerticalStrut(6));
+    content.add(subtotalTitle);
+    content.add(printRow(new JLabel("Print Type"), typeBox, 20));
+    content.add(printRow(new JLabel("Pages"), pagesSpin, 20));
+    content.add(printRow(new JLabel("Copies"), copiesSpin, 20));
+    content.add(printRow(qtyLbl, subtotalLbl, 20));
+    if (member) {
+        content.add(printRow(new JLabel("Discount %10"), discountLbl, 20));
+    }
+    content.add(Box.createVerticalStrut(10));
+    content.add(totalBox);
+    content.add(Box.createVerticalStrut(12));
+    content.add(payRow);
+    content.add(Box.createVerticalStrut(8));
+    content.add(payFieldRow);
+    content.add(changeLbl);
+
+    dialog.setLayout(new BorderLayout());
+    dialog.add(header, BorderLayout.NORTH);
+    dialog.add(content, BorderLayout.CENTER);
+    dialog.add(buttonRow, BorderLayout.SOUTH);
+
+    refresh.run();
+    dialog.pack();
+    dialog.setSize(new Dimension(Math.max(dialog.getWidth(), 420), dialog.getHeight()));
+    dialog.setResizable(false);
+    dialog.setLocationRelativeTo(this);
+    dialog.setVisible(true);
+}
+private void showPcDialog(boolean member) {
+    JDialog dialog = new JDialog(this, member ? "PC - Member" : "PC - Regular", true);
+
+    // header strip
+    JLabel header = new JLabel(member ? "Member" : "Regular", SwingConstants.CENTER);
+    header.setFont(header.getFont().deriveFont(Font.BOLD, 16f));
+    header.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(Color.BLACK),
+            BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+
+    // title + section label
+    JLabel title = new JLabel("Pay Bill");
+    title.setFont(title.getFont().deriveFont(Font.BOLD, 18f));
+    title.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+    JLabel subtotalTitle = new JLabel("Subtotal");
+    subtotalTitle.setFont(subtotalTitle.getFont().deriveFont(Font.BOLD));
+    subtotalTitle.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+
+    // PC-specific inputs: members choose Gaming/Regular, regular customers get Regular only
+    JComboBox<String> typeBox = member
+            ? new JComboBox<>(new String[]{"Gaming", "Regular"})
+            : new JComboBox<>(new String[]{"Regular"});
+    typeBox.setEnabled(member);
+    JSpinner hoursSpin = new JSpinner(new SpinnerNumberModel(1, 1, 24, 1));
+
+    JLabel calcLbl = new JLabel("1 hour(s) x PHP 0.00");   // left side
+    JLabel calcAmtLbl = new JLabel("PHP 0.00");            // right side (hours x rate)
+    JLabel discountLbl = new JLabel("PHP -0.00");          // right side of the discount row
+
+    // total box
+    JLabel totalTitle = new JLabel("Total Amount Due");
+    totalTitle.setFont(totalTitle.getFont().deriveFont(Font.BOLD));
+    JLabel totalLbl = new JLabel("PHP 0.00");
+    totalLbl.setFont(totalLbl.getFont().deriveFont(Font.BOLD, 20f));
+    totalLbl.setBorder(BorderFactory.createEmptyBorder(6, 12, 0, 0));
+    JPanel totalBox = new JPanel(new BorderLayout());
+    totalBox.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createEtchedBorder(),
+            BorderFactory.createEmptyBorder(6, 6, 8, 6)));
+    totalBox.add(totalTitle, BorderLayout.NORTH);
+    totalBox.add(totalLbl, BorderLayout.CENTER);
+    totalBox.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+
+    // pay with
+    JLabel payWith = new JLabel("Pay With");
+    payWith.setFont(payWith.getFont().deriveFont(Font.BOLD));
+    JRadioButton cashRb = new JRadioButton("Cash", true);
+    JRadioButton creditRb = new JRadioButton("Shop Credit");
+    ButtonGroup group = new ButtonGroup();
+    group.add(cashRb);
+    group.add(creditRb);
+
+    creditRb.setEnabled(member && memberCredit.compareTo(BigDecimal.ZERO) > 0);
+    if (member) {
+        creditRb.setText("Shop Credit (PHP " + memberCredit.setScale(2, RoundingMode.HALF_UP) + ")");
+    }
+
+    JPanel payRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
+    payRow.add(payWith);
+    payRow.add(cashRb);
+    payRow.add(creditRb);
+    payRow.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+
+    // payment field + change
+    JTextField payField = new JTextField(10);
+    setupPaymentField(payField);
+    JPanel payFieldRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+    payFieldRow.add(payField);
+    payFieldRow.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+    JLabel changeLbl = new JLabel("Change:");
+    changeLbl.setBorder(BorderFactory.createEmptyBorder(6, 2, 0, 0));
+    changeLbl.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+
+    BigDecimal[] total = {BigDecimal.ZERO};
+
+    Runnable refresh = () -> {
+        BigDecimal rate = "Gaming".equals(typeBox.getSelectedItem()) ? PC_RATE_GAMING : PC_RATE_REGULAR;
+        int hours = (Integer) hoursSpin.getValue();
+        BigDecimal subtotal = rate.multiply(BigDecimal.valueOf(hours));   // 1 hr = 40, 2 hrs = 80, ...
+        BigDecimal discount = member
+                ? subtotal.multiply(MEMBER_DISCOUNT).setScale(2, RoundingMode.HALF_UP)
+                : BigDecimal.ZERO;
+        total[0] = subtotal.subtract(discount);
+
+        calcLbl.setText(hours + " hour(s) x PHP " + rate.setScale(2, RoundingMode.HALF_UP));
+        calcAmtLbl.setText("PHP " + subtotal.setScale(2, RoundingMode.HALF_UP));
+        discountLbl.setText("PHP -" + discount.setScale(2, RoundingMode.HALF_UP));
+        totalLbl.setText("PHP " + total[0].setScale(2, RoundingMode.HALF_UP));
+
+        BigDecimal paid = parseAmount(payField.getText());
+        changeLbl.setText(cashRb.isSelected() && paid.compareTo(total[0]) >= 0
+                ? "Change: PHP " + paid.subtract(total[0]).setScale(2, RoundingMode.HALF_UP)
+                : "Change:");
+    };
+
+    typeBox.addActionListener(e -> refresh.run());
+    hoursSpin.addChangeListener(e -> refresh.run());
+    payField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+        public void insertUpdate(javax.swing.event.DocumentEvent e) { refresh.run(); }
+        public void removeUpdate(javax.swing.event.DocumentEvent e) { refresh.run(); }
+        public void changedUpdate(javax.swing.event.DocumentEvent e) { refresh.run(); }
+    });
+    java.awt.event.ActionListener methodChanged = e -> {
+        payField.setEnabled(cashRb.isSelected());
+        if (!cashRb.isSelected()) {
+            payField.setText("PHP 0.00");
+        }
+        refresh.run();
+    };
+    cashRb.addActionListener(methodChanged);
+    creditRb.addActionListener(methodChanged);
+
+    // finish button
+    JButton finish = new JButton("Finish Payment");
+    finish.addActionListener(e -> {
+        if (cashRb.isSelected()) {
+            BigDecimal paid = parseAmount(payField.getText());
+
+            if (paid.compareTo(BigDecimal.ZERO) <= 0) {
+                JOptionPane.showMessageDialog(dialog,
+                        "Please enter a payment amount greater than PHP 0.00.",
+                        "Invalid Payment", JOptionPane.WARNING_MESSAGE);
+                payField.requestFocusInWindow();
+                return;
+            }
+            if (paid.compareTo(total[0]) < 0) {
+                JOptionPane.showMessageDialog(dialog,
+                        "The amount paid is less than the total amount due.",
+                        "Insufficient Payment", JOptionPane.WARNING_MESSAGE);
+                payField.requestFocusInWindow();
+                return;
+            }
+        }
+
+        if (creditRb.isSelected() && memberCredit.compareTo(total[0]) < 0) {
+            JOptionPane.showMessageDialog(dialog,
+                    "Insufficient Shop Credit.\n\n"
+                    + "Credit Balance: PHP " + memberCredit.setScale(2, RoundingMode.HALF_UP) + "\n"
+                    + "Total Amount Due: " + totalLbl.getText(),
+                    "Insufficient Credit", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String method = cashRb.isSelected() ? "Cash" : "Shop Credit";
+
+        StringBuilder receipt = new StringBuilder("Payment successful.\n\n");
+        receipt.append("Service: PC - ").append(member ? "Member" : "Regular").append("\n");
+        receipt.append("Hours: ").append(hoursSpin.getValue()).append("\n");
+        receipt.append("Total Amount: ").append(totalLbl.getText()).append("\n");
+        receipt.append("Payment Method: ").append(method).append("\n");
+
+        if (cashRb.isSelected()) {
+            BigDecimal cashPaid = parseAmount(payField.getText());
+            receipt.append("Amount Received: PHP ").append(cashPaid.setScale(2, RoundingMode.HALF_UP)).append("\n");
+            receipt.append("Change: PHP ").append(cashPaid.subtract(total[0]).setScale(2, RoundingMode.HALF_UP)).append("\n");
+        } else {
+            memberCredit = memberCredit.subtract(total[0]);   // pay with credit: deduct it
+        }
+
+        if (member) {
+            receipt.append("Remaining Credit: PHP ").append(memberCredit.setScale(2, RoundingMode.HALF_UP)).append("\n");
+        }
+        receipt.append("\nThis transaction has been recorded in Transactions.");
+
+        // TODO: save the PC transaction to your database / transactions list here
+        recordTransaction(member, "PC - " + typeBox.getSelectedItem(), total[0], "Paid");
+
+        dialog.dispose();
+        JOptionPane.showMessageDialog(this, receipt.toString(),
+                "Payment Confirmation", JOptionPane.INFORMATION_MESSAGE);
+    });
+
+    JPanel buttonRow = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+    buttonRow.add(finish);
+
+    // assemble, same order as the Print dialog
+    JPanel content = new JPanel();
+    content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
+    content.setBorder(BorderFactory.createEmptyBorder(10, 12, 0, 12));
+    content.add(title);
+    content.add(Box.createVerticalStrut(6));
+    content.add(subtotalTitle);
+    content.add(printRow(new JLabel("Type"), typeBox, 20));
+    content.add(printRow(new JLabel("Hour(s)"), hoursSpin, 20));
+    content.add(printRow(calcLbl, calcAmtLbl, 20));              // "1 hour(s) x PHP 40.00"  ....  "PHP 40.00"
+    if (member) {
+        content.add(printRow(new JLabel("Discount %10"), discountLbl, 20));   // "PHP -4.00" on the right
+    }
+    content.add(Box.createVerticalStrut(10));
+    content.add(totalBox);
+    content.add(Box.createVerticalStrut(12));
+    content.add(payRow);
+    content.add(Box.createVerticalStrut(8));
+    content.add(payFieldRow);
+    content.add(changeLbl);
+
+    dialog.setLayout(new BorderLayout());
+    dialog.add(header, BorderLayout.NORTH);
+    dialog.add(content, BorderLayout.CENTER);
+    dialog.add(buttonRow, BorderLayout.SOUTH);
+
+    refresh.run();
+    dialog.pack();
+    dialog.setSize(new Dimension(Math.max(dialog.getWidth(), 420), dialog.getHeight()));
+    dialog.setResizable(false);
+    dialog.setLocationRelativeTo(this);
+    dialog.setVisible(true);
+}
+private void showTopUpDialog() {
+    // placeholders until you connect real member accounts
+    String username = "@cals";
+    String fullName = "Carlo loves Eni";
+
+    JDialog dialog = new JDialog(this, "Top Up Credit", true);
+
+    // header strip
+    JLabel header = new JLabel("Member", SwingConstants.CENTER);
+    header.setFont(header.getFont().deriveFont(Font.BOLD, 16f));
+    header.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(Color.BLACK),
+            BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+
+    // title + section label
+    JLabel title = new JLabel("Top Up Credit");
+    title.setFont(title.getFont().deriveFont(Font.BOLD, 18f));
+    title.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+    JLabel detailsTitle = new JLabel("Details");
+    detailsTitle.setFont(detailsTitle.getFont().deriveFont(Font.BOLD));
+    detailsTitle.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+
+    // top up inputs
+    JComboBox<String> amountBox = new JComboBox<>(new String[] {
+        "PHP 50.00", "PHP 100.00", "PHP 200.00", "PHP 500.00", "PHP 1000.00"
+    });
+    amountBox.setSelectedItem("PHP 100.00");
+
+    // total box
+    JLabel totalTitle = new JLabel("Total Amount Due");
+    totalTitle.setFont(totalTitle.getFont().deriveFont(Font.BOLD));
+    JLabel totalLbl = new JLabel("PHP 0.00");
+    totalLbl.setFont(totalLbl.getFont().deriveFont(Font.BOLD, 20f));
+    totalLbl.setBorder(BorderFactory.createEmptyBorder(6, 12, 0, 0));
+    JPanel totalBox = new JPanel(new BorderLayout());
+    totalBox.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createEtchedBorder(),
+            BorderFactory.createEmptyBorder(6, 6, 8, 6)));
+    totalBox.add(totalTitle, BorderLayout.NORTH);
+    totalBox.add(totalLbl, BorderLayout.CENTER);
+    totalBox.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+
+    // pay with: cash only
+    JLabel payWith = new JLabel("Pay With");
+    payWith.setFont(payWith.getFont().deriveFont(Font.BOLD));
+    JRadioButton cashRb = new JRadioButton("Cash", true);
+    JRadioButton creditRb = new JRadioButton("Shop Credit (PHP " + memberCredit.setScale(2, RoundingMode.HALF_UP) + ")");
+    ButtonGroup group = new ButtonGroup();
+    group.add(cashRb);
+    group.add(creditRb);
+    creditRb.setEnabled(false);              // credit cannot pay for a top up
+
+    JPanel payRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
+    payRow.add(payWith);
+    payRow.add(cashRb);
+    payRow.add(creditRb);
+    payRow.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+
+    // payment field + change
+    JTextField payField = new JTextField(10);
+    setupPaymentField(payField);
+    JPanel payFieldRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+    payFieldRow.add(payField);
+    payFieldRow.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+    JLabel changeLbl = new JLabel("Change:");
+    changeLbl.setBorder(BorderFactory.createEmptyBorder(6, 2, 0, 0));
+    changeLbl.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+
+    // live total + change, same rule as the other bills
+    Runnable refresh = () -> {
+        BigDecimal amount = parseAmount((String) amountBox.getSelectedItem());
+        totalLbl.setText("PHP " + amount.setScale(2, RoundingMode.HALF_UP));
+
+        BigDecimal paid = parseAmount(payField.getText());
+        changeLbl.setText(paid.compareTo(amount) >= 0
+                ? "Change: PHP " + paid.subtract(amount).setScale(2, RoundingMode.HALF_UP)
+                : "Change:");
+    };
+    amountBox.addActionListener(e -> refresh.run());
+    payField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+        public void insertUpdate(javax.swing.event.DocumentEvent e) { refresh.run(); }
+        public void removeUpdate(javax.swing.event.DocumentEvent e) { refresh.run(); }
+        public void changedUpdate(javax.swing.event.DocumentEvent e) { refresh.run(); }
+    });
+
+    // finish button
+    JButton finish = new JButton("Finish Payment");
+    finish.addActionListener(e -> {
+        BigDecimal amount = parseAmount((String) amountBox.getSelectedItem());
+        BigDecimal paid = parseAmount(payField.getText());
+
+        // 1. nothing entered
+        if (paid.compareTo(BigDecimal.ZERO) <= 0) {
+            JOptionPane.showMessageDialog(dialog,
+                    "Please enter a payment amount greater than PHP 0.00.",
+                    "Invalid Payment", JOptionPane.WARNING_MESSAGE);
+            payField.requestFocusInWindow();
+            return;
+        }
+
+        // 2. less than the amount being credited
+        if (paid.compareTo(amount) < 0) {
+            JOptionPane.showMessageDialog(dialog,
+                    "The amount paid is less than the total amount due.",
+                    "Insufficient Payment", JOptionPane.WARNING_MESSAGE);
+            payField.requestFocusInWindow();
+            return;
+        }
+
+        // add the credit
+        memberCredit = memberCredit.add(amount);
+
+        // build the confirmation text
+        StringBuilder receipt = new StringBuilder("Top up successful.\n\n");
+        receipt.append("Service: Top Up Credit\n");
+        receipt.append("Account: ").append(username).append(" (").append(fullName).append(")\n");
+        receipt.append("Amount Credited: PHP ").append(amount.setScale(2, RoundingMode.HALF_UP)).append("\n");
+        receipt.append("Payment Method: Cash\n");
+        receipt.append("Amount Received: PHP ").append(paid.setScale(2, RoundingMode.HALF_UP)).append("\n");
+        receipt.append("Change: PHP ").append(paid.subtract(amount).setScale(2, RoundingMode.HALF_UP)).append("\n");
+        receipt.append("Remaining Credit: PHP ").append(memberCredit.setScale(2, RoundingMode.HALF_UP)).append("\n");
+        receipt.append("\nThis transaction has been recorded in Transactions.");
+
+        // TODO: save the top up transaction to your database / transactions list here
+        recordTransaction(true, "Top Up", amount, "Paid");
+
+        dialog.dispose();
+        JOptionPane.showMessageDialog(this, receipt.toString(),
+                "Payment Confirmation", JOptionPane.INFORMATION_MESSAGE);
+    });
+
+    JPanel buttonRow = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+    buttonRow.add(finish);
+
+    // assemble, top to bottom like the print bill
+    JPanel content = new JPanel();
+    content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
+    content.setBorder(BorderFactory.createEmptyBorder(10, 12, 0, 12));
+    content.add(title);
+    content.add(Box.createVerticalStrut(6));
+    content.add(detailsTitle);
+    content.add(printRow(new JLabel("Username"), new JLabel(username), 20));
+    content.add(printRow(new JLabel("Name"), new JLabel(fullName), 20));
+    content.add(printRow(new JLabel("Current Credit"), new JLabel("PHP " + memberCredit.setScale(2, RoundingMode.HALF_UP)), 20));
+    content.add(printRow(new JLabel("Amount to Credit"), amountBox, 20));
+    content.add(Box.createVerticalStrut(10));
+    content.add(totalBox);
+    content.add(Box.createVerticalStrut(12));
+    content.add(payRow);
+    content.add(Box.createVerticalStrut(8));
+    content.add(payFieldRow);
+    content.add(changeLbl);
+
+    dialog.setLayout(new BorderLayout());
+    dialog.add(header, BorderLayout.NORTH);
+    dialog.add(content, BorderLayout.CENTER);
+    dialog.add(buttonRow, BorderLayout.SOUTH);
+
+    refresh.run();
+    dialog.pack();
+    dialog.setSize(new Dimension(Math.max(dialog.getWidth(), 420), dialog.getHeight()));
+    dialog.setResizable(false);
+    dialog.setLocationRelativeTo(this);
+    dialog.setVisible(true);
+}       
+
+private void updateChange() {
+    BigDecimal paid = parseAmount(Payment.getText());
+    if (Cash.isSelected() && paid.compareTo(pcTotal) >= 0) {
+        Change.setText("Change: PHP " + paid.subtract(pcTotal).setScale(2, RoundingMode.HALF_UP));
+    } else {
+        Change.setText("Change:");
+    }
+}
+
+private void updatePaymentField() {
+    boolean cash = Cash.isSelected();
+    Payment.setEnabled(cash);               // typing only allowed for Cash
+    if (!cash) {
+        Payment.setText("PHP 0.00");        // clear whatever was typed
+    } else {
+        Payment.requestFocusInWindow();
+    }
+    updateChange();
+}
+
+//TRANSACTIONS TAB
+private javax.swing.table.DefaultTableModel transactionModel;
+private javax.swing.table.TableRowSorter<javax.swing.table.DefaultTableModel> transactionSorter;
+private javax.swing.JTextField transactionSearch;
+private javax.swing.JComboBox<String> transactionSortBox;
+
+// placeholders until you connect real member accounts (same as the Top Up dialog)
+private static final String MEMBER_USERNAME = "@cals";
+private static final String MEMBER_FULLNAME = "Carlo loves Eni";
+
+private void setupTransactionsTab() {
+    // column order: 0 date, 1 name, 2 username, 3 action, 4 amount, 5 status
+    transactionModel = new javax.swing.table.DefaultTableModel(
+            new String[]{"Date & Time", "Name", "Username", "Action", "Amount", "Status"}, 0) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;   // history is read-only
+        }
+    };
+
+    JTable table = new JTable(transactionModel);
+    table.setRowHeight(28);
+    table.setFillsViewportHeight(true);
+    table.getTableHeader().setReorderingAllowed(false);
+
+    transactionSorter = new javax.swing.table.TableRowSorter<>(transactionModel);
+    table.setRowSorter(transactionSorter);
+
+    // search bar
+    transactionSearch = new JTextField(20);
+    transactionSearch.putClientProperty("JTextField.placeholderText", "Search...");   // FlatLaf hint text
+    transactionSearch.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+        public void insertUpdate(javax.swing.event.DocumentEvent e) { applyTransactionFilter(); }
+        public void removeUpdate(javax.swing.event.DocumentEvent e) { applyTransactionFilter(); }
+        public void changedUpdate(javax.swing.event.DocumentEvent e) { applyTransactionFilter(); }
+    });
+
+    // sort combo box
+    transactionSortBox = new JComboBox<>(new String[]{
+        "Newest first",
+        "Oldest first",
+        "Name (A-Z)",
+        "Name (Z-A)",
+        "Username (A-Z)",
+        "Action (A-Z)",
+        "Status (Paid first)",
+        "Status (Unpaid first)"
+    });
+    transactionSortBox.addActionListener(e -> applyTransactionSort());
+    applyTransactionSort();   // start on "Newest first"
+
+    // top bar
+    JLabel heading = new JLabel("Transaction History");
+    heading.setFont(heading.getFont().deriveFont(Font.BOLD, 24f));
+
+    JPanel controls = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+    controls.add(new JLabel("Search:"));
+    controls.add(transactionSearch);
+    controls.add(new JLabel("Sort by:"));
+    controls.add(transactionSortBox);
+
+    JPanel topBar = new JPanel(new BorderLayout());
+    topBar.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+    topBar.add(heading, BorderLayout.WEST);
+    topBar.add(controls, BorderLayout.EAST);
+
+    // put it in the existing Transactions tab
+    transactions.removeAll();
+    transactions.setLayout(new BorderLayout());
+    transactions.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+    transactions.add(topBar, BorderLayout.NORTH);
+    transactions.add(new JScrollPane(table), BorderLayout.CENTER);
+}
+
+// search: matches text in any column, ignores upper/lower case
+private void applyTransactionFilter() {
+    String text = transactionSearch.getText().trim();
+    transactionSorter.setRowFilter(text.isEmpty()
+            ? null
+            : javax.swing.RowFilter.regexFilter("(?i)" + java.util.regex.Pattern.quote(text)));
+}
+
+// sort: picked from the combo box
+private void applyTransactionSort() {
+    java.util.List<RowSorter.SortKey> keys = new java.util.ArrayList<>();
+    switch (transactionSortBox.getSelectedIndex()) {
+        case 0: keys.add(new RowSorter.SortKey(0, SortOrder.DESCENDING)); break;   // newest
+        case 1: keys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING)); break;    // oldest
+        case 2: keys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING)); break;    // name A-Z
+        case 3: keys.add(new RowSorter.SortKey(1, SortOrder.DESCENDING)); break;   // name Z-A
+        case 4: keys.add(new RowSorter.SortKey(2, SortOrder.ASCENDING)); break;    // username A-Z
+        case 5: keys.add(new RowSorter.SortKey(3, SortOrder.ASCENDING)); break;    // action A-Z
+        case 6: keys.add(new RowSorter.SortKey(5, SortOrder.ASCENDING)); break;    // paid first
+        case 7: keys.add(new RowSorter.SortKey(5, SortOrder.DESCENDING)); break;   // unpaid first
+    }
+    if (transactionSortBox.getSelectedIndex() > 1) {
+        keys.add(new RowSorter.SortKey(0, SortOrder.DESCENDING));   // ties: newest first
+    }
+    transactionSorter.setSortKeys(keys);
+}
+
+// call this after every successful payment
+private void recordTransaction(boolean member, String action, BigDecimal amount, String status) {
+    String when = java.time.LocalDateTime.now()
+            .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    transactionModel.addRow(new Object[]{
+        when,
+        member ? MEMBER_FULLNAME : "-",
+        member ? MEMBER_USERNAME : "-",
+        action,
+        "PHP " + amount.setScale(2, RoundingMode.HALF_UP),
+        status
+    });
+}
+
+//PAYMENT FIELD: always "PHP <whole number>.<2 decimals>", editable, never empty, never negative
+private void setupPaymentField(javax.swing.JTextField field)  {
+    field.setText("PHP 0.00");
+    ((javax.swing.text.AbstractDocument) field.getDocument()).setDocumentFilter(new javax.swing.text.DocumentFilter() {
+        @Override
+        public void insertString(FilterBypass fb, int offset, String text, javax.swing.text.AttributeSet attr) throws javax.swing.text.BadLocationException {
+            replace(fb, offset, 0, text, attr);
+        }
+
+        @Override
+        public void remove(FilterBypass fb, int offset, int length) throws javax.swing.text.BadLocationException {
+            replace(fb, offset, length, "", null);
+        }
+
+        @Override
+        public void replace(FilterBypass fb, int offset, int length, String text, javax.swing.text.AttributeSet attrs) throws javax.swing.text.BadLocationException {
+            final String prefix = "PHP ";
+            String current = fb.getDocument().getText(0, fb.getDocument().getLength());
+            int dotIdx = current.indexOf('.');
+            String input = text == null ? "" : text;
+
+            // typing "." jumps the cursor to the decimals
+            if (input.equals(".")) {
+                field.setCaretPosition(Math.min(dotIdx + 1, current.length()));
+                return;
+            }
+
+            boolean fullAmount = input.contains(".") && input.length() > 1; // pasted amount like 100.50
+            String candidate;
+            int caretE = 0;
+            if (fullAmount) {
+                candidate = prefix + input.replace("PHP", "").replace(",", "").trim();
+            } else {
+                String typed = input.replaceAll("[^0-9]", "");              // digits only
+                int start = Math.max(offset, prefix.length());              // "PHP " cannot be edited
+                int end = Math.max(offset + length, prefix.length());
+                String currentInt = current.substring(prefix.length(), dotIdx);
+                if (currentInt.equals("0") && !typed.isEmpty() && start <= dotIdx) {
+                    start = prefix.length();                                // typing on a lone 0 replaces it
+                    end = prefix.length() + 1;
+                }
+                boolean removesDot = start <= dotIdx && end > dotIdx;       // the dot cannot be deleted
+                candidate = current.substring(0, start) + typed + (removesDot ? "." : "")
+                        + current.substring(Math.min(end, current.length()));
+                caretE = start + typed.length();
+            }
+
+            String body = candidate.substring(prefix.length());
+            int dot = body.indexOf('.');
+            String rawInt = (dot < 0 ? body : body.substring(0, dot)).replaceAll("[^0-9]", "");
+            String rawDec = dot < 0 ? "" : body.substring(dot + 1).replaceAll("[^0-9]", "");
+            String cleanInt = rawInt.replaceFirst("^0+(?!$)", "");          // remove leading zeros
+            if (cleanInt.isEmpty()) {
+                cleanInt = "0";                                             // never empty
+            }
+            if (cleanInt.length() > 9) {
+                return;                                                     // too big, ignore
+            }
+            String newText = prefix + cleanInt + "." + (rawDec + "00").substring(0, 2); // always 2 decimals
+
+            int caret;
+            if (fullAmount) {
+                caret = newText.length();
+            } else if (rawInt.isEmpty()) {
+                caret = prefix.length() + 1;
+            } else {
+                caret = Math.max(prefix.length(), caretE - (rawInt.length() - cleanInt.length()));
+            }
+            fb.replace(0, fb.getDocument().getLength(), newText, null);
+            field.setCaretPosition(Math.min(caret, newText.length()));
+        }
+    });
+}
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BillPopup;
-    private javax.swing.JTextField Calculation;
     private javax.swing.JRadioButton Cash;
-    private javax.swing.JTextField Change;
+    private javax.swing.JLabel Change;
     private javax.swing.JPanel ControlPanel;
     private javax.swing.JRadioButton Credit;
-    private javax.swing.JLabel Pay;
+    private javax.swing.JLabel CreditTotal;
+    private javax.swing.JLabel Discount;
+    private javax.swing.JLabel NumHours;
+    private javax.swing.JLabel NumHours1;
     private javax.swing.JLabel PayMethod;
     private javax.swing.JTextField Payment;
-    private javax.swing.JTextField PcType;
+    private javax.swing.JLabel PcType;
     private javax.swing.JButton Proceed;
-    private javax.swing.JTextField Subtotal1;
     private javax.swing.JPanel SubtotalPanel;
     private javax.swing.JPanel TesterTab;
-    private javax.swing.JTextField ToPay;
-    private javax.swing.JTextField Total;
-    private javax.swing.JTextField Total2;
+    private javax.swing.JLabel Title;
+    private javax.swing.JLabel Title1;
+    private javax.swing.JLabel Title2;
+    private javax.swing.JLabel TotalAmount1;
     private javax.swing.JPanel TotalPanel1;
     private javax.swing.JPanel TotalPanel2;
+    private javax.swing.JLabel TypeCustomer;
     private javax.swing.JPanel activeSessions;
     private javax.swing.JPanel appLogo;
     private javax.swing.JLabel appName;
@@ -763,7 +1818,10 @@ public class AdminAppWindow extends javax.swing.JFrame {
     private javax.swing.JPanel heading;
     private javax.swing.JLabel icon_AvailableStationsCard;
     private javax.swing.JLabel intAvailableStations;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JDialog jDialog1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JLabel labelAvailableStations;
     private javax.swing.JPanel left;
     private javax.swing.JButton logoutBtn;
@@ -795,4 +1853,4 @@ public class AdminAppWindow extends javax.swing.JFrame {
     private javax.swing.JLabel usersHeadingText;
     private javax.swing.JPanel usersTab;
     // End of variables declaration//GEN-END:variables
-}   
+}
