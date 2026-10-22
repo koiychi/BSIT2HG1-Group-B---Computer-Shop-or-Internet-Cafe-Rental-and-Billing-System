@@ -54,6 +54,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         heading = new javax.swing.JPanel();
         left = new javax.swing.JPanel();
         appLogo = new javax.swing.JPanel();
+        logo = new javax.swing.JLabel();
         names = new javax.swing.JPanel();
         appName = new javax.swing.JLabel();
         shopName = new javax.swing.JLabel();
@@ -68,7 +69,16 @@ public class AdminAppWindow extends javax.swing.JFrame {
         quickStatisticsHeading = new javax.swing.JPanel();
         dashboardHeadingText = new javax.swing.JLabel();
         statsCards = new javax.swing.JPanel();
-        availableStationsCard = new javax.swing.JPanel();
+        availableStationsCard = new javax.swing.JPanel() {
+            @Override
+            protected void paintComponent(java.awt.Graphics g) {
+                java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
+                g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(getBackground());
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 35, 35); // 35 = roundness
+                g2.dispose();
+            }
+        };
         icon_AvailableStationsCard = new javax.swing.JLabel();
         groupAvailableStationsCard = new javax.swing.JPanel();
         intAvailableStations = new javax.swing.JLabel();
@@ -76,11 +86,6 @@ public class AdminAppWindow extends javax.swing.JFrame {
         occupiedStationsCard = new javax.swing.JPanel();
         newSessionButton = new javax.swing.JButton();
         todaysSalesCard = new javax.swing.JPanel();
-<<<<<<< Updated upstream
-        pendingBillablesCard = new javax.swing.JPanel();
-        lowerSegments = new javax.swing.JPanel();
-        activeSessions = new javax.swing.JPanel();
-=======
         shopToggle = new javax.swing.JButton();
         lowerSegments = new javax.swing.JPanel();
         activeSessions = new javax.swing.JPanel();
@@ -88,7 +93,6 @@ public class AdminAppWindow extends javax.swing.JFrame {
         activeSessionsLabel = new javax.swing.JLabel();
         tableScrollPane = new javax.swing.JScrollPane();
         activeSessionsTable = new javax.swing.JTable();
->>>>>>> Stashed changes
         quickActions = new javax.swing.JPanel();
         quickActionsLabelPanel = new javax.swing.JPanel();
         quickActionsLabel = new javax.swing.JLabel();
@@ -102,9 +106,11 @@ public class AdminAppWindow extends javax.swing.JFrame {
         stationTab = new javax.swing.JPanel();
         stationsHeading = new javax.swing.JPanel();
         stationsHeadingText = new javax.swing.JLabel();
-        membersTab = new javax.swing.JPanel();
+        usersTab = new javax.swing.JPanel();
+        usersHeading = new javax.swing.JPanel();
+        usersHeadingText = new javax.swing.JLabel();
         printServices = new javax.swing.JPanel();
-        transactions = new javax.swing.JPanel();
+        transactionHistory = new javax.swing.JPanel();
         shopSettings = new javax.swing.JPanel();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
@@ -124,10 +130,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         setIconImages(null);
-<<<<<<< Updated upstream
-=======
         setMinimumSize(new java.awt.Dimension(900, 370));
->>>>>>> Stashed changes
         setName("mainFrame"); // NOI18N
         setSize(new java.awt.Dimension(800, 400));
 
@@ -136,23 +139,6 @@ public class AdminAppWindow extends javax.swing.JFrame {
         heading.setPreferredSize(new java.awt.Dimension(888, 90));
         heading.setLayout(new java.awt.BorderLayout());
 
-<<<<<<< Updated upstream
-        left.setLayout(new java.awt.GridLayout(1, 0));
-
-        javax.swing.GroupLayout appLogoLayout = new javax.swing.GroupLayout(appLogo);
-        appLogo.setLayout(appLogoLayout);
-        appLogoLayout.setHorizontalGroup(
-            appLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 222, Short.MAX_VALUE)
-        );
-        appLogoLayout.setVerticalGroup(
-            appLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
-        );
-
-        left.add(appLogo);
-
-=======
         left.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
         left.setMinimumSize(new java.awt.Dimension(800, 58));
         left.setPreferredSize(new java.awt.Dimension(600, 50));
@@ -173,7 +159,6 @@ public class AdminAppWindow extends javax.swing.JFrame {
         left.add(appLogo);
 
         names.setPreferredSize(new java.awt.Dimension(300, 50));
->>>>>>> Stashed changes
         names.setLayout(new java.awt.GridLayout(2, 1));
 
         appName.setText("App Name");
@@ -225,47 +210,41 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
         getContentPane().add(heading, java.awt.BorderLayout.NORTH);
 
-<<<<<<< Updated upstream
-=======
         mainTabGroup.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 20, 10));
->>>>>>> Stashed changes
         mainTabGroup.setFont(mainTabGroup.getFont().deriveFont(mainTabGroup.getFont().getStyle() & ~java.awt.Font.BOLD, 20));
         mainTabGroup.setInheritsPopupMenu(true);
         mainTabGroup.setName(""); // NOI18N
 
         dashboardTab.setBackground(new java.awt.Color(11, 11, 15));
         dashboardTab.setToolTipText("");
-        dashboardTab.setLayout(new java.awt.BorderLayout());
+        dashboardTab.setLayout(new java.awt.BorderLayout(10, 0));
 
         quickStatistics.setPreferredSize(new java.awt.Dimension(100, 200));
         quickStatistics.setLayout(new java.awt.BorderLayout());
 
-<<<<<<< Updated upstream
-        quickStatisticsHeading.setPreferredSize(new java.awt.Dimension(160, 30));
-        quickStatisticsHeading.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-=======
         quickStatisticsHeading.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 1, 1));
         quickStatisticsHeading.setPreferredSize(new java.awt.Dimension(160, 50));
         java.awt.FlowLayout flowLayout3 = new java.awt.FlowLayout(java.awt.FlowLayout.LEFT);
         flowLayout3.setAlignOnBaseline(true);
         quickStatisticsHeading.setLayout(flowLayout3);
->>>>>>> Stashed changes
 
         dashboardHeadingText.setFont(dashboardHeadingText.getFont().deriveFont((float)24));
         dashboardHeadingText.setText("Quick Statistics");
         dashboardHeadingText.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         dashboardHeadingText.setAlignmentX(0.5F);
         dashboardHeadingText.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        dashboardHeadingText.setPreferredSize(new java.awt.Dimension(500, 55));
+        dashboardHeadingText.setPreferredSize(new java.awt.Dimension(500, 60));
         dashboardHeadingText.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         quickStatisticsHeading.add(dashboardHeadingText);
 
         quickStatistics.add(quickStatisticsHeading, java.awt.BorderLayout.NORTH);
 
         statsCards.setPreferredSize(new java.awt.Dimension(888, 400));
-        statsCards.setLayout(new java.awt.GridLayout(1, 4, 5, 0));
+        statsCards.setLayout(new java.awt.GridLayout(1, 3, 10, 0));
 
-        availableStationsCard.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 153, 51), 5, true));
+        availableStationsCard.setBackground(new java.awt.Color(23, 26, 33));
+        availableStationsCard.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 153, 51), 2, true));
+        availableStationsCard.setOpaque(false);
         availableStationsCard.setPreferredSize(new java.awt.Dimension(222, 800));
         availableStationsCard.setLayout(new java.awt.GridLayout(2, 1));
 
@@ -274,16 +253,21 @@ public class AdminAppWindow extends javax.swing.JFrame {
         icon_AvailableStationsCard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/check_box_50dp_E3E3E3_FILL0_wght400_GRAD0_opsz48.png"))); // NOI18N
         availableStationsCard.add(icon_AvailableStationsCard);
 
+        groupAvailableStationsCard.setBackground(new java.awt.Color(23, 26, 33));
+        groupAvailableStationsCard.setOpaque(false);
         groupAvailableStationsCard.setPreferredSize(new java.awt.Dimension(208, 50));
         groupAvailableStationsCard.setLayout(new java.awt.GridLayout(2, 1));
 
+        intAvailableStations.setBackground(new java.awt.Color(23, 26, 33));
         intAvailableStations.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        intAvailableStations.setForeground(new java.awt.Color(255, 255, 255));
         intAvailableStations.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         intAvailableStations.setText("10/20");
         intAvailableStations.setToolTipText("");
         groupAvailableStationsCard.add(intAvailableStations);
 
         labelAvailableStations.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
+        labelAvailableStations.setForeground(new java.awt.Color(255, 255, 255));
         labelAvailableStations.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelAvailableStations.setText("Available Stations");
         groupAvailableStationsCard.add(labelAvailableStations);
@@ -291,58 +275,8 @@ public class AdminAppWindow extends javax.swing.JFrame {
         availableStationsCard.add(groupAvailableStationsCard);
 
         statsCards.add(availableStationsCard);
+        availableStationsCard.putClientProperty("FlatLaf.style", "arc: 25");
 
-<<<<<<< Updated upstream
-        javax.swing.GroupLayout occupiedStationsCardLayout = new javax.swing.GroupLayout(occupiedStationsCard);
-        occupiedStationsCard.setLayout(occupiedStationsCardLayout);
-        occupiedStationsCardLayout.setHorizontalGroup(
-            occupiedStationsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        occupiedStationsCardLayout.setVerticalGroup(
-            occupiedStationsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        statsCards.add(occupiedStationsCard);
-
-        javax.swing.GroupLayout todaysSalesCardLayout = new javax.swing.GroupLayout(todaysSalesCard);
-        todaysSalesCard.setLayout(todaysSalesCardLayout);
-        todaysSalesCardLayout.setHorizontalGroup(
-            todaysSalesCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        todaysSalesCardLayout.setVerticalGroup(
-            todaysSalesCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        statsCards.add(todaysSalesCard);
-
-        javax.swing.GroupLayout pendingBillablesCardLayout = new javax.swing.GroupLayout(pendingBillablesCard);
-        pendingBillablesCard.setLayout(pendingBillablesCardLayout);
-        pendingBillablesCardLayout.setHorizontalGroup(
-            pendingBillablesCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        pendingBillablesCardLayout.setVerticalGroup(
-            pendingBillablesCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        statsCards.add(pendingBillablesCard);
-
-        quickStatistics.add(statsCards, java.awt.BorderLayout.CENTER);
-
-        dashboardTab.add(quickStatistics, java.awt.BorderLayout.NORTH);
-
-        lowerSegments.setLayout(new java.awt.GridLayout(1, 2, 10, 0));
-        lowerSegments.add(activeSessions);
-
-        quickActions.setLayout(new java.awt.GridLayout(3, 0));
-
-=======
->>>>>>> Stashed changes
         newSessionButton.setText("New Session");
         newSessionButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -405,6 +339,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         lowerSegments.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
         lowerSegments.setLayout(new java.awt.BorderLayout(15, 0));
 
+        activeSessions.setForeground(new java.awt.Color(255, 153, 51));
         activeSessions.setPreferredSize(new java.awt.Dimension(550, 60));
         activeSessions.setLayout(new java.awt.BorderLayout());
 
@@ -543,17 +478,24 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
         mainTabGroup.addTab("Stations", stationTab);
 
-        javax.swing.GroupLayout membersTabLayout = new javax.swing.GroupLayout(membersTab);
-        membersTab.setLayout(membersTabLayout);
-        membersTabLayout.setHorizontalGroup(
-            membersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        usersHeading.setLayout(new java.awt.BorderLayout());
+
+        usersHeadingText.setFont(new java.awt.Font("Minecraft", 0, 18)); // NOI18N
+        usersHeadingText.setText("Stations");
+        usersHeadingText.setAlignmentX(0.5F);
+        usersHeading.add(usersHeadingText, java.awt.BorderLayout.CENTER);
+
+        javax.swing.GroupLayout usersTabLayout = new javax.swing.GroupLayout(usersTab);
+        usersTab.setLayout(usersTabLayout);
+        usersTabLayout.setHorizontalGroup(
+            usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 888, Short.MAX_VALUE)
+            .addGroup(usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(usersTabLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(usersHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 888, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
-<<<<<<< Updated upstream
-        membersTabLayout.setVerticalGroup(
-            membersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 312, Short.MAX_VALUE)
-=======
         usersTabLayout.setVerticalGroup(
             usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 423, Short.MAX_VALUE)
@@ -562,10 +504,9 @@ public class AdminAppWindow extends javax.swing.JFrame {
                     .addGap(0, 201, Short.MAX_VALUE)
                     .addComponent(usersHeading, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 200, Short.MAX_VALUE)))
->>>>>>> Stashed changes
         );
 
-        mainTabGroup.addTab("Members", membersTab);
+        mainTabGroup.addTab("Users", usersTab);
 
         javax.swing.GroupLayout printServicesLayout = new javax.swing.GroupLayout(printServices);
         printServices.setLayout(printServicesLayout);
@@ -580,18 +521,18 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
         mainTabGroup.addTab("Print Services", printServices);
 
-        javax.swing.GroupLayout transactionsLayout = new javax.swing.GroupLayout(transactions);
-        transactions.setLayout(transactionsLayout);
-        transactionsLayout.setHorizontalGroup(
-            transactionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout transactionHistoryLayout = new javax.swing.GroupLayout(transactionHistory);
+        transactionHistory.setLayout(transactionHistoryLayout);
+        transactionHistoryLayout.setHorizontalGroup(
+            transactionHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 888, Short.MAX_VALUE)
         );
-        transactionsLayout.setVerticalGroup(
-            transactionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        transactionHistoryLayout.setVerticalGroup(
+            transactionHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 423, Short.MAX_VALUE)
         );
 
-        mainTabGroup.addTab("Transactions", transactions);
+        mainTabGroup.addTab("Transaction History", transactionHistory);
 
         javax.swing.GroupLayout shopSettingsLayout = new javax.swing.GroupLayout(shopSettings);
         shopSettings.setLayout(shopSettingsLayout);
@@ -608,11 +549,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
         getContentPane().add(mainTabGroup, java.awt.BorderLayout.CENTER);
 
-<<<<<<< Updated upstream
-        pack();
-=======
         setBounds(0, 0, 908, 618);
->>>>>>> Stashed changes
     }// </editor-fold>//GEN-END:initComponents
 
     private void newSessionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newSessionButtonMouseClicked
@@ -651,13 +588,13 @@ public class AdminAppWindow extends javax.swing.JFrame {
         if (response == javax.swing.JOptionPane.YES_OPTION) {
             new AdminLogin().setVisible(true);
             this.dispose();
-        } 
+        }
 
     }//GEN-LAST:event_logoutBtnMouseClicked
 
     private void shopStatusPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_shopStatusPropertyChange
         // TODO add your handling code here:
-    
+
     }//GEN-LAST:event_shopStatusPropertyChange
 
     private void shopToggleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_shopToggleMouseClicked
@@ -684,12 +621,8 @@ public class AdminAppWindow extends javax.swing.JFrame {
             shopStatus.setIcon(new ImageIcon(
                     AdminAppWindow.class.getResource("/icons/shopOpenIcon.png")));
         }
-<<<<<<< Updated upstream
-        
-=======
 
 
->>>>>>> Stashed changes
     }//GEN-LAST:event_shopToggleMouseClicked
 
     private void shopToggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shopToggleActionPerformed
@@ -703,20 +636,18 @@ public class AdminAppWindow extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    
-    
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             new AdminAppWindow().setVisible(true);
         });
     }
-    
+
     //SHOP MANAGEMENT
     private boolean isShopOpen = false;
-    
+
     private void openShop(boolean openShop) {
         this.isShopOpen = openShop;
-        
+
         if (openShop) {
             shopStatus.setText("Open");
             //icon
@@ -726,15 +657,43 @@ public class AdminAppWindow extends javax.swing.JFrame {
         }
     }
 
+    class RoundedPanel extends JPanel {
+
+        private int cornerRadius = 25; // Default radius
+
+        public RoundedPanel() {
+            super();
+            setOpaque(false); // Iwasan ang default rectangular fill
+        }
+
+        public RoundedPanel(int radius) {
+            super();
+            this.cornerRadius = radius;
+            setOpaque(false);
+        }
+
+        public void setCornerRadius(int radius) {
+            this.cornerRadius = radius;
+            repaint();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(getBackground());
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), cornerRadius, cornerRadius);
+            g2.dispose();
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel activeSessions;
-<<<<<<< Updated upstream
-=======
     private javax.swing.JPanel activeSessionsHeading;
     private javax.swing.JLabel activeSessionsLabel;
     private javax.swing.JTable activeSessionsTable;
->>>>>>> Stashed changes
     private javax.swing.JPanel appLogo;
     private javax.swing.JLabel appName;
     private javax.swing.JPanel availableStationsCard;
@@ -750,19 +709,14 @@ public class AdminAppWindow extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel labelAvailableStations;
     private javax.swing.JPanel left;
-<<<<<<< Updated upstream
-=======
     private javax.swing.JPanel logOutBtnPanel;
     private javax.swing.JLabel logo;
->>>>>>> Stashed changes
     private javax.swing.JButton logoutBtn;
     private javax.swing.JPanel lowerSegments;
     private javax.swing.JTabbedPane mainTabGroup;
-    private javax.swing.JPanel membersTab;
     private javax.swing.JPanel names;
     private javax.swing.JButton newSessionButton;
     private javax.swing.JPanel occupiedStationsCard;
-    private javax.swing.JPanel pendingBillablesCard;
     private javax.swing.JPanel printServices;
     private javax.swing.JPanel printingServicesGroup;
     private javax.swing.JPanel printingServicesLabelPanel;
@@ -785,6 +739,9 @@ public class AdminAppWindow extends javax.swing.JFrame {
     private javax.swing.JPanel statsCards;
     private javax.swing.JScrollPane tableScrollPane;
     private javax.swing.JPanel todaysSalesCard;
-    private javax.swing.JPanel transactions;
+    private javax.swing.JPanel transactionHistory;
+    private javax.swing.JPanel usersHeading;
+    private javax.swing.JLabel usersHeadingText;
+    private javax.swing.JPanel usersTab;
     // End of variables declaration//GEN-END:variables
 }
