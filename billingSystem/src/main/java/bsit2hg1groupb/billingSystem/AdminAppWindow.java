@@ -132,7 +132,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         usersHeading = new javax.swing.JPanel();
         usersHeadingText = new javax.swing.JLabel();
         printServices = new javax.swing.JPanel();
-        transactionHistory = new javax.swing.JPanel();
+        transactions = new javax.swing.JPanel();
         shopSettings = new javax.swing.JPanel();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
@@ -361,6 +361,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         lowerSegments.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
         lowerSegments.setLayout(new java.awt.BorderLayout(15, 0));
 
+        activeSessions.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 204, 0)));
         activeSessions.setForeground(new java.awt.Color(255, 153, 51));
         activeSessions.setPreferredSize(new java.awt.Dimension(550, 60));
         activeSessions.setLayout(new java.awt.BorderLayout());
@@ -397,6 +398,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
         lowerSegments.add(activeSessions, java.awt.BorderLayout.CENTER);
 
+        quickActions.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 255, 51), 1, true));
         quickActions.setMaximumSize(new java.awt.Dimension(304, 48));
         quickActions.setLayout(new java.awt.BorderLayout());
 
@@ -632,18 +634,18 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
         mainTabGroup.addTab("Print Services", printServices);
 
-        javax.swing.GroupLayout transactionHistoryLayout = new javax.swing.GroupLayout(transactionHistory);
-        transactionHistory.setLayout(transactionHistoryLayout);
-        transactionHistoryLayout.setHorizontalGroup(
-            transactionHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout transactionsLayout = new javax.swing.GroupLayout(transactions);
+        transactions.setLayout(transactionsLayout);
+        transactionsLayout.setHorizontalGroup(
+            transactionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 888, Short.MAX_VALUE)
         );
-        transactionHistoryLayout.setVerticalGroup(
-            transactionHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        transactionsLayout.setVerticalGroup(
+            transactionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 423, Short.MAX_VALUE)
         );
 
-        mainTabGroup.addTab("Transaction History", transactionHistory);
+        mainTabGroup.addTab("Transactions", transactions);
 
         javax.swing.GroupLayout shopSettingsLayout = new javax.swing.GroupLayout(shopSettings);
         shopSettings.setLayout(shopSettingsLayout);
@@ -872,7 +874,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
     private javax.swing.JPanel statsCards;
     private javax.swing.JScrollPane tableScrollPane;
     private javax.swing.JPanel todaysSalesCard;
-    private javax.swing.JPanel transactionHistory;
+    private javax.swing.JPanel transactions;
     private javax.swing.JPanel usersHeading;
     private javax.swing.JLabel usersHeadingText;
     private javax.swing.JPanel usersTab;

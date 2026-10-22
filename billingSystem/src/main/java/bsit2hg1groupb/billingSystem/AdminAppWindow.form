@@ -726,6 +726,13 @@
               <SubComponents>
                 <Container class="javax.swing.JPanel" name="activeSessions">
                   <Properties>
+                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                      <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                        <LineBorder>
+                          <Color PropertyName="color" blue="0" green="cc" red="ff" type="rgb"/>
+                        </LineBorder>
+                      </Border>
+                    </Property>
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="33" green="99" red="ff" type="rgb"/>
                     </Property>
@@ -807,6 +814,13 @@
                 </Container>
                 <Container class="javax.swing.JPanel" name="quickActions">
                   <Properties>
+                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                      <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                        <LineBorder roundedCorners="true">
+                          <Color PropertyName="color" blue="33" green="ff" red="66" type="rgb"/>
+                        </LineBorder>
+                      </Border>
+                    </Property>
                     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[304, 48]"/>
                     </Property>
@@ -1255,11 +1269,11 @@
             </DimensionLayout>
           </Layout>
         </Container>
-        <Container class="javax.swing.JPanel" name="transactionHistory">
+        <Container class="javax.swing.JPanel" name="transactions">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Transaction History">
-                <Property name="tabTitle" type="java.lang.String" value="Transaction History"/>
+              <JTabbedPaneConstraints tabName="Transactions">
+                <Property name="tabTitle" type="java.lang.String" value="Transactions"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
