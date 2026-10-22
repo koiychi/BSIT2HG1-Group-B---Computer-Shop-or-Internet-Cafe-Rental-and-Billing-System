@@ -12,8 +12,10 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import java.awt.Color;
+import javax.swing.UIManager;
 
-public class UIManager {
+public class appUIManager {
 
     private static AdminLogin loginFrame;
     private static AdminAppWindow appWindow;
@@ -70,9 +72,22 @@ public class UIManager {
             javax.swing.UIManager.put("ComboBox.font", appFont);
             javax.swing.UIManager.put("CheckBox.font", appFont);
             javax.swing.UIManager.put("RadioButton.font", appFont);
+            UIManager.put("TabbedPane.selectedForeground", Color.decode("#FF6600"));
+            UIManager.put("TabbedPane.selectedBackground", Color.decode("#1E293B")); // was "TabbedPane.selected"
+            UIManager.put("TabbedPane.background", Color.decode("#0F172A"));         // was "TabbedPane.tabAreaBackground"
+            UIManager.put("TabbedPane.underlineColor", Color.decode("#FF6600"));
+            UIManager.put("TabbedPane.inactiveUnderlineColor", Color.decode("#FF6600"));
+            UIManager.put("TabbedPane.tabWidth", 0);
+            UIManager.put("TabbedPane.tabAreaAlignment", "fill");   // stretch tab area to full width
+            UIManager.put("TabbedPane.tabWidthMode", "equal");      // distribute width equally among tabs   
+            UIManager.put("Panel.background", Color.decode("#0B0B0F"));
 
+<<<<<<< Updated upstream:billingSystem/src/main/java/bsit2hg1groupb/billingSystem/UIManager.java
             com.formdev.flatlaf.FlatLaf.updateUI();
 
+=======
+//            com.formdev.flatlaf.FlatLaf.updateUI();
+>>>>>>> Stashed changes:billingSystem/src/main/java/bsit2hg1groupb/billingSystem/appUIManager.java
         } catch (Exception e) {
             e.printStackTrace();
             com.formdev.flatlaf.FlatDarkLaf.setup();
