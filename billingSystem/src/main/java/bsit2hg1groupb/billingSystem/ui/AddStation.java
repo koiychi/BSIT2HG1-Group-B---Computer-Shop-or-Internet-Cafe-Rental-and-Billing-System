@@ -2,7 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package bsit2hg1groupb.billingSystem;
+package bsit2hg1groupb.billingSystem.ui;
+
+import bsit2hg1groupb.billingSystem.system.Station;
+import bsit2hg1groupb.billingSystem.system.GamingStation;
+import bsit2hg1groupb.billingSystem.system.RegularStation;
 
 /**
  *

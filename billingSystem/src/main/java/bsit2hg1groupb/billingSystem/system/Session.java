@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 //@author Carlo
-package bsit2hg1groupb.billingSystem;
+package bsit2hg1groupb.billingSystem.system;
 
 public class Session implements Billable {
 

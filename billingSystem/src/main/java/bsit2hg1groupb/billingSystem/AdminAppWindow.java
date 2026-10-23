@@ -4,6 +4,14 @@
  */
 package bsit2hg1groupb.billingSystem;
 
+import bsit2hg1groupb.billingSystem.ui.NewSession;
+import bsit2hg1groupb.billingSystem.ui.BillingTester;
+import bsit2hg1groupb.billingSystem.ui.transactionsTabPanel;
+import bsit2hg1groupb.billingSystem.ui.printServicesTabPanel;
+import bsit2hg1groupb.billingSystem.ui.shopSettingsTabPanel;
+import bsit2hg1groupb.billingSystem.ui.membersTabPanel;
+import bsit2hg1groupb.billingSystem.ui.dashboardTabPanel;
+import bsit2hg1groupb.billingSystem.ui.stationsTabPanel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -28,12 +36,15 @@ public class AdminAppWindow extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
 
         // TABS
-        mainTabGroup.insertTab("New Dashboard", null, new dashboardTabPanel(), null, 0);
-        mainTabGroup.setSelectedIndex(0);
-
-        mainTabGroup.insertTab("Billing Tester", null, new BillingTester(), null, 1);
+        mainTabGroup.insertTab("Dashboard", null, new dashboardTabPanel(), null, 0);
+        mainTabGroup.insertTab("Stations", null, new stationsTabPanel(), null, 1);
         mainTabGroup.insertTab("Members", null, new membersTabPanel(), null, 2);
-        mainTabGroup.insertTab("Stations", null, new stationsTabPanel(), null, 3);
+        mainTabGroup.insertTab("Billing Tester", null, new BillingTester(), null, 3);
+        mainTabGroup.insertTab("Print Services", null, new printServicesTabPanel(), null, 4);
+        mainTabGroup.insertTab("Transactions", null, new transactionsTabPanel(), null, 5);
+        mainTabGroup.insertTab("Shop Settings", null, new shopSettingsTabPanel(), null, 6);
+
+        mainTabGroup.setSelectedIndex(0);
 
         mainTabGroup.setTabLayoutPolicy(javax.swing.JTabbedPane.WRAP_TAB_LAYOUT);
         mainTabGroup.putClientProperty("JTabbedPane.tabWidthMode", "equal");

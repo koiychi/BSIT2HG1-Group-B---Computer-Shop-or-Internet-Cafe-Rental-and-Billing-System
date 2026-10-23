@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package bsit2hg1groupb.billingSystem;
+package bsit2hg1groupb.billingSystem.ui;
 
+import bsit2hg1groupb.billingSystem.AdminAppWindow;
 import javax.swing.JOptionPane;
 
 /**

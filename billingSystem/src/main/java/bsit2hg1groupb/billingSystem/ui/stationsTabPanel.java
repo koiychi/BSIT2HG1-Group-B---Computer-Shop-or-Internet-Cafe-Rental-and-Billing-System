@@ -2,13 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package bsit2hg1groupb.billingSystem;
+package bsit2hg1groupb.billingSystem.ui;
 
 /**
  *
  * @author koi
  */
 
+import bsit2hg1groupb.billingSystem.system.Station;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class stationsTabPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
-        headingPanel.setLayout(new java.awt.GridLayout());
+        headingPanel.setLayout(new java.awt.GridLayout(1, 0));
 
         text.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
 
