@@ -14,7 +14,6 @@ import javax.swing.UIManager;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 
-
 /**
  *
  * @author Koi
@@ -33,8 +32,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         mainTabGroup.setSelectedIndex(0);
 
         mainTabGroup.insertTab("Billing Tester", null, new BillingTester(), null, 1);
-        
-        
+        mainTabGroup.insertTab("Transactions", null, new transactionsTabPanel(), null, 2);
 
         mainTabGroup.setTabLayoutPolicy(javax.swing.JTabbedPane.WRAP_TAB_LAYOUT);
         mainTabGroup.putClientProperty("JTabbedPane.tabWidthMode", "equal");
