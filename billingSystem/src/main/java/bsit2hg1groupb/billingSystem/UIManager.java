@@ -9,6 +9,7 @@ package bsit2hg1groupb.billingSystem;
  * @author koi
  */
 import com.formdev.flatlaf.FlatDarkLaf;
+import java.awt.Color;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -71,7 +72,21 @@ public class UIManager {
             javax.swing.UIManager.put("CheckBox.font", appFont);
             javax.swing.UIManager.put("RadioButton.font", appFont);
 
-            com.formdev.flatlaf.FlatLaf.updateUI();
+            // Tab colors
+            javax.swing.UIManager.put("TabbedPane.selectedForeground", Color.decode("#FF6600"));
+            javax.swing.UIManager.put("TabbedPane.selectedBackground", Color.decode("#1E293B"));
+            javax.swing.UIManager.put("TabbedPane.background", Color.decode("#0F172A"));
+            javax.swing.UIManager.put("TabbedPane.underlineColor", Color.decode("#FF6600"));
+            javax.swing.UIManager.put("TabbedPane.inactiveUnderlineColor", Color.decode("#FF6600"));
+            javax.swing.UIManager.put("TabbedPane.contentAreaColor", Color.decode("#0F172A"));
+            javax.swing.UIManager.put("TabbedPane.hasFullBorder", false);
+
+// Tab sizing
+            javax.swing.UIManager.put("TabbedPane.tabAreaAlignment", "fill");
+            javax.swing.UIManager.put("TabbedPane.tabWidthMode", "equal");
+
+// Frame / panel background
+            javax.swing.UIManager.put("Panel.background", Color.decode("#0B0B0F"));
 
         } catch (Exception e) {
             e.printStackTrace();
