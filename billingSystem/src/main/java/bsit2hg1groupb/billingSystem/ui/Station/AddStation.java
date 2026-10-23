@@ -19,6 +19,7 @@ public class AddStation extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(AddStation.class.getName());
 
     private java.util.function.Consumer<Station> onStationSaved;
+    private String status = "Available";
 
     public void setOnStationSaved(
             java.util.function.Consumer<Station> callback) {
@@ -32,7 +33,10 @@ public class AddStation extends javax.swing.JFrame {
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
-
+    
+    public String getStatus() {
+        return status;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -148,6 +152,7 @@ public class AddStation extends javax.swing.JFrame {
         String stationType = jComboBox1.getSelectedItem().toString();
         String rateText = jTextField2.getText().trim();
         String status = jComboBox2.getSelectedItem().toString();
+       
 
         // Check empty fields
         if (stationID.isEmpty() || rateText.isEmpty()) {
@@ -208,6 +213,7 @@ public class AddStation extends javax.swing.JFrame {
                     false
             );
         }
+        station.setStatus(status);  
 
         // Send the new station to the main window
         if (onStationSaved != null) {
@@ -225,6 +231,7 @@ public class AddStation extends javax.swing.JFrame {
                     javax.swing.JOptionPane.ERROR_MESSAGE
             );
         }
+       
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

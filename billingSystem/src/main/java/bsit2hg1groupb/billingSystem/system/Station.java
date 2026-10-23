@@ -8,6 +8,7 @@ public abstract class Station {
     private double hourlyRate;
     private final boolean hasInternet;
     private boolean isAvailable;
+    private String status = "Available";
 
     // CONSTRUCTORS
     public Station(String stationID, double hourlyRate, boolean hasInternet, boolean isAvailable) {
@@ -50,6 +51,21 @@ public abstract class Station {
 
     public boolean isAvailable() {
         return isAvailable;
+    }
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        if (status == null
+                || (!status.equals("Available")
+                && !status.equals("In Use")
+                && !status.equals("Maintenance"))) {
+            throw new IllegalArgumentException("Invalid station status");
+        }
+
+        this.status = status;
+        this.isAvailable = status.equals("Available");
     }
 
     // SETTERS
