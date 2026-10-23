@@ -26,10 +26,12 @@ import java.awt.Color;
  *
  * @author Koi
  */
+import java.util.ArrayList;
+import java.util.List;
 public class AdminAppWindow extends javax.swing.JFrame {
-
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminAppWindow.class.getName());
-    private final java.util.List<Station> stations = new java.util.ArrayList<>();
+    private final List<Station> stations = new ArrayList<>();
 
     public AdminAppWindow() {
         initComponents();
@@ -67,7 +69,6 @@ public class AdminAppWindow extends javax.swing.JFrame {
         heading = new javax.swing.JPanel();
         left = new javax.swing.JPanel();
         appLogo = new javax.swing.JPanel();
-        logo = new javax.swing.JLabel();
         names = new javax.swing.JPanel();
         appName = new javax.swing.JLabel();
         shopName = new javax.swing.JLabel();
@@ -117,15 +118,15 @@ public class AdminAppWindow extends javax.swing.JFrame {
         shopMembersGroup = new javax.swing.JPanel();
         shopManagementGroup = new javax.swing.JPanel();
         stationTab = new javax.swing.JPanel();
-        stationsHeading = new javax.swing.JPanel();
-        stationsHeadingText = new javax.swing.JLabel();
-        LeftPanel = new javax.swing.JPanel();
+        headingPanel = new javax.swing.JPanel();
+        leftPanel = new javax.swing.JPanel();
+        text = new javax.swing.JLabel();
         Search = new javax.swing.JTextField();
-        sortByAvail = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
-        RightPanel = new javax.swing.JPanel();
-        AddStation = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        rightPanel = new javax.swing.JPanel();
+        jButton3 = new javax.swing.JButton();
+        MidPanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox<>();
         usersTab = new javax.swing.JPanel();
@@ -168,15 +169,16 @@ public class AdminAppWindow extends javax.swing.JFrame {
         flowLayout1.setAlignOnBaseline(true);
         left.setLayout(flowLayout1);
 
-        appLogo.setPreferredSize(new java.awt.Dimension(100, 50));
-        java.awt.FlowLayout flowLayout2 = new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 10);
-        flowLayout2.setAlignOnBaseline(true);
-        appLogo.setLayout(flowLayout2);
-
-        logo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/tempLogo.png"))); // NOI18N
-        logo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        appLogo.add(logo);
+        javax.swing.GroupLayout appLogoLayout = new javax.swing.GroupLayout(appLogo);
+        appLogo.setLayout(appLogoLayout);
+        appLogoLayout.setHorizontalGroup(
+            appLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 259, Short.MAX_VALUE)
+        );
+        appLogoLayout.setVerticalGroup(
+            appLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
+        );
 
         left.add(appLogo);
 
@@ -478,84 +480,96 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
         mainTabGroup.addTab("Dashboard", dashboardTab);
 
-        stationsHeading.setLayout(new java.awt.BorderLayout());
+        headingPanel.setLayout(new java.awt.GridLayout(1, 0));
 
-        stationsHeadingText.setFont(new java.awt.Font("Minecraft", 0, 18)); // NOI18N
-        stationsHeadingText.setText("Stations");
-        stationsHeadingText.setAlignmentX(0.5F);
-        stationsHeading.add(stationsHeadingText, java.awt.BorderLayout.CENTER);
+        text.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
 
-        sortByAvail.setText("Sort by Availabilty");
+        Search.addActionListener(this::SearchActionPerformed);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Available", "In Use", "Maintenance" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.addActionListener(this::jComboBox1ActionPerformed);
 
-        javax.swing.GroupLayout LeftPanelLayout = new javax.swing.GroupLayout(LeftPanel);
-        LeftPanel.setLayout(LeftPanelLayout);
-        LeftPanelLayout.setHorizontalGroup(
-            LeftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(LeftPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(LeftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(sortByAvail, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(LeftPanelLayout.createSequentialGroup()
-                        .addComponent(Search, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(33, Short.MAX_VALUE))
+        jLabel3.setText("Sort by Availability");
+
+        javax.swing.GroupLayout leftPanelLayout = new javax.swing.GroupLayout(leftPanel);
+        leftPanel.setLayout(leftPanelLayout);
+        leftPanelLayout.setHorizontalGroup(
+            leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(leftPanelLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(Search, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(leftPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(text)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(leftPanelLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 158, Short.MAX_VALUE))))
         );
-        LeftPanelLayout.setVerticalGroup(
-            LeftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(LeftPanelLayout.createSequentialGroup()
-                .addComponent(sortByAvail)
+        leftPanelLayout.setVerticalGroup(
+            leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(leftPanelLayout.createSequentialGroup()
+                .addGap(9, 9, 9)
+                .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(LeftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Search, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 18, Short.MAX_VALUE))
+                .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Search, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addComponent(text))
         );
 
-        AddStation.setText("+ Add Station");
-        AddStation.addActionListener(this::AddStationActionPerformed);
+        headingPanel.add(leftPanel);
 
-        javax.swing.GroupLayout RightPanelLayout = new javax.swing.GroupLayout(RightPanel);
-        RightPanel.setLayout(RightPanelLayout);
-        RightPanelLayout.setHorizontalGroup(
-            RightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, RightPanelLayout.createSequentialGroup()
-                .addContainerGap(228, Short.MAX_VALUE)
-                .addComponent(AddStation, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30))
+        jButton3.setText("+ Add Station");
+        jButton3.addActionListener(this::jButton3ActionPerformed);
+
+        javax.swing.GroupLayout rightPanelLayout = new javax.swing.GroupLayout(rightPanel);
+        rightPanel.setLayout(rightPanelLayout);
+        rightPanelLayout.setHorizontalGroup(
+            rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(rightPanelLayout.createSequentialGroup()
+                .addGap(158, 158, 158)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(188, Short.MAX_VALUE))
         );
-        RightPanelLayout.setVerticalGroup(
-            RightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(RightPanelLayout.createSequentialGroup()
-                .addComponent(AddStation, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+        rightPanelLayout.setVerticalGroup(
+            rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(rightPanelLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
+
+        headingPanel.add(rightPanel);
 
         jLabel2.setText("Station Type");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Regular", "Gaming" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.addActionListener(this::jComboBox2ActionPerformed);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox2, 0, 159, Short.MAX_VALUE))
+        javax.swing.GroupLayout MidPanelLayout = new javax.swing.GroupLayout(MidPanel);
+        MidPanel.setLayout(MidPanelLayout);
+        MidPanelLayout.setHorizontalGroup(
+            MidPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(MidPanelLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(MidPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        MidPanelLayout.setVerticalGroup(
+            MidPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(MidPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout stationTabLayout = new javax.swing.GroupLayout(stationTab);
@@ -563,30 +577,18 @@ public class AdminAppWindow extends javax.swing.JFrame {
         stationTabLayout.setHorizontalGroup(
             stationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(stationTabLayout.createSequentialGroup()
-                .addComponent(stationsHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 888, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(stationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(MidPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(headingPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, stationTabLayout.createSequentialGroup()
-                .addGroup(stationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, stationTabLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(stationTabLayout.createSequentialGroup()
-                        .addComponent(LeftPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(RightPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(19, 19, 19))
         );
         stationTabLayout.setVerticalGroup(
             stationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(stationTabLayout.createSequentialGroup()
-                .addComponent(stationsHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(headingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(stationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(RightPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(LeftPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 228, Short.MAX_VALUE))
+                .addComponent(MidPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(148, Short.MAX_VALUE))
         );
 
         mainTabGroup.addTab("Stations", stationTab);
@@ -602,7 +604,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         usersTab.setLayout(usersTabLayout);
         usersTabLayout.setHorizontalGroup(
             usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 888, Short.MAX_VALUE)
+            .addGap(0, 1038, Short.MAX_VALUE)
             .addGroup(usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(usersTabLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -611,7 +613,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         );
         usersTabLayout.setVerticalGroup(
             usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 423, Short.MAX_VALUE)
+            .addGap(0, 310, Short.MAX_VALUE)
             .addGroup(usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(usersTabLayout.createSequentialGroup()
                     .addGap(0, 201, Short.MAX_VALUE)
@@ -625,7 +627,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         printServices.setLayout(printServicesLayout);
         printServicesLayout.setHorizontalGroup(
             printServicesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 888, Short.MAX_VALUE)
+            .addGap(0, 1038, Short.MAX_VALUE)
         );
         printServicesLayout.setVerticalGroup(
             printServicesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -638,7 +640,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         transactions.setLayout(transactionsLayout);
         transactionsLayout.setHorizontalGroup(
             transactionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 888, Short.MAX_VALUE)
+            .addGap(0, 1038, Short.MAX_VALUE)
         );
         transactionsLayout.setVerticalGroup(
             transactionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -651,7 +653,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         shopSettings.setLayout(shopSettingsLayout);
         shopSettingsLayout.setHorizontalGroup(
             shopSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 888, Short.MAX_VALUE)
+            .addGap(0, 1038, Short.MAX_VALUE)
         );
         shopSettingsLayout.setVerticalGroup(
             shopSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -746,18 +748,48 @@ public class AdminAppWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_newSessionButtonActionPerformed
 
-    private void AddStationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddStationActionPerformed
+    private void AddStationActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
+        System.out.println("Add Station button clicked!");
+
         AddStation dialog = new AddStation();
 
         dialog.setOnStationSaved(station -> {
             stations.add(station);
-            System.out.println("Added station: " + station.getStationID());
+            System.out.println("Added: " + station.getStationID());
         });
 
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-    }//GEN-LAST:event_AddStationActionPerformed
+    }                                        
+
+    private void SearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SearchActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+         AddStation dialog = new AddStation();
+
+        dialog.setOnStationSaved(station -> {
+            stations.add(station);
+
+            System.out.println(
+                    "Station added: " + station.getStationID()
+            );
+        });
+
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -816,9 +848,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton AddStation;
-    private javax.swing.JPanel LeftPanel;
-    private javax.swing.JPanel RightPanel;
+    private javax.swing.JPanel MidPanel;
     private javax.swing.JTextField Search;
     private javax.swing.JPanel activeSessions;
     private javax.swing.JPanel activeSessionsHeading;
@@ -831,20 +861,22 @@ public class AdminAppWindow extends javax.swing.JFrame {
     private javax.swing.JPanel dashboardTab;
     private javax.swing.JPanel groupAvailableStationsCard;
     private javax.swing.JPanel heading;
+    private javax.swing.JPanel headingPanel;
     private javax.swing.JLabel icon_AvailableStationsCard;
     private javax.swing.JLabel intAvailableStations;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel labelAvailableStations;
     private javax.swing.JPanel left;
+    private javax.swing.JPanel leftPanel;
     private javax.swing.JPanel logOutBtnPanel;
-    private javax.swing.JLabel logo;
     private javax.swing.JButton logoutBtn;
     private javax.swing.JPanel lowerSegments;
     private javax.swing.JTabbedPane mainTabGroup;
@@ -860,6 +892,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
     private javax.swing.JPanel quickStatistics;
     private javax.swing.JPanel quickStatisticsHeading;
     private javax.swing.JPanel right;
+    private javax.swing.JPanel rightPanel;
     private javax.swing.JPanel shopManagementGroup;
     private javax.swing.JPanel shopMembersGroup;
     private javax.swing.JLabel shopName;
@@ -867,12 +900,10 @@ public class AdminAppWindow extends javax.swing.JFrame {
     private javax.swing.JLabel shopStatus;
     private javax.swing.JPanel shopStatusPanel;
     private javax.swing.JButton shopToggle;
-    private javax.swing.JLabel sortByAvail;
     private javax.swing.JPanel stationTab;
-    private javax.swing.JPanel stationsHeading;
-    private javax.swing.JLabel stationsHeadingText;
     private javax.swing.JPanel statsCards;
     private javax.swing.JScrollPane tableScrollPane;
+    private javax.swing.JLabel text;
     private javax.swing.JPanel todaysSalesCard;
     private javax.swing.JPanel transactions;
     private javax.swing.JPanel usersHeading;
