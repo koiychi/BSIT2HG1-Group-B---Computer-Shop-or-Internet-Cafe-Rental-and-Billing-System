@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package bsit2hg1groupb.billingSystem.ui;
+package bsit2hg1groupb.billingSystem.ui.Shop;
 
 /**
  *
  * @author koi
  */
-public class transactionsTabPanel extends javax.swing.JPanel {
+public class printServicesTabPanel extends javax.swing.JPanel {
 
     /**
-     * Creates new form transactionsTabPanel
+     * Creates new form printServicesTabPanel
      */
-    public transactionsTabPanel() {
+    public printServicesTabPanel() {
         initComponents();
     }
 

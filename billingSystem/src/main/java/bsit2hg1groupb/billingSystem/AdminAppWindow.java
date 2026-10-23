@@ -4,14 +4,14 @@
  */
 package bsit2hg1groupb.billingSystem;
 
-import bsit2hg1groupb.billingSystem.ui.NewSession;
-import bsit2hg1groupb.billingSystem.ui.BillingTester;
-import bsit2hg1groupb.billingSystem.ui.transactionsTabPanel;
-import bsit2hg1groupb.billingSystem.ui.printServicesTabPanel;
-import bsit2hg1groupb.billingSystem.ui.shopSettingsTabPanel;
-import bsit2hg1groupb.billingSystem.ui.membersTabPanel;
-import bsit2hg1groupb.billingSystem.ui.dashboardTabPanel;
-import bsit2hg1groupb.billingSystem.ui.stationsTabPanel;
+import bsit2hg1groupb.billingSystem.ui.Session.NewSession;
+import bsit2hg1groupb.billingSystem.ui.Shop.BillingTester;
+import bsit2hg1groupb.billingSystem.ui.Shop.transactionsTabPanel;
+import bsit2hg1groupb.billingSystem.ui.Shop.printServicesTabPanel;
+import bsit2hg1groupb.billingSystem.ui.Shop.shopSettingsTabPanel;
+import bsit2hg1groupb.billingSystem.ui.Members.membersTabPanel;
+import bsit2hg1groupb.billingSystem.ui.Shop.dashboardTabPanel;
+import bsit2hg1groupb.billingSystem.ui.Station.stationsTabPanel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;

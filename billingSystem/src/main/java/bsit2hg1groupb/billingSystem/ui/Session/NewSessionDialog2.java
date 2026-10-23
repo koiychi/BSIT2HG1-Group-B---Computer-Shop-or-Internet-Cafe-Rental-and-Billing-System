@@ -2,68 +2,50 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package bsit2hg1groupb.billingSystem.ui;
+package bsit2hg1groupb.billingSystem.ui.Session;
 
 /**
  *
  * @author theo
  */
-
-public class NewSessionDialog3 extends javax.swing.JDialog {
+public class NewSessionDialog2 extends javax.swing.JDialog {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(NewSessionDialog3.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(NewSessionDialog2.class.getName());
 
     /**
-     * Creates new form dialog3
+     * Creates new form dialog1
      */
-    private javax.swing.JDialog previous;
+  private javax.swing.JDialog previous;
 
-    public NewSessionDialog3(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
-        initComponents();
-        progress66.setValue(100);
-    }
+public NewSessionDialog2(java.awt.Frame parent, boolean modal) {
+    super(parent, modal);
+    initComponents();
+    memberonly.setVisible(false);
+    progress66.setValue(66);
+}
 
-    public NewSessionDialog3(java.awt.Frame parent, boolean modal, javax.swing.JDialog previous) {
+public NewSessionDialog2(java.awt.Frame parent, boolean modal, javax.swing.JDialog previous) {
     this(parent, modal);
     this.previous = previous;
-    loadSummary();
 }
-        private double parseHours(String d) {
-        String[] parts = d.trim().split(" ");
-        double n = Double.parseDouble(parts[0]);
-        return parts[1].startsWith("min") ? n / 60.0 : n;
-    }
 
-    private void loadSummary() {
-        NewSessionDialog2 customerDlg = (NewSessionDialog2) previous;
-        NewSessionDialog1 stationDlg = customerDlg.getStationDialog();
+public String getCustomerType() {
+    return String.valueOf(jComboBox1.getSelectedItem());
+}
 
-        String station = stationDlg.getSelectedStationName();
-        String type = stationDlg.getStationType();
-        String duration = stationDlg.getDuration();
-        boolean isMember = "Member".equals(customerDlg.getCustomerType());
+public String getCustomerName() {
+    return txtName.getText().trim();
+}
 
-        
-        double rate = 10.0;
-        double hours = parseHours(duration);
-        double subtotal = rate * hours;
-        double discount = isMember ? subtotal * 0.10 : 0;
-        double total = subtotal - discount;
+public String getUsername() {
+    return txtUsername.getText().trim();
+}
 
-        lblStation.setText(station);
-        lblStationType.setText(type);
-        lblRate.setText(String.format("PHP %.0f /hour", rate));
-        lblCustomer.setText(isMember
-            ? customerDlg.getCustomerName() + " (@" + customerDlg.getUsername() + ") - Member"
-            : customerDlg.getCustomerName() + " - Regular");
-        lblDuration.setText(duration);
-        lblCalc.setText(String.format("PHP %.0f x %s", rate, duration));
-        lblDiscount.setText(String.format("- PHP %.2f", discount));
-        lblSubtotal.setText(String.format("PHP %.2f", subtotal));
-        lblTotal.setText(String.format("PHP %.2f", total));
-    }
-    
+public NewSessionDialog1 getStationDialog() {
+    return (NewSessionDialog1) previous;
+}
+
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -83,25 +65,19 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
         jPanel3 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         progress66 = new javax.swing.JProgressBar();
+        cmboboxlocation = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
         OptionBTNPanel = new javax.swing.JPanel();
         previousBTN = new javax.swing.JButton();
-        strtSessBTN = new javax.swing.JButton();
-        leftPanel = new javax.swing.JPanel();
-        lblStation = new javax.swing.JLabel();
-        lblStationType = new javax.swing.JLabel();
-        monitorIcon = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        customlbl = new javax.swing.JLabel();
-        lblCustomer = new javax.swing.JLabel();
-        lblCalc = new javax.swing.JLabel();
-        dura = new javax.swing.JLabel();
-        lblDiscount = new javax.swing.JLabel();
-        lblSubtotal = new javax.swing.JLabel();
-        lblTotal = new javax.swing.JLabel();
-        lblDuration = new javax.swing.JLabel();
-        textDIs = new javax.swing.JLabel();
-        sessconfirm = new javax.swing.JLabel();
-        lblRate = new javax.swing.JLabel();
+        nextBtn = new javax.swing.JButton();
+        labelCustName = new javax.swing.JLabel();
+        txtName = new javax.swing.JTextField();
+        memberonly = new javax.swing.JPanel();
+        usernamelabel = new javax.swing.JLabel();
+        txtUsername = new javax.swing.JTextField();
+        creditRemain = new javax.swing.JLabel();
+        txtCredit = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -126,7 +102,7 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel9.setText("Customer");
 
@@ -147,7 +123,7 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel10.setText("Summary");
 
@@ -212,6 +188,33 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jLabel1.setText("Customer Type");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Regular ", "Member" }));
+        jComboBox1.setMinimumSize(new java.awt.Dimension(182, 22));
+        jComboBox1.addActionListener(this::jComboBox1ActionPerformed);
+
+        javax.swing.GroupLayout cmboboxlocationLayout = new javax.swing.GroupLayout(cmboboxlocation);
+        cmboboxlocation.setLayout(cmboboxlocationLayout);
+        cmboboxlocationLayout.setHorizontalGroup(
+            cmboboxlocationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cmboboxlocationLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(cmboboxlocationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(cmboboxlocationLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 112, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        cmboboxlocationLayout.setVerticalGroup(
+            cmboboxlocationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cmboboxlocationLayout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
         previousBTN.setText("<- Return to Previous");
         previousBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -221,120 +224,51 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
         previousBTN.addActionListener(this::previousBTNActionPerformed);
         OptionBTNPanel.add(previousBTN);
 
-        strtSessBTN.setText("-> Start Session");
-        strtSessBTN.addActionListener(this::strtSessBTNActionPerformed);
-        OptionBTNPanel.add(strtSessBTN);
+        nextBtn.setText("-> Next");
+        nextBtn.addActionListener(this::nextBtnActionPerformed);
+        OptionBTNPanel.add(nextBtn);
 
-        leftPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        labelCustName.setText("Customer Name");
 
-        lblStation.setText("ha");
+        txtName.setPreferredSize(new java.awt.Dimension(192, 22));
+        txtName.addActionListener(this::txtNameActionPerformed);
 
-        lblStationType.setText("jLabel3");
+        usernamelabel.setText("Username");
 
-        javax.swing.GroupLayout leftPanelLayout = new javax.swing.GroupLayout(leftPanel);
-        leftPanel.setLayout(leftPanelLayout);
-        leftPanelLayout.setHorizontalGroup(
-            leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(leftPanelLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(monitorIcon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(leftPanelLayout.createSequentialGroup()
-                        .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblStationType)
-                            .addComponent(lblStation))
-                        .addGap(0, 10, Short.MAX_VALUE)))
-                .addContainerGap())
+        txtUsername.setPreferredSize(new java.awt.Dimension(193, 22));
+        txtUsername.addActionListener(this::txtUsernameActionPerformed);
+
+        creditRemain.setText("Credit Remaining");
+
+        txtCredit.setPreferredSize(new java.awt.Dimension(193, 22));
+        txtCredit.addActionListener(this::txtCreditActionPerformed);
+
+        javax.swing.GroupLayout memberonlyLayout = new javax.swing.GroupLayout(memberonly);
+        memberonly.setLayout(memberonlyLayout);
+        memberonlyLayout.setHorizontalGroup(
+            memberonlyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(memberonlyLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(memberonlyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(creditRemain)
+                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(usernamelabel)
+                    .addComponent(txtCredit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
-        leftPanelLayout.setVerticalGroup(
-            leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(leftPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(monitorIcon)
+        memberonlyLayout.setVerticalGroup(
+            memberonlyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, memberonlyLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(usernamelabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblStation)
-                .addGap(18, 18, 18)
-                .addComponent(lblStationType)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        customlbl.setText("Customer");
-
-        lblCustomer.setText("bastacustomer");
-
-        lblCalc.setText("Rate x hours ");
-
-        dura.setText("Duration");
-
-        lblDiscount.setText("discont");
-
-        lblSubtotal.setText("Subtotal amount");
-
-        lblTotal.setText("To Pay amount");
-
-        lblDuration.setText("2 hrs");
-
-        textDIs.setText("Discount");
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblTotal)
-                .addGap(68, 68, 68))
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblCalc)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(customlbl)
-                                .addGap(26, 26, 26))))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblDuration))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblCustomer)
-                            .addComponent(dura))))
-                .addGap(87, 87, 87)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(textDIs)
-                    .addComponent(lblSubtotal)
-                    .addComponent(lblDiscount))
-                .addContainerGap(59, Short.MAX_VALUE))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(customlbl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblCustomer)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dura)
-                    .addComponent(textDIs))
-                .addGap(1, 1, 1)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDiscount)
-                    .addComponent(lblDuration))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblCalc)
-                    .addComponent(lblSubtotal))
+                .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblTotal)
-                .addGap(10, 10, 10))
+                .addComponent(creditRemain)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtCredit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(22, Short.MAX_VALUE))
         );
-
-        sessconfirm.setText("Confirm Session");
-
-        lblRate.setText("jLabel1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -346,64 +280,84 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
                     .addComponent(headerpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmboboxlocation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(leftPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(sessconfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(34, 34, 34)
-                                .addComponent(lblRate)))
-                        .addGap(36, 36, 36)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 10, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(OptionBTNPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelCustName))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(memberonly, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(215, Short.MAX_VALUE)
+                .addComponent(OptionBTNPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(headerpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(OptionBTNPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(sessconfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmboboxlocation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(leftPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(labelCustName)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblRate)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(memberonly, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addComponent(OptionBTNPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void previousBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_previousBTNMouseClicked
-        dispose();
-        previous.setVisible(true);
-    }//GEN-LAST:event_previousBTNMouseClicked
+    private void nextBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextBtnActionPerformed
+        if (txtName.getText().trim().isEmpty()) {
+    javax.swing.JOptionPane.showMessageDialog(this, "Please enter a name.");
+    return;
+}
+NewSessionDialog3 next = new NewSessionDialog3(null, true, this);  
+next.setLocationRelativeTo(this);
+setVisible(false);
+next.setVisible(true);
+    }//GEN-LAST:event_nextBtnActionPerformed
 
     private void previousBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousBTNActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_previousBTNActionPerformed
 
-    private void strtSessBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_strtSessBTNActionPerformed
-         NewSessionDialog2 customerDlg = (NewSessionDialog2) previous;
-    NewSessionDialog1 stationDlg = customerDlg.getStationDialog();
+    private void previousBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_previousBTNMouseClicked
+ dispose();                  
+    previous.setVisible(true);
+    }//GEN-LAST:event_previousBTNMouseClicked
 
-    System.out.println("Session Started!!");   
+    private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUsernameActionPerformed
 
-    dispose();              
-    customerDlg.dispose();  
-    stationDlg.dispose(); 
-    }//GEN-LAST:event_strtSessBTNActionPerformed
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+boolean isMember = "Member".equals(jComboBox1.getSelectedItem());
+    memberonly.setVisible(isMember);
+    if (!isMember) {
+        txtName.setText("");
+        txtCredit.setText("");
+    }
+    revalidate();
+    repaint();    repaint();    repaint();    repaint();    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void txtCreditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCreditActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCreditActionPerformed
+
+    private void txtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNameActionPerformed
 
     /**
      * @param args the command line arguments
@@ -430,7 +384,7 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                NewSessionDialog3 dialog = new NewSessionDialog3(new javax.swing.JFrame(), true);
+                NewSessionDialog2 dialog = new NewSessionDialog2(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -444,33 +398,27 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel OptionBTNPanel;
-    private javax.swing.JLabel customlbl;
-    private javax.swing.JLabel dura;
+    private javax.swing.JPanel cmboboxlocation;
+    private javax.swing.JLabel creditRemain;
     private javax.swing.JPanel headerpanel;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JLabel lblCalc;
-    private javax.swing.JLabel lblCustomer;
-    private javax.swing.JLabel lblDiscount;
-    private javax.swing.JLabel lblDuration;
-    private javax.swing.JLabel lblRate;
-    private javax.swing.JLabel lblStation;
-    private javax.swing.JLabel lblStationType;
-    private javax.swing.JLabel lblSubtotal;
-    private javax.swing.JLabel lblTotal;
-    private javax.swing.JPanel leftPanel;
+    private javax.swing.JLabel labelCustName;
     private javax.swing.JPanel main3tabPanel;
-    private javax.swing.JLabel monitorIcon;
+    private javax.swing.JPanel memberonly;
+    private javax.swing.JButton nextBtn;
     private javax.swing.JButton previousBTN;
     private javax.swing.JProgressBar progress66;
-    private javax.swing.JLabel sessconfirm;
-    private javax.swing.JButton strtSessBTN;
-    private javax.swing.JLabel textDIs;
+    private javax.swing.JTextField txtCredit;
+    private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtUsername;
+    private javax.swing.JLabel usernamelabel;
     // End of variables declaration//GEN-END:variables
 }
