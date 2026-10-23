@@ -309,24 +309,9 @@ public class dashboardTabPanel extends javax.swing.JPanel {
     private void newSessionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newSessionButtonMouseClicked
         NewSession newSessionPanel = new NewSession();
 
-        Object[] customButtons = {"Start Session", "Cancel"};
-
-        int option = javax.swing.JOptionPane.showOptionDialog(
-            this,
-            newSessionPanel,
-            "Station Details",
-            javax.swing.JOptionPane.DEFAULT_OPTION,
-            javax.swing.JOptionPane.PLAIN_MESSAGE,
-            null,
-            customButtons,
-            customButtons[0]
-        );
-
-        if (option == 0) {
-            System.out.println("Session Started!!");
-        } else if (option == 1 || option == javax.swing.JOptionPane.CLOSED_OPTION) {
-            System.out.println("Transaction is cancelled");
-        }
+        NewSessionDialog1 dlg = new NewSessionDialog1(null, true);
+        dlg.setLocationRelativeTo(this);
+        dlg.setVisible(true);
     }//GEN-LAST:event_newSessionButtonMouseClicked
 
     private void newSessionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSessionButtonActionPerformed
@@ -338,18 +323,18 @@ public class dashboardTabPanel extends javax.swing.JPanel {
 
         if (AdminAppWindow.isShopOpen()) {
             int response = JOptionPane.showConfirmDialog(
-                this,
-                "Are you sure you want to close the shop? Closing the shop will end all sessions.",
-                "Confirm Shop Closure",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE
+                    this,
+                    "Are you sure you want to close the shop? Closing the shop will end all sessions.",
+                    "Confirm Shop Closure",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
             );
 
             if (response == JOptionPane.YES_OPTION) {
                 AdminAppWindow.openShop(false);
                 shopToggle.setText("Open Shop");
                 //icon on AdminAppWindow.java
-        }
+            }
         } else {
             AdminAppWindow.openShop(true);
             shopToggle.setText("Close Shop");
