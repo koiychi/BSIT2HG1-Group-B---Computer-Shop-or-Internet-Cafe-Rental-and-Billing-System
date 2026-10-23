@@ -9,7 +9,7 @@ package bsit2hg1groupb.billingSystem;
  * @author koi
  */
 public class AdminLogin extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminLogin.class.getName());
 
     /**
@@ -62,8 +62,24 @@ public class AdminLogin extends javax.swing.JFrame {
 
     private void appLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_appLoginMouseClicked
         // TODO add your handling code here:
-        new AdminAppWindow().setVisible(true);
-        this.dispose();
+        try {
+            // Patakbuhin sa loob ng Event Dispatch Thread
+            java.awt.EventQueue.invokeLater(() -> {
+                try {
+                    AdminAppWindow adminWindow = new AdminAppWindow();
+                    adminWindow.setVisible(true);
+                    this.dispose();
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                    javax.swing.JOptionPane.showMessageDialog(null,
+                            "Error on AdminAppWindow: " + t.getMessage(),
+                            "Initialization Error",
+                            javax.swing.JOptionPane.ERROR_MESSAGE);
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_appLoginMouseClicked
 
     /**
