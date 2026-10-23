@@ -8,13 +8,53 @@ package bsit2hg1groupb.billingSystem;
  *
  * @author koi
  */
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
 public class membersTabPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form membersTabPanel
      */
+    // --- State & UI Variables ni Gerald ---
+    private JPanel membersHeader;
+    private JPanel membersToolbar;
+    private JLabel membersTitle;
+    private JLabel searchUsernameLabel;
+    private JTextField searchUsernameField;
+    private JComboBox<String> memberSortCombo;
+    private JButton addMemberButton;
+    private JTable membersTable;
+    private DefaultTableModel membersTableModel;
+    private TableRowSorter<DefaultTableModel> membersSorter;
+
+    // Nagtatago ng password pansamantala (plain text muna hangga't walang DB)
+    private final Map<String, String> memberPasswords = new HashMap<>();
+
     public membersTabPanel() {
         initComponents();
+        buildMembersUI();
     }
 
     /**
@@ -41,4 +81,439 @@ public class membersTabPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+private void buildMembersUI() {
+        Color bg = new Color(11, 11, 15);
+        Color orange = new Color(255, 102, 0);
+        Color white = new Color(240, 240, 240);
+
+        this.removeAll();
+        this.setLayout(new java.awt.BorderLayout());
+        this.setBackground(bg);
+
+        JPanel content = new JPanel(new java.awt.BorderLayout(0, 18));
+        content.setBackground(bg);
+        content.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // MEMBERS HEADING
+        membersHeader = new JPanel(new java.awt.BorderLayout());
+        membersHeader.setBackground(bg);
+
+        membersTitle = new JLabel("Shop Members");
+        membersTitle.setFont(new Font("Arial", Font.BOLD, 22));
+        membersTitle.setForeground(white);
+        membersHeader.add(membersTitle, java.awt.BorderLayout.WEST);
+
+        // TOOLBAR
+        membersToolbar = new JPanel(new java.awt.BorderLayout(12, 0));
+        membersToolbar.setBackground(bg);
+
+        JPanel searchPanel = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 8, 0));
+        searchPanel.setBackground(bg);
+
+        JPanel searchGroup = new JPanel(new java.awt.BorderLayout(0, 5));
+        searchGroup.setBackground(bg);
+
+        searchUsernameLabel = new JLabel("Search Username");
+        searchUsernameLabel.setForeground(white);
+        searchUsernameLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+
+        searchUsernameField = new JTextField(20);
+        searchUsernameField.setFont(new Font("Arial", Font.PLAIN, 14));
+        searchUsernameField.setToolTipText("Search by username or name");
+
+        searchGroup.add(searchUsernameLabel, java.awt.BorderLayout.NORTH);
+        searchGroup.add(searchUsernameField, java.awt.BorderLayout.CENTER);
+
+        JPanel sortGroup = new JPanel(new java.awt.BorderLayout(0, 5));
+        sortGroup.setBackground(bg);
+
+        JLabel sortLabel = new JLabel("Sort");
+        sortLabel.setForeground(white);
+        sortLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+
+        memberSortCombo = new JComboBox<>(new String[]{"Descending", "Ascending"});
+        memberSortCombo.setFont(new Font("Arial", Font.PLAIN, 13));
+
+        sortGroup.add(sortLabel, java.awt.BorderLayout.NORTH);
+        sortGroup.add(memberSortCombo, java.awt.BorderLayout.CENTER);
+
+        searchPanel.add(searchGroup);
+        searchPanel.add(sortGroup);
+
+        addMemberButton = new JButton("+ Add Member");
+        addMemberButton.setFont(new Font("Arial", Font.BOLD, 13));
+        addMemberButton.setForeground(Color.WHITE);
+        addMemberButton.setBackground(orange);
+        addMemberButton.setFocusPainted(false);
+        addMemberButton.setBorderPainted(false);
+        addMemberButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addMemberButton.setPreferredSize(new java.awt.Dimension(150, 38));
+
+        membersToolbar.add(searchPanel, java.awt.BorderLayout.WEST);
+        membersToolbar.add(addMemberButton, java.awt.BorderLayout.EAST);
+
+        JPanel topSection = new JPanel(new java.awt.BorderLayout(0, 18));
+        topSection.setBackground(bg);
+        topSection.add(membersHeader, java.awt.BorderLayout.NORTH);
+        topSection.add(membersToolbar, java.awt.BorderLayout.CENTER);
+
+        // MEMBERS TABLE
+        String[] columns = {"Username", "Name", "Credit Balance", "Discount Rate", "Action"};
+        membersTableModel = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 4; // Action button column lamang ang editable
+            }
+        };
+
+        membersTable = new JTable(membersTableModel);
+        membersTable.setFont(new Font("Arial", Font.PLAIN, 13));
+        membersTable.setRowHeight(32);
+        membersTable.setBackground(new Color(217, 217, 217));
+        membersTable.setForeground(Color.BLACK);
+        membersTable.setGridColor(new Color(150, 150, 150));
+        membersTable.setShowGrid(true);
+        membersTable.setSelectionBackground(new Color(255, 190, 140));
+        membersTable.setSelectionForeground(Color.BLACK);
+        membersTable.setFillsViewportHeight(true);
+        membersTable.setAutoCreateRowSorter(false);
+
+        javax.swing.table.JTableHeader tableHeader = membersTable.getTableHeader();
+        tableHeader.setFont(new Font("Arial", Font.BOLD, 13));
+        tableHeader.setBackground(new Color(225, 225, 225));
+        tableHeader.setForeground(Color.BLACK);
+        tableHeader.setPreferredSize(new java.awt.Dimension(0, 36));
+        tableHeader.setReorderingAllowed(false);
+
+        membersSorter = new TableRowSorter<>(membersTableModel);
+        membersTable.setRowSorter(membersSorter);
+
+        membersTable.getColumnModel().getColumn(0).setPreferredWidth(150);
+        membersTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+        membersTable.getColumnModel().getColumn(2).setPreferredWidth(150);
+        membersTable.getColumnModel().getColumn(3).setPreferredWidth(130);
+        membersTable.getColumnModel().getColumn(4).setPreferredWidth(150);
+
+        membersTable.getColumnModel().getColumn(4).setCellRenderer(new MemberButtonRenderer());
+        membersTable.getColumnModel().getColumn(4).setCellEditor(new MemberButtonEditor());
+
+        JScrollPane tableScroll = new JScrollPane(membersTable);
+        tableScroll.getViewport().setBackground(new Color(217, 217, 217));
+        tableScroll.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(70, 70, 75)));
+
+        content.add(topSection, java.awt.BorderLayout.NORTH);
+        content.add(tableScroll, java.awt.BorderLayout.CENTER);
+
+        this.add(content, java.awt.BorderLayout.CENTER);
+
+        // SEARCH FUNCTION
+        searchUsernameField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            private void filterMembers() {
+                String search = searchUsernameField.getText().trim();
+                if (search.isEmpty()) {
+                    membersSorter.setRowFilter(null);
+                } else {
+                    membersSorter.setRowFilter(javax.swing.RowFilter.regexFilter(
+                            "(?i)" + java.util.regex.Pattern.quote(search), 0, 1));
+                }
+            }
+
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                filterMembers();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                filterMembers();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                filterMembers();
+            }
+        });
+
+        // SORT FUNCTION
+        memberSortCombo.addActionListener(e -> {
+            javax.swing.SortOrder order = memberSortCombo.getSelectedItem().equals("Ascending")
+                    ? javax.swing.SortOrder.ASCENDING
+                    : javax.swing.SortOrder.DESCENDING;
+
+            membersSorter.setSortKeys(java.util.Collections.singletonList(
+                    new javax.swing.RowSorter.SortKey(0, order)));
+        });
+
+        // ADD MEMBER BUTTON
+        addMemberButton.addActionListener(e -> addMember());
+
+        this.revalidate();
+        this.repaint();
+    }
+
+    private void addMember() {
+        Color bg = new Color(11, 11, 15);
+        Color orange = new Color(255, 102, 0);
+        Color fieldBg = new Color(242, 242, 242);
+
+        java.awt.Window parent = SwingUtilities.getWindowAncestor(this);
+        JDialog dialog = new JDialog(parent, "Add Member", java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        dialog.setUndecorated(true);
+        dialog.setSize(620, 420);
+        dialog.setLocationRelativeTo(this);
+
+        JPanel root = new JPanel(new java.awt.BorderLayout());
+        root.setBackground(bg);
+        root.setBorder(javax.swing.BorderFactory.createLineBorder(orange, 2));
+        dialog.setContentPane(root);
+
+        // Title bar with X
+        JPanel titleBar = new JPanel(new java.awt.BorderLayout());
+        titleBar.setBackground(bg);
+        titleBar.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+
+        JButton closeBtn = new JButton("X");
+        closeBtn.setForeground(Color.WHITE);
+        closeBtn.setBackground(bg);
+        closeBtn.setFont(new Font("Arial", Font.BOLD, 14));
+        closeBtn.setFocusPainted(false);
+        closeBtn.setBorderPainted(false);
+        closeBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        closeBtn.addActionListener(e -> dialog.dispose());
+        titleBar.add(closeBtn, java.awt.BorderLayout.EAST);
+        root.add(titleBar, java.awt.BorderLayout.NORTH);
+
+        // Form
+        JPanel form = new JPanel(null);
+        form.setBackground(bg);
+
+        JTextField lastNameField = new JTextField();
+        JTextField givenNameField = new JTextField();
+        JTextField usernameField = new JTextField();
+        JPasswordField passwordField = new JPasswordField();
+        JTextField creditField = new JTextField("PHP 500.00");
+
+        JTextField[] fields = {lastNameField, givenNameField, usernameField, passwordField, creditField};
+        for (JTextField f : fields) {
+            f.setBackground(fieldBg);
+            f.setForeground(Color.BLACK);
+            f.setCaretColor(Color.BLACK);
+            f.setFont(new Font("Arial", Font.PLAIN, 13));
+        }
+
+        addDialogLabel(form, "Add Member", 25, 15, 300, 32, 24, true);
+        addDialogLabel(form, "Customer Name", 25, 62, 250, 24, 17, true);
+        addDialogLabel(form, "Last Name", 25, 90, 150, 16, 11, false);
+        addDialogLabel(form, "Given Name", 215, 90, 150, 16, 11, false);
+        lastNameField.setBounds(25, 108, 180, 30);
+        givenNameField.setBounds(215, 108, 180, 30);
+
+        addDialogLabel(form, "Customer Credentials", 25, 150, 300, 24, 17, true);
+        addDialogLabel(form, "Username", 25, 178, 150, 16, 11, false);
+        addDialogLabel(form, "Password", 215, 178, 150, 16, 11, false);
+        usernameField.setBounds(25, 196, 180, 30);
+        passwordField.setBounds(215, 196, 180, 30);
+
+        addDialogLabel(form, "Credit", 25, 240, 200, 24, 17, true);
+        addDialogLabel(form, "Initial Credit", 25, 268, 150, 16, 11, false);
+        creditField.setBounds(25, 286, 370, 30);
+
+        for (JTextField f : fields) {
+            form.add(f);
+        }
+        root.add(form, java.awt.BorderLayout.CENTER);
+
+        // Footer button
+        JPanel footer = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 20, 12));
+        footer.setBackground(bg);
+
+        JButton creditAddBtn = new JButton("+ Credit and Add");
+        creditAddBtn.setFont(new Font("Arial", Font.BOLD, 13));
+        creditAddBtn.setForeground(Color.WHITE);
+        creditAddBtn.setBackground(orange);
+        creditAddBtn.setFocusPainted(false);
+        creditAddBtn.setBorderPainted(false);
+        creditAddBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        creditAddBtn.setPreferredSize(new java.awt.Dimension(170, 38));
+        footer.add(creditAddBtn);
+        root.add(footer, java.awt.BorderLayout.SOUTH);
+
+        creditAddBtn.addActionListener(e -> {
+            String lastName = lastNameField.getText().trim();
+            String givenName = givenNameField.getText().trim();
+            String username = usernameField.getText().trim();
+            String password = new String(passwordField.getPassword());
+
+            if (lastName.isEmpty() || givenName.isEmpty() || username.isEmpty() || password.isEmpty()) {
+                JOptionPane.showMessageDialog(dialog, "Please fill in all fields.",
+                        "Missing Information", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            for (int i = 0; i < membersTableModel.getRowCount(); i++) {
+                if (membersTableModel.getValueAt(i, 0).toString().equalsIgnoreCase(username)) {
+                    JOptionPane.showMessageDialog(dialog, "Username already exists.",
+                            "Duplicate Username", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            }
+
+            try {
+                String cleaned = creditField.getText().replaceAll("[^0-9.]", "");
+                double credit = Double.parseDouble(cleaned);
+
+                if (!Double.isFinite(credit) || credit < 0) {
+                    throw new NumberFormatException();
+                }
+
+                membersTableModel.addRow(new Object[]{
+                    username,
+                    lastName + ", " + givenName,
+                    String.format(java.util.Locale.US, "%.2f", credit),
+                    "0.00%",
+                    "Edit Member"
+                });
+                memberPasswords.put(username, password);
+                dialog.dispose();
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(dialog, "Enter a valid initial credit (e.g. PHP 500.00).",
+                        "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        dialog.getRootPane().registerKeyboardAction(
+                e -> dialog.dispose(),
+                javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW
+        );
+
+        dialog.setVisible(true);
+    }
+
+    private void addDialogLabel(JPanel panel, String text, int x, int y, int w, int h, int size, boolean bold) {
+        JLabel label = new JLabel(text);
+        label.setForeground(Color.WHITE);
+        label.setFont(new Font("Arial", bold ? Font.BOLD : Font.PLAIN, size));
+        label.setBounds(x, y, w, h);
+        panel.add(label);
+    }
+
+    private void editMember(int row) {
+        String username = membersTableModel.getValueAt(row, 0).toString();
+        JTextField nameField = new JTextField(membersTableModel.getValueAt(row, 1).toString());
+        JTextField balanceField = new JTextField(membersTableModel.getValueAt(row, 2).toString());
+        String currentDiscount = membersTableModel.getValueAt(row, 3).toString().replace("%", "");
+        JTextField discountField = new JTextField(currentDiscount);
+
+        JPanel form = new JPanel(new java.awt.GridLayout(3, 2, 8, 10));
+        form.add(new JLabel("Full Name:"));
+        form.add(nameField);
+        form.add(new JLabel("Credit Balance:"));
+        form.add(balanceField);
+        form.add(new JLabel("Discount Rate (%):"));
+        form.add(discountField);
+
+        Object[] options = {"Save Changes", "Delete Member", "Cancel"};
+
+        int result = JOptionPane.showOptionDialog(
+                this,
+                form,
+                "Edit Member: " + username,
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+
+        if (result == 0) {
+            String name = nameField.getText().trim();
+            if (name.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Name cannot be empty.", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            try {
+                double balance = Double.parseDouble(balanceField.getText());
+                double discount = Double.parseDouble(discountField.getText());
+
+                if (!Double.isFinite(balance) || !Double.isFinite(discount)
+                        || balance < 0 || discount < 0 || discount > 100) {
+                    throw new NumberFormatException();
+                }
+
+                membersTableModel.setValueAt(name, row, 1);
+                membersTableModel.setValueAt(String.format(java.util.Locale.US, "%.2f", balance), row, 2);
+                membersTableModel.setValueAt(String.format(java.util.Locale.US, "%.2f%%", discount), row, 3);
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Enter a valid balance and a discount from 0 to 100.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } else if (result == 1) {
+            int confirm = JOptionPane.showConfirmDialog(
+                    this,
+                    "Delete member " + username + "?",
+                    "Confirm Delete",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+            if (confirm == JOptionPane.YES_OPTION) {
+                membersTableModel.removeRow(row);
+                memberPasswords.remove(username);
+            }
+        }
+    }
+
+    // Custom Button Renderer para sa Action column
+    private class MemberButtonRenderer extends JButton implements javax.swing.table.TableCellRenderer {
+
+        public MemberButtonRenderer() {
+            setText("✎ Edit Member");
+            setOpaque(true);
+            setForeground(Color.WHITE);
+            setBackground(new Color(35, 35, 39));
+            setFocusPainted(false);
+            setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 8, 4, 8));
+        }
+
+        @Override
+        public java.awt.Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            return this;
+        }
+    }
+
+    // Custom Button Editor para sa Action column
+    private class MemberButtonEditor extends javax.swing.AbstractCellEditor implements javax.swing.table.TableCellEditor {
+
+        private final JButton button;
+        private int selectedModelRow;
+
+        public MemberButtonEditor() {
+            button = new JButton("✎ Edit Member");
+            button.setForeground(Color.WHITE);
+            button.setBackground(new Color(35, 35, 39));
+            button.setFocusPainted(false);
+
+            button.addActionListener(e -> {
+                int row = selectedModelRow;
+                fireEditingStopped();
+                if (row >= 0 && row < membersTableModel.getRowCount()) {
+                    editMember(row);
+                }
+            });
+        }
+
+        @Override
+        public java.awt.Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            selectedModelRow = table.convertRowIndexToModel(row);
+            return button;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return "Edit Member";
+        }
+    }
 }

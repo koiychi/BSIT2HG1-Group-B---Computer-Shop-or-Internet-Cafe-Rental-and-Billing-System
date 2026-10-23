@@ -32,7 +32,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         mainTabGroup.setSelectedIndex(0);
 
         mainTabGroup.insertTab("Billing Tester", null, new BillingTester(), null, 1);
-        mainTabGroup.insertTab("Transactions", null, new transactionsTabPanel(), null, 2);
+        mainTabGroup.insertTab("Members", null, new membersTabPanel(), null, 2);
 
         mainTabGroup.setTabLayoutPolicy(javax.swing.JTabbedPane.WRAP_TAB_LAYOUT);
         mainTabGroup.putClientProperty("JTabbedPane.tabWidthMode", "equal");
