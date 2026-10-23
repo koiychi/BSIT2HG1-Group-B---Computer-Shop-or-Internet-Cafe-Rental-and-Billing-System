@@ -1,5 +1,10 @@
-package bsit2hg1groupb.billingSystem;
+package bsit2hg1groupb.billingSystem.system;
 
+import bsit2hg1groupb.billingSystem.system.GamingStation;
+import bsit2hg1groupb.billingSystem.system.Session;
+import bsit2hg1groupb.billingSystem.system.MemberCustomer;
+import bsit2hg1groupb.billingSystem.system.RegularStation;
+import bsit2hg1groupb.billingSystem.system.Customer;
 import java.sql.SQLOutput;
 import java.util.List;
 

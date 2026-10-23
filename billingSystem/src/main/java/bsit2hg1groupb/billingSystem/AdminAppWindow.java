@@ -4,6 +4,14 @@
  */
 package bsit2hg1groupb.billingSystem;
 
+import bsit2hg1groupb.billingSystem.ui.Session.NewSession;
+import bsit2hg1groupb.billingSystem.ui.Shop.BillingTester;
+import bsit2hg1groupb.billingSystem.ui.Shop.transactionsTabPanel;
+import bsit2hg1groupb.billingSystem.ui.Shop.printServicesTabPanel;
+import bsit2hg1groupb.billingSystem.ui.Shop.shopSettingsTabPanel;
+import bsit2hg1groupb.billingSystem.ui.Members.membersTabPanel;
+import bsit2hg1groupb.billingSystem.ui.Shop.dashboardTabPanel;
+import bsit2hg1groupb.billingSystem.ui.Station.stationsTabPanel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -13,34 +21,30 @@ import java.awt.*;
 import javax.swing.UIManager;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.BorderFactory;
-import java.awt.FlowLayout;
-import java.awt.Color;
 
 /**
  *
  * @author Koi
  */
-import java.util.ArrayList;
-import java.util.List;
 public class AdminAppWindow extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminAppWindow.class.getName());
-    private final List<Station> stations = new ArrayList<>();
 
     public AdminAppWindow() {
         initComponents();
-        setTitle("Add Station");
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
-
         this.setSize(1280, 720);
         this.setLocationRelativeTo(null);
+
+        // TABS
+        mainTabGroup.insertTab("Dashboard", null, new dashboardTabPanel(), null, 0);
+        mainTabGroup.insertTab("Stations", null, new stationsTabPanel(), null, 1);
+        mainTabGroup.insertTab("Members", null, new membersTabPanel(), null, 2);
+        mainTabGroup.insertTab("Billing Tester", null, new BillingTester(), null, 3);
+        mainTabGroup.insertTab("Print Services", null, new printServicesTabPanel(), null, 4);
+        mainTabGroup.insertTab("Transactions", null, new transactionsTabPanel(), null, 5);
+        mainTabGroup.insertTab("Shop Settings", null, new shopSettingsTabPanel(), null, 6);
+
+        mainTabGroup.setSelectedIndex(0);
 
         mainTabGroup.setTabLayoutPolicy(javax.swing.JTabbedPane.WRAP_TAB_LAYOUT);
         mainTabGroup.putClientProperty("JTabbedPane.tabWidthMode", "equal");
@@ -66,18 +70,6 @@ public class AdminAppWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         jDialog1 = new javax.swing.JDialog();
-        heading = new javax.swing.JPanel();
-        left = new javax.swing.JPanel();
-        appLogo = new javax.swing.JPanel();
-        names = new javax.swing.JPanel();
-        appName = new javax.swing.JLabel();
-        shopName = new javax.swing.JLabel();
-        right = new javax.swing.JPanel();
-        shopStatusPanel = new javax.swing.JPanel();
-        shopStatus = new javax.swing.JLabel();
-        logOutBtnPanel = new javax.swing.JPanel();
-        logoutBtn = new javax.swing.JButton();
-        mainTabGroup = new javax.swing.JTabbedPane();
         dashboardTab = new javax.swing.JPanel();
         quickStatistics = new javax.swing.JPanel();
         quickStatisticsHeading = new javax.swing.JPanel();
@@ -118,23 +110,27 @@ public class AdminAppWindow extends javax.swing.JFrame {
         shopMembersGroup = new javax.swing.JPanel();
         shopManagementGroup = new javax.swing.JPanel();
         stationTab = new javax.swing.JPanel();
-        headingPanel = new javax.swing.JPanel();
-        leftPanel = new javax.swing.JPanel();
-        text = new javax.swing.JLabel();
-        Search = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jLabel3 = new javax.swing.JLabel();
-        rightPanel = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        MidPanel = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        stationsHeading = new javax.swing.JPanel();
+        stationsHeadingText = new javax.swing.JLabel();
         usersTab = new javax.swing.JPanel();
         usersHeading = new javax.swing.JPanel();
         usersHeadingText = new javax.swing.JLabel();
         printServices = new javax.swing.JPanel();
         transactions = new javax.swing.JPanel();
         shopSettings = new javax.swing.JPanel();
+        heading = new javax.swing.JPanel();
+        left = new javax.swing.JPanel();
+        appLogo = new javax.swing.JPanel();
+        logo = new javax.swing.JLabel();
+        names = new javax.swing.JPanel();
+        appName = new javax.swing.JLabel();
+        shopName = new javax.swing.JLabel();
+        right = new javax.swing.JPanel();
+        shopStatusPanel = new javax.swing.JPanel();
+        shopStatus = new javax.swing.JLabel();
+        logOutBtnPanel = new javax.swing.JPanel();
+        logoutBtn = new javax.swing.JButton();
+        mainTabGroup = new javax.swing.JTabbedPane();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -146,98 +142,6 @@ public class AdminAppWindow extends javax.swing.JFrame {
             jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 300, Short.MAX_VALUE)
         );
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("BillingSystem - Pending Name");
-        setBackground(new java.awt.Color(11, 11, 15));
-        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        setIconImages(null);
-        setMinimumSize(new java.awt.Dimension(900, 370));
-        setName("mainFrame"); // NOI18N
-        setSize(new java.awt.Dimension(800, 400));
-
-        heading.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 0, 1));
-        heading.setMinimumSize(new java.awt.Dimension(328, 25));
-        heading.setPreferredSize(new java.awt.Dimension(888, 90));
-        heading.setLayout(new java.awt.BorderLayout());
-
-        left.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
-        left.setMinimumSize(new java.awt.Dimension(800, 58));
-        left.setPreferredSize(new java.awt.Dimension(600, 50));
-        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0);
-        flowLayout1.setAlignOnBaseline(true);
-        left.setLayout(flowLayout1);
-
-        javax.swing.GroupLayout appLogoLayout = new javax.swing.GroupLayout(appLogo);
-        appLogo.setLayout(appLogoLayout);
-        appLogoLayout.setHorizontalGroup(
-            appLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 259, Short.MAX_VALUE)
-        );
-        appLogoLayout.setVerticalGroup(
-            appLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
-        );
-
-        left.add(appLogo);
-
-        names.setPreferredSize(new java.awt.Dimension(300, 50));
-        names.setLayout(new java.awt.GridLayout(2, 1));
-
-        appName.setText("App Name");
-        names.add(appName);
-
-        shopName.setFont(new java.awt.Font("Inter", 0, 23)); // NOI18N
-        shopName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        shopName.setText("CompShop ng Group B");
-        shopName.setPreferredSize(new java.awt.Dimension(400, 30));
-        names.add(shopName);
-
-        left.add(names);
-
-        heading.add(left, java.awt.BorderLayout.WEST);
-
-        right.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
-        right.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
-
-        shopStatusPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
-        shopStatusPanel.setPreferredSize(new java.awt.Dimension(150, 50));
-
-        shopStatus.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
-        shopStatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/door_front_24dp_BB271A_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
-        shopStatus.setText("Closed");
-        shopStatus.setAlignmentY(0.0F);
-        shopStatus.addPropertyChangeListener(this::shopStatusPropertyChange);
-        shopStatusPanel.add(shopStatus);
-
-        right.add(shopStatusPanel);
-
-        logOutBtnPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 1, 1, 1));
-        logOutBtnPanel.setPreferredSize(new java.awt.Dimension(126, 50));
-
-        logoutBtn.setBackground(new java.awt.Color(23, 26, 33));
-        logoutBtn.setFont(logoutBtn.getFont().deriveFont((float)18));
-        logoutBtn.setForeground(new java.awt.Color(255, 255, 255));
-        logoutBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logout_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
-        logoutBtn.setText("Log Out");
-        logoutBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                logoutBtnMouseClicked(evt);
-            }
-        });
-        logOutBtnPanel.add(logoutBtn);
-
-        right.add(logOutBtnPanel);
-
-        heading.add(right, java.awt.BorderLayout.EAST);
-
-        getContentPane().add(heading, java.awt.BorderLayout.NORTH);
-
-        mainTabGroup.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 20, 10));
-        mainTabGroup.setFont(mainTabGroup.getFont().deriveFont(mainTabGroup.getFont().getStyle() & ~java.awt.Font.BOLD, 20));
-        mainTabGroup.setInheritsPopupMenu(true);
-        mainTabGroup.setName(""); // NOI18N
 
         dashboardTab.setBackground(new java.awt.Color(11, 11, 15));
         dashboardTab.setToolTipText("");
@@ -478,120 +382,27 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
         dashboardTab.add(lowerSegments, java.awt.BorderLayout.CENTER);
 
-        mainTabGroup.addTab("Dashboard", dashboardTab);
+        stationsHeading.setLayout(new java.awt.BorderLayout());
 
-        headingPanel.setLayout(new java.awt.GridLayout(1, 0));
-
-        text.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
-
-        Search.addActionListener(this::SearchActionPerformed);
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(this::jComboBox1ActionPerformed);
-
-        jLabel3.setText("Sort by Availability");
-
-        javax.swing.GroupLayout leftPanelLayout = new javax.swing.GroupLayout(leftPanel);
-        leftPanel.setLayout(leftPanelLayout);
-        leftPanelLayout.setHorizontalGroup(
-            leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(leftPanelLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(Search, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(leftPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(text)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(leftPanelLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 158, Short.MAX_VALUE))))
-        );
-        leftPanelLayout.setVerticalGroup(
-            leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(leftPanelLayout.createSequentialGroup()
-                .addGap(9, 9, 9)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Search, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                .addComponent(text))
-        );
-
-        headingPanel.add(leftPanel);
-
-        jButton3.setText("+ Add Station");
-        jButton3.addActionListener(this::jButton3ActionPerformed);
-
-        javax.swing.GroupLayout rightPanelLayout = new javax.swing.GroupLayout(rightPanel);
-        rightPanel.setLayout(rightPanelLayout);
-        rightPanelLayout.setHorizontalGroup(
-            rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(rightPanelLayout.createSequentialGroup()
-                .addGap(158, 158, 158)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(188, Short.MAX_VALUE))
-        );
-        rightPanelLayout.setVerticalGroup(
-            rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(rightPanelLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
-        );
-
-        headingPanel.add(rightPanel);
-
-        jLabel2.setText("Station Type");
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.addActionListener(this::jComboBox2ActionPerformed);
-
-        javax.swing.GroupLayout MidPanelLayout = new javax.swing.GroupLayout(MidPanel);
-        MidPanel.setLayout(MidPanelLayout);
-        MidPanelLayout.setHorizontalGroup(
-            MidPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MidPanelLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(MidPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        MidPanelLayout.setVerticalGroup(
-            MidPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MidPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        stationsHeadingText.setFont(new java.awt.Font("Minecraft", 0, 18)); // NOI18N
+        stationsHeadingText.setText("Stations");
+        stationsHeadingText.setAlignmentX(0.5F);
+        stationsHeading.add(stationsHeadingText, java.awt.BorderLayout.CENTER);
 
         javax.swing.GroupLayout stationTabLayout = new javax.swing.GroupLayout(stationTab);
         stationTab.setLayout(stationTabLayout);
         stationTabLayout.setHorizontalGroup(
             stationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(stationTabLayout.createSequentialGroup()
-                .addGroup(stationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(MidPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(headingPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(stationsHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 888, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         stationTabLayout.setVerticalGroup(
             stationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(stationTabLayout.createSequentialGroup()
-                .addComponent(headingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(MidPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(148, Short.MAX_VALUE))
+                .addComponent(stationsHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 383, Short.MAX_VALUE))
         );
-
-        mainTabGroup.addTab("Stations", stationTab);
 
         usersHeading.setLayout(new java.awt.BorderLayout());
 
@@ -604,7 +415,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         usersTab.setLayout(usersTabLayout);
         usersTabLayout.setHorizontalGroup(
             usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1038, Short.MAX_VALUE)
+            .addGap(0, 888, Short.MAX_VALUE)
             .addGroup(usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(usersTabLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -613,7 +424,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         );
         usersTabLayout.setVerticalGroup(
             usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 310, Short.MAX_VALUE)
+            .addGap(0, 423, Short.MAX_VALUE)
             .addGroup(usersTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(usersTabLayout.createSequentialGroup()
                     .addGap(0, 201, Short.MAX_VALUE)
@@ -621,47 +432,130 @@ public class AdminAppWindow extends javax.swing.JFrame {
                     .addGap(0, 200, Short.MAX_VALUE)))
         );
 
-        mainTabGroup.addTab("Users", usersTab);
-
         javax.swing.GroupLayout printServicesLayout = new javax.swing.GroupLayout(printServices);
         printServices.setLayout(printServicesLayout);
         printServicesLayout.setHorizontalGroup(
             printServicesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1038, Short.MAX_VALUE)
+            .addGap(0, 888, Short.MAX_VALUE)
         );
         printServicesLayout.setVerticalGroup(
             printServicesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 423, Short.MAX_VALUE)
         );
 
-        mainTabGroup.addTab("Print Services", printServices);
-
         javax.swing.GroupLayout transactionsLayout = new javax.swing.GroupLayout(transactions);
         transactions.setLayout(transactionsLayout);
         transactionsLayout.setHorizontalGroup(
             transactionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1038, Short.MAX_VALUE)
+            .addGap(0, 888, Short.MAX_VALUE)
         );
         transactionsLayout.setVerticalGroup(
             transactionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 423, Short.MAX_VALUE)
         );
 
-        mainTabGroup.addTab("Transactions", transactions);
-
         javax.swing.GroupLayout shopSettingsLayout = new javax.swing.GroupLayout(shopSettings);
         shopSettings.setLayout(shopSettingsLayout);
         shopSettingsLayout.setHorizontalGroup(
             shopSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1038, Short.MAX_VALUE)
+            .addGap(0, 888, Short.MAX_VALUE)
         );
         shopSettingsLayout.setVerticalGroup(
             shopSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 423, Short.MAX_VALUE)
         );
 
-        mainTabGroup.addTab("Shop Settings", shopSettings);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("BillingSystem - Pending Name");
+        setBackground(new java.awt.Color(11, 11, 15));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        setIconImages(null);
+        setMinimumSize(new java.awt.Dimension(900, 370));
+        setName("mainFrame"); // NOI18N
+        setSize(new java.awt.Dimension(800, 400));
 
+        heading.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 0, 1));
+        heading.setMinimumSize(new java.awt.Dimension(328, 25));
+        heading.setPreferredSize(new java.awt.Dimension(888, 90));
+        heading.setLayout(new java.awt.BorderLayout());
+
+        left.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
+        left.setMinimumSize(new java.awt.Dimension(800, 58));
+        left.setPreferredSize(new java.awt.Dimension(600, 50));
+        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0);
+        flowLayout1.setAlignOnBaseline(true);
+        left.setLayout(flowLayout1);
+
+        appLogo.setPreferredSize(new java.awt.Dimension(100, 50));
+        java.awt.FlowLayout flowLayout2 = new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 10);
+        flowLayout2.setAlignOnBaseline(true);
+        appLogo.setLayout(flowLayout2);
+
+        logo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/check_box_28dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        logo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        appLogo.add(logo);
+
+        left.add(appLogo);
+
+        names.setPreferredSize(new java.awt.Dimension(300, 50));
+        names.setLayout(new java.awt.GridLayout(2, 1));
+
+        appName.setText("App Name");
+        names.add(appName);
+
+        shopName.setFont(new java.awt.Font("Inter", 0, 23)); // NOI18N
+        shopName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        shopName.setText("CompShop ng Group B");
+        shopName.setPreferredSize(new java.awt.Dimension(400, 30));
+        names.add(shopName);
+
+        left.add(names);
+
+        heading.add(left, java.awt.BorderLayout.WEST);
+
+        right.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
+        right.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        shopStatusPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
+        shopStatusPanel.setPreferredSize(new java.awt.Dimension(150, 50));
+
+        shopStatus.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        shopStatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/door_open_18dp_E3E3E3_FILL0_wght400_GRAD0_opsz20.png"))); // NOI18N
+        shopStatus.setText("Closed");
+        shopStatus.setAlignmentY(0.0F);
+        shopStatus.addPropertyChangeListener(this::shopStatusPropertyChange);
+        shopStatusPanel.add(shopStatus);
+
+        right.add(shopStatusPanel);
+
+        logOutBtnPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 1, 1, 1));
+        logOutBtnPanel.setPreferredSize(new java.awt.Dimension(126, 50));
+
+        logoutBtn.setBackground(new java.awt.Color(23, 26, 33));
+        logoutBtn.setFont(logoutBtn.getFont().deriveFont((float)18));
+        logoutBtn.setForeground(new java.awt.Color(255, 255, 255));
+        logoutBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/door_open_18dp_E3E3E3_FILL0_wght400_GRAD0_opsz20.png"))); // NOI18N
+        logoutBtn.setText("Log Out");
+        logoutBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutBtnMouseClicked(evt);
+            }
+        });
+        logoutBtn.addActionListener(this::logoutBtnActionPerformed);
+        logOutBtnPanel.add(logoutBtn);
+
+        right.add(logOutBtnPanel);
+
+        heading.add(right, java.awt.BorderLayout.EAST);
+
+        getContentPane().add(heading, java.awt.BorderLayout.NORTH);
+
+        mainTabGroup.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 20, 10));
+        mainTabGroup.setFont(mainTabGroup.getFont().deriveFont(mainTabGroup.getFont().getStyle() & ~java.awt.Font.BOLD, 20));
+        mainTabGroup.setInheritsPopupMenu(true);
+        mainTabGroup.setName(""); // NOI18N
         getContentPane().add(mainTabGroup, java.awt.BorderLayout.CENTER);
 
         setBounds(0, 0, 908, 618);
@@ -748,48 +642,9 @@ public class AdminAppWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_newSessionButtonActionPerformed
 
-    private void AddStationActionPerformed(java.awt.event.ActionEvent evt) {                                           
+    private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
         // TODO add your handling code here:
-        System.out.println("Add Station button clicked!");
-
-        AddStation dialog = new AddStation();
-
-        dialog.setOnStationSaved(station -> {
-            stations.add(station);
-            System.out.println("Added: " + station.getStationID());
-        });
-
-        dialog.setLocationRelativeTo(this);
-        dialog.setVisible(true);
-    }                                        
-
-    private void SearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_SearchActionPerformed
-
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-         AddStation dialog = new AddStation();
-
-        dialog.setOnStationSaved(station -> {
-            stations.add(station);
-
-            System.out.println(
-                    "Station added: " + station.getStationID()
-            );
-        });
-
-        dialog.setLocationRelativeTo(this);
-        dialog.setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_logoutBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -798,30 +653,54 @@ public class AdminAppWindow extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             new AdminAppWindow().setVisible(true);
         });
+
+//            if (isShopOpen) {
+//                shopStatus.setIcon(new ImageIcon(
+//                        AdminAppWindow.class.getResource("/icons/shopClosedIcon.png")));
+//            } else {
+//                shopStatus.setIcon(new ImageIcon(
+//                        bsit2hg1groupb.billingSystem.AdminAppWindow.class.getResource("/icons/shopOpenIcon.png")));
+//            }
     }
 
-    //SHOP MANAGEMENT
-    private boolean isShopOpen = false;
+    // SHOP MANAGEMENT
+    private static boolean isShopOpen = false;
 
-    private void openShop(boolean openShop) {
-        this.isShopOpen = openShop;
+    public static void openShop(boolean openShop) {
+        isShopOpen = openShop;
+    }
 
-        if (openShop) {
+    public static boolean isShopOpen() {
+        return isShopOpen;
+    }
+
+    public void updateShopStatusUI() {
+        if (AdminAppWindow.isShopOpen()) {
+            shopStatus.setIcon(loadIcon("/icons/shopOpenIcon.png"));
             shopStatus.setText("Open");
-            //icon
         } else {
+            shopStatus.setIcon(loadIcon("/icons/shopClosedIcon.png"));
             shopStatus.setText("Closed");
-            //default
+        }
+    }
+
+    private javax.swing.ImageIcon loadIcon(String path) {
+        java.net.URL imgURL = getClass().getResource(path);
+        if (imgURL != null) {
+            return new javax.swing.ImageIcon(imgURL);
+        } else {
+            System.err.println("Cannot find resource path: " + path);
+            return new javax.swing.ImageIcon();
         }
     }
 
     class RoundedPanel extends JPanel {
 
-        private int cornerRadius = 25; // Default radius
+        private int cornerRadius = 25;
 
         public RoundedPanel() {
             super();
-            setOpaque(false); // Iwasan ang default rectangular fill
+            setOpaque(false);
         }
 
         public RoundedPanel(int radius) {
@@ -848,8 +727,6 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel MidPanel;
-    private javax.swing.JTextField Search;
     private javax.swing.JPanel activeSessions;
     private javax.swing.JPanel activeSessionsHeading;
     private javax.swing.JLabel activeSessionsLabel;
@@ -861,22 +738,16 @@ public class AdminAppWindow extends javax.swing.JFrame {
     private javax.swing.JPanel dashboardTab;
     private javax.swing.JPanel groupAvailableStationsCard;
     private javax.swing.JPanel heading;
-    private javax.swing.JPanel headingPanel;
     private javax.swing.JLabel icon_AvailableStationsCard;
     private javax.swing.JLabel intAvailableStations;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel labelAvailableStations;
     private javax.swing.JPanel left;
-    private javax.swing.JPanel leftPanel;
     private javax.swing.JPanel logOutBtnPanel;
+    private javax.swing.JLabel logo;
     private javax.swing.JButton logoutBtn;
     private javax.swing.JPanel lowerSegments;
     private javax.swing.JTabbedPane mainTabGroup;
@@ -892,7 +763,6 @@ public class AdminAppWindow extends javax.swing.JFrame {
     private javax.swing.JPanel quickStatistics;
     private javax.swing.JPanel quickStatisticsHeading;
     private javax.swing.JPanel right;
-    private javax.swing.JPanel rightPanel;
     private javax.swing.JPanel shopManagementGroup;
     private javax.swing.JPanel shopMembersGroup;
     private javax.swing.JLabel shopName;
@@ -901,9 +771,10 @@ public class AdminAppWindow extends javax.swing.JFrame {
     private javax.swing.JPanel shopStatusPanel;
     private javax.swing.JButton shopToggle;
     private javax.swing.JPanel stationTab;
+    private javax.swing.JPanel stationsHeading;
+    private javax.swing.JLabel stationsHeadingText;
     private javax.swing.JPanel statsCards;
     private javax.swing.JScrollPane tableScrollPane;
-    private javax.swing.JLabel text;
     private javax.swing.JPanel todaysSalesCard;
     private javax.swing.JPanel transactions;
     private javax.swing.JPanel usersHeading;
