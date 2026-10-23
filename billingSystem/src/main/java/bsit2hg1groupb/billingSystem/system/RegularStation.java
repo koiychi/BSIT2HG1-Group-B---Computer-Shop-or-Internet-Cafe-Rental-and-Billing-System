@@ -1,4 +1,4 @@
-package bsit2hg1groupb.billingSystem;
+package bsit2hg1groupb.billingSystem.system;
 
 import java.util.ArrayList;
 import java.util.List;

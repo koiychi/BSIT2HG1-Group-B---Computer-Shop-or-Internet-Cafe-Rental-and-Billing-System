@@ -4,6 +4,14 @@
  */
 package bsit2hg1groupb.billingSystem;
 
+import bsit2hg1groupb.billingSystem.ui.Session.NewSession;
+import bsit2hg1groupb.billingSystem.ui.Shop.BillingTester;
+import bsit2hg1groupb.billingSystem.ui.Shop.transactionsTabPanel;
+import bsit2hg1groupb.billingSystem.ui.Shop.printServicesTabPanel;
+import bsit2hg1groupb.billingSystem.ui.Shop.shopSettingsTabPanel;
+import bsit2hg1groupb.billingSystem.ui.Members.membersTabPanel;
+import bsit2hg1groupb.billingSystem.ui.Shop.dashboardTabPanel;
+import bsit2hg1groupb.billingSystem.ui.Station.stationsTabPanel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -26,6 +34,17 @@ public class AdminAppWindow extends javax.swing.JFrame {
         initComponents();
         this.setSize(1280, 720);
         this.setLocationRelativeTo(null);
+
+        // TABS
+        mainTabGroup.insertTab("Dashboard", null, new dashboardTabPanel(), null, 0);
+        mainTabGroup.insertTab("Stations", null, new stationsTabPanel(), null, 1);
+        mainTabGroup.insertTab("Members", null, new membersTabPanel(), null, 2);
+        mainTabGroup.insertTab("Billing Tester", null, new BillingTester(), null, 3);
+        mainTabGroup.insertTab("Print Services", null, new printServicesTabPanel(), null, 4);
+        mainTabGroup.insertTab("Transactions", null, new transactionsTabPanel(), null, 5);
+        mainTabGroup.insertTab("Shop Settings", null, new shopSettingsTabPanel(), null, 6);
+
+        mainTabGroup.setSelectedIndex(0);
 
         mainTabGroup.setTabLayoutPolicy(javax.swing.JTabbedPane.WRAP_TAB_LAYOUT);
         mainTabGroup.putClientProperty("JTabbedPane.tabWidthMode", "equal");
@@ -51,19 +70,6 @@ public class AdminAppWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         jDialog1 = new javax.swing.JDialog();
-        heading = new javax.swing.JPanel();
-        left = new javax.swing.JPanel();
-        appLogo = new javax.swing.JPanel();
-        logo = new javax.swing.JLabel();
-        names = new javax.swing.JPanel();
-        appName = new javax.swing.JLabel();
-        shopName = new javax.swing.JLabel();
-        right = new javax.swing.JPanel();
-        shopStatusPanel = new javax.swing.JPanel();
-        shopStatus = new javax.swing.JLabel();
-        logOutBtnPanel = new javax.swing.JPanel();
-        logoutBtn = new javax.swing.JButton();
-        mainTabGroup = new javax.swing.JTabbedPane();
         dashboardTab = new javax.swing.JPanel();
         quickStatistics = new javax.swing.JPanel();
         quickStatisticsHeading = new javax.swing.JPanel();
@@ -112,6 +118,19 @@ public class AdminAppWindow extends javax.swing.JFrame {
         printServices = new javax.swing.JPanel();
         transactions = new javax.swing.JPanel();
         shopSettings = new javax.swing.JPanel();
+        heading = new javax.swing.JPanel();
+        left = new javax.swing.JPanel();
+        appLogo = new javax.swing.JPanel();
+        logo = new javax.swing.JLabel();
+        names = new javax.swing.JPanel();
+        appName = new javax.swing.JLabel();
+        shopName = new javax.swing.JLabel();
+        right = new javax.swing.JPanel();
+        shopStatusPanel = new javax.swing.JPanel();
+        shopStatus = new javax.swing.JLabel();
+        logOutBtnPanel = new javax.swing.JPanel();
+        logoutBtn = new javax.swing.JButton();
+        mainTabGroup = new javax.swing.JTabbedPane();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -123,97 +142,6 @@ public class AdminAppWindow extends javax.swing.JFrame {
             jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 300, Short.MAX_VALUE)
         );
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("BillingSystem - Pending Name");
-        setBackground(new java.awt.Color(11, 11, 15));
-        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        setIconImages(null);
-        setMinimumSize(new java.awt.Dimension(900, 370));
-        setName("mainFrame"); // NOI18N
-        setSize(new java.awt.Dimension(800, 400));
-
-        heading.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 0, 1));
-        heading.setMinimumSize(new java.awt.Dimension(328, 25));
-        heading.setPreferredSize(new java.awt.Dimension(888, 90));
-        heading.setLayout(new java.awt.BorderLayout());
-
-        left.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
-        left.setMinimumSize(new java.awt.Dimension(800, 58));
-        left.setPreferredSize(new java.awt.Dimension(600, 50));
-        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0);
-        flowLayout1.setAlignOnBaseline(true);
-        left.setLayout(flowLayout1);
-
-        appLogo.setPreferredSize(new java.awt.Dimension(100, 50));
-        java.awt.FlowLayout flowLayout2 = new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 10);
-        flowLayout2.setAlignOnBaseline(true);
-        appLogo.setLayout(flowLayout2);
-
-        logo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/tempLogo.png"))); // NOI18N
-        logo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        appLogo.add(logo);
-
-        left.add(appLogo);
-
-        names.setPreferredSize(new java.awt.Dimension(300, 50));
-        names.setLayout(new java.awt.GridLayout(2, 1));
-
-        appName.setText("App Name");
-        names.add(appName);
-
-        shopName.setFont(new java.awt.Font("Inter", 0, 23)); // NOI18N
-        shopName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        shopName.setText("CompShop ng Group B");
-        shopName.setPreferredSize(new java.awt.Dimension(400, 30));
-        names.add(shopName);
-
-        left.add(names);
-
-        heading.add(left, java.awt.BorderLayout.WEST);
-
-        right.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
-        right.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
-
-        shopStatusPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
-        shopStatusPanel.setPreferredSize(new java.awt.Dimension(150, 50));
-
-        shopStatus.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
-        shopStatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/door_front_24dp_BB271A_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
-        shopStatus.setText("Closed");
-        shopStatus.setAlignmentY(0.0F);
-        shopStatus.addPropertyChangeListener(this::shopStatusPropertyChange);
-        shopStatusPanel.add(shopStatus);
-
-        right.add(shopStatusPanel);
-
-        logOutBtnPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 1, 1, 1));
-        logOutBtnPanel.setPreferredSize(new java.awt.Dimension(126, 50));
-
-        logoutBtn.setBackground(new java.awt.Color(23, 26, 33));
-        logoutBtn.setFont(logoutBtn.getFont().deriveFont((float)18));
-        logoutBtn.setForeground(new java.awt.Color(255, 255, 255));
-        logoutBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logout_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
-        logoutBtn.setText("Log Out");
-        logoutBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                logoutBtnMouseClicked(evt);
-            }
-        });
-        logOutBtnPanel.add(logoutBtn);
-
-        right.add(logOutBtnPanel);
-
-        heading.add(right, java.awt.BorderLayout.EAST);
-
-        getContentPane().add(heading, java.awt.BorderLayout.NORTH);
-
-        mainTabGroup.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 20, 10));
-        mainTabGroup.setFont(mainTabGroup.getFont().deriveFont(mainTabGroup.getFont().getStyle() & ~java.awt.Font.BOLD, 20));
-        mainTabGroup.setInheritsPopupMenu(true);
-        mainTabGroup.setName(""); // NOI18N
 
         dashboardTab.setBackground(new java.awt.Color(11, 11, 15));
         dashboardTab.setToolTipText("");
@@ -454,8 +382,6 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
         dashboardTab.add(lowerSegments, java.awt.BorderLayout.CENTER);
 
-        mainTabGroup.addTab("Dashboard", dashboardTab);
-
         stationsHeading.setLayout(new java.awt.BorderLayout());
 
         stationsHeadingText.setFont(new java.awt.Font("Minecraft", 0, 18)); // NOI18N
@@ -477,8 +403,6 @@ public class AdminAppWindow extends javax.swing.JFrame {
                 .addComponent(stationsHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 383, Short.MAX_VALUE))
         );
-
-        mainTabGroup.addTab("Stations", stationTab);
 
         usersHeading.setLayout(new java.awt.BorderLayout());
 
@@ -508,8 +432,6 @@ public class AdminAppWindow extends javax.swing.JFrame {
                     .addGap(0, 200, Short.MAX_VALUE)))
         );
 
-        mainTabGroup.addTab("Users", usersTab);
-
         javax.swing.GroupLayout printServicesLayout = new javax.swing.GroupLayout(printServices);
         printServices.setLayout(printServicesLayout);
         printServicesLayout.setHorizontalGroup(
@@ -520,8 +442,6 @@ public class AdminAppWindow extends javax.swing.JFrame {
             printServicesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 423, Short.MAX_VALUE)
         );
-
-        mainTabGroup.addTab("Print Services", printServices);
 
         javax.swing.GroupLayout transactionsLayout = new javax.swing.GroupLayout(transactions);
         transactions.setLayout(transactionsLayout);
@@ -534,8 +454,6 @@ public class AdminAppWindow extends javax.swing.JFrame {
             .addGap(0, 423, Short.MAX_VALUE)
         );
 
-        mainTabGroup.addTab("Transactions", transactions);
-
         javax.swing.GroupLayout shopSettingsLayout = new javax.swing.GroupLayout(shopSettings);
         shopSettings.setLayout(shopSettingsLayout);
         shopSettingsLayout.setHorizontalGroup(
@@ -547,8 +465,97 @@ public class AdminAppWindow extends javax.swing.JFrame {
             .addGap(0, 423, Short.MAX_VALUE)
         );
 
-        mainTabGroup.addTab("Shop Settings", shopSettings);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("BillingSystem - Pending Name");
+        setBackground(new java.awt.Color(11, 11, 15));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        setIconImages(null);
+        setMinimumSize(new java.awt.Dimension(900, 370));
+        setName("mainFrame"); // NOI18N
+        setSize(new java.awt.Dimension(800, 400));
 
+        heading.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 0, 1));
+        heading.setMinimumSize(new java.awt.Dimension(328, 25));
+        heading.setPreferredSize(new java.awt.Dimension(888, 90));
+        heading.setLayout(new java.awt.BorderLayout());
+
+        left.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
+        left.setMinimumSize(new java.awt.Dimension(800, 58));
+        left.setPreferredSize(new java.awt.Dimension(600, 50));
+        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0);
+        flowLayout1.setAlignOnBaseline(true);
+        left.setLayout(flowLayout1);
+
+        appLogo.setPreferredSize(new java.awt.Dimension(100, 50));
+        java.awt.FlowLayout flowLayout2 = new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 10);
+        flowLayout2.setAlignOnBaseline(true);
+        appLogo.setLayout(flowLayout2);
+
+        logo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/check_box_28dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        logo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        appLogo.add(logo);
+
+        left.add(appLogo);
+
+        names.setPreferredSize(new java.awt.Dimension(300, 50));
+        names.setLayout(new java.awt.GridLayout(2, 1));
+
+        appName.setText("App Name");
+        names.add(appName);
+
+        shopName.setFont(new java.awt.Font("Inter", 0, 23)); // NOI18N
+        shopName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        shopName.setText("CompShop ng Group B");
+        shopName.setPreferredSize(new java.awt.Dimension(400, 30));
+        names.add(shopName);
+
+        left.add(names);
+
+        heading.add(left, java.awt.BorderLayout.WEST);
+
+        right.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
+        right.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        shopStatusPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
+        shopStatusPanel.setPreferredSize(new java.awt.Dimension(150, 50));
+
+        shopStatus.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        shopStatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/door_open_18dp_E3E3E3_FILL0_wght400_GRAD0_opsz20.png"))); // NOI18N
+        shopStatus.setText("Closed");
+        shopStatus.setAlignmentY(0.0F);
+        shopStatus.addPropertyChangeListener(this::shopStatusPropertyChange);
+        shopStatusPanel.add(shopStatus);
+
+        right.add(shopStatusPanel);
+
+        logOutBtnPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 1, 1, 1));
+        logOutBtnPanel.setPreferredSize(new java.awt.Dimension(126, 50));
+
+        logoutBtn.setBackground(new java.awt.Color(23, 26, 33));
+        logoutBtn.setFont(logoutBtn.getFont().deriveFont((float)18));
+        logoutBtn.setForeground(new java.awt.Color(255, 255, 255));
+        logoutBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/door_open_18dp_E3E3E3_FILL0_wght400_GRAD0_opsz20.png"))); // NOI18N
+        logoutBtn.setText("Log Out");
+        logoutBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutBtnMouseClicked(evt);
+            }
+        });
+        logoutBtn.addActionListener(this::logoutBtnActionPerformed);
+        logOutBtnPanel.add(logoutBtn);
+
+        right.add(logOutBtnPanel);
+
+        heading.add(right, java.awt.BorderLayout.EAST);
+
+        getContentPane().add(heading, java.awt.BorderLayout.NORTH);
+
+        mainTabGroup.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 20, 10));
+        mainTabGroup.setFont(mainTabGroup.getFont().deriveFont(mainTabGroup.getFont().getStyle() & ~java.awt.Font.BOLD, 20));
+        mainTabGroup.setInheritsPopupMenu(true);
+        mainTabGroup.setName(""); // NOI18N
         getContentPane().add(mainTabGroup, java.awt.BorderLayout.CENTER);
 
         setBounds(0, 0, 908, 618);
@@ -635,6 +642,10 @@ public class AdminAppWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_newSessionButtonActionPerformed
 
+    private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logoutBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -642,30 +653,54 @@ public class AdminAppWindow extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             new AdminAppWindow().setVisible(true);
         });
+
+//            if (isShopOpen) {
+//                shopStatus.setIcon(new ImageIcon(
+//                        AdminAppWindow.class.getResource("/icons/shopClosedIcon.png")));
+//            } else {
+//                shopStatus.setIcon(new ImageIcon(
+//                        bsit2hg1groupb.billingSystem.AdminAppWindow.class.getResource("/icons/shopOpenIcon.png")));
+//            }
     }
 
-    //SHOP MANAGEMENT
-    private boolean isShopOpen = false;
+    // SHOP MANAGEMENT
+    private static boolean isShopOpen = false;
 
-    private void openShop(boolean openShop) {
-        this.isShopOpen = openShop;
+    public static void openShop(boolean openShop) {
+        isShopOpen = openShop;
+    }
 
-        if (openShop) {
+    public static boolean isShopOpen() {
+        return isShopOpen;
+    }
+
+    public void updateShopStatusUI() {
+        if (AdminAppWindow.isShopOpen()) {
+            shopStatus.setIcon(loadIcon("/icons/shopOpenIcon.png"));
             shopStatus.setText("Open");
-            //icon
         } else {
+            shopStatus.setIcon(loadIcon("/icons/shopClosedIcon.png"));
             shopStatus.setText("Closed");
-            //default
+        }
+    }
+
+    private javax.swing.ImageIcon loadIcon(String path) {
+        java.net.URL imgURL = getClass().getResource(path);
+        if (imgURL != null) {
+            return new javax.swing.ImageIcon(imgURL);
+        } else {
+            System.err.println("Cannot find resource path: " + path);
+            return new javax.swing.ImageIcon();
         }
     }
 
     class RoundedPanel extends JPanel {
 
-        private int cornerRadius = 25; // Default radius
+        private int cornerRadius = 25;
 
         public RoundedPanel() {
             super();
-            setOpaque(false); // Iwasan ang default rectangular fill
+            setOpaque(false);
         }
 
         public RoundedPanel(int radius) {
