@@ -14,6 +14,7 @@ import javax.swing.UIManager;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 
+
 /**
  *
  * @author Koi
@@ -27,11 +28,13 @@ public class AdminAppWindow extends javax.swing.JFrame {
         this.setSize(1280, 720);
         this.setLocationRelativeTo(null);
 
-        // Ilagay sa index 0 (pinakaunang tab sa kaliwa)
+        // TABS
         mainTabGroup.insertTab("New Dashboard", null, new dashboardTabPanel(), null, 0);
-
-// Piliin agad ito bilang aktibong tab pagkabukas
         mainTabGroup.setSelectedIndex(0);
+
+        mainTabGroup.insertTab("Billing Tester", null, new BillingTester(), null, 1);
+        
+        
 
         mainTabGroup.setTabLayoutPolicy(javax.swing.JTabbedPane.WRAP_TAB_LAYOUT);
         mainTabGroup.putClientProperty("JTabbedPane.tabWidthMode", "equal");
