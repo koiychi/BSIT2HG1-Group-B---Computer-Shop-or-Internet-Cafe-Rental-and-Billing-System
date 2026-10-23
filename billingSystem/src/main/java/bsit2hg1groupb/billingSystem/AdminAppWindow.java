@@ -274,6 +274,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
                 newSessionButtonMouseClicked(evt);
             }
         });
+        newSessionButton.addActionListener(this::newSessionButtonActionPerformed);
         quickActions.add(newSessionButton);
 
         shopToggle.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
@@ -396,24 +397,9 @@ public class AdminAppWindow extends javax.swing.JFrame {
     private void newSessionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newSessionButtonMouseClicked
         NewSession newSessionPanel = new NewSession();
 
-        Object[] customButtons = {"Start Session", "Cancel"};
-
-        int option = javax.swing.JOptionPane.showOptionDialog(
-                this,
-                newSessionPanel,
-                "Station Details",
-                javax.swing.JOptionPane.DEFAULT_OPTION,
-                javax.swing.JOptionPane.PLAIN_MESSAGE,
-                null,
-                customButtons,
-                customButtons[0]
-        );
-
-        if (option == 0) {
-            System.out.println("Session Started!!");
-        } else if (option == 1 || option == javax.swing.JOptionPane.CLOSED_OPTION) {
-            System.out.println("Transaction is cancelled");
-        }
+               dialog1 dlg = new dialog1(this, true);
+    dlg.setLocationRelativeTo(this);
+    dlg.setVisible(true);
     }//GEN-LAST:event_newSessionButtonMouseClicked
 
     private void logoutBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutBtnMouseClicked
@@ -449,6 +435,10 @@ public class AdminAppWindow extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_shopToggleMouseClicked
+
+    private void newSessionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSessionButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_newSessionButtonActionPerformed
 
     /**
      * @param args the command line arguments
