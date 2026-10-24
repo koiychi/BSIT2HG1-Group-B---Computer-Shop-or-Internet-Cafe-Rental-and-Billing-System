@@ -4,6 +4,14 @@
  */
 package bsit2hg1groupb.billingSystem.ui.Shop;
 
+import java.math.*;
+import java.time.*;
+import java.time.format.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.table.*;
+
+
 /**
  *
  * @author koi
@@ -15,6 +23,7 @@ public class transactionsTabPanel extends javax.swing.JPanel {
      */
     public transactionsTabPanel() {
         initComponents();
+        setupLogic();
     }
 
     /**
@@ -26,19 +35,236 @@ public class transactionsTabPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        controlPanel = new javax.swing.JPanel();
+        searchBarText = new javax.swing.JTextField();
+        dateTimeBox = new javax.swing.JComboBox<>();
+        actionbox = new javax.swing.JComboBox<>();
+        paymentBox = new javax.swing.JComboBox<>();
+        customerBox = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        dataTable = new javax.swing.JTable();
+
+        setPreferredSize(new java.awt.Dimension(940, 300));
+
+        searchBarText.setText("Search");
+        searchBarText.addActionListener(this::searchBarTextActionPerformed);
+
+        dateTimeBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Today", "Last 7 days", "This Month" }));
+        dateTimeBox.addActionListener(this::dateTimeBoxActionPerformed);
+
+        actionbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "PC-Gaming", "PC-Regular", "Printing", "Top-up" }));
+
+        paymentBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Cash", "Credit" }));
+
+        customerBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Member", "Regular" }));
+
+        javax.swing.GroupLayout controlPanelLayout = new javax.swing.GroupLayout(controlPanel);
+        controlPanel.setLayout(controlPanelLayout);
+        controlPanelLayout.setHorizontalGroup(
+            controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(controlPanelLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(searchBarText, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
+                .addComponent(customerBox, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(paymentBox, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(actionbox, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(dateTimeBox, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
+        );
+        controlPanelLayout.setVerticalGroup(
+            controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, controlPanelLayout.createSequentialGroup()
+                .addContainerGap(25, Short.MAX_VALUE)
+                .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchBarText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dateTimeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(actionbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(paymentBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(customerBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23))
+        );
+
+        dataTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Date & Time", "Username", "Name", "Unit", "Action", "Payment", "Amount"
+            }
+        ));
+        jScrollPane1.setViewportView(dataTable);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(controlPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void searchBarTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBarTextActionPerformed
+        applyFilters();
+    }//GEN-LAST:event_searchBarTextActionPerformed
+
+    private void dateTimeBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dateTimeBoxActionPerformed
+        applyFilters();
+    }//GEN-LAST:event_dateTimeBoxActionPerformed
+    
+    private DefaultTableModel model;
+    private TableRowSorter<DefaultTableModel> sorter;
+    private static final DateTimeFormatter STAMP = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    private void setupLogic() {
+        // 0 date, 1 username, 2 name, 3 unit, 4 action, 5 payment, 6 amount
+        model = new DefaultTableModel(
+                new String[] { "Date & Time", "Username", "Name", "Unit", "Action", "Payment", "Amount" }, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;   // read-only history
+            }
+
+            @Override
+            public Class<?> getColumnClass(int column) {
+                return column == 6 ? BigDecimal.class : String.class;   // amount sorts as a number
+            }
+        };
+        dataTable.setModel(model);
+        dataTable.setRowHeight(28);
+        dataTable.setFillsViewportHeight(true);
+        dataTable.getTableHeader().setReorderingAllowed(false);
+
+        // amount column shows "PHP 12.00", right aligned
+        dataTable.getColumnModel().getColumn(6).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            protected void setValue(Object value) {
+                setText(value instanceof BigDecimal ? PaymentUtil.money((BigDecimal) value) : "");
+                setHorizontalAlignment(SwingConstants.RIGHT);
+            }
+        });
+
+        // sorting: newest first by default, click a column header to sort by it
+        sorter = new TableRowSorter<>(model);
+        dataTable.setRowSorter(sorter);
+        sorter.setSortKeys(List.of(new RowSorter.SortKey(0, SortOrder.DESCENDING)));
+
+        // search bar
+        searchBarText.setText("");
+        searchBarText.putClientProperty("JTextField.placeholderText", "Search");
+        searchBarText.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) { applyFilters(); }
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) { applyFilters(); }
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) { applyFilters(); }
+        });
+
+        // the other three combo boxes (dateTimeBox already has its handler above)
+        actionbox.addActionListener(e -> applyFilters());
+        paymentBox.addActionListener(e -> applyFilters());
+        customerBox.addActionListener(e -> applyFilters());
+
+        // every successful payment from the Shop dialogs lands in this table
+        PaymentUtil.logger = (member, action, amount, payment) -> recordTransaction(member, action, amount, payment);
+    }
+
+    // adds one row; regular customers have no username or name, and no unit is picked yet
+    public void recordTransaction(boolean member, String action, BigDecimal amount, String payment) {
+        model.addRow(new Object[] {
+            LocalDateTime.now().format(STAMP),
+            member ? PaymentUtil.USERNAME : "-",
+            member ? PaymentUtil.FULL_NAME : "-",
+            "-",
+            action,
+            payment,
+            amount
+        });
+    }
+
+    // search bar + the four combo boxes, all combined
+       // lowercase, no spaces or dashes, so "PC - Gaming" and "PC-Gaming" are the same
+    private static String norm(String s) {
+        return s == null ? "" : s.replaceAll("[\\s-]", "").toLowerCase();
+    }
+
+    // search bar + the four combo boxes, all combined
+    private void applyFilters() {
+        if (sorter == null) {
+            return;
+        }
+        final String text = searchBarText.getText().trim().toLowerCase();
+        final String range = (String) dateTimeBox.getSelectedItem();
+        final String action = norm((String) actionbox.getSelectedItem());
+        final String payment = norm((String) paymentBox.getSelectedItem());
+        final String customer = (String) customerBox.getSelectedItem();
+
+        // date ranges
+        final LocalDate today = LocalDate.now();
+        final LocalDate weekStart = today.minusDays(6);              // today + the 6 days before = 7 days
+        final YearMonth thisMonth = YearMonth.from(today);
+        final LocalDate monthStart = thisMonth.atDay(1);             // the 1st
+        final LocalDate monthEnd = thisMonth.atEndOfMonth();         // the 28th, 29th, 30th or 31st
+
+        sorter.setRowFilter(new RowFilter<DefaultTableModel, Integer>() {
+            @Override
+            public boolean include(RowFilter.Entry<? extends DefaultTableModel, ? extends Integer> entry) {
+                // customer: members have a username, regular customers show "-"
+                boolean isMember = !"-".equals(entry.getStringValue(1));
+                if ("Member".equals(customer) && !isMember) return false;
+                if ("Regular".equals(customer) && isMember) return false;
+
+                // action: the table's action must equal the action box text
+                if (!"all".equals(action) && !action.equals(norm(entry.getStringValue(4)))) return false;
+
+                // payment: Cash or Credit (also matches "Shop Credit")
+                if (!"all".equals(payment) && !norm(entry.getStringValue(5)).contains(payment)) return false;
+
+                // date range
+                if (!"All".equals(range)) {
+                    LocalDate d = LocalDate.parse(entry.getStringValue(0).substring(0, 10));
+                    if ("Today".equals(range) && !d.equals(today)) return false;
+                    if ("Last 7 days".equals(range) && (d.isBefore(weekStart) || d.isAfter(today))) return false;
+                    if ("This Month".equals(range) && (d.isBefore(monthStart) || d.isAfter(monthEnd))) return false;
+                }
+
+                // search: any column contains the text
+                if (!text.isEmpty()) {
+                    for (int i = 0; i < entry.getValueCount(); i++) {
+                        if (entry.getStringValue(i).toLowerCase().contains(text)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+                return true;
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> actionbox;
+    private javax.swing.JPanel controlPanel;
+    private javax.swing.JComboBox<String> customerBox;
+    private javax.swing.JTable dataTable;
+    private javax.swing.JComboBox<String> dateTimeBox;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JComboBox<String> paymentBox;
+    private javax.swing.JTextField searchBarText;
     // End of variables declaration//GEN-END:variables
 }
