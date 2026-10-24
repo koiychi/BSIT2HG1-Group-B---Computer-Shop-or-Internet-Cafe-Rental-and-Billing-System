@@ -4,18 +4,9 @@
  */
 package bsit2hg1groupb.billingSystem.ui.Members;
 
-/**
- *
- * @author koi
- */
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -32,26 +23,22 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+/**
+ *
+ * @author koi
+ */
 public class membersTabPanel extends javax.swing.JPanel {
+
+    // --- State & UI Variables ---
+    private DefaultTableModel membersTableModel;
+    private TableRowSorter<DefaultTableModel> membersSorter;
+
+    // Nagtatago ng password pansamantala
+    private final Map<String, String> memberPasswords = new HashMap<>();
 
     /**
      * Creates new form membersTabPanel
      */
-    // --- State & UI Variables ni Gerald ---
-    private JPanel membersHeader;
-    private JPanel membersToolbar;
-    private JLabel membersTitle;
-    private JLabel searchUsernameLabel;
-    private JTextField searchUsernameField;
-    private JComboBox<String> memberSortCombo;
-    private JButton addMemberButton;
-    private JTable membersTable;
-    private DefaultTableModel membersTableModel;
-    private TableRowSorter<DefaultTableModel> membersSorter;
-
-    // Nagtatago ng password pansamantala (plain text muna hangga't walang DB)
-    private final Map<String, String> memberPasswords = new HashMap<>();
-
     public membersTabPanel() {
         initComponents();
         buildMembersUI();
@@ -66,22 +53,89 @@ public class membersTabPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        topPanel = new javax.swing.JPanel();
+        membersTitle = new javax.swing.JLabel();
+        toolbarPanel = new javax.swing.JPanel();
+        searchAndSortPanel = new javax.swing.JPanel();
+        searchUsernameField = new javax.swing.JTextField();
+        memberSortCombo = new javax.swing.JComboBox<>();
+        addMemberButton = new javax.swing.JButton();
+        tableScroll = new javax.swing.JScrollPane();
+        membersTable = new javax.swing.JTable();
+
+        setLayout(new java.awt.BorderLayout());
+
+        topPanel.setBackground(new java.awt.Color(11, 11, 15));
+        topPanel.setLayout(new java.awt.BorderLayout());
+
+        membersTitle.setFont(new java.awt.Font("Arial", 1, 22)); // NOI18N
+        membersTitle.setForeground(new java.awt.Color(240, 240, 240));
+        membersTitle.setText("Shop Members");
+        topPanel.add(membersTitle, java.awt.BorderLayout.WEST);
+
+        toolbarPanel.setOpaque(false);
+        toolbarPanel.setLayout(new java.awt.BorderLayout());
+
+        searchAndSortPanel.setOpaque(false);
+        searchAndSortPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        searchUsernameField.setColumns(15);
+        searchUsernameField.setText("Search Username...");
+        searchAndSortPanel.add(searchUsernameField);
+
+        memberSortCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Descending", "Ascending" }));
+        searchAndSortPanel.add(memberSortCombo);
+
+        toolbarPanel.add(searchAndSortPanel, java.awt.BorderLayout.WEST);
+
+        addMemberButton.setBackground(new java.awt.Color(255, 102, 0));
+        addMemberButton.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
+        addMemberButton.setForeground(new java.awt.Color(255, 255, 255));
+        addMemberButton.setText("+ Add Member");
+        toolbarPanel.add(addMemberButton, java.awt.BorderLayout.EAST);
+
+        topPanel.add(toolbarPanel, java.awt.BorderLayout.SOUTH);
+
+        add(topPanel, java.awt.BorderLayout.NORTH);
+
+        membersTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Username", "Name", "Credit Balance", "Discount Rate", "Action"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tableScroll.setViewportView(membersTable);
+
+        add(tableScroll, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addMemberButton;
+    private javax.swing.JComboBox<String> memberSortCombo;
+    private javax.swing.JTable membersTable;
+    private javax.swing.JLabel membersTitle;
+    private javax.swing.JPanel searchAndSortPanel;
+    private javax.swing.JTextField searchUsernameField;
+    private javax.swing.JScrollPane tableScroll;
+    private javax.swing.JPanel toolbarPanel;
+    private javax.swing.JPanel topPanel;
     // End of variables declaration//GEN-END:variables
-private void buildMembersUI() {
+
+    private void buildMembersUI() {
         Color bg = new Color(11, 11, 15);
         Color orange = new Color(255, 102, 0);
         Color white = new Color(240, 240, 240);
@@ -95,7 +149,7 @@ private void buildMembersUI() {
         content.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // MEMBERS HEADING
-        membersHeader = new JPanel(new java.awt.BorderLayout());
+        JPanel membersHeader = new JPanel(new java.awt.BorderLayout());
         membersHeader.setBackground(bg);
 
         membersTitle = new JLabel("Shop Members");
@@ -104,7 +158,7 @@ private void buildMembersUI() {
         membersHeader.add(membersTitle, java.awt.BorderLayout.WEST);
 
         // TOOLBAR
-        membersToolbar = new JPanel(new java.awt.BorderLayout(12, 0));
+        JPanel membersToolbar = new JPanel(new java.awt.BorderLayout(12, 0));
         membersToolbar.setBackground(bg);
 
         JPanel searchPanel = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 8, 0));
@@ -113,7 +167,7 @@ private void buildMembersUI() {
         JPanel searchGroup = new JPanel(new java.awt.BorderLayout(0, 5));
         searchGroup.setBackground(bg);
 
-        searchUsernameLabel = new JLabel("Search Username");
+        JLabel searchUsernameLabel = new JLabel("Search Username");
         searchUsernameLabel.setForeground(white);
         searchUsernameLabel.setFont(new Font("Arial", Font.PLAIN, 12));
 
