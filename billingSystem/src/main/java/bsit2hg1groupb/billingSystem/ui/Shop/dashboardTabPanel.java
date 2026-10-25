@@ -30,7 +30,6 @@ public class dashboardTabPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         newSessionButton = new javax.swing.JButton();
         quickStatistics = new javax.swing.JPanel();
@@ -101,12 +100,12 @@ public class dashboardTabPanel extends javax.swing.JPanel {
         shopMembersGroup = new javax.swing.JPanel();
         shopMembersGroupLabel = new javax.swing.JLabel();
         topUpMemberBtn = new javax.swing.JButton();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5));
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 15), new java.awt.Dimension(0, 15));
         addMemberBtn = new javax.swing.JButton();
         shopManagementGroup = new javax.swing.JPanel();
         shopManagementLabel = new javax.swing.JLabel();
         ViewTodaysSales = new javax.swing.JButton();
-        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5));
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 15), new java.awt.Dimension(0, 15));
         CloseShopBtn = new javax.swing.JButton();
 
         newSessionButton.setText("New Session");
