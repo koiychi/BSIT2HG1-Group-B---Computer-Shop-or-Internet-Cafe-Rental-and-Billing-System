@@ -31,7 +31,6 @@ public class dashboardTabPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        newSessionButton = new javax.swing.JButton();
         quickStatistics = new javax.swing.JPanel();
         quickStatisticsHeading = new javax.swing.JPanel();
         dashboardHeadingText = new javax.swing.JLabel();
@@ -88,8 +87,11 @@ public class dashboardTabPanel extends javax.swing.JPanel {
         activeSessions = new javax.swing.JPanel();
         activeSessionsHeading = new javax.swing.JPanel();
         activeSessionsLabel = new javax.swing.JLabel();
+        newSessionButton = new javax.swing.JButton();
+        activeSessionsMainPanel = new javax.swing.JPanel();
         tableScrollPane = new javax.swing.JScrollPane();
         activeSessionsTable = new javax.swing.JTable();
+        shopIsClosed = new javax.swing.JPanel();
         quickActions = new javax.swing.JPanel();
         quickActionsLabelPanel = new javax.swing.JPanel();
         quickActionsLabel = new javax.swing.JLabel();
@@ -107,14 +109,6 @@ public class dashboardTabPanel extends javax.swing.JPanel {
         ViewTodaysSales = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 15), new java.awt.Dimension(0, 15));
         CloseShopBtn = new javax.swing.JButton();
-
-        newSessionButton.setText("New Session");
-        newSessionButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                newSessionButtonMouseClicked(evt);
-            }
-        });
-        newSessionButton.addActionListener(this::newSessionButtonActionPerformed);
 
         setPreferredSize(new java.awt.Dimension(1131, 500));
         setLayout(new java.awt.BorderLayout());
@@ -251,15 +245,17 @@ public class dashboardTabPanel extends javax.swing.JPanel {
 
         add(quickStatistics, java.awt.BorderLayout.NORTH);
 
-        lowerSegments.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
+        lowerSegments.setBorder(javax.swing.BorderFactory.createEmptyBorder(30, 1, 1, 1));
         lowerSegments.setLayout(new java.awt.BorderLayout(15, 0));
 
+        activeSessions.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 30, 1));
         activeSessions.setForeground(new java.awt.Color(255, 153, 51));
         activeSessions.setPreferredSize(new java.awt.Dimension(550, 60));
         activeSessions.setLayout(new java.awt.BorderLayout());
 
+        activeSessionsHeading.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 10, 1));
         activeSessionsHeading.setPreferredSize(new java.awt.Dimension(230, 40));
-        activeSessionsHeading.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        activeSessionsHeading.setLayout(new java.awt.BorderLayout());
 
         activeSessionsLabel.setFont(activeSessionsLabel.getFont().deriveFont((float)24));
         activeSessionsLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -269,9 +265,26 @@ public class dashboardTabPanel extends javax.swing.JPanel {
         activeSessionsLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         activeSessionsLabel.setPreferredSize(new java.awt.Dimension(225, 30));
         activeSessionsLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        activeSessionsHeading.add(activeSessionsLabel);
+        activeSessionsHeading.add(activeSessionsLabel, java.awt.BorderLayout.WEST);
+
+        newSessionButton.setBackground(new java.awt.Color(23, 26, 33));
+        newSessionButton.setFont(new java.awt.Font("Inter", 0, 20)); // NOI18N
+        newSessionButton.setForeground(new java.awt.Color(255, 255, 255));
+        newSessionButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        newSessionButton.setText("New Session");
+        newSessionButton.setMaximumSize(new java.awt.Dimension(189, 50));
+        newSessionButton.setPreferredSize(new java.awt.Dimension(189, 50));
+        newSessionButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                newSessionButtonMouseClicked(evt);
+            }
+        });
+        newSessionButton.addActionListener(this::newSessionButtonActionPerformed);
+        activeSessionsHeading.add(newSessionButton, java.awt.BorderLayout.EAST);
 
         activeSessions.add(activeSessionsHeading, java.awt.BorderLayout.NORTH);
+
+        activeSessionsMainPanel.setLayout(new java.awt.CardLayout());
 
         activeSessionsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -286,10 +299,14 @@ public class dashboardTabPanel extends javax.swing.JPanel {
         ));
         tableScrollPane.setViewportView(activeSessionsTable);
 
-        activeSessions.add(tableScrollPane, java.awt.BorderLayout.CENTER);
+        activeSessionsMainPanel.add(tableScrollPane, "TABLE_CARD");
+        activeSessionsMainPanel.add(shopIsClosed, "CLOSED_SHOP_CARD");
+
+        activeSessions.add(activeSessionsMainPanel, java.awt.BorderLayout.CENTER);
 
         lowerSegments.add(activeSessions, java.awt.BorderLayout.CENTER);
 
+        quickActions.setBackground(new java.awt.Color(23, 26, 33));
         quickActions.setAlignmentX(0.0F);
         quickActions.setMaximumSize(new java.awt.Dimension(400, 48));
         quickActions.setPreferredSize(new java.awt.Dimension(400, 229));
@@ -297,10 +314,12 @@ public class dashboardTabPanel extends javax.swing.JPanel {
 
         quickActionsLabelPanel.setMaximumSize(new java.awt.Dimension(170, 40));
         quickActionsLabelPanel.setMinimumSize(new java.awt.Dimension(170, 40));
+        quickActionsLabelPanel.setOpaque(false);
         quickActionsLabelPanel.setPreferredSize(new java.awt.Dimension(300, 40));
         quickActionsLabelPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         quickActionsLabel.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        quickActionsLabel.setForeground(new java.awt.Color(255, 255, 255));
         quickActionsLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         quickActionsLabel.setText("Quick Actions");
         quickActionsLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -311,16 +330,19 @@ public class dashboardTabPanel extends javax.swing.JPanel {
 
         quickActions.add(quickActionsLabelPanel);
 
+        quickActionsGroup.setOpaque(false);
         quickActionsGroup.setPreferredSize(new java.awt.Dimension(382, 332));
         quickActionsGroup.setLayout(new javax.swing.BoxLayout(quickActionsGroup, javax.swing.BoxLayout.Y_AXIS));
 
         printingServicesGroup.setMaximumSize(new java.awt.Dimension(400, 100));
         printingServicesGroup.setMinimumSize(new java.awt.Dimension(89, 46));
         printingServicesGroup.setName(""); // NOI18N
+        printingServicesGroup.setOpaque(false);
         printingServicesGroup.setPreferredSize(new java.awt.Dimension(200, 100));
         printingServicesGroup.setLayout(new javax.swing.BoxLayout(printingServicesGroup, javax.swing.BoxLayout.Y_AXIS));
 
         printingServicesLabel.setFont(new java.awt.Font("Inter", 0, 20)); // NOI18N
+        printingServicesLabel.setForeground(new java.awt.Color(255, 255, 255));
         printingServicesLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         printingServicesLabel.setText("Printing Services");
         printingServicesLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 10, 1));
@@ -335,17 +357,21 @@ public class dashboardTabPanel extends javax.swing.JPanel {
         newPrintOrderBtn.setText("New Print Order");
         newPrintOrderBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         newPrintOrderBtn.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        newPrintOrderBtn.setMaximumSize(new java.awt.Dimension(300, 40));
+        newPrintOrderBtn.setMaximumSize(new java.awt.Dimension(300, 50));
         newPrintOrderBtn.setMinimumSize(new java.awt.Dimension(200, 26));
-        newPrintOrderBtn.setPreferredSize(new java.awt.Dimension(300, 40));
+        newPrintOrderBtn.setPreferredSize(new java.awt.Dimension(300, 50));
         newPrintOrderBtn.addActionListener(this::newPrintOrderBtnActionPerformed);
         printingServicesGroup.add(newPrintOrderBtn);
 
         quickActionsGroup.add(printingServicesGroup);
 
+        shopMembersGroup.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 1, 1, 1));
+        shopMembersGroup.setMaximumSize(new java.awt.Dimension(400, 151));
+        shopMembersGroup.setOpaque(false);
         shopMembersGroup.setLayout(new javax.swing.BoxLayout(shopMembersGroup, javax.swing.BoxLayout.Y_AXIS));
 
         shopMembersGroupLabel.setFont(new java.awt.Font("Inter", 0, 20)); // NOI18N
+        shopMembersGroupLabel.setForeground(new java.awt.Color(255, 255, 255));
         shopMembersGroupLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         shopMembersGroupLabel.setText("Shop Members");
         shopMembersGroupLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 10, 1));
@@ -357,8 +383,9 @@ public class dashboardTabPanel extends javax.swing.JPanel {
         topUpMemberBtn.setForeground(new java.awt.Color(255, 255, 255));
         topUpMemberBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add_card_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
         topUpMemberBtn.setText("Top Up Member Credits");
+        topUpMemberBtn.setMaximumSize(new java.awt.Dimension(271, 50));
         topUpMemberBtn.setMinimumSize(new java.awt.Dimension(200, 26));
-        topUpMemberBtn.setPreferredSize(new java.awt.Dimension(40, 40));
+        topUpMemberBtn.setPreferredSize(new java.awt.Dimension(40, 50));
         topUpMemberBtn.addActionListener(this::topUpMemberBtnActionPerformed);
         shopMembersGroup.add(topUpMemberBtn);
         shopMembersGroup.add(filler1);
@@ -368,17 +395,21 @@ public class dashboardTabPanel extends javax.swing.JPanel {
         addMemberBtn.setForeground(new java.awt.Color(255, 255, 255));
         addMemberBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/person_add_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
         addMemberBtn.setText("Add New Member");
+        addMemberBtn.setMaximumSize(new java.awt.Dimension(220, 50));
         addMemberBtn.setMinimumSize(new java.awt.Dimension(200, 26));
-        addMemberBtn.setPreferredSize(new java.awt.Dimension(40, 40));
+        addMemberBtn.setPreferredSize(new java.awt.Dimension(40, 50));
         addMemberBtn.addActionListener(this::addMemberBtnActionPerformed);
         shopMembersGroup.add(addMemberBtn);
 
         quickActionsGroup.add(shopMembersGroup);
 
-        shopManagementGroup.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 10, 1));
+        shopManagementGroup.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 1, 10, 1));
+        shopManagementGroup.setMaximumSize(new java.awt.Dimension(400, 171));
+        shopManagementGroup.setOpaque(false);
         shopManagementGroup.setLayout(new javax.swing.BoxLayout(shopManagementGroup, javax.swing.BoxLayout.Y_AXIS));
 
         shopManagementLabel.setFont(new java.awt.Font("Inter", 0, 20)); // NOI18N
+        shopManagementLabel.setForeground(new java.awt.Color(255, 255, 255));
         shopManagementLabel.setText("Shop Management");
         shopManagementLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 10, 1));
         shopManagementGroup.add(shopManagementLabel);
@@ -388,8 +419,9 @@ public class dashboardTabPanel extends javax.swing.JPanel {
         ViewTodaysSales.setForeground(new java.awt.Color(255, 255, 255));
         ViewTodaysSales.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/payments_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
         ViewTodaysSales.setText("View Today's Sales");
+        ViewTodaysSales.setMaximumSize(new java.awt.Dimension(232, 50));
         ViewTodaysSales.setMinimumSize(new java.awt.Dimension(200, 26));
-        ViewTodaysSales.setPreferredSize(new java.awt.Dimension(40, 40));
+        ViewTodaysSales.setPreferredSize(new java.awt.Dimension(40, 50));
         ViewTodaysSales.addActionListener(this::ViewTodaysSalesActionPerformed);
         shopManagementGroup.add(ViewTodaysSales);
         shopManagementGroup.add(filler2);
@@ -399,8 +431,9 @@ public class dashboardTabPanel extends javax.swing.JPanel {
         CloseShopBtn.setForeground(new java.awt.Color(255, 255, 255));
         CloseShopBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/door_front_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
         CloseShopBtn.setText("Close Shop");
+        CloseShopBtn.setMaximumSize(new java.awt.Dimension(163, 50));
         CloseShopBtn.setMinimumSize(new java.awt.Dimension(200, 26));
-        CloseShopBtn.setPreferredSize(new java.awt.Dimension(40, 40));
+        CloseShopBtn.setPreferredSize(new java.awt.Dimension(40, 50));
         CloseShopBtn.addActionListener(this::CloseShopBtnActionPerformed);
         shopManagementGroup.add(CloseShopBtn);
 
@@ -452,6 +485,7 @@ public class dashboardTabPanel extends javax.swing.JPanel {
     private javax.swing.JPanel activeSessions;
     private javax.swing.JPanel activeSessionsHeading;
     private javax.swing.JLabel activeSessionsLabel;
+    private javax.swing.JPanel activeSessionsMainPanel;
     private javax.swing.JTable activeSessionsTable;
     private javax.swing.JButton addMemberBtn;
     private javax.swing.JPanel availableStationsCard;
@@ -482,6 +516,7 @@ public class dashboardTabPanel extends javax.swing.JPanel {
     private javax.swing.JPanel quickActionsLabelPanel;
     private javax.swing.JPanel quickStatistics;
     private javax.swing.JPanel quickStatisticsHeading;
+    private javax.swing.JPanel shopIsClosed;
     private javax.swing.JPanel shopManagementGroup;
     private javax.swing.JLabel shopManagementLabel;
     private javax.swing.JPanel shopMembersGroup;
