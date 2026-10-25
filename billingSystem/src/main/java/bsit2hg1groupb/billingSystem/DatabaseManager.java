@@ -17,6 +17,9 @@ import java.sql.Statement;
 
 public class DatabaseManager {
 
+// ==========================================
+// INITIALIZATION
+// ==========================================
     private static final String DBFile = "jdbc:sqlite:compShopDatabase.db";
     private static Connection connection = null;
 
@@ -30,7 +33,6 @@ public class DatabaseManager {
                     stmt.execute("PRAGMA foreign_keys = ON;");
                 }
 
-                // I-initialize ang mga tables ayon sa EERD Diagram
                 initializeTables();
             }
         } catch (ClassNotFoundException e) {
@@ -186,7 +188,6 @@ public class DatabaseManager {
 // ==========================================
 // UPDATING STATIONS
 // ==========================================
-    
     // Version 1: Status & End Time 
     public static boolean updateStation(String stationId, String status, String sessionEndTime) {
         String sql = "UPDATE STATION SET AvailabilityStatus = ?, SessionEndTime = ? WHERE StationID = ?";
@@ -263,7 +264,6 @@ public class DatabaseManager {
 // ==========================================
 // ADD TRANSACTION
 // ==========================================
-    
     //PC Rental
     public static boolean addTransaction(int customerId, String stationId, String transactionType, double amount, String paidBy) {
         String sql = "INSERT INTO TRANSACTIONS (CustomerID, StationID, TransactionType, Amount, PaidBy) VALUES (?, ?, ?, ?, ?)";
@@ -302,9 +302,6 @@ public class DatabaseManager {
         return 0.0;
     }
 
-    
-    
-    
     // Tester
     public static void main(String[] args) {
         System.out.println("=== STARTING DATABASE INTEGRATION TEST ===\n");
@@ -321,10 +318,10 @@ public class DatabaseManager {
 
         // 3. TEST: ADD TRANSACTIONS
         System.out.println("\n[TEST 3] Logging Transactions...");
-        
+
         // Transaction A: PC Rental for Customer ID 1 at Station PC-01
         boolean tx1 = DatabaseManager.addTransaction(1, "PC-01", "Rental", 40.00, "Cash");
-        
+
         // Transaction B: Printing Services for Customer ID 1 (No Station)
         boolean tx2 = DatabaseManager.addTransaction(1, "Printing", 15.00, "Cash");
 
@@ -345,24 +342,22 @@ public class DatabaseManager {
     // Console-based logger simulator para makita ang laman na parang JTable
     private static void printTransactionLogs() {
         String sql = "SELECT "
-                   + "  t.TransactionID, "
-                   + "  c.FirstName || ' ' || c.LastName AS CustomerName, "
-                   + "  IFNULL(t.StationID, 'N/A') AS Station, "
-                   + "  t.TransactionType, "
-                   + "  t.Amount, "
-                   + "  t.PaidBy, "
-                   + "  t.DateAndTime "
-                   + "FROM TRANSACTIONS t "
-                   + "JOIN CUSTOMER c ON t.CustomerID = c.CustomerID "
-                   + "ORDER BY t.TransactionID ASC";
+                + "  t.TransactionID, "
+                + "  c.FirstName || ' ' || c.LastName AS CustomerName, "
+                + "  IFNULL(t.StationID, 'N/A') AS Station, "
+                + "  t.TransactionType, "
+                + "  t.Amount, "
+                + "  t.PaidBy, "
+                + "  t.DateAndTime "
+                + "FROM TRANSACTIONS t "
+                + "JOIN CUSTOMER c ON t.CustomerID = c.CustomerID "
+                + "ORDER BY t.TransactionID ASC";
 
-        try (java.sql.Connection c = DatabaseManager.getConnection();
-             java.sql.Statement stmt = c.createStatement();
-             java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+        try (java.sql.Connection c = DatabaseManager.getConnection(); java.sql.Statement stmt = c.createStatement(); java.sql.ResultSet rs = stmt.executeQuery(sql)) {
 
             System.out.println("---------------------------------------------------------------------------------------------------------");
-            System.out.printf("| %-5s | %-18s | %-8s | %-12s | %-10s | %-15s | %-19s |\n", 
-                              "TxID", "Customer Name", "Station", "Type", "Amount", "Paid By", "Date & Time");
+            System.out.printf("| %-5s | %-18s | %-8s | %-12s | %-10s | %-15s | %-19s |\n",
+                    "TxID", "Customer Name", "Station", "Type", "Amount", "Paid By", "Date & Time");
             System.out.println("---------------------------------------------------------------------------------------------------------");
 
             while (rs.next()) {
