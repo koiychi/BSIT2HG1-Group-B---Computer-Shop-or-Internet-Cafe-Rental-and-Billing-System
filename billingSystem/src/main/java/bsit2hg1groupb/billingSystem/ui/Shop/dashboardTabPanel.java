@@ -30,12 +30,34 @@ public class dashboardTabPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
+        newSessionButton = new javax.swing.JButton();
         quickStatistics = new javax.swing.JPanel();
         quickStatisticsHeading = new javax.swing.JPanel();
         dashboardHeadingText = new javax.swing.JLabel();
         statsCards = new javax.swing.JPanel();
         availableStationsCard = new javax.swing.JPanel() {
+            protected void paintComponent(java.awt.Graphics g) {
+                java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
+
+                // Anti-aliasing para smooth at hindi pampag ang gilid ng curve
+                g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
+                    java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+
+                g2.setColor(getBackground());
+
+                // Bawasan ng 1 px ang width at height para eksakto sa bounds
+                g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 35, 35);
+
+                g2.dispose();
+            }
+        };
+        icon_AvailableStationsCard = new javax.swing.JLabel();
+        groupAvailableStationsCard = new javax.swing.JPanel();
+        intAvailableStations = new javax.swing.JLabel();
+        labelAvailableStations = new javax.swing.JLabel();
+        occupiedStationsCard = new javax.swing.JPanel() {
             @Override
             protected void paintComponent(java.awt.Graphics g) {
                 java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
@@ -45,14 +67,24 @@ public class dashboardTabPanel extends javax.swing.JPanel {
                 g2.dispose();
             }
         };
-        icon_AvailableStationsCard = new javax.swing.JLabel();
-        groupAvailableStationsCard = new javax.swing.JPanel();
-        intAvailableStations = new javax.swing.JLabel();
-        labelAvailableStations = new javax.swing.JLabel();
-        occupiedStationsCard = new javax.swing.JPanel();
-        newSessionButton = new javax.swing.JButton();
-        todaysSalesCard = new javax.swing.JPanel();
-        shopToggle = new javax.swing.JButton();
+        icon_OccupiedStationsCard = new javax.swing.JLabel();
+        groupOccupiedStationsCard = new javax.swing.JPanel();
+        intOccupiedStations = new javax.swing.JLabel();
+        labelOccupiedStations = new javax.swing.JLabel();
+        totalSalesCard = new javax.swing.JPanel() {
+            @Override
+            protected void paintComponent(java.awt.Graphics g) {
+                java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
+                g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(getBackground());
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 35, 35); // 35 = roundness
+                g2.dispose();
+            }
+        };
+        icon_TotalSalesCard = new javax.swing.JLabel();
+        groupTotalSalesCard = new javax.swing.JPanel();
+        intTotalSales = new javax.swing.JLabel();
+        labelTotalSales = new javax.swing.JLabel();
         lowerSegments = new javax.swing.JPanel();
         activeSessions = new javax.swing.JPanel();
         activeSessionsHeading = new javax.swing.JPanel();
@@ -62,14 +94,30 @@ public class dashboardTabPanel extends javax.swing.JPanel {
         quickActions = new javax.swing.JPanel();
         quickActionsLabelPanel = new javax.swing.JPanel();
         quickActionsLabel = new javax.swing.JLabel();
+        quickActionsGroup = new javax.swing.JPanel();
         printingServicesGroup = new javax.swing.JPanel();
-        printingServicesLabelPanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        printingServicesLabel = new javax.swing.JLabel();
+        newPrintOrderBtn = new javax.swing.JButton();
         shopMembersGroup = new javax.swing.JPanel();
+        shopMembersGroupLabel = new javax.swing.JLabel();
+        topUpMemberBtn = new javax.swing.JButton();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5));
+        addMemberBtn = new javax.swing.JButton();
         shopManagementGroup = new javax.swing.JPanel();
+        shopManagementLabel = new javax.swing.JLabel();
+        ViewTodaysSales = new javax.swing.JButton();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5));
+        CloseShopBtn = new javax.swing.JButton();
 
+        newSessionButton.setText("New Session");
+        newSessionButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                newSessionButtonMouseClicked(evt);
+            }
+        });
+        newSessionButton.addActionListener(this::newSessionButtonActionPerformed);
+
+        setPreferredSize(new java.awt.Dimension(1131, 500));
         setLayout(new java.awt.BorderLayout());
 
         quickStatistics.setPreferredSize(new java.awt.Dimension(100, 200));
@@ -103,7 +151,7 @@ public class dashboardTabPanel extends javax.swing.JPanel {
 
         icon_AvailableStationsCard.setFont(new java.awt.Font("Inter", 0, 48)); // NOI18N
         icon_AvailableStationsCard.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        icon_AvailableStationsCard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/check_box_50dp_E3E3E3_FILL0_wght400_GRAD0_opsz48.png"))); // NOI18N
+        icon_AvailableStationsCard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/check_box_50dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.png"))); // NOI18N
         availableStationsCard.add(icon_AvailableStationsCard);
 
         groupAvailableStationsCard.setBackground(new java.awt.Color(23, 26, 33));
@@ -128,62 +176,77 @@ public class dashboardTabPanel extends javax.swing.JPanel {
         availableStationsCard.add(groupAvailableStationsCard);
 
         statsCards.add(availableStationsCard);
-        availableStationsCard.putClientProperty("FlatLaf.style", "arc: 25");
+        availableStationsCard.putClientProperty("FlatLaf.style", "arc: 35");
 
-        newSessionButton.setText("New Session");
-        newSessionButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                newSessionButtonMouseClicked(evt);
-            }
-        });
-        newSessionButton.addActionListener(this::newSessionButtonActionPerformed);
+        occupiedStationsCard.setBackground(new java.awt.Color(23, 26, 33));
+        occupiedStationsCard.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 153, 51), 2, true));
+        occupiedStationsCard.setOpaque(false);
+        occupiedStationsCard.setPreferredSize(new java.awt.Dimension(222, 800));
+        occupiedStationsCard.setLayout(new java.awt.GridLayout(2, 1));
 
-        javax.swing.GroupLayout occupiedStationsCardLayout = new javax.swing.GroupLayout(occupiedStationsCard);
-        occupiedStationsCard.setLayout(occupiedStationsCardLayout);
-        occupiedStationsCardLayout.setHorizontalGroup(
-            occupiedStationsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, occupiedStationsCardLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(newSessionButton))
-        );
-        occupiedStationsCardLayout.setVerticalGroup(
-            occupiedStationsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, occupiedStationsCardLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(newSessionButton)
-                .addGap(39, 39, 39))
-        );
+        icon_OccupiedStationsCard.setFont(new java.awt.Font("Inter", 0, 48)); // NOI18N
+        icon_OccupiedStationsCard.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        icon_OccupiedStationsCard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/hourglass_50dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.png"))); // NOI18N
+        occupiedStationsCard.add(icon_OccupiedStationsCard);
+
+        groupOccupiedStationsCard.setBackground(new java.awt.Color(23, 26, 33));
+        groupOccupiedStationsCard.setOpaque(false);
+        groupOccupiedStationsCard.setPreferredSize(new java.awt.Dimension(208, 50));
+        groupOccupiedStationsCard.setLayout(new java.awt.GridLayout(2, 1));
+
+        intOccupiedStations.setBackground(new java.awt.Color(23, 26, 33));
+        intOccupiedStations.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        intOccupiedStations.setForeground(new java.awt.Color(255, 255, 255));
+        intOccupiedStations.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        intOccupiedStations.setText("10/20");
+        intOccupiedStations.setToolTipText("");
+        groupOccupiedStationsCard.add(intOccupiedStations);
+
+        labelOccupiedStations.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
+        labelOccupiedStations.setForeground(new java.awt.Color(255, 255, 255));
+        labelOccupiedStations.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelOccupiedStations.setText("Occupied Stations");
+        groupOccupiedStationsCard.add(labelOccupiedStations);
+
+        occupiedStationsCard.add(groupOccupiedStationsCard);
 
         statsCards.add(occupiedStationsCard);
+        availableStationsCard.putClientProperty("FlatLaf.style", "arc: 25");
 
-        shopToggle.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
-        shopToggle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/door_open_18dp_E3E3E3_FILL0_wght400_GRAD0_opsz20.png"))); // NOI18N
-        shopToggle.setText("Open Shop");
-        shopToggle.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                shopToggleMouseClicked(evt);
-            }
-        });
-        shopToggle.addActionListener(this::shopToggleActionPerformed);
+        totalSalesCard.setBackground(new java.awt.Color(23, 26, 33));
+        totalSalesCard.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 153, 51), 2, true));
+        totalSalesCard.setOpaque(false);
+        totalSalesCard.setPreferredSize(new java.awt.Dimension(222, 800));
+        totalSalesCard.setLayout(new java.awt.GridLayout(2, 1));
 
-        javax.swing.GroupLayout todaysSalesCardLayout = new javax.swing.GroupLayout(todaysSalesCard);
-        todaysSalesCard.setLayout(todaysSalesCardLayout);
-        todaysSalesCardLayout.setHorizontalGroup(
-            todaysSalesCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(todaysSalesCardLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(shopToggle)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        todaysSalesCardLayout.setVerticalGroup(
-            todaysSalesCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, todaysSalesCardLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(shopToggle)
-                .addGap(31, 31, 31))
-        );
+        icon_TotalSalesCard.setFont(new java.awt.Font("Inter", 0, 48)); // NOI18N
+        icon_TotalSalesCard.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        icon_TotalSalesCard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/payments_50dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.png"))); // NOI18N
+        totalSalesCard.add(icon_TotalSalesCard);
 
-        statsCards.add(todaysSalesCard);
+        groupTotalSalesCard.setBackground(new java.awt.Color(23, 26, 33));
+        groupTotalSalesCard.setOpaque(false);
+        groupTotalSalesCard.setPreferredSize(new java.awt.Dimension(208, 50));
+        groupTotalSalesCard.setLayout(new java.awt.GridLayout(2, 1));
+
+        intTotalSales.setBackground(new java.awt.Color(23, 26, 33));
+        intTotalSales.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        intTotalSales.setForeground(new java.awt.Color(255, 255, 255));
+        intTotalSales.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        intTotalSales.setText("10/20");
+        intTotalSales.setToolTipText("");
+        groupTotalSalesCard.add(intTotalSales);
+
+        labelTotalSales.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
+        labelTotalSales.setForeground(new java.awt.Color(255, 255, 255));
+        labelTotalSales.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelTotalSales.setText("Total Sales");
+        groupTotalSalesCard.add(labelTotalSales);
+
+        totalSalesCard.add(groupTotalSalesCard);
+
+        statsCards.add(totalSalesCard);
+        availableStationsCard.putClientProperty("FlatLaf.style", "arc: 25");
 
         quickStatistics.add(statsCards, java.awt.BorderLayout.CENTER);
 
@@ -192,7 +255,6 @@ public class dashboardTabPanel extends javax.swing.JPanel {
         lowerSegments.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 1));
         lowerSegments.setLayout(new java.awt.BorderLayout(15, 0));
 
-        activeSessions.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 204, 0)));
         activeSessions.setForeground(new java.awt.Color(255, 153, 51));
         activeSessions.setPreferredSize(new java.awt.Dimension(550, 60));
         activeSessions.setLayout(new java.awt.BorderLayout());
@@ -229,79 +291,123 @@ public class dashboardTabPanel extends javax.swing.JPanel {
 
         lowerSegments.add(activeSessions, java.awt.BorderLayout.CENTER);
 
-        quickActions.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 255, 51), 1, true));
-        quickActions.setMaximumSize(new java.awt.Dimension(304, 48));
-        quickActions.setLayout(new java.awt.BorderLayout());
+        quickActions.setAlignmentX(0.0F);
+        quickActions.setMaximumSize(new java.awt.Dimension(400, 48));
+        quickActions.setPreferredSize(new java.awt.Dimension(400, 229));
+        quickActions.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        quickActionsLabelPanel.setPreferredSize(new java.awt.Dimension(300, 30));
+        quickActionsLabelPanel.setMaximumSize(new java.awt.Dimension(170, 40));
+        quickActionsLabelPanel.setMinimumSize(new java.awt.Dimension(170, 40));
+        quickActionsLabelPanel.setPreferredSize(new java.awt.Dimension(300, 40));
         quickActionsLabelPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         quickActionsLabel.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
         quickActionsLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         quickActionsLabel.setText("Quick Actions");
-        quickActionsLabel.setPreferredSize(new java.awt.Dimension(250, 20));
+        quickActionsLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        quickActionsLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 10, 1));
+        quickActionsLabel.setPreferredSize(new java.awt.Dimension(250, 30));
+        quickActionsLabel.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         quickActionsLabelPanel.add(quickActionsLabel);
 
-        quickActions.add(quickActionsLabelPanel, java.awt.BorderLayout.NORTH);
+        quickActions.add(quickActionsLabelPanel);
 
-        printingServicesGroup.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        quickActionsGroup.setPreferredSize(new java.awt.Dimension(382, 332));
+        quickActionsGroup.setLayout(new javax.swing.BoxLayout(quickActionsGroup, javax.swing.BoxLayout.Y_AXIS));
 
-        printingServicesLabelPanel.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
-        printingServicesLabelPanel.setPreferredSize(new java.awt.Dimension(200, 20));
+        printingServicesGroup.setMaximumSize(new java.awt.Dimension(400, 100));
+        printingServicesGroup.setMinimumSize(new java.awt.Dimension(89, 46));
+        printingServicesGroup.setName(""); // NOI18N
+        printingServicesGroup.setPreferredSize(new java.awt.Dimension(200, 100));
+        printingServicesGroup.setLayout(new javax.swing.BoxLayout(printingServicesGroup, javax.swing.BoxLayout.Y_AXIS));
 
-        jLabel1.setText("HEADING 1");
+        printingServicesLabel.setFont(new java.awt.Font("Inter", 0, 20)); // NOI18N
+        printingServicesLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        printingServicesLabel.setText("Printing Services");
+        printingServicesLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 10, 1));
+        printingServicesLabel.setMaximumSize(new java.awt.Dimension(200, 36));
+        printingServicesLabel.setPreferredSize(new java.awt.Dimension(200, 36));
+        printingServicesGroup.add(printingServicesLabel);
 
-        javax.swing.GroupLayout printingServicesLabelPanelLayout = new javax.swing.GroupLayout(printingServicesLabelPanel);
-        printingServicesLabelPanel.setLayout(printingServicesLabelPanelLayout);
-        printingServicesLabelPanelLayout.setHorizontalGroup(
-            printingServicesLabelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
-            .addGroup(printingServicesLabelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(printingServicesLabelPanelLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jLabel1)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        printingServicesLabelPanelLayout.setVerticalGroup(
-            printingServicesLabelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 20, Short.MAX_VALUE)
-            .addGroup(printingServicesLabelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(printingServicesLabelPanelLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jLabel1)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
+        newPrintOrderBtn.setBackground(new java.awt.Color(23, 26, 33));
+        newPrintOrderBtn.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
+        newPrintOrderBtn.setForeground(new java.awt.Color(255, 255, 255));
+        newPrintOrderBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/print_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        newPrintOrderBtn.setText("New Print Order");
+        newPrintOrderBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        newPrintOrderBtn.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        newPrintOrderBtn.setMaximumSize(new java.awt.Dimension(300, 40));
+        newPrintOrderBtn.setMinimumSize(new java.awt.Dimension(200, 26));
+        newPrintOrderBtn.setPreferredSize(new java.awt.Dimension(300, 40));
+        newPrintOrderBtn.addActionListener(this::newPrintOrderBtnActionPerformed);
+        printingServicesGroup.add(newPrintOrderBtn);
 
-        printingServicesGroup.add(printingServicesLabelPanel);
+        quickActionsGroup.add(printingServicesGroup);
 
-        jButton1.setText("jButton1");
+        shopMembersGroup.setLayout(new javax.swing.BoxLayout(shopMembersGroup, javax.swing.BoxLayout.Y_AXIS));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jButton1)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jButton1)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
+        shopMembersGroupLabel.setFont(new java.awt.Font("Inter", 0, 20)); // NOI18N
+        shopMembersGroupLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        shopMembersGroupLabel.setText("Shop Members");
+        shopMembersGroupLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 10, 1));
+        shopMembersGroupLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        shopMembersGroup.add(shopMembersGroupLabel);
 
-        printingServicesGroup.add(jPanel1);
+        topUpMemberBtn.setBackground(new java.awt.Color(23, 26, 33));
+        topUpMemberBtn.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
+        topUpMemberBtn.setForeground(new java.awt.Color(255, 255, 255));
+        topUpMemberBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add_card_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        topUpMemberBtn.setText("Top Up Member Credits");
+        topUpMemberBtn.setMinimumSize(new java.awt.Dimension(200, 26));
+        topUpMemberBtn.setPreferredSize(new java.awt.Dimension(40, 40));
+        topUpMemberBtn.addActionListener(this::topUpMemberBtnActionPerformed);
+        shopMembersGroup.add(topUpMemberBtn);
+        shopMembersGroup.add(filler1);
 
-        quickActions.add(printingServicesGroup, java.awt.BorderLayout.CENTER);
-        quickActions.add(shopMembersGroup, java.awt.BorderLayout.SOUTH);
-        quickActions.add(shopManagementGroup, java.awt.BorderLayout.SOUTH);
+        addMemberBtn.setBackground(new java.awt.Color(23, 26, 33));
+        addMemberBtn.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
+        addMemberBtn.setForeground(new java.awt.Color(255, 255, 255));
+        addMemberBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/person_add_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        addMemberBtn.setText("Add New Member");
+        addMemberBtn.setMinimumSize(new java.awt.Dimension(200, 26));
+        addMemberBtn.setPreferredSize(new java.awt.Dimension(40, 40));
+        addMemberBtn.addActionListener(this::addMemberBtnActionPerformed);
+        shopMembersGroup.add(addMemberBtn);
+
+        quickActionsGroup.add(shopMembersGroup);
+
+        shopManagementGroup.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 10, 1));
+        shopManagementGroup.setLayout(new javax.swing.BoxLayout(shopManagementGroup, javax.swing.BoxLayout.Y_AXIS));
+
+        shopManagementLabel.setFont(new java.awt.Font("Inter", 0, 20)); // NOI18N
+        shopManagementLabel.setText("Shop Management");
+        shopManagementLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 10, 1));
+        shopManagementGroup.add(shopManagementLabel);
+
+        ViewTodaysSales.setBackground(new java.awt.Color(23, 26, 33));
+        ViewTodaysSales.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
+        ViewTodaysSales.setForeground(new java.awt.Color(255, 255, 255));
+        ViewTodaysSales.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/payments_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        ViewTodaysSales.setText("View Today's Sales");
+        ViewTodaysSales.setMinimumSize(new java.awt.Dimension(200, 26));
+        ViewTodaysSales.setPreferredSize(new java.awt.Dimension(40, 40));
+        ViewTodaysSales.addActionListener(this::ViewTodaysSalesActionPerformed);
+        shopManagementGroup.add(ViewTodaysSales);
+        shopManagementGroup.add(filler2);
+
+        CloseShopBtn.setBackground(new java.awt.Color(23, 26, 33));
+        CloseShopBtn.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
+        CloseShopBtn.setForeground(new java.awt.Color(255, 255, 255));
+        CloseShopBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/door_front_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        CloseShopBtn.setText("Close Shop");
+        CloseShopBtn.setMinimumSize(new java.awt.Dimension(200, 26));
+        CloseShopBtn.setPreferredSize(new java.awt.Dimension(40, 40));
+        CloseShopBtn.addActionListener(this::CloseShopBtnActionPerformed);
+        shopManagementGroup.add(CloseShopBtn);
+
+        quickActionsGroup.add(shopManagementGroup);
+
+        quickActions.add(quickActionsGroup);
 
         lowerSegments.add(quickActions, java.awt.BorderLayout.EAST);
 
@@ -320,65 +426,70 @@ public class dashboardTabPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_newSessionButtonActionPerformed
 
-    private void shopToggleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_shopToggleMouseClicked
+    private void newPrintOrderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newPrintOrderBtnActionPerformed
         // TODO add your handling code here:
+    }//GEN-LAST:event_newPrintOrderBtnActionPerformed
 
-        if (AdminAppWindow.isShopOpen()) {
-            int response = JOptionPane.showConfirmDialog(
-                    this,
-                    "Are you sure you want to close the shop? Closing the shop will end all sessions.",
-                    "Confirm Shop Closure",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE
-            );
-
-            if (response == JOptionPane.YES_OPTION) {
-                AdminAppWindow.openShop(false);
-                shopToggle.setText("Open Shop");
-                //icon on AdminAppWindow.java
-            }
-        } else {
-            AdminAppWindow.openShop(true);
-            shopToggle.setText("Close Shop");
-            //icon on AdminAppWindow.java
-        }
-
-    }//GEN-LAST:event_shopToggleMouseClicked
-
-    private void shopToggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shopToggleActionPerformed
+    private void ViewTodaysSalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewTodaysSalesActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_shopToggleActionPerformed
+    }//GEN-LAST:event_ViewTodaysSalesActionPerformed
+
+    private void CloseShopBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseShopBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CloseShopBtnActionPerformed
+
+    private void addMemberBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMemberBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addMemberBtnActionPerformed
+
+    private void topUpMemberBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topUpMemberBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_topUpMemberBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton CloseShopBtn;
+    private javax.swing.JButton ViewTodaysSales;
     private javax.swing.JPanel activeSessions;
     private javax.swing.JPanel activeSessionsHeading;
     private javax.swing.JLabel activeSessionsLabel;
     private javax.swing.JTable activeSessionsTable;
+    private javax.swing.JButton addMemberBtn;
     private javax.swing.JPanel availableStationsCard;
     private javax.swing.JLabel dashboardHeadingText;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
     private javax.swing.JPanel groupAvailableStationsCard;
+    private javax.swing.JPanel groupOccupiedStationsCard;
+    private javax.swing.JPanel groupTotalSalesCard;
     private javax.swing.JLabel icon_AvailableStationsCard;
+    private javax.swing.JLabel icon_OccupiedStationsCard;
+    private javax.swing.JLabel icon_TotalSalesCard;
     private javax.swing.JLabel intAvailableStations;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel intOccupiedStations;
+    private javax.swing.JLabel intTotalSales;
     private javax.swing.JLabel labelAvailableStations;
+    private javax.swing.JLabel labelOccupiedStations;
+    private javax.swing.JLabel labelTotalSales;
     private javax.swing.JPanel lowerSegments;
+    private javax.swing.JButton newPrintOrderBtn;
     private javax.swing.JButton newSessionButton;
     private javax.swing.JPanel occupiedStationsCard;
     private javax.swing.JPanel printingServicesGroup;
-    private javax.swing.JPanel printingServicesLabelPanel;
+    private javax.swing.JLabel printingServicesLabel;
     private javax.swing.JPanel quickActions;
+    private javax.swing.JPanel quickActionsGroup;
     private javax.swing.JLabel quickActionsLabel;
     private javax.swing.JPanel quickActionsLabelPanel;
     private javax.swing.JPanel quickStatistics;
     private javax.swing.JPanel quickStatisticsHeading;
     private javax.swing.JPanel shopManagementGroup;
+    private javax.swing.JLabel shopManagementLabel;
     private javax.swing.JPanel shopMembersGroup;
-    private javax.swing.JButton shopToggle;
+    private javax.swing.JLabel shopMembersGroupLabel;
     private javax.swing.JPanel statsCards;
     private javax.swing.JScrollPane tableScrollPane;
-    private javax.swing.JPanel todaysSalesCard;
+    private javax.swing.JButton topUpMemberBtn;
+    private javax.swing.JPanel totalSalesCard;
     // End of variables declaration//GEN-END:variables
 }
