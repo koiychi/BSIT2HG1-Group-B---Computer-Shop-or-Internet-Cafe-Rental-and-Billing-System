@@ -122,7 +122,7 @@ public String getDuration() {
             }
         });
 
-        monitorIcon.setIcon(new javax.swing.ImageIcon("C:\\Users\\user\\Downloads\\computer_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png")); // NOI18N
+        monitorIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
         monitorIcon.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         jLabel3.setText("PC 1");
