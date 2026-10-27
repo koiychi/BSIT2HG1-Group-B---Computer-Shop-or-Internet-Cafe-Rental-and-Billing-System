@@ -92,6 +92,11 @@ public class membersTabPanel extends javax.swing.JPanel {
         addMemberButton.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
         addMemberButton.setForeground(new java.awt.Color(255, 255, 255));
         addMemberButton.setText("+ Add Member");
+        addMemberButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addMemberButtonActionPerformed(evt);
+            }
+        });
         toolbarPanel.add(addMemberButton, java.awt.BorderLayout.EAST);
 
         topPanel.add(toolbarPanel, java.awt.BorderLayout.SOUTH);
@@ -121,6 +126,10 @@ public class membersTabPanel extends javax.swing.JPanel {
 
         add(tableScroll, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void addMemberButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMemberButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addMemberButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
