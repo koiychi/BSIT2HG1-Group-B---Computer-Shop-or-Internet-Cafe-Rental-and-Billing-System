@@ -10,197 +10,19 @@ package bsit2hg1groupb.billingSystem.ui.Station;
  */
 
 import bsit2hg1groupb.billingSystem.system.Station;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Image;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.BoxLayout;
 
-public class stationsTabPanel extends javax.swing.JPanel {
-    private final List<Station> stations = new ArrayList<>();
+public class stationsTabPanel extends javax.swing.JPanel 
+{
 
     /**
      * Creates new form stationsTabPanel
      */
     
-    
-    private void refreshStationCards() {
-        MidPanel.removeAll();
-        MidPanel.setLayout(new BorderLayout());
-
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-
-        // REGULAR PC SECTION
-        JLabel regularLabel = new JLabel("Regular PCs");
-        regularLabel.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
-        regularLabel.setFont(
-                regularLabel.getFont().deriveFont(java.awt.Font.BOLD, 20f)
-        );
-        regularLabel.setBorder(
-                BorderFactory.createEmptyBorder(15, 15, 10, 15)
-        );
-
-        JPanel regularPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        regularPanel.setBorder(
-                BorderFactory.createEmptyBorder(0, 15, 20, 15)
-        );
-
-        // GAMING PC SECTION
-        JLabel gamingLabel = new JLabel("Gaming PCs");
-        gamingLabel.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
-        gamingLabel.setFont(
-                gamingLabel.getFont().deriveFont(java.awt.Font.BOLD, 20f)
-        );
-        gamingLabel.setBorder(
-                BorderFactory.createEmptyBorder(15, 15, 10, 15)
-        );
-
-        JPanel gamingPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        gamingPanel.setBorder(
-                BorderFactory.createEmptyBorder(0, 15, 15, 15)
-        );
-
-        
-        for (Station station : stations) {
-
-            JPanel card = new JPanel(new java.awt.GridBagLayout());
-
-            card.setPreferredSize(new Dimension(180, 100));
-            card.setMinimumSize(new Dimension(180, 100));
-            card.setMaximumSize(new Dimension(180, 100));
-
-            card.setBackground(
-                    javax.swing.UIManager.getColor("Panel.background")
-            );
-
-            card.setBorder(
-                    BorderFactory.createLineBorder(Color.LIGHT_GRAY)
-            );
-
-            // Load the PC icon
-            java.net.URL iconURL
-                    = getClass().getResource("/icons/pc.png");
-
-            System.out.println("Icon URL: " + iconURL);
-
-            if (iconURL == null) {
-                System.out.println("ERROR: pc.png not found!");
-            } else {
-                ImageIcon pcImage = new ImageIcon("images/pc.png");
-
-                Image scaledImage = pcImage.getImage().getScaledInstance(
-                        40, 40, Image.SCALE_SMOOTH
-                );
-
-                JLabel pcIcon = new JLabel(new ImageIcon(scaledImage));
-
-                card.add(pcIcon);
-            }
-
-            // PC ID
-            JLabel idLabel = new JLabel(station.getStationID());
-
-            idLabel.setFont(
-                    idLabel.getFont().deriveFont(
-                            java.awt.Font.BOLD, 16f
-                    )
-            );
-
-            java.awt.GridBagConstraints gbcID
-                    = new java.awt.GridBagConstraints();
-
-            gbcID.gridx = 0;
-            gbcID.gridy = 1;
-            gbcID.insets = new java.awt.Insets(3, 0, 5, 0);
-
-            card.add(idLabel, gbcID);
-
-            // Place each card in the correct section
-            if (station.getClass().getSimpleName().equals("GamingStation")) {
-                gamingPanel.add(card);
-            } else {
-                regularPanel.add(card);
-            }
-        }
-
-
-        // Regular PC heading aligned to the left
-        JPanel regularHeadingPanel = new JPanel(new BorderLayout());
-        regularHeadingPanel.add(regularLabel, BorderLayout.WEST);
-        regularHeadingPanel.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
-
-        mainPanel.add(regularHeadingPanel);
-        mainPanel.add(regularPanel);
-
-// Gaming PC heading aligned to the left
-        JPanel gamingHeadingPanel = new JPanel(new BorderLayout());
-        gamingHeadingPanel.add(gamingLabel, BorderLayout.WEST);
-        gamingHeadingPanel.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
-
-        mainPanel.add(gamingHeadingPanel);
-        mainPanel.add(gamingPanel);
-
-        JScrollPane scrollPane = new JScrollPane(mainPanel);
-        scrollPane.setVerticalScrollBarPolicy(
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
-        );
-        scrollPane.setHorizontalScrollBarPolicy(
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
-        );
-
-        MidPanel.add(scrollPane, BorderLayout.CENTER);
-        MidPanel.revalidate();
-        MidPanel.repaint();
-    }
-
-private void initializeStations() {
-    stations.clear();
-
-    // Create 5 Regular PCs: PC-01 to PC-05
-    for (int i = 1; i <= 5; i++) {
-        String id = String.format("PC-%02d", i);
-
-        Station station =
-                new bsit2hg1groupb.billingSystem.system.RegularStation(
-                        id, 15.0, true, true,
-                        new ArrayList<>(), false
-                );
-
-        stations.add(station);
-    }
-
-    // Create 5 Gaming PCs: PC-06 to PC-10
-    for (int i = 6; i <= 10; i++) {
-        String id = String.format("PC-%02d", i);
-
-        Station station =
-                new bsit2hg1groupb.billingSystem.system.GamingStation(
-                        id, 30.0, true, true,
-                        new ArrayList<>()
-                );
-
-        stations.add(station);
-    }
-
-    refreshStationCards();
-}
-
-    
 
     public stationsTabPanel() {
         initComponents();
-        initializeStations();
+       
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
         * WARNING: Do NOT modify this code. The content of this method is always
@@ -210,109 +32,322 @@ private void initializeStations() {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        headingPanel = new javax.swing.JPanel();
-        leftPanel = new javax.swing.JPanel();
-        text = new javax.swing.JLabel();
-        rightPanel = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
         MidPanel = new javax.swing.JPanel();
+        RegularPanel = new javax.swing.JPanel();
+        RegularHeader = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        regularcardsPanel = new javax.swing.JPanel();
+        pc01Panel = new javax.swing.JPanel();
+        pc01Icon = new javax.swing.JLabel();
+        pc01Label = new javax.swing.JLabel();
+        pc02Panel = new javax.swing.JPanel();
+        pc02Icon = new javax.swing.JLabel();
+        pc02Label = new javax.swing.JLabel();
+        pc03Panel = new javax.swing.JPanel();
+        pc03Icon = new javax.swing.JLabel();
+        pc03Label = new javax.swing.JLabel();
+        pc04Panel = new javax.swing.JPanel();
+        pc04Icon = new javax.swing.JLabel();
+        pc04Label = new javax.swing.JLabel();
+        pc05Panel = new javax.swing.JPanel();
+        pc05Icon = new javax.swing.JLabel();
+        pc05Label = new javax.swing.JLabel();
+        RegularPanel2 = new javax.swing.JPanel();
+        RegularHeader2 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        regularcardsPanel2 = new javax.swing.JPanel();
+        pc01Panel1 = new javax.swing.JPanel();
+        pc01Icon2 = new javax.swing.JLabel();
+        pc01Label2 = new javax.swing.JLabel();
+        pc02Panel2 = new javax.swing.JPanel();
+        pc02Icon2 = new javax.swing.JLabel();
+        pc02Label2 = new javax.swing.JLabel();
+        pc03Panel2 = new javax.swing.JPanel();
+        pc03Icon2 = new javax.swing.JLabel();
+        pc03Label2 = new javax.swing.JLabel();
+        pc04Panel2 = new javax.swing.JPanel();
+        pc04Icon2 = new javax.swing.JLabel();
+        pc04Label2 = new javax.swing.JLabel();
+        pc05Panel2 = new javax.swing.JPanel();
+        pc05Icon2 = new javax.swing.JLabel();
+        pc05Label2 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        editStationBtn = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
-        headingPanel.setLayout(new java.awt.GridLayout(1, 0));
+        MidPanel.setLayout(new java.awt.GridLayout(2, 1, 0, 10));
 
-        text.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        RegularPanel.setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout leftPanelLayout = new javax.swing.GroupLayout(leftPanel);
-        leftPanel.setLayout(leftPanelLayout);
-        leftPanelLayout.setHorizontalGroup(
-            leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(leftPanelLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(text)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        leftPanelLayout.setVerticalGroup(
-            leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(leftPanelLayout.createSequentialGroup()
-                .addContainerGap(129, Short.MAX_VALUE)
-                .addComponent(text))
-        );
+        RegularHeader.setBackground(new java.awt.Color(217, 217, 217));
+        RegularHeader.setLayout(new java.awt.BorderLayout());
 
-        headingPanel.add(leftPanel);
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setText("Regular Station (5)");
+        RegularHeader.add(jLabel1, java.awt.BorderLayout.CENTER);
 
-        jButton3.setText("+ Add Station");
-        jButton3.addActionListener(this::jButton3ActionPerformed);
+        RegularPanel.add(RegularHeader, java.awt.BorderLayout.NORTH);
 
-        javax.swing.GroupLayout rightPanelLayout = new javax.swing.GroupLayout(rightPanel);
-        rightPanel.setLayout(rightPanelLayout);
-        rightPanelLayout.setHorizontalGroup(
-            rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, rightPanelLayout.createSequentialGroup()
-                .addContainerGap(294, Short.MAX_VALUE)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16))
-        );
-        rightPanelLayout.setVerticalGroup(
-            rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(rightPanelLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(46, Short.MAX_VALUE))
-        );
+        regularcardsPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 15, 10));
 
-        headingPanel.add(rightPanel);
+        pc01Panel.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        pc01Panel.setMaximumSize(new java.awt.Dimension(190, 135));
+        pc01Panel.setMinimumSize(new java.awt.Dimension(190, 135));
+        pc01Panel.setPreferredSize(new java.awt.Dimension(190, 135));
+        pc01Panel.setLayout(new javax.swing.BoxLayout(pc01Panel, javax.swing.BoxLayout.Y_AXIS));
 
-        add(headingPanel, java.awt.BorderLayout.NORTH);
+        pc01Icon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pc01Icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        pc01Icon.setAlignmentX(0.5F);
+        pc01Panel.add(pc01Icon);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        pc01Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pc01Label.setText("PC 01");
+        pc01Label.setAlignmentX(0.5F);
+        pc01Panel.add(pc01Label);
 
-        javax.swing.GroupLayout MidPanelLayout = new javax.swing.GroupLayout(MidPanel);
-        MidPanel.setLayout(MidPanelLayout);
-        MidPanelLayout.setHorizontalGroup(
-            MidPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MidPanelLayout.createSequentialGroup()
-                .addGap(143, 143, 143)
-                .addComponent(jLabel1)
-                .addContainerGap(767, Short.MAX_VALUE))
-        );
-        MidPanelLayout.setVerticalGroup(
-            MidPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MidPanelLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jLabel1)
-                .addContainerGap(115, Short.MAX_VALUE))
-        );
+        regularcardsPanel.add(pc01Panel);
+
+        pc02Panel.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        pc02Panel.setMaximumSize(new java.awt.Dimension(190, 135));
+        pc02Panel.setMinimumSize(new java.awt.Dimension(190, 135));
+        pc02Panel.setPreferredSize(new java.awt.Dimension(190, 135));
+        pc02Panel.setLayout(new javax.swing.BoxLayout(pc02Panel, javax.swing.BoxLayout.Y_AXIS));
+
+        pc02Icon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pc02Icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        pc02Icon.setAlignmentX(0.5F);
+        pc02Panel.add(pc02Icon);
+
+        pc02Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pc02Label.setText("PC 02");
+        pc02Label.setAlignmentX(0.5F);
+        pc02Panel.add(pc02Label);
+
+        regularcardsPanel.add(pc02Panel);
+
+        pc03Panel.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        pc03Panel.setMaximumSize(new java.awt.Dimension(190, 135));
+        pc03Panel.setMinimumSize(new java.awt.Dimension(190, 135));
+        pc03Panel.setPreferredSize(new java.awt.Dimension(190, 135));
+        pc03Panel.setLayout(new javax.swing.BoxLayout(pc03Panel, javax.swing.BoxLayout.Y_AXIS));
+
+        pc03Icon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pc03Icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        pc03Icon.setAlignmentX(0.5F);
+        pc03Panel.add(pc03Icon);
+
+        pc03Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pc03Label.setText("PC 03");
+        pc03Label.setAlignmentX(0.5F);
+        pc03Panel.add(pc03Label);
+
+        regularcardsPanel.add(pc03Panel);
+
+        pc04Panel.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        pc04Panel.setMaximumSize(new java.awt.Dimension(190, 135));
+        pc04Panel.setMinimumSize(new java.awt.Dimension(190, 135));
+        pc04Panel.setPreferredSize(new java.awt.Dimension(190, 135));
+        pc04Panel.setLayout(new javax.swing.BoxLayout(pc04Panel, javax.swing.BoxLayout.Y_AXIS));
+
+        pc04Icon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pc04Icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        pc04Icon.setAlignmentX(0.5F);
+        pc04Panel.add(pc04Icon);
+
+        pc04Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pc04Label.setText("PC 04");
+        pc04Label.setAlignmentX(0.5F);
+        pc04Panel.add(pc04Label);
+
+        regularcardsPanel.add(pc04Panel);
+
+        pc05Panel.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        pc05Panel.setMaximumSize(new java.awt.Dimension(190, 135));
+        pc05Panel.setMinimumSize(new java.awt.Dimension(190, 135));
+        pc05Panel.setPreferredSize(new java.awt.Dimension(190, 135));
+        pc05Panel.setLayout(new javax.swing.BoxLayout(pc05Panel, javax.swing.BoxLayout.Y_AXIS));
+
+        pc05Icon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pc05Icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        pc05Icon.setAlignmentX(0.5F);
+        pc05Panel.add(pc05Icon);
+
+        pc05Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pc05Label.setText("PC 05");
+        pc05Label.setAlignmentX(0.5F);
+        pc05Panel.add(pc05Label);
+
+        regularcardsPanel.add(pc05Panel);
+
+        RegularPanel.add(regularcardsPanel, java.awt.BorderLayout.CENTER);
+
+        MidPanel.add(RegularPanel);
+
+        RegularPanel2.setLayout(new java.awt.BorderLayout());
+
+        RegularHeader2.setBackground(new java.awt.Color(217, 217, 217));
+        RegularHeader2.setLayout(new java.awt.BorderLayout());
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("Gaming Station (5)");
+        RegularHeader2.add(jLabel3, java.awt.BorderLayout.CENTER);
+
+        RegularPanel2.add(RegularHeader2, java.awt.BorderLayout.NORTH);
+
+        regularcardsPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 15, 10));
+
+        pc01Panel1.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        pc01Panel1.setMaximumSize(new java.awt.Dimension(190, 135));
+        pc01Panel1.setMinimumSize(new java.awt.Dimension(190, 135));
+        pc01Panel1.setPreferredSize(new java.awt.Dimension(190, 135));
+        pc01Panel1.setLayout(new javax.swing.BoxLayout(pc01Panel1, javax.swing.BoxLayout.Y_AXIS));
+
+        pc01Icon2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pc01Icon2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        pc01Icon2.setAlignmentX(0.5F);
+        pc01Panel1.add(pc01Icon2);
+
+        pc01Label2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pc01Label2.setText("PC 06");
+        pc01Label2.setAlignmentX(0.5F);
+        pc01Panel1.add(pc01Label2);
+
+        regularcardsPanel2.add(pc01Panel1);
+
+        pc02Panel2.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        pc02Panel2.setMaximumSize(new java.awt.Dimension(190, 135));
+        pc02Panel2.setMinimumSize(new java.awt.Dimension(190, 135));
+        pc02Panel2.setPreferredSize(new java.awt.Dimension(190, 135));
+        pc02Panel2.setLayout(new javax.swing.BoxLayout(pc02Panel2, javax.swing.BoxLayout.Y_AXIS));
+
+        pc02Icon2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pc02Icon2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        pc02Icon2.setAlignmentX(0.5F);
+        pc02Panel2.add(pc02Icon2);
+
+        pc02Label2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pc02Label2.setText("PC 07");
+        pc02Label2.setAlignmentX(0.5F);
+        pc02Panel2.add(pc02Label2);
+
+        regularcardsPanel2.add(pc02Panel2);
+
+        pc03Panel2.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        pc03Panel2.setMaximumSize(new java.awt.Dimension(190, 135));
+        pc03Panel2.setMinimumSize(new java.awt.Dimension(190, 135));
+        pc03Panel2.setPreferredSize(new java.awt.Dimension(190, 135));
+        pc03Panel2.setLayout(new javax.swing.BoxLayout(pc03Panel2, javax.swing.BoxLayout.Y_AXIS));
+
+        pc03Icon2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pc03Icon2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        pc03Icon2.setAlignmentX(0.5F);
+        pc03Panel2.add(pc03Icon2);
+
+        pc03Label2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pc03Label2.setText("PC 08");
+        pc03Label2.setAlignmentX(0.5F);
+        pc03Panel2.add(pc03Label2);
+
+        regularcardsPanel2.add(pc03Panel2);
+
+        pc04Panel2.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        pc04Panel2.setMaximumSize(new java.awt.Dimension(190, 135));
+        pc04Panel2.setMinimumSize(new java.awt.Dimension(190, 135));
+        pc04Panel2.setPreferredSize(new java.awt.Dimension(190, 135));
+        pc04Panel2.setLayout(new javax.swing.BoxLayout(pc04Panel2, javax.swing.BoxLayout.Y_AXIS));
+
+        pc04Icon2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pc04Icon2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        pc04Icon2.setAlignmentX(0.5F);
+        pc04Panel2.add(pc04Icon2);
+
+        pc04Label2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pc04Label2.setText("PC 09");
+        pc04Label2.setAlignmentX(0.5F);
+        pc04Panel2.add(pc04Label2);
+
+        regularcardsPanel2.add(pc04Panel2);
+
+        pc05Panel2.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        pc05Panel2.setMaximumSize(new java.awt.Dimension(190, 135));
+        pc05Panel2.setMinimumSize(new java.awt.Dimension(190, 135));
+        pc05Panel2.setPreferredSize(new java.awt.Dimension(190, 135));
+        pc05Panel2.setLayout(new javax.swing.BoxLayout(pc05Panel2, javax.swing.BoxLayout.Y_AXIS));
+
+        pc05Icon2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pc05Icon2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        pc05Icon2.setAlignmentX(0.5F);
+        pc05Panel2.add(pc05Icon2);
+
+        pc05Label2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pc05Label2.setText("PC 10");
+        pc05Label2.setAlignmentX(0.5F);
+        pc05Panel2.add(pc05Label2);
+
+        regularcardsPanel2.add(pc05Panel2);
+
+        RegularPanel2.add(regularcardsPanel2, java.awt.BorderLayout.CENTER);
+
+        MidPanel.add(RegularPanel2);
 
         add(MidPanel, java.awt.BorderLayout.CENTER);
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(100, 50));
+        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        editStationBtn.setText("+ Edit Station");
+        editStationBtn.setPreferredSize(new java.awt.Dimension(150, 35));
+        jPanel1.add(editStationBtn);
+
+        add(jPanel1, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        AddStation dialog = new AddStation();
-
-        dialog.setOnStationSaved(station -> {
-            stations.add(station);
-            refreshStationCards();
-
-            System.out.println(
-                    "Station added: " + station.getStationID()
-            );
-        });
-
-        dialog.setLocationRelativeTo(this);
-        dialog.setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel MidPanel;
-    private javax.swing.JPanel headingPanel;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JPanel RegularHeader;
+    private javax.swing.JPanel RegularHeader2;
+    private javax.swing.JPanel RegularPanel;
+    private javax.swing.JPanel RegularPanel2;
+    private javax.swing.JButton editStationBtn;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel leftPanel;
-    private javax.swing.JPanel rightPanel;
-    private javax.swing.JLabel text;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel pc01Icon;
+    private javax.swing.JLabel pc01Icon2;
+    private javax.swing.JLabel pc01Label;
+    private javax.swing.JLabel pc01Label2;
+    private javax.swing.JPanel pc01Panel;
+    private javax.swing.JPanel pc01Panel1;
+    private javax.swing.JLabel pc02Icon;
+    private javax.swing.JLabel pc02Icon2;
+    private javax.swing.JLabel pc02Label;
+    private javax.swing.JLabel pc02Label2;
+    private javax.swing.JPanel pc02Panel;
+    private javax.swing.JPanel pc02Panel2;
+    private javax.swing.JLabel pc03Icon;
+    private javax.swing.JLabel pc03Icon2;
+    private javax.swing.JLabel pc03Label;
+    private javax.swing.JLabel pc03Label2;
+    private javax.swing.JPanel pc03Panel;
+    private javax.swing.JPanel pc03Panel2;
+    private javax.swing.JLabel pc04Icon;
+    private javax.swing.JLabel pc04Icon2;
+    private javax.swing.JLabel pc04Label;
+    private javax.swing.JLabel pc04Label2;
+    private javax.swing.JPanel pc04Panel;
+    private javax.swing.JPanel pc04Panel2;
+    private javax.swing.JLabel pc05Icon;
+    private javax.swing.JLabel pc05Icon2;
+    private javax.swing.JLabel pc05Label;
+    private javax.swing.JLabel pc05Label2;
+    private javax.swing.JPanel pc05Panel;
+    private javax.swing.JPanel pc05Panel2;
+    private javax.swing.JPanel regularcardsPanel;
+    private javax.swing.JPanel regularcardsPanel2;
     // End of variables declaration//GEN-END:variables
 }
