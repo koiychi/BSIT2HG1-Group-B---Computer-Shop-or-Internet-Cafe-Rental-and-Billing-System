@@ -113,12 +113,13 @@ public String getDuration() {
         nextButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 600));
+        setMinimumSize(new java.awt.Dimension(500, 100));
+        setPreferredSize(new java.awt.Dimension(810, 300));
 
         main3tabPanel.setPreferredSize(new java.awt.Dimension(800, 54));
         main3tabPanel.setLayout(new java.awt.GridLayout(1, 3));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 1, 0, new java.awt.Color(255, 102, 0)));
+        jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 0, 2, 2, new java.awt.Color(255, 102, 0)));
 
         jLabel8.setText("Station");
 
@@ -214,7 +215,7 @@ public String getDuration() {
 
         mainPanel.add(configPanel, java.awt.BorderLayout.NORTH);
 
-        unitPanel.setPreferredSize(new java.awt.Dimension(350, 100));
+        unitPanel.setPreferredSize(new java.awt.Dimension(350, 150));
 
         unit1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         unit1.setPreferredSize(new java.awt.Dimension(150, 150));

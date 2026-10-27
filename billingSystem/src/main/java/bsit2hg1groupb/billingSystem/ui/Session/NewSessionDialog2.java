@@ -81,7 +81,6 @@ public NewSessionDialog1 getStationDialog() {
         creditRemains = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 500));
 
         headerpanel.setLayout(new java.awt.BorderLayout());
 
@@ -111,7 +110,7 @@ public NewSessionDialog1 getStationDialog() {
         main3tabPanel.add(jPanel1);
         main3tabPanel.add(jSeparator1);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel2.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 0, 2, 2, new java.awt.Color(255, 102, 0)));
 
         jLabel9.setText("Customer");
 
@@ -178,6 +177,7 @@ public NewSessionDialog1 getStationDialog() {
 
         getContentPane().add(OptionBTNPanel, java.awt.BorderLayout.SOUTH);
 
+        centerPanel.setPreferredSize(new java.awt.Dimension(600, 300));
         centerPanel.setLayout(new java.awt.BorderLayout());
 
         cmboboxlocation.setPreferredSize(new java.awt.Dimension(350, 150));
