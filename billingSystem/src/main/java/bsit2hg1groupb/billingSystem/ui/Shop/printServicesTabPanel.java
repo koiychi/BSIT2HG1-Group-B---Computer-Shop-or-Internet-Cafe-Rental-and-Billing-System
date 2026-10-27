@@ -26,19 +26,431 @@ public class printServicesTabPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        leftPanell = new javax.swing.JPanel();
+        topBar = new javax.swing.JPanel();
+        editPriceListBtn = new javax.swing.JButton();
+        orderPanel = new javax.swing.JPanel();
+        TypeLabel = new javax.swing.JPanel();
+        serviceTypeLabel = new javax.swing.JLabel();
+        serviceTypePanel = new javax.swing.JPanel();
+        printRButton = new javax.swing.JRadioButton();
+        photocopyRButton = new javax.swing.JRadioButton();
+        PageSizeLabel = new javax.swing.JPanel();
+        pageSizeLabel = new javax.swing.JLabel();
+        pageSizePanel = new javax.swing.JPanel();
+        pgsizeComboBox = new javax.swing.JComboBox<>();
+        pgPriceLabel = new javax.swing.JLabel();
+        ColorModeLabelPanel = new javax.swing.JPanel();
+        colorModeLabel = new javax.swing.JLabel();
+        ColorModePanel = new javax.swing.JPanel();
+        colorModeComboBox = new javax.swing.JComboBox<>();
+        PageCountPanel = new javax.swing.JPanel();
+        pageCountLabel = new javax.swing.JLabel();
+        pageCountPanel = new javax.swing.JPanel();
+        pageCountComboBox = new javax.swing.JComboBox<>();
+        addOrderPanel = new javax.swing.JPanel();
+        addOrderBtn = new javax.swing.JButton();
+        rightPanel = new javax.swing.JPanel();
+        SummaryPanel = new javax.swing.JPanel();
+        SummaryLabel = new javax.swing.JPanel();
+        summaryLabel = new javax.swing.JLabel();
+        PrintPanel = new javax.swing.JPanel();
+        PrintLabel = new javax.swing.JLabel();
+        PrintScrollPane = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        PhotoCopyLabelPanel = new javax.swing.JPanel();
+        PhotocopyHeaderLabel = new javax.swing.JLabel();
+        PhotocopyPanel = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jList2 = new javax.swing.JList<>();
+        jPanel1 = new javax.swing.JPanel();
+        TotalAmount = new javax.swing.JPanel();
+        TotalAmountLabel = new javax.swing.JLabel();
+        TotalAmountPrice = new javax.swing.JPanel();
+        TotalAmountPriceLabel = new javax.swing.JLabel();
+
+        setPreferredSize(new java.awt.Dimension(500, 500));
+        setLayout(new java.awt.BorderLayout(25, 0));
+
+        leftPanell.setLayout(new java.awt.BorderLayout());
+
+        topBar.setBackground(new java.awt.Color(255, 255, 255));
+        topBar.setPreferredSize(new java.awt.Dimension(0, 40));
+        topBar.setLayout(new java.awt.BorderLayout());
+
+        editPriceListBtn.setBackground(new java.awt.Color(255, 102, 0));
+        editPriceListBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        editPriceListBtn.setForeground(new java.awt.Color(255, 255, 255));
+        editPriceListBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Screenshot 2026-10-25 151145.png"))); // NOI18N
+        editPriceListBtn.setText("Edit Pricelist");
+        editPriceListBtn.addActionListener(this::editPriceListBtnActionPerformed);
+        topBar.add(editPriceListBtn, java.awt.BorderLayout.EAST);
+
+        leftPanell.add(topBar, java.awt.BorderLayout.NORTH);
+
+        orderPanel.setBackground(new java.awt.Color(0, 0, 102));
+        orderPanel.setMaximumSize(new java.awt.Dimension(750, 593));
+        orderPanel.setPreferredSize(new java.awt.Dimension(800, 300));
+
+        TypeLabel.setPreferredSize(new java.awt.Dimension(800, 33));
+        TypeLabel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        serviceTypeLabel.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        serviceTypeLabel.setForeground(new java.awt.Color(255, 255, 255));
+        serviceTypeLabel.setText("Type");
+        serviceTypeLabel.setPreferredSize(new java.awt.Dimension(52, 25));
+        TypeLabel.add(serviceTypeLabel);
+
+        orderPanel.add(TypeLabel);
+
+        serviceTypePanel.setPreferredSize(new java.awt.Dimension(800, 35));
+        serviceTypePanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        buttonGroup1.add(printRButton);
+        printRButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        printRButton.setForeground(new java.awt.Color(255, 255, 255));
+        printRButton.setText("Print");
+        printRButton.addActionListener(this::printRButtonActionPerformed);
+        serviceTypePanel.add(printRButton);
+
+        buttonGroup1.add(photocopyRButton);
+        photocopyRButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        photocopyRButton.setForeground(new java.awt.Color(255, 255, 255));
+        photocopyRButton.setText("Photocopy");
+        serviceTypePanel.add(photocopyRButton);
+
+        orderPanel.add(serviceTypePanel);
+
+        PageSizeLabel.setPreferredSize(new java.awt.Dimension(800, 35));
+        PageSizeLabel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        pageSizeLabel.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        pageSizeLabel.setForeground(new java.awt.Color(255, 255, 255));
+        pageSizeLabel.setText("Page Size");
+        pageSizeLabel.setPreferredSize(new java.awt.Dimension(800, 30));
+        PageSizeLabel.add(pageSizeLabel);
+
+        orderPanel.add(PageSizeLabel);
+
+        pageSizePanel.setPreferredSize(new java.awt.Dimension(800, 65));
+        pageSizePanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        pgsizeComboBox.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        pgsizeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Short  (8.5 x 11 inches)", "A4  (8.27 x 11.69 inches) ", "Long (8.5 x 13 inches)", "Legal paper (8.5 x 14 inches)" }));
+        pgsizeComboBox.setPreferredSize(new java.awt.Dimension(800, 31));
+        pgsizeComboBox.addActionListener(this::pgsizeComboBoxActionPerformed);
+        pageSizePanel.add(pgsizeComboBox);
+
+        pgPriceLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        pgPriceLabel.setForeground(new java.awt.Color(255, 255, 255));
+        pgPriceLabel.setText("PHP 5.00/ per Page");
+        pageSizePanel.add(pgPriceLabel);
+
+        orderPanel.add(pageSizePanel);
+
+        ColorModeLabelPanel.setPreferredSize(new java.awt.Dimension(800, 35));
+        ColorModeLabelPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        colorModeLabel.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        colorModeLabel.setForeground(new java.awt.Color(255, 255, 255));
+        colorModeLabel.setText("Color Mode");
+        colorModeLabel.setPreferredSize(new java.awt.Dimension(800, 25));
+        ColorModeLabelPanel.add(colorModeLabel);
+
+        orderPanel.add(ColorModeLabelPanel);
+
+        ColorModePanel.setPreferredSize(new java.awt.Dimension(800, 50));
+
+        colorModeComboBox.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        colorModeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Colored", "B/W", " " }));
+        colorModeComboBox.setPreferredSize(new java.awt.Dimension(800, 50));
+
+        javax.swing.GroupLayout ColorModePanelLayout = new javax.swing.GroupLayout(ColorModePanel);
+        ColorModePanel.setLayout(ColorModePanelLayout);
+        ColorModePanelLayout.setHorizontalGroup(
+            ColorModePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 800, Short.MAX_VALUE)
+            .addGroup(ColorModePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(ColorModePanelLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(colorModeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        ColorModePanelLayout.setVerticalGroup(
+            ColorModePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
+            .addGroup(ColorModePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(ColorModePanelLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(colorModeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
+
+        orderPanel.add(ColorModePanel);
+
+        PageCountPanel.setPreferredSize(new java.awt.Dimension(800, 35));
+        PageCountPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        pageCountLabel.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        pageCountLabel.setForeground(new java.awt.Color(255, 255, 255));
+        pageCountLabel.setText("Page Count");
+        pageCountLabel.setPreferredSize(new java.awt.Dimension(124, 30));
+        PageCountPanel.add(pageCountLabel);
+
+        orderPanel.add(PageCountPanel);
+
+        pageCountPanel.setPreferredSize(new java.awt.Dimension(800, 35));
+        pageCountPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        pageCountComboBox.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        pageCountComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1 page", "2 page", "3 page", "4 page", "5 page", "6 page", "7 page", "8 page", "9 page", "10 page" }));
+        pageCountComboBox.setPreferredSize(new java.awt.Dimension(108, 25));
+        pageCountPanel.add(pageCountComboBox);
+
+        orderPanel.add(pageCountPanel);
+
+        leftPanell.add(orderPanel, java.awt.BorderLayout.CENTER);
+
+        addOrderPanel.setPreferredSize(new java.awt.Dimension(600, 40));
+
+        addOrderBtn.setBackground(new java.awt.Color(255, 102, 0));
+        addOrderBtn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        addOrderBtn.setForeground(new java.awt.Color(255, 255, 255));
+        addOrderBtn.setText("+ Add Order");
+        addOrderBtn.addActionListener(this::addOrderBtnActionPerformed);
+
+        javax.swing.GroupLayout addOrderPanelLayout = new javax.swing.GroupLayout(addOrderPanel);
+        addOrderPanel.setLayout(addOrderPanelLayout);
+        addOrderPanelLayout.setHorizontalGroup(
+            addOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 800, Short.MAX_VALUE)
+            .addGroup(addOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(addOrderPanelLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(addOrderBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        addOrderPanelLayout.setVerticalGroup(
+            addOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+            .addGroup(addOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(addOrderPanelLayout.createSequentialGroup()
+                    .addGap(0, 4, Short.MAX_VALUE)
+                    .addComponent(addOrderBtn)
+                    .addGap(0, 4, Short.MAX_VALUE)))
+        );
+
+        leftPanell.add(addOrderPanel, java.awt.BorderLayout.SOUTH);
+
+        add(leftPanell, java.awt.BorderLayout.WEST);
+
+        rightPanel.setMaximumSize(new java.awt.Dimension(500, 0));
+        rightPanel.setMinimumSize(new java.awt.Dimension(500, 53));
+        rightPanel.setLayout(new java.awt.BorderLayout());
+
+        SummaryPanel.setBackground(new java.awt.Color(0, 0, 102));
+        SummaryPanel.setForeground(new java.awt.Color(255, 255, 255));
+        SummaryPanel.setMaximumSize(new java.awt.Dimension(500, 0));
+        SummaryPanel.setPreferredSize(new java.awt.Dimension(500, 53));
+        SummaryPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        SummaryLabel.setPreferredSize(new java.awt.Dimension(350, 50));
+
+        summaryLabel.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        summaryLabel.setForeground(new java.awt.Color(255, 255, 255));
+        summaryLabel.setText("Summary");
+
+        javax.swing.GroupLayout SummaryLabelLayout = new javax.swing.GroupLayout(SummaryLabel);
+        SummaryLabel.setLayout(SummaryLabelLayout);
+        SummaryLabelLayout.setHorizontalGroup(
+            SummaryLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 350, Short.MAX_VALUE)
+            .addGroup(SummaryLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(SummaryLabelLayout.createSequentialGroup()
+                    .addGap(0, 95, Short.MAX_VALUE)
+                    .addComponent(summaryLabel)
+                    .addGap(0, 95, Short.MAX_VALUE)))
+        );
+        SummaryLabelLayout.setVerticalGroup(
+            SummaryLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
+            .addGroup(SummaryLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(SummaryLabelLayout.createSequentialGroup()
+                    .addGap(0, 1, Short.MAX_VALUE)
+                    .addComponent(summaryLabel)
+                    .addGap(0, 1, Short.MAX_VALUE)))
+        );
+
+        SummaryPanel.add(SummaryLabel);
+
+        PrintPanel.setPreferredSize(new java.awt.Dimension(350, 50));
+        PrintPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        PrintLabel.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        PrintLabel.setForeground(new java.awt.Color(255, 255, 255));
+        PrintLabel.setText("Print ");
+        PrintPanel.add(PrintLabel);
+
+        SummaryPanel.add(PrintPanel);
+
+        PrintScrollPane.setPreferredSize(new java.awt.Dimension(300, 80));
+        PrintScrollPane.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(300, 80));
+
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "B/W - Short  x5              PHP  25.00", " ", "Colored - Long  x2         PHP 14.00", " ", " " };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jList1.setPreferredSize(new java.awt.Dimension(193, 75));
+        jScrollPane1.setViewportView(jList1);
+
+        PrintScrollPane.add(jScrollPane1);
+
+        SummaryPanel.add(PrintScrollPane);
+
+        PhotoCopyLabelPanel.setPreferredSize(new java.awt.Dimension(350, 50));
+        PhotoCopyLabelPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        PhotocopyHeaderLabel.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        PhotocopyHeaderLabel.setForeground(new java.awt.Color(255, 255, 255));
+        PhotocopyHeaderLabel.setText("Photocopy");
+        PhotoCopyLabelPanel.add(PhotocopyHeaderLabel);
+
+        SummaryPanel.add(PhotoCopyLabelPanel);
+
+        PhotocopyPanel.setPreferredSize(new java.awt.Dimension(250, 100));
+        PhotocopyPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(350, 100));
+
+        jList2.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Colored - Short", "Colored - Long", "B/W  - Short", "B/W - Long", " ", " ", " " };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jList2.setMaximumSize(new java.awt.Dimension(350, 55));
+        jList2.setPreferredSize(new java.awt.Dimension(350, 60));
+        jScrollPane2.setViewportView(jList2);
+
+        PhotocopyPanel.add(jScrollPane2);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        PhotocopyPanel.add(jPanel1);
+
+        SummaryPanel.add(PhotocopyPanel);
+
+        TotalAmount.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        TotalAmountLabel.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        TotalAmountLabel.setForeground(new java.awt.Color(255, 255, 255));
+        TotalAmountLabel.setText("Total Amount: ");
+        TotalAmount.add(TotalAmountLabel);
+
+        SummaryPanel.add(TotalAmount);
+
+        TotalAmountPrice.setPreferredSize(new java.awt.Dimension(100, 50));
+        TotalAmountPrice.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        TotalAmountPriceLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TotalAmountPriceLabel.setForeground(new java.awt.Color(255, 255, 255));
+        TotalAmountPriceLabel.setText("PHP 89.00");
+        TotalAmountPrice.add(TotalAmountPriceLabel);
+
+        SummaryPanel.add(TotalAmountPrice);
+
+        rightPanel.add(SummaryPanel, java.awt.BorderLayout.CENTER);
+
+        add(rightPanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void printRButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printRButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_printRButtonActionPerformed
+
+    private void editPriceListBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editPriceListBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editPriceListBtnActionPerformed
+
+    private void addOrderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addOrderBtnActionPerformed
+        // TODO add your handling code here:
+        String type = printRButton.isSelected() ? "Print" : "Photocopy";
+        
+        String colorMode = colorModeComboBox.getSelectedItem().toString();
+        String pageSize = pgsizeComboBox.getSelectedItem().toString();
+    
+        String pageCountStr = pageCountComboBox.getSelectedItem().toString();
+        int pageCount = Integer.parseInt(pageCountStr);
+    
+        double pricePerPage = colorMode.equalsIgnoreCase("Colored") ? 10.00 : 5.00;
+        double totalItemPrice = pageCount * pricePerPage;
+    
+        String summaryText = colorMode + " - " + pageSize + " x" + pageCount;
+        String priceText = "PHP " + String.format("%.2f", totalItemPrice);
+    }//GEN-LAST:event_addOrderBtnActionPerformed
+
+    private void pgsizeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pgsizeComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pgsizeComboBoxActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel ColorModeLabelPanel;
+    private javax.swing.JPanel ColorModePanel;
+    private javax.swing.JPanel PageCountPanel;
+    private javax.swing.JPanel PageSizeLabel;
+    private javax.swing.JPanel PhotoCopyLabelPanel;
+    private javax.swing.JLabel PhotocopyHeaderLabel;
+    private javax.swing.JPanel PhotocopyPanel;
+    private javax.swing.JLabel PrintLabel;
+    private javax.swing.JPanel PrintPanel;
+    private javax.swing.JPanel PrintScrollPane;
+    private javax.swing.JPanel SummaryLabel;
+    private javax.swing.JPanel SummaryPanel;
+    private javax.swing.JPanel TotalAmount;
+    private javax.swing.JLabel TotalAmountLabel;
+    private javax.swing.JPanel TotalAmountPrice;
+    private javax.swing.JLabel TotalAmountPriceLabel;
+    private javax.swing.JPanel TypeLabel;
+    private javax.swing.JButton addOrderBtn;
+    private javax.swing.JPanel addOrderPanel;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JComboBox<String> colorModeComboBox;
+    private javax.swing.JLabel colorModeLabel;
+    private javax.swing.JButton editPriceListBtn;
+    private javax.swing.JList<String> jList1;
+    private javax.swing.JList<String> jList2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JPanel leftPanell;
+    private javax.swing.JPanel orderPanel;
+    private javax.swing.JComboBox<String> pageCountComboBox;
+    private javax.swing.JLabel pageCountLabel;
+    private javax.swing.JPanel pageCountPanel;
+    private javax.swing.JLabel pageSizeLabel;
+    private javax.swing.JPanel pageSizePanel;
+    private javax.swing.JLabel pgPriceLabel;
+    private javax.swing.JComboBox<String> pgsizeComboBox;
+    private javax.swing.JRadioButton photocopyRButton;
+    private javax.swing.JRadioButton printRButton;
+    private javax.swing.JPanel rightPanel;
+    private javax.swing.JLabel serviceTypeLabel;
+    private javax.swing.JPanel serviceTypePanel;
+    private javax.swing.JLabel summaryLabel;
+    private javax.swing.JPanel topBar;
     // End of variables declaration//GEN-END:variables
 }
