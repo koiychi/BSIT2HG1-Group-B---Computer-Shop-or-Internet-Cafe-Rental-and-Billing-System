@@ -12,15 +12,17 @@ package bsit2hg1groupb.billingSystem.ui.Station;
 import bsit2hg1groupb.billingSystem.system.Station;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.BoxLayout;
-import java.awt.Dimension;
 
 public class stationsTabPanel extends javax.swing.JPanel {
     private final List<Station> stations = new ArrayList<>();
@@ -28,110 +30,180 @@ public class stationsTabPanel extends javax.swing.JPanel {
     /**
      * Creates new form stationsTabPanel
      */
-    private void refreshStationCards() {    
+    
+    
+    private void refreshStationCards() {
         MidPanel.removeAll();
         MidPanel.setLayout(new BorderLayout());
 
-        WrapPanel cardsPanel = new WrapPanel(
-                new WrapLayout(java.awt.FlowLayout.LEFT, 10, 10)
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+
+        // REGULAR PC SECTION
+        JLabel regularLabel = new JLabel("Regular PCs");
+        regularLabel.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+        regularLabel.setFont(
+                regularLabel.getFont().deriveFont(java.awt.Font.BOLD, 20f)
         );
-        cardsPanel.setBorder(
-                BorderFactory.createEmptyBorder(15, 15, 15, 15)
+        regularLabel.setBorder(
+                BorderFactory.createEmptyBorder(15, 15, 10, 15)
         );
 
+        JPanel regularPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        regularPanel.setBorder(
+                BorderFactory.createEmptyBorder(0, 15, 20, 15)
+        );
+
+        // GAMING PC SECTION
+        JLabel gamingLabel = new JLabel("Gaming PCs");
+        gamingLabel.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+        gamingLabel.setFont(
+                gamingLabel.getFont().deriveFont(java.awt.Font.BOLD, 20f)
+        );
+        gamingLabel.setBorder(
+                BorderFactory.createEmptyBorder(15, 15, 10, 15)
+        );
+
+        JPanel gamingPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        gamingPanel.setBorder(
+                BorderFactory.createEmptyBorder(0, 15, 15, 15)
+        );
+
+        
         for (Station station : stations) {
-            JPanel card = new JPanel();
-            card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-            
-            
-            card.setPreferredSize(new Dimension(250, 130));
-            cardsPanel.add(card);
-      
-            
-            switch (station.getStatus()) {
-                case "Available":
-                    card.setBackground(new Color(198, 239, 206)); // Green
-                    break;
 
-                case "In Use":
-                    card.setBackground(new Color(255, 199, 206)); // Red
-                    break;
+            JPanel card = new JPanel(new java.awt.GridBagLayout());
 
-                case "Maintenance":
-                    card.setBackground(new Color(255, 235, 156)); // Yellow
-                    break;
-            }
-            card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+            card.setPreferredSize(new Dimension(180, 100));
+            card.setMinimumSize(new Dimension(180, 100));
+            card.setMaximumSize(new Dimension(180, 100));
+
+            card.setBackground(
+                    javax.swing.UIManager.getColor("Panel.background")
+            );
+
             card.setBorder(
-                    BorderFactory.createCompoundBorder(
-                            BorderFactory.createLineBorder(Color.LIGHT_GRAY),
-                            BorderFactory.createEmptyBorder(8, 8, 8, 8)
+                    BorderFactory.createLineBorder(Color.LIGHT_GRAY)
+            );
+
+            // Load the PC icon
+            java.net.URL iconURL
+                    = getClass().getResource("/icons/pc.png");
+
+            System.out.println("Icon URL: " + iconURL);
+
+            if (iconURL == null) {
+                System.out.println("ERROR: pc.png not found!");
+            } else {
+                ImageIcon pcImage = new ImageIcon("images/pc.png");
+
+                Image scaledImage = pcImage.getImage().getScaledInstance(
+                        40, 40, Image.SCALE_SMOOTH
+                );
+
+                JLabel pcIcon = new JLabel(new ImageIcon(scaledImage));
+
+                card.add(pcIcon);
+            }
+
+            // PC ID
+            JLabel idLabel = new JLabel(station.getStationID());
+
+            idLabel.setFont(
+                    idLabel.getFont().deriveFont(
+                            java.awt.Font.BOLD, 16f
                     )
             );
-            card.setPreferredSize(new Dimension(250, 130));
-           
 
-            JLabel stationIDLabel = new JLabel(
-                    "Station ID: " + station.getStationID()
-            );
-            JLabel typeLabel = new JLabel(
-                    "Type: " + station.getClass().getSimpleName()
-            );
-            JLabel rateLabel = new JLabel(
-                    "Hourly Rate: ₱" + station.getHourlyRate()
-            );
-            JLabel statusLabel = new JLabel(
-                    "Status: " + station.getStatus()
-            );
-            JLabel internetLabel = new JLabel(
-                    "Internet: " + (station.hasInternet() ? "Yes" : "No")
-            );
+            java.awt.GridBagConstraints gbcID
+                    = new java.awt.GridBagConstraints();
 
-// Make all text dark and readable
-            Color textColor = new Color(35, 35, 35);
+            gbcID.gridx = 0;
+            gbcID.gridy = 1;
+            gbcID.insets = new java.awt.Insets(3, 0, 5, 0);
 
-            stationIDLabel.setForeground(textColor);
-            typeLabel.setForeground(textColor);
-            rateLabel.setForeground(textColor);
-            statusLabel.setForeground(textColor);
-            internetLabel.setForeground(textColor);
+            card.add(idLabel, gbcID);
 
-// Make the station ID stand out
-            stationIDLabel.setFont(
-                    stationIDLabel.getFont().deriveFont(java.awt.Font.BOLD, 14f)
-            );
-
-// Add labels to the card
-            card.add(stationIDLabel);
-            card.add(typeLabel);
-            card.add(rateLabel);
-            card.add(statusLabel);
-            card.add(internetLabel);
-            cardsPanel.add(card);
+            // Place each card in the correct section
+            if (station.getClass().getSimpleName().equals("GamingStation")) {
+                gamingPanel.add(card);
+            } else {
+                regularPanel.add(card);
+            }
         }
 
-        JScrollPane scrollPane = new JScrollPane(cardsPanel);
 
+        // Regular PC heading aligned to the left
+        JPanel regularHeadingPanel = new JPanel(new BorderLayout());
+        regularHeadingPanel.add(regularLabel, BorderLayout.WEST);
+        regularHeadingPanel.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+
+        mainPanel.add(regularHeadingPanel);
+        mainPanel.add(regularPanel);
+
+// Gaming PC heading aligned to the left
+        JPanel gamingHeadingPanel = new JPanel(new BorderLayout());
+        gamingHeadingPanel.add(gamingLabel, BorderLayout.WEST);
+        gamingHeadingPanel.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+
+        mainPanel.add(gamingHeadingPanel);
+        mainPanel.add(gamingPanel);
+
+        JScrollPane scrollPane = new JScrollPane(mainPanel);
         scrollPane.setVerticalScrollBarPolicy(
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
         );
-
         scrollPane.setHorizontalScrollBarPolicy(
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
         );
 
         MidPanel.add(scrollPane, BorderLayout.CENTER);
-
         MidPanel.revalidate();
         MidPanel.repaint();
+    }
+
+private void initializeStations() {
+    stations.clear();
+
+    // Create 5 Regular PCs: PC-01 to PC-05
+    for (int i = 1; i <= 5; i++) {
+        String id = String.format("PC-%02d", i);
+
+        Station station =
+                new bsit2hg1groupb.billingSystem.system.RegularStation(
+                        id, 15.0, true, true,
+                        new ArrayList<>(), false
+                );
+
+        stations.add(station);
+    }
+
+    // Create 5 Gaming PCs: PC-06 to PC-10
+    for (int i = 6; i <= 10; i++) {
+        String id = String.format("PC-%02d", i);
+
+        Station station =
+                new bsit2hg1groupb.billingSystem.system.GamingStation(
+                        id, 30.0, true, true,
+                        new ArrayList<>()
+                );
+
+        stations.add(station);
+    }
+
+    refreshStationCards();
 }
+
+    
+
     public stationsTabPanel() {
         initComponents();
+        initializeStations();
     }
 
     /**
      * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
+        * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
@@ -141,15 +213,10 @@ public class stationsTabPanel extends javax.swing.JPanel {
         headingPanel = new javax.swing.JPanel();
         leftPanel = new javax.swing.JPanel();
         text = new javax.swing.JLabel();
-        Search = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jLabel1 = new javax.swing.JLabel();
         rightPanel = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
         MidPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -157,56 +224,19 @@ public class stationsTabPanel extends javax.swing.JPanel {
 
         text.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
 
-        Search.addActionListener(this::SearchActionPerformed);
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Available", "In Use", "Maintenance" }));
-        jComboBox1.addActionListener(this::jComboBox1ActionPerformed);
-
-        jLabel3.setText("Sort by Availability");
-
-        jLabel2.setText("Station Type");
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All Types", "Regular", "Gaming" }));
-        jComboBox2.addActionListener(this::jComboBox2ActionPerformed);
-
-        jLabel1.setText("Search");
-
         javax.swing.GroupLayout leftPanelLayout = new javax.swing.GroupLayout(leftPanel);
         leftPanel.setLayout(leftPanelLayout);
         leftPanelLayout.setHorizontalGroup(
             leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(leftPanelLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(text)
-                    .addGroup(leftPanelLayout.createSequentialGroup()
-                        .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Search, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(18, 18, 18)
-                        .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(0, 109, Short.MAX_VALUE))
+                .addComponent(text)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         leftPanelLayout.setVerticalGroup(
             leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(leftPanelLayout.createSequentialGroup()
-                .addGap(9, 9, 9)
-                .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(129, Short.MAX_VALUE)
                 .addComponent(text))
         );
 
@@ -220,15 +250,15 @@ public class stationsTabPanel extends javax.swing.JPanel {
         rightPanelLayout.setHorizontalGroup(
             rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, rightPanelLayout.createSequentialGroup()
-                .addContainerGap(300, Short.MAX_VALUE)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(294, Short.MAX_VALUE)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
         );
         rightPanelLayout.setVerticalGroup(
             rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(rightPanelLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(46, Short.MAX_VALUE))
         );
 
@@ -236,27 +266,27 @@ public class stationsTabPanel extends javax.swing.JPanel {
 
         add(headingPanel, java.awt.BorderLayout.NORTH);
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+
         javax.swing.GroupLayout MidPanelLayout = new javax.swing.GroupLayout(MidPanel);
         MidPanel.setLayout(MidPanelLayout);
         MidPanelLayout.setHorizontalGroup(
             MidPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 940, Short.MAX_VALUE)
+            .addGroup(MidPanelLayout.createSequentialGroup()
+                .addGap(143, 143, 143)
+                .addComponent(jLabel1)
+                .addContainerGap(767, Short.MAX_VALUE))
         );
         MidPanelLayout.setVerticalGroup(
             MidPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 191, Short.MAX_VALUE)
+            .addGroup(MidPanelLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(jLabel1)
+                .addContainerGap(115, Short.MAX_VALUE))
         );
 
         add(MidPanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void SearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_SearchActionPerformed
-
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
@@ -275,21 +305,12 @@ public class stationsTabPanel extends javax.swing.JPanel {
         dialog.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel MidPanel;
-    private javax.swing.JTextField Search;
     private javax.swing.JPanel headingPanel;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel leftPanel;
     private javax.swing.JPanel rightPanel;
     private javax.swing.JLabel text;
