@@ -21,7 +21,7 @@ public NewSessionDialog2(java.awt.Frame parent, boolean modal) {
     super(parent, modal);
     initComponents();
     memberonly.setVisible(false);
-    progress66.setValue(66);
+   
 }
 
 public NewSessionDialog2(java.awt.Frame parent, boolean modal, javax.swing.JDialog previous) {
@@ -64,13 +64,14 @@ public NewSessionDialog1 getStationDialog() {
         jLabel9 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        progress66 = new javax.swing.JProgressBar();
-        cmboboxlocation = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
         OptionBTNPanel = new javax.swing.JPanel();
         previousBTN = new javax.swing.JButton();
         nextBtn = new javax.swing.JButton();
+        centerPanel = new javax.swing.JPanel();
+        cmboboxlocation = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        customertype = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
         labelCustName = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
         memberonly = new javax.swing.JPanel();
@@ -80,7 +81,11 @@ public NewSessionDialog1 getStationDialog() {
         creditRemains = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(350, 100));
+        setPreferredSize(new java.awt.Dimension(800, 500));
+
+        headerpanel.setLayout(new java.awt.BorderLayout());
+
+        main3tabPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -103,6 +108,9 @@ public NewSessionDialog1 getStationDialog() {
                 .addContainerGap())
         );
 
+        main3tabPanel.add(jPanel1);
+        main3tabPanel.add(jSeparator1);
+
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel9.setText("Customer");
@@ -123,6 +131,8 @@ public NewSessionDialog1 getStationDialog() {
                 .addComponent(jLabel9)
                 .addContainerGap())
         );
+
+        main3tabPanel.add(jPanel2);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -145,76 +155,13 @@ public NewSessionDialog1 getStationDialog() {
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout main3tabPanelLayout = new javax.swing.GroupLayout(main3tabPanel);
-        main3tabPanel.setLayout(main3tabPanelLayout);
-        main3tabPanelLayout.setHorizontalGroup(
-            main3tabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1)
-            .addGroup(main3tabPanelLayout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        main3tabPanelLayout.setVerticalGroup(
-            main3tabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(main3tabPanelLayout.createSequentialGroup()
-                .addGroup(main3tabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        main3tabPanel.add(jPanel3);
 
-        javax.swing.GroupLayout headerpanelLayout = new javax.swing.GroupLayout(headerpanel);
-        headerpanel.setLayout(headerpanelLayout);
-        headerpanelLayout.setHorizontalGroup(
-            headerpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(progress66, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerpanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(main3tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        headerpanelLayout.setVerticalGroup(
-            headerpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerpanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(progress66, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(main3tabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        headerpanel.add(main3tabPanel, java.awt.BorderLayout.NORTH);
 
-        jLabel1.setText("Customer Type");
+        getContentPane().add(headerpanel, java.awt.BorderLayout.NORTH);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Regular ", "Member" }));
-        jComboBox1.setMinimumSize(new java.awt.Dimension(182, 22));
-        jComboBox1.addActionListener(this::jComboBox1ActionPerformed);
-
-        javax.swing.GroupLayout cmboboxlocationLayout = new javax.swing.GroupLayout(cmboboxlocation);
-        cmboboxlocation.setLayout(cmboboxlocationLayout);
-        cmboboxlocationLayout.setHorizontalGroup(
-            cmboboxlocationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(cmboboxlocationLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(cmboboxlocationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(cmboboxlocationLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 112, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        cmboboxlocationLayout.setVerticalGroup(
-            cmboboxlocationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(cmboboxlocationLayout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        OptionBTNPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
         previousBTN.setText("<- Return to Previous");
         previousBTN.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -229,10 +176,36 @@ public NewSessionDialog1 getStationDialog() {
         nextBtn.addActionListener(this::nextBtnActionPerformed);
         OptionBTNPanel.add(nextBtn);
 
+        getContentPane().add(OptionBTNPanel, java.awt.BorderLayout.SOUTH);
+
+        centerPanel.setLayout(new java.awt.BorderLayout());
+
+        cmboboxlocation.setPreferredSize(new java.awt.Dimension(350, 150));
+        cmboboxlocation.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jPanel4.setPreferredSize(new java.awt.Dimension(350, 100));
+        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        customertype.setText("Customer Type");
+        customertype.setPreferredSize(new java.awt.Dimension(350, 16));
+        jPanel4.add(customertype);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Regular ", "Member" }));
+        jComboBox1.setMinimumSize(new java.awt.Dimension(182, 22));
+        jComboBox1.addActionListener(this::jComboBox1ActionPerformed);
+        jPanel4.add(jComboBox1);
+
         labelCustName.setText("Customer Name");
+        labelCustName.setPreferredSize(new java.awt.Dimension(350, 16));
+        jPanel4.add(labelCustName);
 
         txtName.setPreferredSize(new java.awt.Dimension(192, 22));
         txtName.addActionListener(this::txtNameActionPerformed);
+        jPanel4.add(txtName);
+
+        cmboboxlocation.add(jPanel4);
+
+        centerPanel.add(cmboboxlocation, java.awt.BorderLayout.WEST);
 
         usernamelabel.setText("Username");
 
@@ -254,7 +227,7 @@ public NewSessionDialog1 getStationDialog() {
                     .addComponent(creditRemain)
                     .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(usernamelabel))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         memberonlyLayout.setVerticalGroup(
             memberonlyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -267,52 +240,12 @@ public NewSessionDialog1 getStationDialog() {
                 .addComponent(creditRemain)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(creditRemains)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(headerpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmboboxlocation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(labelCustName))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(memberonly, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(215, Short.MAX_VALUE)
-                .addComponent(OptionBTNPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(headerpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(cmboboxlocation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(labelCustName)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(memberonly, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                .addComponent(OptionBTNPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        centerPanel.add(memberonly, java.awt.BorderLayout.EAST);
+
+        getContentPane().add(centerPanel, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -394,25 +327,26 @@ boolean isMember = "Member".equals(jComboBox1.getSelectedItem());
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel OptionBTNPanel;
+    private javax.swing.JPanel centerPanel;
     private javax.swing.JPanel cmboboxlocation;
     private javax.swing.JLabel creditRemain;
     private javax.swing.JLabel creditRemains;
+    private javax.swing.JLabel customertype;
     private javax.swing.JPanel headerpanel;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel labelCustName;
     private javax.swing.JPanel main3tabPanel;
     private javax.swing.JPanel memberonly;
     private javax.swing.JButton nextBtn;
     private javax.swing.JButton previousBTN;
-    private javax.swing.JProgressBar progress66;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtUsername;
     private javax.swing.JLabel usernamelabel;
