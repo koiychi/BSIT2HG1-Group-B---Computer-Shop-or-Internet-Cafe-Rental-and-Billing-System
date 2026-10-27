@@ -3,48 +3,38 @@ package bsit2hg1groupb.billingSystem.system;
 /**
  *
  * @author MaryJane and Koi
+ 
  */
+import java.util.ArrayList;
+import java.util.List;
 public class PrintJob implements Billable {
 
-    private int printJobID;
-    private RegularStation regularStation;
-    private Customer customer;
+ 
     private String serviceType;
     private String pageSize;
     private String paperType;
     private int pageCount;
     private boolean isColored;
     private double pricePerPage;
+    private List<Object> printJobs = new ArrayList<>();
 
     //public static List<String> AVAILABLE_PAPER_SIZES;
     //public static List<String> AVAILABLE_PAPER_TYPES;
 
     //CONSTRUCTORS
-    public PrintJob(int printJobID, RegularStation regularStation, Customer customer, String serviceType, String pageSize, String paperType, int pageCount, boolean isColored) {
-        this.printJobID = printJobID;
-        this.regularStation = regularStation;
-        this.customer = customer;
+    public PrintJob(String serviceType, String pageSize, String paperType, int pageCount, boolean isColored, double pricePerPage1) {
+       
         this.serviceType = serviceType;
         this.pageSize = pageSize;
         this.paperType = paperType;
         this.pageCount = pageCount;
         this.isColored = isColored;
+        this.pricePerPage = pricePerPage;
     }
 
 
     //GETTERS
-    public int getPrintJobID() {
-        return printJobID;
-    }
-
-    public RegularStation getRegularStation() {
-        return regularStation;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
+ 
     public String getServiceType() {
         return serviceType;
     }
@@ -68,20 +58,13 @@ public class PrintJob implements Billable {
     public double getPricePerPage() {
         return pricePerPage;
     }
+    
+    public List<Object> getPrintJobs() {
+        return printJobs;
+    }
 
     //SETTERS
-    public void setPrintJobID(int printJobID) {
-        this.printJobID = printJobID;
-    }
-
-    public void setRegularStation(RegularStation regularStation) {
-        this.regularStation = regularStation;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
+  
     public void setServiceType(String serviceType) {
         this.serviceType = serviceType;
     }
@@ -104,6 +87,10 @@ public class PrintJob implements Billable {
 
     public void setPricePerPage(double pricePerPage) {
         this.pricePerPage = pricePerPage;
+    }
+    
+    public void addPrintJob(PrintJob toAdd) {
+        printJobs.add(toAdd);
     }
 
     @Override

@@ -4,6 +4,8 @@
  */
 package bsit2hg1groupb.billingSystem.ui.Shop;
 
+import bsit2hg1groupb.billingSystem.system.PrintJob;
+
 /**
  *
  * @author koi
@@ -219,6 +221,11 @@ public class printServicesTabPanel extends javax.swing.JPanel {
         addOrderBtn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         addOrderBtn.setForeground(new java.awt.Color(255, 255, 255));
         addOrderBtn.setText("+ Add Order");
+        addOrderBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addOrderBtnMouseClicked(evt);
+            }
+        });
         addOrderBtn.addActionListener(this::addOrderBtnActionPerformed);
 
         javax.swing.GroupLayout addOrderPanelLayout = new javax.swing.GroupLayout(addOrderPanel);
@@ -379,6 +386,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
     private void printRButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printRButtonActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_printRButtonActionPerformed
 
     private void editPriceListBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editPriceListBtnActionPerformed
@@ -387,6 +395,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
     private void addOrderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addOrderBtnActionPerformed
         // TODO add your handling code here:
+        
         String type = printRButton.isSelected() ? "Print" : "Photocopy";
         
         String colorMode = colorModeComboBox.getSelectedItem().toString();
@@ -400,12 +409,27 @@ public class printServicesTabPanel extends javax.swing.JPanel {
     
         String summaryText = colorMode + " - " + pageSize + " x" + pageCount;
         String priceText = "PHP " + String.format("%.2f", totalItemPrice);
+        
     }//GEN-LAST:event_addOrderBtnActionPerformed
-
+   
     private void pgsizeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pgsizeComboBoxActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_pgsizeComboBoxActionPerformed
 
+    private void addOrderBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addOrderBtnMouseClicked
+        // TODO add your handling code here:
+        String serviceType = printRButton.isSelected() ? "Print" : "Photocopy";
+        String pageSize = pgsizeComboBox.getSelectedItem().toString();
+        String paperType = colorModeComboBox.getSelectedItem().toString(); // or your paper type combo box
+        int pageCount = Integer.parseInt(pageCountComboBox.getSelectedItem().toString());
+        boolean isColored = colorModeComboBox.getSelectedItem().toString().equalsIgnoreCase("Colored");
+        double pricePerPage = isColored ? 10.00 : 5.00;
+    
+        this.addPrintJob(new PrintJob(serviceType, pageSize, paperType, pageCount, isColored, pricePerPage));
+    }//GEN-LAST:event_addOrderBtnMouseClicked
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ColorModeLabelPanel;
@@ -453,4 +477,8 @@ public class printServicesTabPanel extends javax.swing.JPanel {
     private javax.swing.JLabel summaryLabel;
     private javax.swing.JPanel topBar;
     // End of variables declaration//GEN-END:variables
+
+    private void addPrintJob(PrintJob printJob) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

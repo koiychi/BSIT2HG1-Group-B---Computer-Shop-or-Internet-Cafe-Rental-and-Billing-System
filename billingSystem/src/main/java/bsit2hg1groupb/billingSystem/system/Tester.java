@@ -14,7 +14,7 @@ public class Tester {
         //=================================
         //  A. TESTING STATION CLASSES
         //=================================
-
+            System.out.print(PrintJob);
         //A1. STATION
         //Station is abstract, cannot create an instance of it
 
