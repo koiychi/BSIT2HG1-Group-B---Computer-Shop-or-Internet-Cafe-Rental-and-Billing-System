@@ -113,17 +113,22 @@ public String getDuration() {
         nextButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(800, 500));
+
+        unitPanel.setPreferredSize(new java.awt.Dimension(350, 100));
 
         unit1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        unit1.setPreferredSize(new java.awt.Dimension(50, 50));
+        unit1.setPreferredSize(new java.awt.Dimension(70, 70));
         unit1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 unit1MouseClicked(evt);
             }
         });
 
-        monitorIcon.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        monitorIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        monitorIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
 
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("PC 1");
 
         javax.swing.GroupLayout unit1Layout = new javax.swing.GroupLayout(unit1);
@@ -131,12 +136,11 @@ public String getDuration() {
         unit1Layout.setHorizontalGroup(
             unit1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(unit1Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jLabel3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, unit1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(monitorIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(unit1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(monitorIcon))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         unit1Layout.setVerticalGroup(
             unit1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,14 +148,15 @@ public String getDuration() {
                 .addComponent(monitorIcon)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         unitPanel.add(unit1);
 
         unit2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        unit2.setPreferredSize(new java.awt.Dimension(50, 50));
+        unit2.setPreferredSize(new java.awt.Dimension(70, 70));
 
+        monitorIcon1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
         monitorIcon1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         jLabel4.setText("PC 2");
@@ -161,12 +166,11 @@ public String getDuration() {
         unit2Layout.setHorizontalGroup(
             unit2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(unit2Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jLabel4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, unit2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(monitorIcon1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(unit2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(monitorIcon1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         unit2Layout.setVerticalGroup(
             unit2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,14 +178,15 @@ public String getDuration() {
                 .addComponent(monitorIcon1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         unitPanel.add(unit2);
 
         unit3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        unit3.setPreferredSize(new java.awt.Dimension(50, 50));
+        unit3.setPreferredSize(new java.awt.Dimension(70, 70));
 
+        monitorIcon2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
         monitorIcon2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         jLabel5.setText("PC 3");
@@ -191,12 +196,11 @@ public String getDuration() {
         unit3Layout.setHorizontalGroup(
             unit3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(unit3Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jLabel5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, unit3Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(monitorIcon2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(unit3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(monitorIcon2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
         unit3Layout.setVerticalGroup(
             unit3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,8 +214,9 @@ public String getDuration() {
         unitPanel.add(unit3);
 
         unit4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        unit4.setPreferredSize(new java.awt.Dimension(50, 50));
+        unit4.setPreferredSize(new java.awt.Dimension(70, 70));
 
+        monitorIcon3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
         monitorIcon3.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         jLabel6.setText("PC 4");
@@ -221,12 +226,11 @@ public String getDuration() {
         unit4Layout.setHorizontalGroup(
             unit4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(unit4Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jLabel6)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, unit4Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(monitorIcon3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17)
+                .addGroup(unit4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(monitorIcon3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         unit4Layout.setVerticalGroup(
             unit4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -240,10 +244,12 @@ public String getDuration() {
         unitPanel.add(unit4);
 
         unit5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        unit5.setPreferredSize(new java.awt.Dimension(50, 50));
+        unit5.setPreferredSize(new java.awt.Dimension(70, 70));
 
+        monitorIcon4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
         monitorIcon4.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("PC 5");
 
         javax.swing.GroupLayout unit5Layout = new javax.swing.GroupLayout(unit5);
@@ -251,12 +257,11 @@ public String getDuration() {
         unit5Layout.setHorizontalGroup(
             unit5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(unit5Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jLabel7)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, unit5Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(monitorIcon4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19)
+                .addGroup(unit5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(monitorIcon4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         unit5Layout.setVerticalGroup(
             unit5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -439,7 +444,7 @@ public String getDuration() {
             nextBtnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(nextBtnPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 85, Short.MAX_VALUE)
+                .addComponent(nextButton, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
                 .addContainerGap())
         );
         nextBtnPanelLayout.setVerticalGroup(

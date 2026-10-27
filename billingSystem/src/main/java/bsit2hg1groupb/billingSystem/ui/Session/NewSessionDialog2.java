@@ -77,9 +77,10 @@ public NewSessionDialog1 getStationDialog() {
         usernamelabel = new javax.swing.JLabel();
         txtUsername = new javax.swing.JTextField();
         creditRemain = new javax.swing.JLabel();
-        txtCredit = new javax.swing.JTextField();
+        creditRemains = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(350, 100));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -240,8 +241,7 @@ public NewSessionDialog1 getStationDialog() {
 
         creditRemain.setText("Credit Remaining");
 
-        txtCredit.setPreferredSize(new java.awt.Dimension(193, 22));
-        txtCredit.addActionListener(this::txtCreditActionPerformed);
+        creditRemains.setText("00.00");
 
         javax.swing.GroupLayout memberonlyLayout = new javax.swing.GroupLayout(memberonly);
         memberonly.setLayout(memberonlyLayout);
@@ -250,10 +250,10 @@ public NewSessionDialog1 getStationDialog() {
             .addGroup(memberonlyLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(memberonlyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(creditRemains)
                     .addComponent(creditRemain)
                     .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(usernamelabel)
-                    .addComponent(txtCredit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(usernamelabel))
                 .addContainerGap(34, Short.MAX_VALUE))
         );
         memberonlyLayout.setVerticalGroup(
@@ -265,9 +265,9 @@ public NewSessionDialog1 getStationDialog() {
                 .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(creditRemain)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtCredit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(creditRemains)
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -346,14 +346,10 @@ boolean isMember = "Member".equals(jComboBox1.getSelectedItem());
     memberonly.setVisible(isMember);
     if (!isMember) {
         txtName.setText("");
-        txtCredit.setText("");
+        
     }
     revalidate();
     repaint();    repaint();    repaint();    repaint();    }//GEN-LAST:event_jComboBox1ActionPerformed
-
-    private void txtCreditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCreditActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCreditActionPerformed
 
     private void txtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameActionPerformed
         // TODO add your handling code here:
@@ -400,6 +396,7 @@ boolean isMember = "Member".equals(jComboBox1.getSelectedItem());
     private javax.swing.JPanel OptionBTNPanel;
     private javax.swing.JPanel cmboboxlocation;
     private javax.swing.JLabel creditRemain;
+    private javax.swing.JLabel creditRemains;
     private javax.swing.JPanel headerpanel;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
@@ -416,7 +413,6 @@ boolean isMember = "Member".equals(jComboBox1.getSelectedItem());
     private javax.swing.JButton nextBtn;
     private javax.swing.JButton previousBTN;
     private javax.swing.JProgressBar progress66;
-    private javax.swing.JTextField txtCredit;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtUsername;
     private javax.swing.JLabel usernamelabel;
