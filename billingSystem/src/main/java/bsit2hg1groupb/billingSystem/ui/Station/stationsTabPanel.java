@@ -10,7 +10,13 @@ package bsit2hg1groupb.billingSystem.ui.Station;
  */
 
 import bsit2hg1groupb.billingSystem.system.Station;
-
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 public class stationsTabPanel extends javax.swing.JPanel 
 {
 
@@ -21,7 +27,88 @@ public class stationsTabPanel extends javax.swing.JPanel
 
     public stationsTabPanel() {
         initComponents();
-       
+        applyTheme();
+        setupCards(regularcardsPanel);
+        setupCards(regularcardsPanel);
+        setupCards(regularcardsPanel2);
+
+        for (Component c : regularcardsPanel.getComponents()) {
+            if (c instanceof JPanel) {
+                refreshCard((JPanel) c);
+            }
+        }
+        for (Component c : regularcardsPanel2.getComponents()) {
+            if (c instanceof JPanel) {
+                refreshCard((JPanel) c);
+            }
+        }
+    }
+    private JPanel selectedCard = null;
+    private final Color normalColor = new Color(26, 29, 38);
+    private final Color selectedColor = new Color(40, 46, 60);
+
+    private static final Color BG = new Color(10, 10, 15);
+    private static final Color PANEL = new Color(22, 26, 34);
+    private static final Color ORANGE = new Color(255, 106, 0);
+    private static final Color GREEN = new Color(34, 160, 70);
+    private static final Color RED = new Color(200, 55, 55);
+    private static final Color AMBER = new Color(230, 160, 30);
+    
+    private void applyTheme() {
+        setBackground(BG);
+        MidPanel.setBackground(BG);
+        RegularPanel.setBackground(BG);
+        RegularPanel2.setBackground(BG);
+        regularcardsPanel.setBackground(BG);
+        regularcardsPanel2.setBackground(BG);
+        jPanel1.setBackground(PANEL);
+
+        styleHeader(RegularHeader, jLabel1);
+        styleHeader(RegularHeader2, jLabel3);
+
+        // Orange "+ Edit Station" button
+        editStationBtn.setBackground(ORANGE);
+        editStationBtn.setForeground(Color.WHITE);
+        editStationBtn.setFont(editStationBtn.getFont().deriveFont(java.awt.Font.BOLD, 14f));
+        editStationBtn.setFocusPainted(false);
+        editStationBtn.setBorderPainted(false);
+        editStationBtn.setOpaque(true);
+        editStationBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }
+
+    private void styleHeader(JPanel header, JLabel label) {
+        header.setBackground(PANEL);
+        header.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 4, 0, 0, ORANGE)); // orange accent bar
+        label.setForeground(Color.WHITE);
+        label.setFont(label.getFont().deriveFont(java.awt.Font.BOLD, 20f));
+        label.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 12, 8, 12));
+    }
+
+    private void setupCards(JPanel container) {
+        for (Component c : container.getComponents()) {
+            if (!(c instanceof JPanel)) continue;
+            final JPanel card = (JPanel) c;
+
+            card.setBackground(normalColor);
+            card.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+            MouseAdapter click = new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    selectCard(card);
+                }
+            };
+            card.addMouseListener(click);
+            for (Component child : card.getComponents()) {
+                child.addMouseListener(click);   // clicks on icon/label also select the card
+            }
+        }
+    }
+
+    private void selectCard(JPanel card) {
+        if (selectedCard != null) selectedCard.setBackground(normalColor);
+        selectedCard = card;
+        selectedCard.setBackground(selectedColor);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -301,10 +388,143 @@ public class stationsTabPanel extends javax.swing.JPanel
 
         editStationBtn.setText("+ Edit Station");
         editStationBtn.setPreferredSize(new java.awt.Dimension(150, 35));
+        editStationBtn.addActionListener(this::editStationBtnActionPerformed);
         jPanel1.add(editStationBtn);
 
         add(jPanel1, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void editStationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editStationBtnActionPerformed
+        // TODO add your handling code here:
+        if (selectedCard == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please select a station first.");
+            return;
+        }
+
+        String name = (String) selectedCard.getClientProperty("name");
+        if (name == null) {
+            name = getNameLabel(selectedCard).getText();
+        }
+        String type = (String) selectedCard.getClientProperty("type");
+        if (type == null) {
+            type = (selectedCard.getParent() == regularcardsPanel) ? "Regular" : "Gaming";
+        }
+        String status = (String) selectedCard.getClientProperty("status");
+        if (status == null) {
+            status = "Available";
+        }
+        String rate = (String) selectedCard.getClientProperty("rate");
+        if (rate == null) {
+            rate = "0.00";
+        }
+
+        EditStation dlg = new EditStation(
+        (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this), true);
+        dlg.setStation(name, type, status, rate);
+        dlg.setLocationRelativeTo(this);
+        dlg.setVisible(true);   // waits here until the dialog closes
+
+        if (dlg.isDeleted()) {
+            java.awt.Container parent = selectedCard.getParent();
+            parent.remove(selectedCard);
+            parent.revalidate();
+            parent.repaint();
+            selectedCard = null;
+            updateCounts();
+        } else if (dlg.isSaved()) {
+            selectedCard.putClientProperty("name", dlg.getStationName());
+            selectedCard.putClientProperty("type", dlg.getStationType().trim());
+            selectedCard.putClientProperty("status", dlg.getStatus());
+            selectedCard.putClientProperty("rate", dlg.getRate());
+
+            String newType = dlg.getStationType() == null ? type : dlg.getStationType().trim();
+            JPanel target = newType.equalsIgnoreCase("Regular") ? regularcardsPanel : regularcardsPanel2;
+            boolean typeChanged = !newType.equalsIgnoreCase(type);
+            if (typeChanged && selectedCard.getParent() != target) {
+                java.awt.Container old = selectedCard.getParent();
+                old.remove(selectedCard);
+                old.revalidate();
+                old.repaint();
+                target.add(selectedCard);
+                target.revalidate();
+                target.repaint();
+            }
+            refreshCard(selectedCard);
+        }
+    }
+
+    private JLabel getNameLabel(JPanel card) {
+        JLabel last = null;
+        for (Component c : card.getComponents()) {
+            if (c instanceof JLabel) {
+                last = (JLabel) c;
+            }
+        }
+        return last;   // the name label is the last label (below the icon)
+    }
+
+    private void refreshCard(JPanel card) {
+        String name = (String) card.getClientProperty("name");
+        String status = (String) card.getClientProperty("status");
+        String type = (String) card.getClientProperty("type");
+        if (name == null) {
+            name = getNameLabel(card).getText();
+        }
+        if (status == null) {
+            status = "Available";
+        }
+        if (type == null) {
+            type = (card.getParent() == regularcardsPanel) ? "Regular" : "Gaming";
+        }
+
+        card.putClientProperty("name", name);
+        card.putClientProperty("status", status);
+        card.putClientProperty("type", type);
+
+        Color statusColor;
+        switch (status) {
+            case "Occupied":
+                statusColor = RED;
+                break;
+            case "Maintenance":
+                statusColor = AMBER;
+                break;
+            default:
+                statusColor = GREEN;
+                break;
+        }
+        String hex = String.format("#%02x%02x%02x",
+                statusColor.getRed(), statusColor.getGreen(), statusColor.getBlue());
+
+        JLabel label = getNameLabel(card);
+        label.setForeground(Color.WHITE);
+        label.setText("<html><center>"
+                + "<font size='5'><b>" + name + "</b></font><br>"
+                + "<font color='#aab0ba'>" + type + "</font><br><br>"
+                + "<font color='" + hex + "'>&#9679;</font> " + status
+                + "</center></html>");
+
+        card.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                javax.swing.BorderFactory.createLineBorder(statusColor, 2, true),
+                javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+
+        updateCounts();
+    }
+
+    private void updateCounts() {
+        jLabel1.setText("Regular Station (" + countCards(regularcardsPanel) + ")");
+        jLabel3.setText("Gaming Station (" + countCards(regularcardsPanel2) + ")");
+    }
+
+    private int countCards(JPanel container) {
+        int n = 0;
+        for (Component c : container.getComponents()) {
+            if (c instanceof JPanel) {
+                n++;
+            }
+        }
+        return n;
+    }//GEN-LAST:event_editStationBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
