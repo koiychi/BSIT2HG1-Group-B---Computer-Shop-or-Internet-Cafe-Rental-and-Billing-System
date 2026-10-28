@@ -439,7 +439,7 @@ public String getDuration() {
             nextBtnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(nextBtnPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 85, Short.MAX_VALUE)
+                .addComponent(nextButton, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
                 .addContainerGap())
         );
         nextBtnPanelLayout.setVerticalGroup(
@@ -485,6 +485,7 @@ public String getDuration() {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     

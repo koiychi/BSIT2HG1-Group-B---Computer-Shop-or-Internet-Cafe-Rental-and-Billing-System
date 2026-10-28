@@ -15,11 +15,9 @@ public class PcMember extends javax.swing.JDialog {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(PcMember.class.getName());
 
-    /**
-     * Creates new form PcMember
-     */
     public PcMember(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        setUndecorated(true);
         initComponents();
         setupLogic();
         setLocationRelativeTo(parent);
@@ -35,15 +33,10 @@ public class PcMember extends javax.swing.JDialog {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        TypeOfCustomer = new javax.swing.JPanel();
-        headerLbl = new javax.swing.JLabel();
         PayBill = new javax.swing.JPanel();
         titleLbl = new javax.swing.JLabel();
         subtotalTitleLbl = new javax.swing.JLabel();
         typePcLbl = new javax.swing.JLabel();
-        typeBox = new javax.swing.JComboBox<>();
-        hoursTextLbl = new javax.swing.JLabel();
-        hoursSpin = new javax.swing.JSpinner();
         calcLbl = new javax.swing.JLabel();
         calcTotalLbl = new javax.swing.JLabel();
         discountLbl = new javax.swing.JLabel();
@@ -61,44 +54,16 @@ public class PcMember extends javax.swing.JDialog {
         ProceedPay = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 102, 0));
+        setMinimumSize(new java.awt.Dimension(293, 351));
 
-        TypeOfCustomer.setBackground(new java.awt.Color(255, 153, 51));
-        TypeOfCustomer.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 153, 51)));
-        TypeOfCustomer.setForeground(new java.awt.Color(255, 153, 51));
-
-        headerLbl.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        headerLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        headerLbl.setText("Member");
-        headerLbl.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        javax.swing.GroupLayout TypeOfCustomerLayout = new javax.swing.GroupLayout(TypeOfCustomer);
-        TypeOfCustomer.setLayout(TypeOfCustomerLayout);
-        TypeOfCustomerLayout.setHorizontalGroup(
-            TypeOfCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TypeOfCustomerLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(headerLbl)
-                .addGap(96, 96, 96))
-        );
-        TypeOfCustomerLayout.setVerticalGroup(
-            TypeOfCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TypeOfCustomerLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(headerLbl)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        titleLbl.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        titleLbl.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         titleLbl.setText("Pay Bill");
 
         subtotalTitleLbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         subtotalTitleLbl.setText("SubTotal");
 
-        typePcLbl.setText("Type");
-
-        typeBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        hoursTextLbl.setText("Hour(s)");
+        typePcLbl.setText("Type PC");
 
         calcLbl.setText("1 hour(s) x PHP 40.00");
 
@@ -116,25 +81,23 @@ public class PcMember extends javax.swing.JDialog {
             PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PayBillLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(typePcLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(titleLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
-                        .addComponent(subtotalTitleLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PayBillLayout.createSequentialGroup()
-                        .addGap(29, 29, 29)
+                .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PayBillLayout.createSequentialGroup()
                         .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(discountLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(calcLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(hoursTextLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(hoursSpin, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
-                        .addComponent(calcTotalLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(discountAppliedLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(typeBox, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14))
+                            .addComponent(titleLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(subtotalTitleLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(PayBillLayout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(calcLbl)
+                            .addComponent(typePcLbl, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(discountLbl, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(calcTotalLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(discountAppliedLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(23, 23, 23))))
         );
         PayBillLayout.setVerticalGroup(
             PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,13 +106,7 @@ public class PcMember extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(subtotalTitleLbl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(typePcLbl)
-                    .addComponent(typeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(hoursTextLbl)
-                    .addComponent(hoursSpin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(typePcLbl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(calcLbl)
@@ -158,42 +115,38 @@ public class PcMember extends javax.swing.JDialog {
                 .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(discountLbl)
                     .addComponent(discountAppliedLbl))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         subtotalTitleLbl.getAccessibleContext().setAccessibleName("Subtotal");
 
-        TotalAmountDue.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
+        TotalAmountDue.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(38, 42, 52), 2, true));
 
         totalTitleLbl.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         totalTitleLbl.setText("Total Amount Due");
 
-        totalLbl.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        totalLbl.setText("PHP 30.00");
+        totalLbl.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        totalLbl.setText("PHP 40.00");
 
         javax.swing.GroupLayout TotalAmountDueLayout = new javax.swing.GroupLayout(TotalAmountDue);
         TotalAmountDue.setLayout(TotalAmountDueLayout);
         TotalAmountDueLayout.setHorizontalGroup(
             TotalAmountDueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(TotalAmountDueLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
                 .addGroup(TotalAmountDueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(TotalAmountDueLayout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(totalLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(TotalAmountDueLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(totalTitleLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(totalLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(totalTitleLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         TotalAmountDueLayout.setVerticalGroup(
             TotalAmountDueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(TotalAmountDueLayout.createSequentialGroup()
                 .addComponent(totalTitleLbl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(totalLbl))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(totalLbl)
+                .addContainerGap())
         );
-
-        totalLbl.getAccessibleContext().setAccessibleName("PHP 40.00");
 
         payWithLbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         payWithLbl.setText("Pay With");
@@ -213,11 +166,11 @@ public class PcMember extends javax.swing.JDialog {
             .addGroup(ModeOfPaymentLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(payWithLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cashRb)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(creditRb, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(creditRb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         ModeOfPaymentLayout.setVerticalGroup(
             ModeOfPaymentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -231,6 +184,7 @@ public class PcMember extends javax.swing.JDialog {
         );
 
         payField.setText("PHP 0.00");
+        payField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
 
         changeLbl.setText("Change:");
 
@@ -249,12 +203,14 @@ public class PcMember extends javax.swing.JDialog {
             InputPaymentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(InputPaymentLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(payField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(payField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(changeLbl)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        ProceedPay.setBackground(new java.awt.Color(255, 102, 0));
+        ProceedPay.setForeground(new java.awt.Color(255, 255, 255));
         ProceedPay.setText("Finish Payment");
         ProceedPay.addActionListener(this::ProceedPayActionPerformed);
 
@@ -263,7 +219,6 @@ public class PcMember extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(ModeOfPayment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(TypeOfCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(PayBill, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(InputPayment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
@@ -279,8 +234,6 @@ public class PcMember extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(TypeOfCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
                 .addComponent(PayBill, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(TotalAmountDue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -308,12 +261,13 @@ public class PcMember extends javax.swing.JDialog {
         finishPayment();
     }//GEN-LAST:event_ProceedPayActionPerformed
     private BigDecimal total = BigDecimal.ZERO;
+    private BigDecimal subtotal = new BigDecimal("40.00");      // cash total, no discount
+    private BigDecimal discountAmt = new BigDecimal("4.00");    // shown only for credit
+    private BigDecimal creditTotal = new BigDecimal("36.00");   // credit total, after discount
 
+    
     private void setupLogic() {
-        // combo box + spinner choices
-        typeBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gaming", "Regular" }));
-        hoursSpin.setModel(new javax.swing.SpinnerNumberModel(1, 1, 24, 1));   // start 1, min 1, max 24, step 1
-
+        
         // payment field: "PHP 0.00" behavior
         PaymentUtil.setupPaymentField(payField);
 
@@ -322,9 +276,6 @@ public class PcMember extends javax.swing.JDialog {
         creditRb.setEnabled(PaymentUtil.memberCredit.compareTo(BigDecimal.ZERO) > 0);
         cashRb.setSelected(true);
 
-        // recompute whenever something changes
-        typeBox.addActionListener(e -> updateBill());
-        hoursSpin.addChangeListener(e -> updateBill());
         payField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(javax.swing.event.DocumentEvent e) { updateChange(); }
@@ -335,34 +286,134 @@ public class PcMember extends javax.swing.JDialog {
         });
 
         updateBill();
+        applyTheme();
+    }
+    // dark background, orange border, close X, orange rounded button
+    private void applyTheme() {
+        final java.awt.Color ORANGE = new java.awt.Color(0xFF6600);
+        final java.awt.Color BG = new java.awt.Color(0x0B0B0F);
+
+        // top bar with a close X and a thin white line under it
+        javax.swing.JPanel header = new javax.swing.JPanel(new java.awt.BorderLayout());
+        header.setBackground(BG);
+        header.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.WHITE));
+        javax.swing.JLabel closeLbl = new javax.swing.JLabel("X");
+        closeLbl.setForeground(java.awt.Color.WHITE);
+        closeLbl.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+        closeLbl.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 12));
+        closeLbl.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.HAND_CURSOR));
+        closeLbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) { dispose(); }
+        });
+        header.add(closeLbl, java.awt.BorderLayout.EAST);
+
+        // put the header on top of the existing content
+        java.awt.Container body = getContentPane();
+        paintTree(body, BG);
+        javax.swing.JPanel root = new javax.swing.JPanel(new java.awt.BorderLayout());
+        root.setBackground(BG);
+        root.add(header, java.awt.BorderLayout.NORTH);
+        root.add(body, java.awt.BorderLayout.CENTER);
+        setContentPane(root);
+
+        // orange border around the whole window
+        getRootPane().setBorder(javax.swing.BorderFactory.createLineBorder(ORANGE, 2));
+
+        // total amount box: slightly lighter card
+        TotalAmountDue.setBackground(new java.awt.Color(0x15151B));
+        TotalAmountDue.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(70, 70, 70), 1));
+
+        // light input field like the screenshot
+        payField.setBackground(new java.awt.Color(0xF2F2F2));
+        payField.setForeground(java.awt.Color.BLACK);
+        payField.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(150, 150, 150), 1),
+                javax.swing.BorderFactory.createEmptyBorder(4, 6, 4, 6)));
+
+        // orange rounded button (custom painted so it works with any look and feel)
+        ProceedPay.setForeground(java.awt.Color.WHITE);
+        ProceedPay.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 13));
+        ProceedPay.setContentAreaFilled(false);
+        ProceedPay.setOpaque(false);
+        ProceedPay.setBorderPainted(false);
+        ProceedPay.setFocusPainted(false);
+        ProceedPay.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 18, 8, 18));
+        ProceedPay.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.HAND_CURSOR));
+        ProceedPay.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+            @Override
+            public void paint(java.awt.Graphics g, javax.swing.JComponent c) {
+                java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
+                g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
+                        java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(ORANGE);
+                g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 8, 8);
+                g2.dispose();
+                super.paint(g, c);
+            }
+        });
+
+        setMinimumSize(null);     // clear the fixed sizes from initComponents
+        setPreferredSize(null);
+        pack();                   // window grows to fit the header and the button // resize because of the new header
+    }
+
+    // gives every panel, label, and radio button the dark theme colors
+    private void paintTree(java.awt.Container container, java.awt.Color bg) {
+        for (java.awt.Component c : container.getComponents()) {
+            if (c instanceof javax.swing.JPanel) {
+                c.setBackground(bg);
+            } else if (c instanceof javax.swing.JLabel) {
+                c.setForeground(java.awt.Color.WHITE);
+            } else if (c instanceof javax.swing.JRadioButton) {
+                c.setForeground(java.awt.Color.WHITE);
+                c.setBackground(bg);
+            }
+            if (c instanceof java.awt.Container) {
+                paintTree((java.awt.Container) c, bg);
+            }
+        }
     }
 
     // recomputes the labels and the total from the type and hours
+    // placeholder bill: no computation, values come from the other class
     private void updateBill() {
-        int hours = (Integer) hoursSpin.getValue();
-        BigDecimal rate = "Gaming".equals(typeBox.getSelectedItem())
-                ? PaymentUtil.PC_RATE_GAMING
-                : PaymentUtil.PC_RATE_REGULAR;
+        boolean useDiscount = creditRb.isSelected();   // discount only for credit
+        total = useDiscount ? creditTotal : subtotal;
 
-        BigDecimal subtotal = rate.multiply(BigDecimal.valueOf(hours));
-        BigDecimal discount = subtotal.multiply(PaymentUtil.MEMBER_DISCOUNT).setScale(2, RoundingMode.HALF_UP);
-        total = subtotal.subtract(discount);   // the 10% member discount is always applied
+        boolean visibilityChanged = discountLbl.isVisible() != useDiscount;
+        discountLbl.setVisible(useDiscount);
+        discountAppliedLbl.setVisible(useDiscount); 
 
-        calcLbl.setText(hours + " hour(s) x " + PaymentUtil.money(rate));   // 3 hour(s) x PHP 40.00
-        calcTotalLbl.setText(PaymentUtil.money(subtotal));   
-        discountAppliedLbl.setText("PHP -" + discount.setScale(2, RoundingMode.HALF_UP));   // PHP -12.00// PHP 120.00
-        totalLbl.setText(PaymentUtil.money(total));                         // PHP 108.00 (after discount)
+        calcTotalLbl.setText(PaymentUtil.money(subtotal));
+        discountAppliedLbl.setText("PHP -" + discountAmt.setScale(2, RoundingMode.HALF_UP));
+        totalLbl.setText(PaymentUtil.money(total));
 
         updateChange();
+           // re-fit the window (and the orange border) to the new height
+        if (visibilityChanged) {
+            pack();
+            setLocationRelativeTo(getOwner());   // keep it centered after resizing
+        }
     }
 
-    // the Change label only shows when paying with cash and the amount covers the total
+    // the other class calls this to send the real bill values
+    public void setBill(String typeText, String calcText,
+                        BigDecimal subtotal, BigDecimal discount, BigDecimal creditTotal) {
+        typePcLbl.setText(typeText);       // Gaming PC
+        calcLbl.setText(calcText);         // 3 hour(s) x PHP 40.00
+        this.subtotal = subtotal;          // PHP 120.00
+        this.discountAmt = discount;       // PHP 12.00
+        this.creditTotal = creditTotal;    // PHP 108.00
+        updateBill();
+    }
+        // the Change label only shows when paying with cash and the amount covers the total
     private void updateChange() {
         BigDecimal paid = PaymentUtil.parseAmount(payField.getText());
         if (cashRb.isSelected() && paid.compareTo(total) >= 0) {
             changeLbl.setText("Change: " + PaymentUtil.money(paid.subtract(total)));
         } else {
-            changeLbl.setText("Change:");
+            changeLbl.setText("Change: PHP");
         }
     }
 
@@ -374,7 +425,7 @@ public class PcMember extends javax.swing.JDialog {
         } else {
             payField.setText("PHP 0.00");
         }
-        updateChange();
+        updateBill(); 
     }
 
     // Finish Payment
@@ -413,8 +464,7 @@ public class PcMember extends javax.swing.JDialog {
         // build the confirmation text
         String method = cashRb.isSelected() ? "Cash" : "Shop Credit";
         StringBuilder receipt = new StringBuilder("Payment successful.\n\n");
-        receipt.append("Service: PC - Member (").append(typeBox.getSelectedItem()).append(")\n");
-        receipt.append("Hours: ").append(hoursSpin.getValue()).append("\n");
+        receipt.append("Service: PC - Member (").append(typePcLbl.getText()).append(")\n");
         receipt.append("Total Amount: ").append(PaymentUtil.money(total)).append("\n");
         receipt.append("Payment Method: ").append(method).append("\n");
 
@@ -428,16 +478,14 @@ public class PcMember extends javax.swing.JDialog {
         receipt.append("Remaining Credit: ").append(PaymentUtil.money(PaymentUtil.memberCredit)).append("\n");
         receipt.append("\nThis transaction has been recorded in Transactions.");
 
-        PaymentUtil.logger.log(true, "PC-" + typeBox.getSelectedItem(), total, cashRb.isSelected() ? "Cash" : "Credit");
-
+        PaymentUtil.logger.log(true, "PC-" + typePcLbl.getText(), total, cashRb.isSelected() ? "Cash" : "Credit");
+        
         java.awt.Window owner = getOwner();
         dispose();
         javax.swing.JOptionPane.showMessageDialog(owner, receipt.toString(),
                 "Payment Confirmation", javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }
-    /**
-     * @param args the command line arguments
-     */
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -478,7 +526,6 @@ public class PcMember extends javax.swing.JDialog {
     private javax.swing.JPanel PayBill;
     private javax.swing.JButton ProceedPay;
     private javax.swing.JPanel TotalAmountDue;
-    private javax.swing.JPanel TypeOfCustomer;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel calcLbl;
     private javax.swing.JLabel calcTotalLbl;
@@ -487,16 +534,12 @@ public class PcMember extends javax.swing.JDialog {
     private javax.swing.JRadioButton creditRb;
     private javax.swing.JLabel discountAppliedLbl;
     private javax.swing.JLabel discountLbl;
-    private javax.swing.JLabel headerLbl;
-    private javax.swing.JSpinner hoursSpin;
-    private javax.swing.JLabel hoursTextLbl;
     private javax.swing.JTextField payField;
     private javax.swing.JLabel payWithLbl;
     private javax.swing.JLabel subtotalTitleLbl;
     private javax.swing.JLabel titleLbl;
     private javax.swing.JLabel totalLbl;
     private javax.swing.JLabel totalTitleLbl;
-    private javax.swing.JComboBox<String> typeBox;
     private javax.swing.JLabel typePcLbl;
     // End of variables declaration//GEN-END:variables
 }

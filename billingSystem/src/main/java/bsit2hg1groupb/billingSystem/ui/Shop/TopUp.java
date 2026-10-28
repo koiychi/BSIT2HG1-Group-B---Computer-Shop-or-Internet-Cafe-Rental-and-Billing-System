@@ -18,12 +18,13 @@ public class TopUp extends javax.swing.JDialog {
     /**
      * Creates new form TopUp
      */
-    public TopUp(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
-        initComponents();
-        setupLogic();
-        setLocationRelativeTo(parent);
-    }
+public TopUp(java.awt.Frame parent, boolean modal) {
+    super(parent, modal);
+    setUndecorated(true);
+    initComponents();
+    setupLogic();
+    setLocationRelativeTo(parent);
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -34,26 +35,18 @@ public class TopUp extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        TypeOfCustomer = new javax.swing.JPanel();
-        headerLbl = new javax.swing.JLabel();
-        PayBill = new javax.swing.JPanel();
-        titleLbl = new javax.swing.JLabel();
-        subtotalTitleLbl = new javax.swing.JLabel();
-        usernameLbl = new javax.swing.JLabel();
-        nameLbl = new javax.swing.JLabel();
-        currentCreditLbl = new javax.swing.JLabel();
-        amountCreditLbl = new javax.swing.JLabel();
-        customerUsernameLbl = new javax.swing.JLabel();
-        customerNameLbl = new javax.swing.JLabel();
-        totalCreditLbl = new javax.swing.JLabel();
-        amountBox = new javax.swing.JComboBox<>();
         TotalAmountDue = new javax.swing.JPanel();
         totalTitleLbl = new javax.swing.JLabel();
-        totalLbl = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
         ModeOfPayment = new javax.swing.JPanel();
         payWithLbl = new javax.swing.JLabel();
         cashRb = new javax.swing.JRadioButton();
         creditRb = new javax.swing.JRadioButton();
+        PayBill = new javax.swing.JPanel();
+        titleLbl = new javax.swing.JLabel();
+        detailsTitleLbl = new javax.swing.JLabel();
+        usernameLbl = new javax.swing.JLabel();
+        nameCustomerLbl = new javax.swing.JLabel();
         InputPayment = new javax.swing.JPanel();
         payField = new javax.swing.JTextField();
         changeLbl = new javax.swing.JLabel();
@@ -61,140 +54,36 @@ public class TopUp extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        TypeOfCustomer.setBackground(new java.awt.Color(255, 153, 51));
-        TypeOfCustomer.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 153, 51)));
-        TypeOfCustomer.setForeground(new java.awt.Color(255, 153, 51));
-
-        headerLbl.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        headerLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        headerLbl.setText("Member");
-        headerLbl.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        javax.swing.GroupLayout TypeOfCustomerLayout = new javax.swing.GroupLayout(TypeOfCustomer);
-        TypeOfCustomer.setLayout(TypeOfCustomerLayout);
-        TypeOfCustomerLayout.setHorizontalGroup(
-            TypeOfCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TypeOfCustomerLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(headerLbl)
-                .addGap(96, 96, 96))
-        );
-        TypeOfCustomerLayout.setVerticalGroup(
-            TypeOfCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TypeOfCustomerLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(headerLbl)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        titleLbl.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        titleLbl.setText("Top Up Credit");
-
-        subtotalTitleLbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        subtotalTitleLbl.setText("SubTotal");
-
-        usernameLbl.setText("Username");
-
-        nameLbl.setText("Name");
-
-        currentCreditLbl.setText("Current Credit");
-
-        amountCreditLbl.setText("Amount to Credit");
-
-        customerUsernameLbl.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        customerUsernameLbl.setText("@cals");
-
-        customerNameLbl.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        customerNameLbl.setText("Cals love Eni");
-
-        totalCreditLbl.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        totalCreditLbl.setText("PHP 1.00");
-
-        amountBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "50", "100", "200", "500", "100" }));
-
-        javax.swing.GroupLayout PayBillLayout = new javax.swing.GroupLayout(PayBill);
-        PayBill.setLayout(PayBillLayout);
-        PayBillLayout.setHorizontalGroup(
-            PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PayBillLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(titleLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(subtotalTitleLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(PayBillLayout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(amountCreditLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(currentCreditLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(nameLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(usernameLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(customerUsernameLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(customerNameLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(amountBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(totalCreditLbl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(21, 21, 21))
-        );
-        PayBillLayout.setVerticalGroup(
-            PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PayBillLayout.createSequentialGroup()
-                .addComponent(titleLbl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(subtotalTitleLbl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PayBillLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(customerUsernameLbl)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(nameLbl)
-                            .addComponent(customerNameLbl)))
-                    .addGroup(PayBillLayout.createSequentialGroup()
-                        .addComponent(usernameLbl)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(currentCreditLbl)
-                    .addComponent(totalCreditLbl))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(amountCreditLbl)
-                    .addComponent(amountBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-
-        TotalAmountDue.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
+        TotalAmountDue.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(38, 42, 52), 2, true));
 
         totalTitleLbl.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        totalTitleLbl.setText("Total Amount Due");
+        totalTitleLbl.setText("Amount to Credit");
 
-        totalLbl.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        totalLbl.setText("PHP 100.00");
+        jComboBox1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "50", "100", "200", "500", "1000" }));
+        jComboBox1.addActionListener(this::jComboBox1ActionPerformed);
 
         javax.swing.GroupLayout TotalAmountDueLayout = new javax.swing.GroupLayout(TotalAmountDue);
         TotalAmountDue.setLayout(TotalAmountDueLayout);
         TotalAmountDueLayout.setHorizontalGroup(
             TotalAmountDueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(TotalAmountDueLayout.createSequentialGroup()
-                .addGroup(TotalAmountDueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(TotalAmountDueLayout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(totalLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(TotalAmountDueLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(totalTitleLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(12, 12, 12)
+                .addComponent(totalTitleLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(TotalAmountDueLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         TotalAmountDueLayout.setVerticalGroup(
             TotalAmountDueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(TotalAmountDueLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(totalTitleLbl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(totalLbl))
+                .addComponent(jComboBox1)
+                .addContainerGap())
         );
 
         payWithLbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -213,11 +102,11 @@ public class TopUp extends javax.swing.JDialog {
             .addGroup(ModeOfPaymentLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(payWithLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cashRb)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(creditRb, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(creditRb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         ModeOfPaymentLayout.setVerticalGroup(
             ModeOfPaymentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -230,7 +119,49 @@ public class TopUp extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        titleLbl.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        titleLbl.setText("Top Up Credit");
+
+        detailsTitleLbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        detailsTitleLbl.setText("SubTotal");
+
+        usernameLbl.setText("@CalsLoveEni");
+
+        nameCustomerLbl.setText("Carlo Sandoval");
+
+        javax.swing.GroupLayout PayBillLayout = new javax.swing.GroupLayout(PayBill);
+        PayBill.setLayout(PayBillLayout);
+        PayBillLayout.setHorizontalGroup(
+            PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PayBillLayout.createSequentialGroup()
+                .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PayBillLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(detailsTitleLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(titleLbl)))
+                    .addGroup(PayBillLayout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(usernameLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nameCustomerLbl))))
+                .addContainerGap(125, Short.MAX_VALUE))
+        );
+        PayBillLayout.setVerticalGroup(
+            PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PayBillLayout.createSequentialGroup()
+                .addComponent(titleLbl)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(detailsTitleLbl)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(usernameLbl)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(nameCustomerLbl))
+        );
+
         payField.setText("PHP 0.00");
+        payField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        payField.addActionListener(this::payFieldActionPerformed);
 
         changeLbl.setText("Change:");
 
@@ -249,12 +180,14 @@ public class TopUp extends javax.swing.JDialog {
             InputPaymentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(InputPaymentLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(payField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(payField, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(changeLbl)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        ProceedPay.setBackground(new java.awt.Color(255, 102, 0));
+        ProceedPay.setForeground(new java.awt.Color(255, 255, 255));
         ProceedPay.setText("Finish Payment");
         ProceedPay.addActionListener(this::ProceedPayActionPerformed);
 
@@ -263,26 +196,24 @@ public class TopUp extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(ModeOfPayment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(TypeOfCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(PayBill, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(InputPayment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(ProceedPay))
-                    .addComponent(TotalAmountDue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(TotalAmountDue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(TypeOfCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
                 .addComponent(PayBill, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(TotalAmountDue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ModeOfPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -296,6 +227,10 @@ public class TopUp extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void ProceedPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProceedPayActionPerformed
+        finishPayment();
+    }//GEN-LAST:event_ProceedPayActionPerformed
+
     private void cashRbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cashRbActionPerformed
         payMethodChanged();
     }//GEN-LAST:event_cashRbActionPerformed
@@ -304,116 +239,216 @@ public class TopUp extends javax.swing.JDialog {
         payMethodChanged();
     }//GEN-LAST:event_creditRbActionPerformed
 
-    private void ProceedPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProceedPayActionPerformed
-        finishPayment();
-    }//GEN-LAST:event_ProceedPayActionPerformed
+    private void payFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_payFieldActionPerformed
 
-    private BigDecimal total = BigDecimal.ZERO;   // the amount being credited
-
-    private void setupLogic() {
-        // account details (placeholders until real member accounts exist)
-        customerUsernameLbl.setText(PaymentUtil.USERNAME);
-        customerNameLbl.setText(PaymentUtil.FULL_NAME);
-        totalCreditLbl.setText(PaymentUtil.money(PaymentUtil.memberCredit));   // current credit
-
-        // amount to credit choices
-        amountBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {
-            "PHP 50.00", "PHP 100.00", "PHP 200.00", "PHP 500.00", "PHP 1000.00"
-        }));
-        amountBox.setSelectedItem("PHP 100.00");
-
-        // payment field: "PHP 0.00" behavior
-        PaymentUtil.setupPaymentField(payField);
-
-        // only one payment method at a time; top ups are cash only
-        javax.swing.ButtonGroup payGroup = new javax.swing.ButtonGroup();
-        payGroup.add(cashRb);
-        payGroup.add(creditRb);
-        cashRb.setSelected(true);
-        creditRb.setText("Credit (" + PaymentUtil.money(PaymentUtil.memberCredit) + ")");
-        creditRb.setEnabled(false);   // shop credit cannot pay for a top up
-
-        amountBox.addActionListener(e -> updateBill());
-        payField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-            @Override
-            public void insertUpdate(javax.swing.event.DocumentEvent e) { updateChange(); }
-            @Override
-            public void removeUpdate(javax.swing.event.DocumentEvent e) { updateChange(); }
-            @Override
-            public void changedUpdate(javax.swing.event.DocumentEvent e) { updateChange(); }
-        });
-
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         updateBill();
-    }
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
-    // the total due is the amount being credited
-    private void updateBill() {
-        total = PaymentUtil.parseAmount((String) amountBox.getSelectedItem());
-        totalLbl.setText(PaymentUtil.money(total));
-        updateChange();
-    }
+private BigDecimal total = BigDecimal.ZERO;   // the amount being credited
 
-    // the Change label only shows when the amount covers the total
-    private void updateChange() {
-        BigDecimal paid = PaymentUtil.parseAmount(payField.getText());
-        if (paid.compareTo(total) >= 0) {
-            changeLbl.setText("Change: " + PaymentUtil.money(paid.subtract(total)));
-        } else {
-            changeLbl.setText("Change:");
+private void setupLogic() {
+    // account details (placeholders until the real account is sent in with setAccount)
+    usernameLbl.setText(PaymentUtil.USERNAME);
+    nameCustomerLbl.setText(PaymentUtil.FULL_NAME);
+
+    // amount to credit choices (can be replaced with setAmountOptions)
+    jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {
+        "PHP 50.00", "PHP 100.00", "PHP 200.00", "PHP 500.00", "PHP 1000.00"
+    }));
+    jComboBox1.setSelectedItem("PHP 100.00");
+
+    // payment field: "PHP 0.00" behavior
+    PaymentUtil.setupPaymentField(payField);
+
+    // only one payment method at a time; top ups are cash only
+    javax.swing.ButtonGroup payGroup = new javax.swing.ButtonGroup();
+    payGroup.add(cashRb);
+    payGroup.add(creditRb);
+    cashRb.setSelected(true);
+    creditRb.setText("Credit (unavailable in top-up)");
+    creditRb.setEnabled(false);   // shop credit cannot pay for a top up
+
+    payField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+        @Override
+        public void insertUpdate(javax.swing.event.DocumentEvent e) { updateChange(); }
+        @Override
+        public void removeUpdate(javax.swing.event.DocumentEvent e) { updateChange(); }
+        @Override
+        public void changedUpdate(javax.swing.event.DocumentEvent e) { updateChange(); }
+    });
+
+    updateBill();
+    applyTheme();
+}
+
+// ===== the other classes call these to send the real data =====
+
+// who is topping up
+public void setAccount(String username, String fullName) {
+    usernameLbl.setText(username);
+    nameCustomerLbl.setText(fullName);
+}
+
+// the amounts the cashier can pick from, e.g. "PHP 50.00", "PHP 100.00"
+public void setAmountOptions(String... amounts) {
+    jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(amounts));
+    jComboBox1.setSelectedIndex(0);
+    updateBill();
+}
+
+// the total due is the amount being credited
+private void updateBill() {
+    total = PaymentUtil.parseAmount((String) jComboBox1.getSelectedItem());
+    updateChange();
+}
+
+// the Change label only shows when the amount covers the total
+private void updateChange() {
+    BigDecimal paid = PaymentUtil.parseAmount(payField.getText());
+    if (cashRb.isSelected() && paid.compareTo(total) >= 0) {
+        changeLbl.setText("Change: " + PaymentUtil.money(paid.subtract(total)));
+    } else {
+        changeLbl.setText("Change:");
+    }
+}
+
+// Cash is the only option, so this just refreshes the field
+private void payMethodChanged() {
+    payField.requestFocusInWindow();
+    updateChange();
+}
+
+// COLOR!! same dark theme as Print Member
+private void applyTheme() {
+    final java.awt.Color ORANGE = new java.awt.Color(0xFF6600);
+    final java.awt.Color BG = new java.awt.Color(0x0B0B0F);
+
+    // top bar with a close X and a thin white line under it
+    javax.swing.JPanel header = new javax.swing.JPanel(new java.awt.BorderLayout());
+    header.setBackground(BG);
+    header.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.WHITE));
+    javax.swing.JLabel closeLbl = new javax.swing.JLabel("X");
+    closeLbl.setForeground(java.awt.Color.WHITE);
+    closeLbl.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+    closeLbl.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 12));
+    closeLbl.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.HAND_CURSOR));
+    closeLbl.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent e) { dispose(); }
+    });
+    header.add(closeLbl, java.awt.BorderLayout.EAST);
+
+    // put the header on top of the existing content
+    java.awt.Container body = getContentPane();
+    paintTree(body, BG);
+    javax.swing.JPanel root = new javax.swing.JPanel(new java.awt.BorderLayout());
+    root.setBackground(BG);
+    root.add(header, java.awt.BorderLayout.NORTH);
+    root.add(body, java.awt.BorderLayout.CENTER);
+    setContentPane(root);
+
+    // orange border
+    getRootPane().setBorder(javax.swing.BorderFactory.createLineBorder(ORANGE, 2));
+
+    // amount box
+    TotalAmountDue.setBackground(new java.awt.Color(0x15151B));
+    TotalAmountDue.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(70, 70, 70), 1));
+
+    // light input field
+    payField.setBackground(new java.awt.Color(0xF2F2F2));
+    payField.setForeground(java.awt.Color.BLACK);
+    payField.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+            javax.swing.BorderFactory.createLineBorder(new java.awt.Color(150, 150, 150), 1),
+            javax.swing.BorderFactory.createEmptyBorder(4, 6, 4, 6)));
+
+    // orange rounded button
+    ProceedPay.setForeground(java.awt.Color.WHITE);
+    ProceedPay.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 13));
+    ProceedPay.setContentAreaFilled(false);
+    ProceedPay.setOpaque(false);
+    ProceedPay.setBorderPainted(false);
+    ProceedPay.setFocusPainted(false);
+    ProceedPay.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 18, 8, 18));
+    ProceedPay.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.HAND_CURSOR));
+    ProceedPay.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+        @Override
+        public void paint(java.awt.Graphics g, javax.swing.JComponent c) {
+            java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
+            g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
+                    java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(ORANGE);
+            g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 8, 8);
+            g2.dispose();
+            super.paint(g, c);
+        }
+    });
+
+    pack();   // grow to fit everything, header included
+}
+
+// gives every panel, label, and radio button the dark theme colors
+private void paintTree(java.awt.Container container, java.awt.Color bg) {
+    for (java.awt.Component c : container.getComponents()) {
+        if (c instanceof javax.swing.JPanel) {
+            c.setBackground(bg);
+        } else if (c instanceof javax.swing.JLabel) {
+            c.setForeground(java.awt.Color.WHITE);
+        } else if (c instanceof javax.swing.JRadioButton) {
+            c.setForeground(java.awt.Color.WHITE);
+            c.setBackground(bg);
+        }
+        if (c instanceof java.awt.Container) {
+            paintTree((java.awt.Container) c, bg);
         }
     }
+}
 
-    // Cash is the only option, so this just refreshes the field
-    private void payMethodChanged() {
+// Finish Payment
+private void finishPayment() {
+    BigDecimal paid = PaymentUtil.parseAmount(payField.getText());
+
+    // 1. nothing entered
+    if (paid.compareTo(BigDecimal.ZERO) <= 0) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+                "Please enter a payment amount greater than PHP 0.00.",
+                "Invalid Payment", javax.swing.JOptionPane.WARNING_MESSAGE);
         payField.requestFocusInWindow();
-        updateChange();
+        return;
+    }
+    // 2. less than the amount being credited
+    if (paid.compareTo(total) < 0) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+                "The amount paid is less than the total amount due.",
+                "Insufficient Payment", javax.swing.JOptionPane.WARNING_MESSAGE);
+        payField.requestFocusInWindow();
+        return;
     }
 
-    // Finish Payment
-    private void finishPayment() {
-        BigDecimal paid = PaymentUtil.parseAmount(payField.getText());
+    // add the credit
+    PaymentUtil.memberCredit = PaymentUtil.memberCredit.add(total);
 
-        // 1. nothing entered
-        if (paid.compareTo(BigDecimal.ZERO) <= 0) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Please enter a payment amount greater than PHP 0.00.",
-                    "Invalid Payment", javax.swing.JOptionPane.WARNING_MESSAGE);
-            payField.requestFocusInWindow();
-            return;
-        }
-        // 2. less than the amount being credited
-        if (paid.compareTo(total) < 0) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "The amount paid is less than the total amount due.",
-                    "Insufficient Payment", javax.swing.JOptionPane.WARNING_MESSAGE);
-            payField.requestFocusInWindow();
-            return;
-        }
+    // confirmation text
+    StringBuilder receipt = new StringBuilder("Top up successful.\n\n");
+    receipt.append("Service: Top Up Credit\n");
+    receipt.append("Account: ").append(usernameLbl.getText()).append(" (").append(nameCustomerLbl.getText()).append(")\n");
+    receipt.append("Amount Credited: ").append(PaymentUtil.money(total)).append("\n");
+    receipt.append("Payment Method: Cash\n");
+    receipt.append("Amount Received: ").append(PaymentUtil.money(paid)).append("\n");
+    receipt.append("Change: ").append(PaymentUtil.money(paid.subtract(total))).append("\n");
+    receipt.append("Remaining Credit: ").append(PaymentUtil.money(PaymentUtil.memberCredit)).append("\n");
+    receipt.append("\nThis transaction has been recorded in Transactions.");
 
-        // add the credit
-        PaymentUtil.memberCredit = PaymentUtil.memberCredit.add(total);
+    PaymentUtil.logger.log(true, "Top-up", total, "Cash");
 
-        //confirmation text
-        StringBuilder receipt = new StringBuilder("Top up successful.\n\n");
-        receipt.append("Service: Top Up Credit\n");
-        receipt.append("Account: ").append(PaymentUtil.USERNAME).append(" (").append(PaymentUtil.FULL_NAME).append(")\n");
-        receipt.append("Amount Credited: ").append(PaymentUtil.money(total)).append("\n");
-        receipt.append("Payment Method: Cash\n");
-        receipt.append("Amount Received: ").append(PaymentUtil.money(paid)).append("\n");
-        receipt.append("Change: ").append(PaymentUtil.money(paid.subtract(total))).append("\n");
-        receipt.append("Remaining Credit: ").append(PaymentUtil.money(PaymentUtil.memberCredit)).append("\n");
-        receipt.append("\nThis transaction has been recorded in Transactions.");
+    java.awt.Window owner = getOwner();
+    dispose();
+    javax.swing.JOptionPane.showMessageDialog(owner, receipt.toString(),
+            "Payment Confirmation", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+}
 
-        PaymentUtil.logger.log(true, "Top-up", total, "Cash");
-
-        java.awt.Window owner = getOwner();
-        dispose();
-        javax.swing.JOptionPane.showMessageDialog(owner, receipt.toString(),
-                "Payment Confirmation", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-    }
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -454,23 +489,15 @@ public class TopUp extends javax.swing.JDialog {
     private javax.swing.JPanel PayBill;
     private javax.swing.JButton ProceedPay;
     private javax.swing.JPanel TotalAmountDue;
-    private javax.swing.JPanel TypeOfCustomer;
-    private javax.swing.JComboBox<String> amountBox;
-    private javax.swing.JLabel amountCreditLbl;
     private javax.swing.JRadioButton cashRb;
     private javax.swing.JLabel changeLbl;
     private javax.swing.JRadioButton creditRb;
-    private javax.swing.JLabel currentCreditLbl;
-    private javax.swing.JLabel customerNameLbl;
-    private javax.swing.JLabel customerUsernameLbl;
-    private javax.swing.JLabel headerLbl;
-    private javax.swing.JLabel nameLbl;
+    private javax.swing.JLabel detailsTitleLbl;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel nameCustomerLbl;
     private javax.swing.JTextField payField;
     private javax.swing.JLabel payWithLbl;
-    private javax.swing.JLabel subtotalTitleLbl;
     private javax.swing.JLabel titleLbl;
-    private javax.swing.JLabel totalCreditLbl;
-    private javax.swing.JLabel totalLbl;
     private javax.swing.JLabel totalTitleLbl;
     private javax.swing.JLabel usernameLbl;
     // End of variables declaration//GEN-END:variables
