@@ -5,7 +5,7 @@
 package bsit2hg1groupb.billingSystem;
 
 import bsit2hg1groupb.billingSystem.ui.Session.NewSession;
-import bsit2hg1groupb.billingSystem.ui.Shop.BillingTester;
+import bsit2hg1groupb.billingSystem.ui.Shop.BillingTesterTabPanel;
 import bsit2hg1groupb.billingSystem.ui.Shop.transactionsTabPanel;
 import bsit2hg1groupb.billingSystem.ui.Shop.printServicesTabPanel;
 import bsit2hg1groupb.billingSystem.ui.Shop.shopSettingsTabPanel;
@@ -39,7 +39,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         mainTabGroup.insertTab("Dashboard", null, new dashboardTabPanel(), null, 0);
         mainTabGroup.insertTab("Stations", null, new stationsTabPanel(), null, 1);
         mainTabGroup.insertTab("Members", null, new membersTabPanel(), null, 2);
-        mainTabGroup.insertTab("Billing Tester", null, new BillingTester(), null, 3);
+        mainTabGroup.insertTab("Billing Tester", null, new BillingTesterTabPanel(), null, 3);
         mainTabGroup.insertTab("Print Services", null, new printServicesTabPanel(), null, 4);
         mainTabGroup.insertTab("Transactions", null, new transactionsTabPanel(), null, 5);
         mainTabGroup.insertTab("Shop Settings", null, new shopSettingsTabPanel(), null, 6);
