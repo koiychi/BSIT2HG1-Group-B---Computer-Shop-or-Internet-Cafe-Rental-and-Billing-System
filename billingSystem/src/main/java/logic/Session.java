@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 //@author Carlo
-package system;
+package logic;
 
 public class Session implements Billable {
 

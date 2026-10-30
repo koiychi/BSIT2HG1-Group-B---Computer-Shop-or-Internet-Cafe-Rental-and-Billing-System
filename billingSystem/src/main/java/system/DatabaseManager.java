@@ -2,18 +2,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package logic;
+package system;
 
 /**
  *
  * @author koi
  */
+import logic.MemberCustomer;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseManager {
 
@@ -88,18 +91,6 @@ public class DatabaseManager {
                     + "GPU_Model TEXT NOT NULL, "
                     + "Monitor_Hz INTEGER NOT NULL, "
                     + "FOREIGN KEY (StationID) REFERENCES STATION(StationID) ON DELETE CASCADE);");
-
-            // 3. APPS & STATION_APPS 
-            stmt.execute("CREATE TABLE IF NOT EXISTS INSTALLED_APPS ("
-                    + "AppID INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + "AppName TEXT UNIQUE NOT NULL);");
-
-            stmt.execute("CREATE TABLE IF NOT EXISTS STATION_APPS ("
-                    + "StationID TEXT NOT NULL, "
-                    + "AppID INTEGER NOT NULL, "
-                    + "PRIMARY KEY (StationID, AppID), "
-                    + "FOREIGN KEY (StationID) REFERENCES STATION(StationID) ON DELETE CASCADE, "
-                    + "FOREIGN KEY (AppID) REFERENCES INSTALLED_APPS(AppID) ON DELETE CASCADE);");
 
             // 4. TRANSACTION
             stmt.execute("CREATE TABLE IF NOT EXISTS TRANSACTIONS ("
@@ -186,6 +177,204 @@ public class DatabaseManager {
     }
 
 // ==========================================
+// READING MEMBER CUSTOMERS
+// ==========================================
+
+    // READ MEMBER BY USERNAME
+    public static MemberCustomer findMember(String username) {
+        String sql = "SELECT c.FirstName, c.LastName, "
+                + "m.Username, m.Password, m.CreditBalance, m.DiscountRate "
+                + "FROM CUSTOMER c "
+                + "JOIN MEMBER_CUSTOMER m ON c.CustomerID = m.CustomerID "
+                + "WHERE m.Username = ?";
+
+        try (Connection c = getConnection();
+                PreparedStatement pstmt = c.prepareStatement(sql)) {
+
+            pstmt.setString(1, username);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (!rs.next()) {
+                    return null;
+                }
+
+                return new MemberCustomer(
+                        rs.getString("FirstName") + " " + rs.getString("LastName"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getDouble("CreditBalance"),
+                        rs.getDouble("DiscountRate")
+                );
+            }
+        } catch (SQLException e) {
+            System.err.println("Error finding member: " + e.getMessage());
+            return null;
+        }
+    }
+
+    // READ ALL MEMBERS
+    public static List<MemberCustomer> getAllMembers() {
+        String sql = "SELECT c.FirstName, c.LastName, "
+                + "m.Username, m.Password, m.CreditBalance, m.DiscountRate "
+                + "FROM CUSTOMER c "
+                + "JOIN MEMBER_CUSTOMER m ON c.CustomerID = m.CustomerID "
+                + "ORDER BY c.LastName, c.FirstName";
+        List<MemberCustomer> members = new ArrayList<>();
+
+        try (Connection c = getConnection();
+                Statement stmt = c.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                members.add(new MemberCustomer(
+                        rs.getString("FirstName") + " " + rs.getString("LastName"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getDouble("CreditBalance"),
+                        rs.getDouble("DiscountRate")
+                ));
+            }
+
+            return members;
+        } catch (SQLException e) {
+            System.err.println("Error reading members: " + e.getMessage());
+            return members;
+        }
+    }
+
+    // UPDATE MEMBER
+    public static boolean updateMember(int customerId, String firstName, String lastName,
+            String username, String password, double creditBalance, double discountRate) {
+        String customerSql = "UPDATE CUSTOMER SET FirstName = ?, LastName = ? WHERE CustomerID = ?";
+        String memberSql = "UPDATE MEMBER_CUSTOMER SET Username = ?, Password = ?, "
+                + "CreditBalance = ?, DiscountRate = ? WHERE CustomerID = ?";
+
+        try (Connection c = getConnection()) {
+            c.setAutoCommit(false);
+            try (PreparedStatement customerStmt = c.prepareStatement(customerSql);
+                    PreparedStatement memberStmt = c.prepareStatement(memberSql)) {
+                customerStmt.setString(1, firstName);
+                customerStmt.setString(2, lastName);
+                customerStmt.setInt(3, customerId);
+                customerStmt.executeUpdate();
+
+                memberStmt.setString(1, username);
+                memberStmt.setString(2, password);
+                memberStmt.setDouble(3, creditBalance);
+                memberStmt.setDouble(4, discountRate);
+                memberStmt.setInt(5, customerId);
+                memberStmt.executeUpdate();
+
+                c.commit();
+                return true;
+            } catch (SQLException e) {
+                c.rollback();
+                System.err.println("Member update rolled back: " + e.getMessage());
+                return false;
+            } finally {
+                c.setAutoCommit(true);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error updating member: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // DELETE CUSTOMER
+    public static boolean deleteCustomer(int customerId) {
+        String sql = "DELETE FROM CUSTOMER WHERE CustomerID = ?";
+
+        try (Connection c = getConnection();
+                PreparedStatement pstmt = c.prepareStatement(sql)) {
+            pstmt.setInt(1, customerId);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error deleting customer: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // RETRIEVE CUSTOMER
+    public static ResultSet getCustomer(int customerId) {
+        String sql = "SELECT * FROM CUSTOMER WHERE CustomerID = ?";
+
+        try {
+            PreparedStatement pstmt = getConnection().prepareStatement(sql);
+            pstmt.setInt(1, customerId);
+            return pstmt.executeQuery();
+        } catch (SQLException e) {
+            System.err.println("Error reading customer: " + e.getMessage());
+            return null;
+        }
+    }
+
+    // UPDATE CUSTOMER
+    public static boolean updateCustomer(int customerId, String firstName, String lastName) {
+        String sql = "UPDATE CUSTOMER SET FirstName = ?, LastName = ? WHERE CustomerID = ?";
+
+        try (Connection c = getConnection();
+                PreparedStatement pstmt = c.prepareStatement(sql)) {
+            pstmt.setString(1, firstName);
+            pstmt.setString(2, lastName);
+            pstmt.setInt(3, customerId);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error updating customer: " + e.getMessage());
+            return false;
+        }
+    }
+
+// ==========================================
+// STATION CRUD
+// ==========================================
+
+    // READ STATION
+    public static ResultSet getStation(String stationId) {
+        String sql = "SELECT * FROM STATION WHERE StationID = ?";
+
+        try {
+            PreparedStatement pstmt = getConnection().prepareStatement(sql);
+            pstmt.setString(1, stationId);
+            return pstmt.executeQuery();
+        } catch (SQLException e) {
+            System.err.println("Error reading station: " + e.getMessage());
+            return null;
+        }
+    }
+
+
+// ==========================================
+// TRANSACTION CRUD
+// ==========================================
+
+    // READ TRANSACTION
+    public static ResultSet getTransaction(int transactionId) {
+        String sql = "SELECT * FROM TRANSACTIONS WHERE TransactionID = ?";
+
+        try {
+            PreparedStatement pstmt = getConnection().prepareStatement(sql);
+            pstmt.setInt(1, transactionId);
+            return pstmt.executeQuery();
+        } catch (SQLException e) {
+            System.err.println("Error reading transaction: " + e.getMessage());
+            return null;
+        }
+    }
+
+    // READ ALL TRANSACTIONS
+    public static ResultSet getAllTransactions() {
+        String sql = "SELECT * FROM TRANSACTIONS ORDER BY TransactionID ASC";
+
+        try {
+            Statement stmt = getConnection().createStatement();
+            return stmt.executeQuery(sql);
+        } catch (SQLException e) {
+            System.err.println("Error reading transactions: " + e.getMessage());
+            return null;
+        }
+    }
+
+// ==========================================
 // UPDATING STATIONS
 // ==========================================
     // Version 1: Status & End Time 
@@ -249,7 +438,7 @@ public class DatabaseManager {
                 c.commit(); // Transaction save
                 return true;
             } catch (SQLException e) {
-                c.rollback(); // Undo kapag nagka-error
+                c.rollback(); // Undo 
                 System.err.println("Transaction rolled back: " + e.getMessage());
                 return false;
             } finally {
@@ -301,80 +490,4 @@ public class DatabaseManager {
         }
         return 0.0;
     }
-
-    // Tester
-    public static void main(String[] args) {
-        System.out.println("=== STARTING DATABASE INTEGRATION TEST ===\n");
-
-        // 1. TEST: ADD REGULAR CUSTOMER (Overloaded addCustomer)
-        System.out.println("[TEST 1] Adding Regular Customer...");
-        boolean isRegularAdded = DatabaseManager.addCustomer("Juan", "Dela Cruz");
-        System.out.println("Regular Customer Added: " + isRegularAdded);
-
-        // 2. TEST: ADD MEMBER CUSTOMER (Overloaded addCustomer)
-        System.out.println("\n[TEST 2] Adding Member Customer...");
-        boolean isMemberAdded = DatabaseManager.addCustomer("Miles", "Rodriguez", "koiychi", "securePass123", 150.00);
-        System.out.println("Member Customer Added: " + isMemberAdded);
-
-        // 3. TEST: ADD TRANSACTIONS
-        System.out.println("\n[TEST 3] Logging Transactions...");
-
-        // Transaction A: PC Rental for Customer ID 1 at Station PC-01
-        boolean tx1 = DatabaseManager.addTransaction(1, "PC-01", "Rental", 40.00, "Cash");
-
-        // Transaction B: Printing Services for Customer ID 1 (No Station)
-        boolean tx2 = DatabaseManager.addTransaction(1, "Printing", 15.00, "Cash");
-
-        // Transaction C: Top-Up Credits for Member Customer ID 2
-        boolean tx3 = DatabaseManager.addTransaction(2, "Top-Up", 100.00, "Member Credits");
-
-        System.out.println("Rental Transaction Logged: " + tx1);
-        System.out.println("Printing Transaction Logged: " + tx2);
-        System.out.println("Top-Up Transaction Logged: " + tx3);
-
-        // 4. TEST: FETCH & PRINT TRANSACTIONS LOG FROM DATABASE
-        System.out.println("\n[TEST 4] Fetching Transactions Log from SQLite...");
-        printTransactionLogs();
-
-        System.out.println("\n=== ALL TESTS COMPLETED SUCCESSFULLY ===");
-    }
-
-    // Console-based logger simulator para makita ang laman na parang JTable
-    private static void printTransactionLogs() {
-        String sql = "SELECT "
-                + "  t.TransactionID, "
-                + "  c.FirstName || ' ' || c.LastName AS CustomerName, "
-                + "  IFNULL(t.StationID, 'N/A') AS Station, "
-                + "  t.TransactionType, "
-                + "  t.Amount, "
-                + "  t.PaidBy, "
-                + "  t.DateAndTime "
-                + "FROM TRANSACTIONS t "
-                + "JOIN CUSTOMER c ON t.CustomerID = c.CustomerID "
-                + "ORDER BY t.TransactionID ASC";
-
-        try (java.sql.Connection c = DatabaseManager.getConnection(); java.sql.Statement stmt = c.createStatement(); java.sql.ResultSet rs = stmt.executeQuery(sql)) {
-
-            System.out.println("---------------------------------------------------------------------------------------------------------");
-            System.out.printf("| %-5s | %-18s | %-8s | %-12s | %-10s | %-15s | %-19s |\n",
-                    "TxID", "Customer Name", "Station", "Type", "Amount", "Paid By", "Date & Time");
-            System.out.println("---------------------------------------------------------------------------------------------------------");
-
-            while (rs.next()) {
-                System.out.printf("| %-5d | %-18s | %-8s | %-12s | ₱%-9.2f | %-15s | %-19s |\n",
-                        rs.getInt("TransactionID"),
-                        rs.getString("CustomerName"),
-                        rs.getString("Station"),
-                        rs.getString("TransactionType"),
-                        rs.getDouble("Amount"),
-                        rs.getString("PaidBy"),
-                        rs.getString("DateAndTime"));
-            }
-            System.out.println("---------------------------------------------------------------------------------------------------------");
-
-        } catch (java.sql.SQLException e) {
-            System.err.println("Error reading test logs: " + e.getMessage());
-        }
-    }
-
 } //end of class
