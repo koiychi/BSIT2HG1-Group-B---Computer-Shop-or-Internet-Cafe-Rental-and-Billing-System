@@ -6,8 +6,10 @@ package ui.Shop;
 
 import ui.Session.NewSession;
 import ui.Session.NewSessionDialog1;
-import logic.AdminAppWindow;
+
 import javax.swing.JOptionPane;
+
+import system.AdminAppWindow;
 
 /**
  *

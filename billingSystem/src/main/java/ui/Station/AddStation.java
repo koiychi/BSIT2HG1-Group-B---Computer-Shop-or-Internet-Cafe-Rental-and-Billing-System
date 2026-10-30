@@ -4,9 +4,9 @@
  */
 package ui.Station;
 
-import system.Station;
-import system.GamingStation;
-import system.RegularStation;
+import logic.GamingStation;
+import logic.RegularStation;
+import logic.Station;
 
 /**
  *

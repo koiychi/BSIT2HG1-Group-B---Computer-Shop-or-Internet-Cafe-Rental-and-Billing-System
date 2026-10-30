@@ -1,5 +1,5 @@
 
-package system;
+package logic;
 /**
  *
  * @author Gian

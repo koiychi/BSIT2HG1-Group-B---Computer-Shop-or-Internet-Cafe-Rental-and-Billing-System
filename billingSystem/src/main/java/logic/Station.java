@@ -1,4 +1,4 @@
-package system;
+package logic;
 
 public abstract class Station {
 
