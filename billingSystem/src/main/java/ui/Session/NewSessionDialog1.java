@@ -3,34 +3,29 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package ui.Session;
-
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import system.DatabaseManager;
+import system.Station;
+import java.awt.Color;
+import javax.swing.BorderFactory;
 /**
  *
  * @author theo
  */
 public class NewSessionDialog1 extends javax.swing.JDialog {
     
-        private javax.swing.JPanel selectedPanel = null;
-    private final java.awt.Color NORMAL_COLOR = new java.awt.Color(240, 240, 240);
-    private final java.awt.Color SELECTED_COLOR = new java.awt.Color(255, 102, 0);
-
-    private void selectStation(javax.swing.JPanel panel) {
-        if (selectedPanel != null) {
-            selectedPanel.setBackground(NORMAL_COLOR);
-        }
-        selectedPanel = panel;
-        panel.setBackground(SELECTED_COLOR);
-    }
-        public String getSelectedStationName() {
-    if (selectedPanel == null) return "";
-    for (java.awt.Component c : selectedPanel.getComponents()) {
-        if (c instanceof javax.swing.JLabel) {
-            String t = ((javax.swing.JLabel) c).getText();
-            if (t != null && t.startsWith("PC")) return t;
-        }
-    }
-    return "";
-}
+    private Station selectedStation;
+     private List<Station> currentStations = new ArrayList<>();
+    private JPanel[] unitPanels;
+    private JLabel[] nameLabels;
+    private JLabel[] statusLabels;
+    
+       
 
 public String getStationType() {
     return String.valueOf(jComboBox1.getSelectedItem());      
@@ -48,26 +43,86 @@ public String getDuration() {
      */
     public NewSessionDialog1(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        
+       
         initComponents();
         
-                javax.swing.JPanel[] units = { unit1, unit2, unit5, unit3, unit4 };
-
-        for (javax.swing.JPanel p : units) {
-            p.setBackground(NORMAL_COLOR);
         
-            java.awt.event.MouseAdapter click = new java.awt.event.MouseAdapter() {
-                @Override
-                public void mouseClicked(java.awt.event.MouseEvent e) {
-                    selectStation(p);
-                }
-            };
-            p.addMouseListener(click);
-            for (java.awt.Component child : p.getComponents()) {
-                child.addMouseListener(click);
-            }
+       unitPanels = new JPanel[]{unit1, unit2, unit3, unit4, unit5};
+    nameLabels = new JLabel[]{index0Label, index1Label, index2Label, index3Label, index4Label};
+    statusLabels = new JLabel[]{index0AvailabilityLabel, index1AvailabilityLabel,
+            index2AvailabilityLabel, index3AvailabilityLabel, index4AvailabilityLabel};
+
+    setupTileClicks();   
+    loadStations();
+    }
+    
+    private void loadStations() {
+    String type = (String) jComboBox1.getSelectedItem();   
+    selectedStation = null;                                
+    try {
+        currentStations = DatabaseManager.getStationsByType(type);  
+    } catch (SQLException ex) {
+        currentStations = new ArrayList<>();
+        JOptionPane.showMessageDialog(this,
+            "Could not load stations: " + ex.getMessage(),
+            "Database Error", JOptionPane.ERROR_MESSAGE);
+    }
+    
+ for (int i = 0; i < unitPanels.length; i++) {
+        unitPanels[i].setBorder(null);
+        if (i < currentStations.size()) {
+            Station s = currentStations.get(i);
+            nameLabels[i].setText(s.getId());
+            statusLabels[i].setText(s.getStatus());
+            unitPanels[i].setVisible(true);
+        } else {
+            unitPanels[i].setVisible(false);
         }
     }
+}
 
+private void setupTileClicks() {
+    for (int i = 0; i < unitPanels.length; i++) {
+        final int index = i;
+        java.awt.event.MouseAdapter listener = new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                selectTile(index);
+            }
+        };
+        unitPanels[i].addMouseListener(listener);
+        for (java.awt.Component child : unitPanels[i].getComponents()) {
+            child.addMouseListener(listener);
+        }
+    }
+}
+
+private void selectTile(int index) {
+    if (index >= currentStations.size()) return;
+    Station s = currentStations.get(index);
+
+    if (!"Available".equalsIgnoreCase(s.getStatus())) {
+        JOptionPane.showMessageDialog(this,
+            "Station " + s.getId() + " is " + s.getStatus() + ". Choose an available one.");
+        return;
+    }
+
+    selectedStation = s;
+    for (int i = 0; i < unitPanels.length; i++) {
+        unitPanels[i].setBorder(i == index
+            ? BorderFactory.createLineBorder(new Color(255, 102, 0), 3)
+            : null);
+    }
+}
+
+public Station getSelectedStation() {
+    return selectedStation;
+}
+
+public String getSelectedStationName() {
+    return selectedStation == null ? "" : selectedStation.getId();
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -113,7 +168,7 @@ public String getDuration() {
         index3AvailabilityLabel = new javax.swing.JLabel();
         unit5 = new javax.swing.JPanel();
         monitorIconIndex4 = new javax.swing.JLabel();
-        index4Label4 = new javax.swing.JLabel();
+        index4Label = new javax.swing.JLabel();
         index4AvailabilityLabel = new javax.swing.JLabel();
         nextBtnPanel = new javax.swing.JPanel();
         buttonPanel = new javax.swing.JPanel();
@@ -189,8 +244,9 @@ public String getDuration() {
         cmboboxlocation.add(stationTypeLabel);
 
         jComboBox1.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Regular ", "Gaming" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Regular", "Gaming" }));
         jComboBox1.setMinimumSize(new java.awt.Dimension(182, 22));
+        jComboBox1.addActionListener(this::jComboBox1ActionPerformed);
         cmboboxlocation.add(jComboBox1);
 
         configPanel.add(cmboboxlocation, java.awt.BorderLayout.WEST);
@@ -320,11 +376,11 @@ public String getDuration() {
         monitorIconIndex4.setPreferredSize(new java.awt.Dimension(150, 65));
         unit5.add(monitorIconIndex4);
 
-        index4Label4.setFont(new java.awt.Font("Inter", 1, 22)); // NOI18N
-        index4Label4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        index4Label4.setText("PC 5");
-        index4Label4.setPreferredSize(new java.awt.Dimension(150, 25));
-        unit5.add(index4Label4);
+        index4Label.setFont(new java.awt.Font("Inter", 1, 22)); // NOI18N
+        index4Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        index4Label.setText("PC 5");
+        index4Label.setPreferredSize(new java.awt.Dimension(150, 25));
+        unit5.add(index4Label);
 
         index4AvailabilityLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         index4AvailabilityLabel.setText("Available");
@@ -362,7 +418,7 @@ public String getDuration() {
 
     
     private void nextButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonMouseClicked
-         if (selectedPanel == null) {
+         if (selectedStation == null) {
         javax.swing.JOptionPane.showMessageDialog(this, "Please select a station.");
         return;
     }
@@ -380,6 +436,10 @@ public String getDuration() {
     private void unit3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unit3MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_unit3MouseClicked
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+       loadStations();
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -433,7 +493,7 @@ public String getDuration() {
     private javax.swing.JLabel index3AvailabilityLabel;
     private javax.swing.JLabel index3Label;
     private javax.swing.JLabel index4AvailabilityLabel;
-    private javax.swing.JLabel index4Label4;
+    private javax.swing.JLabel index4Label;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel10;

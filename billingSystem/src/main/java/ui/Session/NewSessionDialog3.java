@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package ui.Session;
-
+import system.DatabaseManager;
 /**
  *
  * @author theo
@@ -46,10 +46,10 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
         boolean isMember = "Member".equals(customerDlg.getCustomerType());
 
         
-        double rate = 10.0;
+        double rate = stationDlg.getSelectedStation().getHourlyRate();   
         double hours = parseHours(duration);
         double subtotal = rate * hours;
-        double discount = isMember ? subtotal * 0.10 : 0;
+        double discount = isMember ? subtotal * DatabaseManager.getMemberDiscount(customerDlg.getResolvedCustomerID()): 0;
         double total = subtotal - discount;
 
         lblStation.setText(station);
