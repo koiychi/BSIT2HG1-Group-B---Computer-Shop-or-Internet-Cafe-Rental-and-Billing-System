@@ -74,25 +74,24 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        headerpanel = new javax.swing.JPanel();
-        main3tabPanel = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        OptionBTNPanel = new javax.swing.JPanel();
-        previousBTN = new javax.swing.JButton();
-        strtSessBTN = new javax.swing.JButton();
-        bodyPanel = new javax.swing.JPanel();
-        sessconfirm = new javax.swing.JLabel();
         leftWrapper = new javax.swing.JPanel();
         leftPanel = new javax.swing.JPanel();
         monitorIcon = new javax.swing.JLabel();
         lblStation = new javax.swing.JLabel();
         lblStationType = new javax.swing.JLabel();
         lblRate = new javax.swing.JLabel();
+        headerpanel = new javax.swing.JPanel();
+        progress = new javax.swing.JProgressBar();
+        main3tabPanel = new javax.swing.JPanel();
+        stage1 = new javax.swing.JPanel();
+        stage1Label = new javax.swing.JLabel();
+        stage2 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        stage3 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        bodyPanel = new javax.swing.JPanel();
+        sessconfirm = new javax.swing.JLabel();
+        details = new javax.swing.JPanel();
         rightPanel = new javax.swing.JPanel();
         customerblock = new javax.swing.JPanel();
         customlbl = new javax.swing.JLabel();
@@ -107,108 +106,9 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
         lblDiscount = new javax.swing.JLabel();
         toPayLabel = new javax.swing.JLabel();
         lblTotal = new javax.swing.JLabel();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(480, 300));
-
-        headerpanel.setLayout(new java.awt.BorderLayout());
-
-        main3tabPanel.setLayout(new java.awt.GridLayout(1, 3));
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        jLabel8.setText("Station");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel8)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel8)
-                .addContainerGap())
-        );
-
-        main3tabPanel.add(jPanel1);
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        jLabel9.setText("Customer");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel9)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel9)
-                .addContainerGap())
-        );
-
-        main3tabPanel.add(jPanel2);
-
-        jPanel3.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 0, 2, 2, new java.awt.Color(255, 102, 0)));
-
-        jLabel10.setText("Summary");
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel10)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel10)
-                .addContainerGap())
-        );
-
-        main3tabPanel.add(jPanel3);
-
-        headerpanel.add(main3tabPanel, java.awt.BorderLayout.CENTER);
-
-        getContentPane().add(headerpanel, java.awt.BorderLayout.NORTH);
-
-        OptionBTNPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
-
-        previousBTN.setText("<- Return to Previous");
-        previousBTN.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                previousBTNMouseClicked(evt);
-            }
-        });
-        previousBTN.addActionListener(this::previousBTNActionPerformed);
-        OptionBTNPanel.add(previousBTN);
-
-        strtSessBTN.setText("-> Start Session");
-        strtSessBTN.addActionListener(this::strtSessBTNActionPerformed);
-        OptionBTNPanel.add(strtSessBTN);
-
-        getContentPane().add(OptionBTNPanel, java.awt.BorderLayout.SOUTH);
-
-        bodyPanel.setLayout(new java.awt.BorderLayout());
-
-        sessconfirm.setText("Confirm Session");
-        bodyPanel.add(sessconfirm, java.awt.BorderLayout.NORTH);
+        OptionBTNPanel = new javax.swing.JPanel();
+        previousBTN = new javax.swing.JButton();
+        strtSessBTN = new javax.swing.JButton();
 
         leftWrapper.setPreferredSize(new java.awt.Dimension(175, 175));
         leftWrapper.setLayout(new java.awt.BorderLayout());
@@ -235,12 +135,78 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
         lblRate.setText("10 /hour");
         leftWrapper.add(lblRate, java.awt.BorderLayout.SOUTH);
 
-        bodyPanel.add(leftWrapper, java.awt.BorderLayout.WEST);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(480, 300));
+        setPreferredSize(new java.awt.Dimension(810, 400));
+        setResizable(false);
 
-        rightPanel.setLayout(new javax.swing.BoxLayout(rightPanel, javax.swing.BoxLayout.Y_AXIS));
+        java.awt.FlowLayout flowLayout2 = new java.awt.FlowLayout();
+        flowLayout2.setAlignOnBaseline(true);
+        headerpanel.setLayout(flowLayout2);
 
+        progress.setForeground(new java.awt.Color(255, 102, 0));
+        progress.setValue(100);
+        progress.setOpaque(true);
+        progress.setPreferredSize(new java.awt.Dimension(800, 5));
+        progress.setString("33.33%");
+        progress.setVerifyInputWhenFocusTarget(false);
+        headerpanel.add(progress);
+
+        main3tabPanel.setPreferredSize(new java.awt.Dimension(800, 54));
+        main3tabPanel.setLayout(new java.awt.GridLayout(1, 3));
+
+        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout();
+        flowLayout1.setAlignOnBaseline(true);
+        stage1.setLayout(flowLayout1);
+
+        stage1Label.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        stage1Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        stage1Label.setText("Select Station");
+        stage1Label.setAlignmentY(0.0F);
+        stage1Label.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 1, 1));
+        stage1.add(stage1Label);
+
+        main3tabPanel.add(stage1);
+
+        stage2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel9.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        jLabel9.setText("Identify Customer");
+        jLabel9.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 1, 1));
+        stage2.add(jLabel9);
+
+        main3tabPanel.add(stage2);
+
+        stage3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel10.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        jLabel10.setText("New Session Summary");
+        jLabel10.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 1, 1));
+        stage3.add(jLabel10);
+
+        main3tabPanel.add(stage3);
+
+        headerpanel.add(main3tabPanel);
+
+        getContentPane().add(headerpanel, java.awt.BorderLayout.NORTH);
+
+        bodyPanel.setLayout(new java.awt.BorderLayout());
+
+        sessconfirm.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        sessconfirm.setText("Confirm Session");
+        bodyPanel.add(sessconfirm, java.awt.BorderLayout.NORTH);
+
+        details.setLayout(new java.awt.BorderLayout());
+
+        rightPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 20, 1, 1));
+        rightPanel.setPreferredSize(new java.awt.Dimension(300, 66));
+        rightPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        customerblock.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 5, 1));
+        customerblock.setPreferredSize(new java.awt.Dimension(250, 56));
         customerblock.setLayout(new java.awt.GridLayout(2, 1));
 
+        customlbl.setFont(new java.awt.Font("Inter", 1, 20)); // NOI18N
         customlbl.setText("Customer");
         customerblock.add(customlbl);
 
@@ -249,8 +215,10 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
 
         rightPanel.add(customerblock);
 
+        durationblock.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 5, 1));
         durationblock.setLayout(new java.awt.GridLayout(2, 1));
 
+        dura.setFont(new java.awt.Font("Inter", 1, 20)); // NOI18N
         dura.setText("Duration");
         durationblock.add(dura);
 
@@ -259,9 +227,12 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
 
         rightPanel.add(durationblock);
 
-        totalsPanel.setPreferredSize(new java.awt.Dimension(400, 172));
-        totalsPanel.setLayout(new java.awt.GridLayout(3, 2));
+        details.add(rightPanel, java.awt.BorderLayout.WEST);
 
+        totalsPanel.setPreferredSize(new java.awt.Dimension(400, 172));
+        totalsPanel.setLayout(new javax.swing.BoxLayout(totalsPanel, javax.swing.BoxLayout.Y_AXIS));
+
+        lblCalc.setFont(new java.awt.Font("Inter", 1, 20)); // NOI18N
         lblCalc.setText("Rate x hours ");
         totalsPanel.add(lblCalc);
 
@@ -283,11 +254,31 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
         lblTotal.setText("To Pay amount");
         totalsPanel.add(lblTotal);
 
-        rightPanel.add(totalsPanel);
+        details.add(totalsPanel, java.awt.BorderLayout.CENTER);
 
-        bodyPanel.add(rightPanel, java.awt.BorderLayout.CENTER);
+        bodyPanel.add(details, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(bodyPanel, java.awt.BorderLayout.CENTER);
+
+        OptionBTNPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        previousBTN.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        previousBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/chevron_backward_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        previousBTN.setText("Return to Previous");
+        previousBTN.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                previousBTNMouseClicked(evt);
+            }
+        });
+        previousBTN.addActionListener(this::previousBTNActionPerformed);
+        OptionBTNPanel.add(previousBTN);
+
+        strtSessBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/chevron_right_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        strtSessBTN.setText("Start Session");
+        strtSessBTN.addActionListener(this::strtSessBTNActionPerformed);
+        OptionBTNPanel.add(strtSessBTN);
+
+        getContentPane().add(OptionBTNPanel, java.awt.BorderLayout.SOUTH);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -354,15 +345,12 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
     private javax.swing.JPanel bodyPanel;
     private javax.swing.JPanel customerblock;
     private javax.swing.JLabel customlbl;
+    private javax.swing.JPanel details;
     private javax.swing.JLabel dura;
     private javax.swing.JPanel durationblock;
     private javax.swing.JPanel headerpanel;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel lblCalc;
     private javax.swing.JLabel lblCustomer;
     private javax.swing.JLabel lblDiscount;
@@ -377,8 +365,13 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
     private javax.swing.JPanel main3tabPanel;
     private javax.swing.JLabel monitorIcon;
     private javax.swing.JButton previousBTN;
+    private javax.swing.JProgressBar progress;
     private javax.swing.JPanel rightPanel;
     private javax.swing.JLabel sessconfirm;
+    private javax.swing.JPanel stage1;
+    private javax.swing.JLabel stage1Label;
+    private javax.swing.JPanel stage2;
+    private javax.swing.JPanel stage3;
     private javax.swing.JButton strtSessBTN;
     private javax.swing.JLabel textDIs;
     private javax.swing.JLabel toPayLabel;

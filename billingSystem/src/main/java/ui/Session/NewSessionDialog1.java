@@ -50,7 +50,7 @@ public String getDuration() {
         super(parent, modal);
         initComponents();
         
-                javax.swing.JPanel[] units = { unit1, unit2, unit3, unit4, unit5 };
+                javax.swing.JPanel[] units = { unit1, unit2, unit5, unit3, unit4 };
 
         for (javax.swing.JPanel p : units) {
             p.setBackground(NORMAL_COLOR);
@@ -78,136 +78,129 @@ public String getDuration() {
     private void initComponents() {
 
         headerpanel = new javax.swing.JPanel();
+        progress = new javax.swing.JProgressBar();
         main3tabPanel = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
+        stage1 = new javax.swing.JPanel();
+        stage1Label = new javax.swing.JLabel();
+        stage2 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
+        stage3 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         mainPanel = new javax.swing.JPanel();
         configPanel = new javax.swing.JPanel();
         cmboboxlocation = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        stationTypeLabel = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         durationboxlocation2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        sessionDurationLabel = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox<>();
         unitPanel = new javax.swing.JPanel();
         unit1 = new javax.swing.JPanel();
-        monitorIcon = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        monitorIconIndex0 = new javax.swing.JLabel();
+        index0Label = new javax.swing.JLabel();
+        index0AvailabilityLabel = new javax.swing.JLabel();
         unit2 = new javax.swing.JPanel();
-        monitorIcon1 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        monitorIconIndex1 = new javax.swing.JLabel();
+        index1Label = new javax.swing.JLabel();
+        index1AvailabilityLabel = new javax.swing.JLabel();
         unit3 = new javax.swing.JPanel();
-        monitorIcon2 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        monitorIconIndex2 = new javax.swing.JLabel();
+        index2Label = new javax.swing.JLabel();
+        index2AvailabilityLabel = new javax.swing.JLabel();
         unit4 = new javax.swing.JPanel();
-        monitorIcon3 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        monitorIconIndex3 = new javax.swing.JLabel();
+        index3Label = new javax.swing.JLabel();
+        index3AvailabilityLabel = new javax.swing.JLabel();
         unit5 = new javax.swing.JPanel();
-        monitorIcon4 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        monitorIconIndex4 = new javax.swing.JLabel();
+        index4Label4 = new javax.swing.JLabel();
+        index4AvailabilityLabel = new javax.swing.JLabel();
         nextBtnPanel = new javax.swing.JPanel();
+        buttonPanel = new javax.swing.JPanel();
         nextButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(500, 100));
-        setPreferredSize(new java.awt.Dimension(810, 300));
+        setTitle("New Session");
+        setMaximumSize(new java.awt.Dimension(810, 500));
+        setMinimumSize(new java.awt.Dimension(500, 120));
+        setPreferredSize(new java.awt.Dimension(810, 400));
+        setResizable(false);
+
+        java.awt.FlowLayout flowLayout2 = new java.awt.FlowLayout();
+        flowLayout2.setAlignOnBaseline(true);
+        headerpanel.setLayout(flowLayout2);
+
+        progress.setForeground(new java.awt.Color(255, 102, 0));
+        progress.setValue(34);
+        progress.setOpaque(true);
+        progress.setPreferredSize(new java.awt.Dimension(800, 5));
+        progress.setString("33.33%");
+        progress.setVerifyInputWhenFocusTarget(false);
+        headerpanel.add(progress);
 
         main3tabPanel.setPreferredSize(new java.awt.Dimension(800, 54));
         main3tabPanel.setLayout(new java.awt.GridLayout(1, 3));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 0, 2, 2, new java.awt.Color(255, 102, 0)));
+        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout();
+        flowLayout1.setAlignOnBaseline(true);
+        stage1.setLayout(flowLayout1);
 
-        jLabel8.setText("Station");
+        stage1Label.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        stage1Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        stage1Label.setText("Select Station");
+        stage1Label.setAlignmentY(0.0F);
+        stage1Label.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 1, 1));
+        stage1.add(stage1Label);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel8)
-                .addContainerGap(211, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel8)
-                .addContainerGap())
-        );
+        main3tabPanel.add(stage1);
 
-        main3tabPanel.add(jPanel1);
+        stage2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jLabel9.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        jLabel9.setText("Identify Customer");
+        jLabel9.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 1, 1));
+        stage2.add(jLabel9);
 
-        jLabel9.setText("Customer");
+        main3tabPanel.add(stage2);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel9)
-                .addContainerGap(194, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel9)
-                .addContainerGap())
-        );
+        stage3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        main3tabPanel.add(jPanel2);
+        jLabel10.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        jLabel10.setText("New Session Summary");
+        jLabel10.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 1, 1));
+        stage3.add(jLabel10);
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        jLabel10.setText("Summary");
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel10)
-                .addContainerGap(195, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel10)
-                .addContainerGap())
-        );
-
-        main3tabPanel.add(jPanel3);
+        main3tabPanel.add(stage3);
 
         headerpanel.add(main3tabPanel);
 
         getContentPane().add(headerpanel, java.awt.BorderLayout.NORTH);
 
+        mainPanel.setMaximumSize(new java.awt.Dimension(810, 228));
+        mainPanel.setMinimumSize(new java.awt.Dimension(810, 228));
         mainPanel.setLayout(new java.awt.BorderLayout());
 
+        configPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 1, 10, 1));
         configPanel.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setText("Station Type");
-        cmboboxlocation.add(jLabel1);
+        stationTypeLabel.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        stationTypeLabel.setText("Station Type");
+        stationTypeLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 10));
+        cmboboxlocation.add(stationTypeLabel);
 
+        jComboBox1.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Regular ", "Gaming" }));
         jComboBox1.setMinimumSize(new java.awt.Dimension(182, 22));
         cmboboxlocation.add(jComboBox1);
 
         configPanel.add(cmboboxlocation, java.awt.BorderLayout.WEST);
 
-        jLabel2.setText("Session Duration");
-        durationboxlocation2.add(jLabel2);
+        sessionDurationLabel.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        sessionDurationLabel.setText("Session Duration");
+        sessionDurationLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 10));
+        durationboxlocation2.add(sessionDurationLabel);
 
+        jComboBox2.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "30 minutes", "1 hour", "1 hour 30 minutes", "2 hours", "2 hours 30 minutes", "3 hours", "3 hours 30 minutes", "4 hours", "4 hours 30 minutes", "5 hours" }));
         durationboxlocation2.add(jComboBox2);
 
@@ -215,8 +208,11 @@ public String getDuration() {
 
         mainPanel.add(configPanel, java.awt.BorderLayout.NORTH);
 
-        unitPanel.setPreferredSize(new java.awt.Dimension(350, 150));
+        unitPanel.setMaximumSize(new java.awt.Dimension(350, 150));
+        unitPanel.setMinimumSize(new java.awt.Dimension(350, 52));
+        unitPanel.setPreferredSize(new java.awt.Dimension(350, 100));
 
+        unit1.setBackground(new java.awt.Color(23, 26, 33));
         unit1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         unit1.setPreferredSize(new java.awt.Dimension(150, 150));
         unit1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -225,156 +221,114 @@ public String getDuration() {
             }
         });
 
-        monitorIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        monitorIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        monitorIconIndex0.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        monitorIconIndex0.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        monitorIconIndex0.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        monitorIconIndex0.setPreferredSize(new java.awt.Dimension(150, 65));
+        unit1.add(monitorIconIndex0);
 
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("PC 1");
+        index0Label.setFont(new java.awt.Font("Inter", 1, 22)); // NOI18N
+        index0Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        index0Label.setText("PC 1");
+        index0Label.setPreferredSize(new java.awt.Dimension(150, 25));
+        unit1.add(index0Label);
 
-        javax.swing.GroupLayout unit1Layout = new javax.swing.GroupLayout(unit1);
-        unit1.setLayout(unit1Layout);
-        unit1Layout.setHorizontalGroup(
-            unit1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(unit1Layout.createSequentialGroup()
-                .addGap(59, 59, 59)
-                .addGroup(unit1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(monitorIcon))
-                .addContainerGap(59, Short.MAX_VALUE))
-        );
-        unit1Layout.setVerticalGroup(
-            unit1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(unit1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(monitorIcon)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3)
-                .addContainerGap(65, Short.MAX_VALUE))
-        );
+        index0AvailabilityLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        index0AvailabilityLabel.setText("Available");
+        unit1.add(index0AvailabilityLabel);
 
         unitPanel.add(unit1);
 
+        unit2.setBackground(new java.awt.Color(23, 26, 33));
         unit2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         unit2.setPreferredSize(new java.awt.Dimension(150, 150));
 
-        monitorIcon1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
-        monitorIcon1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        monitorIconIndex1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        monitorIconIndex1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        monitorIconIndex1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        monitorIconIndex1.setPreferredSize(new java.awt.Dimension(150, 65));
+        unit2.add(monitorIconIndex1);
 
-        jLabel4.setText("PC 2");
+        index1Label.setFont(new java.awt.Font("Inter", 1, 22)); // NOI18N
+        index1Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        index1Label.setText("PC 2");
+        index1Label.setPreferredSize(new java.awt.Dimension(150, 25));
+        unit2.add(index1Label);
 
-        javax.swing.GroupLayout unit2Layout = new javax.swing.GroupLayout(unit2);
-        unit2.setLayout(unit2Layout);
-        unit2Layout.setHorizontalGroup(
-            unit2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, unit2Layout.createSequentialGroup()
-                .addContainerGap(59, Short.MAX_VALUE)
-                .addGroup(unit2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(monitorIcon1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(59, 59, 59))
-        );
-        unit2Layout.setVerticalGroup(
-            unit2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(unit2Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(monitorIcon1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4)
-                .addContainerGap(66, Short.MAX_VALUE))
-        );
+        index1AvailabilityLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        index1AvailabilityLabel.setText("Available");
+        unit2.add(index1AvailabilityLabel);
 
         unitPanel.add(unit2);
 
+        unit3.setBackground(new java.awt.Color(23, 26, 33));
         unit3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         unit3.setPreferredSize(new java.awt.Dimension(150, 150));
+        unit3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                unit3MouseClicked(evt);
+            }
+        });
 
-        monitorIcon2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
-        monitorIcon2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        monitorIconIndex2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        monitorIconIndex2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        monitorIconIndex2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        monitorIconIndex2.setPreferredSize(new java.awt.Dimension(150, 65));
+        unit3.add(monitorIconIndex2);
 
-        jLabel5.setText("PC 3");
+        index2Label.setFont(new java.awt.Font("Inter", 1, 22)); // NOI18N
+        index2Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        index2Label.setText("PC 3");
+        index2Label.setPreferredSize(new java.awt.Dimension(150, 25));
+        unit3.add(index2Label);
 
-        javax.swing.GroupLayout unit3Layout = new javax.swing.GroupLayout(unit3);
-        unit3.setLayout(unit3Layout);
-        unit3Layout.setHorizontalGroup(
-            unit3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(unit3Layout.createSequentialGroup()
-                .addGap(57, 57, 57)
-                .addGroup(unit3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(monitorIcon2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addContainerGap(56, Short.MAX_VALUE))
-        );
-        unit3Layout.setVerticalGroup(
-            unit3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(unit3Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(monitorIcon2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel5)
-                .addContainerGap(64, Short.MAX_VALUE))
-        );
+        index2AvailabilityLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        index2AvailabilityLabel.setText("Available");
+        unit3.add(index2AvailabilityLabel);
 
         unitPanel.add(unit3);
 
+        unit4.setBackground(new java.awt.Color(23, 26, 33));
         unit4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         unit4.setPreferredSize(new java.awt.Dimension(150, 150));
 
-        monitorIcon3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
-        monitorIcon3.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        monitorIconIndex3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        monitorIconIndex3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        monitorIconIndex3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        monitorIconIndex3.setPreferredSize(new java.awt.Dimension(150, 65));
+        unit4.add(monitorIconIndex3);
 
-        jLabel6.setText("PC 4");
+        index3Label.setFont(new java.awt.Font("Inter", 1, 22)); // NOI18N
+        index3Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        index3Label.setText("PC 4");
+        index3Label.setPreferredSize(new java.awt.Dimension(150, 25));
+        unit4.add(index3Label);
 
-        javax.swing.GroupLayout unit4Layout = new javax.swing.GroupLayout(unit4);
-        unit4.setLayout(unit4Layout);
-        unit4Layout.setHorizontalGroup(
-            unit4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(unit4Layout.createSequentialGroup()
-                .addGap(59, 59, 59)
-                .addGroup(unit4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addComponent(monitorIcon3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(54, Short.MAX_VALUE))
-        );
-        unit4Layout.setVerticalGroup(
-            unit4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(unit4Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(monitorIcon3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel6)
-                .addContainerGap(60, Short.MAX_VALUE))
-        );
+        index3AvailabilityLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        index3AvailabilityLabel.setText("Available");
+        unit4.add(index3AvailabilityLabel);
 
         unitPanel.add(unit4);
 
+        unit5.setBackground(new java.awt.Color(23, 26, 33));
         unit5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        unit5.setPreferredSize(new java.awt.Dimension(150, 150));
 
-        monitorIcon4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
-        monitorIcon4.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        monitorIconIndex4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        monitorIconIndex4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        monitorIconIndex4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        monitorIconIndex4.setPreferredSize(new java.awt.Dimension(150, 65));
+        unit5.add(monitorIconIndex4);
 
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("PC 5");
+        index4Label4.setFont(new java.awt.Font("Inter", 1, 22)); // NOI18N
+        index4Label4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        index4Label4.setText("PC 5");
+        index4Label4.setPreferredSize(new java.awt.Dimension(150, 25));
+        unit5.add(index4Label4);
 
-        javax.swing.GroupLayout unit5Layout = new javax.swing.GroupLayout(unit5);
-        unit5.setLayout(unit5Layout);
-        unit5Layout.setHorizontalGroup(
-            unit5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(unit5Layout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addGroup(unit5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(monitorIcon4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addContainerGap(57, Short.MAX_VALUE))
-        );
-        unit5Layout.setVerticalGroup(
-            unit5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(unit5Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(monitorIcon4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel7)
-                .addContainerGap(60, Short.MAX_VALUE))
-        );
+        index4AvailabilityLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        index4AvailabilityLabel.setText("Available");
+        unit5.add(index4AvailabilityLabel);
 
         unitPanel.add(unit5);
 
@@ -382,16 +336,23 @@ public String getDuration() {
 
         getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
 
-        nextBtnPanel.setPreferredSize(new java.awt.Dimension(0, 50));
+        nextBtnPanel.setMaximumSize(new java.awt.Dimension(157, 108));
+        nextBtnPanel.setPreferredSize(new java.awt.Dimension(0, 70));
         nextBtnPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        nextButton.setText("-> Next");
+        buttonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 1, 50, 10));
+
+        nextButton.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
+        nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/chevron_right_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+        nextButton.setText("Next");
         nextButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 nextButtonMouseClicked(evt);
             }
         });
-        nextBtnPanel.add(nextButton);
+        buttonPanel.add(nextButton);
+
+        nextBtnPanel.add(buttonPanel);
 
         getContentPane().add(nextBtnPanel, java.awt.BorderLayout.SOUTH);
 
@@ -415,6 +376,10 @@ public String getDuration() {
     private void unit1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unit1MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_unit1MouseClicked
+
+    private void unit3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unit3MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_unit3MouseClicked
 
     /**
      * @param args the command line arguments
@@ -454,34 +419,41 @@ public String getDuration() {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel buttonPanel;
     private javax.swing.JPanel cmboboxlocation;
     private javax.swing.JPanel configPanel;
     private javax.swing.JPanel durationboxlocation2;
     private javax.swing.JPanel headerpanel;
+    private javax.swing.JLabel index0AvailabilityLabel;
+    private javax.swing.JLabel index0Label;
+    private javax.swing.JLabel index1AvailabilityLabel;
+    private javax.swing.JLabel index1Label;
+    private javax.swing.JLabel index2AvailabilityLabel;
+    private javax.swing.JLabel index2Label;
+    private javax.swing.JLabel index3AvailabilityLabel;
+    private javax.swing.JLabel index3Label;
+    private javax.swing.JLabel index4AvailabilityLabel;
+    private javax.swing.JLabel index4Label4;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel main3tabPanel;
     private javax.swing.JPanel mainPanel;
-    private javax.swing.JLabel monitorIcon;
-    private javax.swing.JLabel monitorIcon1;
-    private javax.swing.JLabel monitorIcon2;
-    private javax.swing.JLabel monitorIcon3;
-    private javax.swing.JLabel monitorIcon4;
+    private javax.swing.JLabel monitorIconIndex0;
+    private javax.swing.JLabel monitorIconIndex1;
+    private javax.swing.JLabel monitorIconIndex2;
+    private javax.swing.JLabel monitorIconIndex3;
+    private javax.swing.JLabel monitorIconIndex4;
     private javax.swing.JPanel nextBtnPanel;
     private javax.swing.JButton nextButton;
+    private javax.swing.JProgressBar progress;
+    private javax.swing.JLabel sessionDurationLabel;
+    private javax.swing.JPanel stage1;
+    private javax.swing.JLabel stage1Label;
+    private javax.swing.JPanel stage2;
+    private javax.swing.JPanel stage3;
+    private javax.swing.JLabel stationTypeLabel;
     private javax.swing.JPanel unit1;
     private javax.swing.JPanel unit2;
     private javax.swing.JPanel unit3;
