@@ -474,7 +474,6 @@ public class DatabaseManager {
 
     //Print Services and Top-ups
     public static boolean addTransaction(int customerId, String transactionType, double amount, String paidBy) {
-        // Ipapasok bilang null ang StationID
         return addTransaction(customerId, null, transactionType, amount, paidBy);
     }
 
