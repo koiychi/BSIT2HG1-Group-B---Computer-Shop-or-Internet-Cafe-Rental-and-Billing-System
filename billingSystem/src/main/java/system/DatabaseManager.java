@@ -274,7 +274,7 @@ public class DatabaseManager {
 // ==========================================
     // READ MEMBER BY USERNAME
     public static MemberCustomer findMember(String username) {
-        String sql = "SELECT c.FirstName, c.LastName, "
+        String sql = "SELECT c.CustomerID c.FirstName, c.LastName, "
                 + "m.Username, m.Password, m.CreditBalance, m.DiscountRate "
                 + "FROM CUSTOMER c "
                 + "JOIN MEMBER_CUSTOMER m ON c.CustomerID = m.CustomerID "
@@ -289,13 +289,15 @@ public class DatabaseManager {
                     return null;
                 }
 
-                return new MemberCustomer(
+                 MemberCustomer member = new MemberCustomer(
                         rs.getString("FirstName") + " " + rs.getString("LastName"),
                         rs.getString("Username"),
                         rs.getString("Password"),
                         rs.getDouble("CreditBalance"),
                         rs.getDouble("DiscountRate")
                 );
+                member.setCustomerID(rs.getInt("CustomerID"));
+                return member;
             }
         } catch (SQLException e) {
             System.err.println("Error finding member: " + e.getMessage());
@@ -305,7 +307,7 @@ public class DatabaseManager {
 
     // READ ALL MEMBERS
     public static List<MemberCustomer> getAllMembers() {
-        String sql = "SELECT c.FirstName, c.LastName, "
+        String sql = "SELECT c.CustomerID c.FirstName, c.LastName, "
                 + "m.Username, m.Password, m.CreditBalance, m.DiscountRate "
                 + "FROM CUSTOMER c "
                 + "JOIN MEMBER_CUSTOMER m ON c.CustomerID = m.CustomerID "
@@ -315,13 +317,15 @@ public class DatabaseManager {
         try (Connection c = getConnection(); Statement stmt = c.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                members.add(new MemberCustomer(
+              MemberCustomer member = new MemberCustomer(
                         rs.getString("FirstName") + " " + rs.getString("LastName"),
                         rs.getString("Username"),
                         rs.getString("Password"),
                         rs.getDouble("CreditBalance"),
                         rs.getDouble("DiscountRate")
-                ));
+                );
+                        member.setCustomerID(rs.getInt("CustomerID"));
+                        members.add(member);
             }
 
             return members;
