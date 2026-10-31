@@ -31,7 +31,7 @@ public class DatabaseManager {
             if (connection == null || connection.isClosed()) {
                 Class.forName("org.sqlite.JDBC");
                 connection = DriverManager.getConnection(DBFile);
-
+                
                 try (Statement stmt = connection.createStatement()) {
                     stmt.execute("PRAGMA foreign_keys = ON;");
                 }
@@ -111,6 +111,7 @@ public class DatabaseManager {
         }
     }
 
+    
 // ==========================================
 // ADDING CUSTOMERS (METHOD OVERLOADING)
 // ==========================================
