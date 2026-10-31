@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package system;
+import system.DatabaseManager;
 
 /**
  *
@@ -20,6 +21,8 @@ public class UIManager {
     private static AdminAppWindow appWindow;
 
     public static void main(String[] args) {
+        
+        DatabaseManager.initializeTables();
 
         try {
             java.awt.GraphicsEnvironment ge = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
