@@ -3,7 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package ui.Session;
-
+import logic.MemberCustomer;
+import system.DatabaseManager;
 /**
  *
  * @author theo
@@ -45,6 +46,43 @@ public NewSessionDialog1 getStationDialog() {
     return (NewSessionDialog1) previous;
 }
 
+private MemberCustomer foundMember = null;
+
+public MemberCustomer getFoundMember(){
+return foundMember;
+}
+
+private boolean lookupMember() {
+        String username = txtUsername.getText().trim();
+        if (username.isEmpty()) {
+            // Optional: show a message if blank
+            return false;
+        }
+
+        // Search the database for the member
+        foundMember = DatabaseManager.findMember(username);
+        
+        if (foundMember != null) {
+            // Update your UI label to display the credit amount using your getter
+            creditRemains.setText(String.format("%.2f", foundMember.getCreditAmount()));
+            return true;
+        } else {
+            // Show error message if member doesn't exist
+            javax.swing.JOptionPane.showMessageDialog(this, "Member not found.");
+            foundMember = null;
+            return false;
+        }
+    }
+
+private int resolvedCustomerID = -1;               
+private String CustomerType= "REGULAR";
+
+public int getResolvedCustomerID(){
+return resolvedCustomerID;
+}
+
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -81,6 +119,7 @@ public NewSessionDialog1 getStationDialog() {
         nextBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Start New Session");
         setPreferredSize(new java.awt.Dimension(810, 400));
         setResizable(false);
 
@@ -149,7 +188,7 @@ public NewSessionDialog1 getStationDialog() {
         customertype.setPreferredSize(new java.awt.Dimension(350, 20));
         leftCustPanel.add(customertype);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Regular ", "Member" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Regular", "Member" }));
         jComboBox1.setMinimumSize(new java.awt.Dimension(182, 22));
         jComboBox1.setPreferredSize(new java.awt.Dimension(200, 40));
         jComboBox1.addActionListener(this::jComboBox1ActionPerformed);
@@ -192,7 +231,7 @@ public NewSessionDialog1 getStationDialog() {
                     .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(creditRemain)
                     .addComponent(creditRemains))
-                .addContainerGap(337, Short.MAX_VALUE))
+                .addContainerGap(329, Short.MAX_VALUE))
         );
         memberonlyLayout.setVerticalGroup(
             memberonlyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,7 +244,7 @@ public NewSessionDialog1 getStationDialog() {
                 .addComponent(creditRemain)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(creditRemains)
-                .addContainerGap(162, Short.MAX_VALUE))
+                .addContainerGap(120, Short.MAX_VALUE))
         );
 
         centerPanel.add(memberonly, java.awt.BorderLayout.CENTER);
@@ -230,7 +269,6 @@ public NewSessionDialog1 getStationDialog() {
         nextBtn.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
         nextBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/chevron_right_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
         nextBtn.setText("Next");
-        nextBtn.setPreferredSize(new java.awt.Dimension(126, 38));
         nextBtn.addActionListener(this::nextBtnActionPerformed);
         OptionBTNPanel.add(nextBtn);
 
@@ -240,14 +278,35 @@ public NewSessionDialog1 getStationDialog() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void nextBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextBtnActionPerformed
-        if (txtName.getText().trim().isEmpty()) {
-    javax.swing.JOptionPane.showMessageDialog(this, "Please enter a name.");
-    return;
-}
+        boolean isMember = "Member".equals(getCustomerType());
+        
+        if (isMember){
+        if (getUsername().isEmpty()){
+        javax.swing.JOptionPane.showMessageDialog(this, "Please enter a username.");
+        return;
+        }
+        
+        if (!lookupMember()){
+        return;
+        }
+      resolvedCustomerID = DatabaseManager.getCustomerIdByUsername(foundMember.getUsername());
+        }
+        else {
+        if (getCustomerName().isEmpty()){
+        javax.swing.JOptionPane.showMessageDialog(this, "Please enter a name.");
+        return;
+        }
+        resolvedCustomerID= DatabaseManager.getRegularID(getCustomerName());
+        
+        
+        }
+
 NewSessionDialog3 next = new NewSessionDialog3(null, true, this);  
 next.setLocationRelativeTo(this);
 setVisible(false);
 next.setVisible(true);
+
+        
     }//GEN-LAST:event_nextBtnActionPerformed
 
     private void previousBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousBTNActionPerformed
