@@ -98,7 +98,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
         leftPanell.setLayout(new java.awt.BorderLayout());
 
-        topBar.setBackground(new java.awt.Color(255, 255, 255));
+        topBar.setBackground(new java.awt.Color(0, 0, 102));
         topBar.setPreferredSize(new java.awt.Dimension(0, 40));
         topBar.setLayout(new java.awt.BorderLayout());
 
@@ -113,6 +113,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
         orderPanel.setMaximumSize(new java.awt.Dimension(750, 593));
         orderPanel.setPreferredSize(new java.awt.Dimension(800, 300));
 
+        TypeLabel.setBackground(new java.awt.Color(0, 0, 102));
         TypeLabel.setPreferredSize(new java.awt.Dimension(800, 33));
         TypeLabel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -124,6 +125,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
         orderPanel.add(TypeLabel);
 
+        serviceTypePanel.setBackground(new java.awt.Color(0, 0, 102));
         serviceTypePanel.setPreferredSize(new java.awt.Dimension(800, 35));
         serviceTypePanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -142,9 +144,11 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
         orderPanel.add(serviceTypePanel);
 
+        PageSizeLabel.setBackground(new java.awt.Color(0, 0, 102));
         PageSizeLabel.setPreferredSize(new java.awt.Dimension(800, 35));
         PageSizeLabel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        pageSizeLabel.setBackground(new java.awt.Color(0, 0, 102));
         pageSizeLabel.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         pageSizeLabel.setForeground(new java.awt.Color(255, 255, 255));
         pageSizeLabel.setText("Page Size");
@@ -153,10 +157,13 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
         orderPanel.add(PageSizeLabel);
 
+        pageSizePanel.setBackground(new java.awt.Color(0, 0, 102));
         pageSizePanel.setPreferredSize(new java.awt.Dimension(800, 65));
         pageSizePanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        pagesizeComboBox.setBackground(new java.awt.Color(0, 0, 102));
         pagesizeComboBox.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        pagesizeComboBox.setForeground(new java.awt.Color(255, 255, 255));
         pagesizeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Short  (8.5 x 11 inches)", "A4  (8.27 x 11.69 inches) ", "Long (8.5 x 13 inches)", "Legal paper (8.5 x 14 inches)" }));
         pagesizeComboBox.setPreferredSize(new java.awt.Dimension(800, 31));
         pagesizeComboBox.addActionListener(this::pagesizeComboBoxActionPerformed);
@@ -169,6 +176,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
         orderPanel.add(pageSizePanel);
 
+        ColorModeLabelPanel.setBackground(new java.awt.Color(0, 0, 102));
         ColorModeLabelPanel.setPreferredSize(new java.awt.Dimension(800, 35));
         ColorModeLabelPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -180,11 +188,15 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
         orderPanel.add(ColorModeLabelPanel);
 
+        ColorModePanel.setBackground(new java.awt.Color(0, 0, 102));
         ColorModePanel.setPreferredSize(new java.awt.Dimension(800, 50));
 
+        colorModeComboBox.setBackground(new java.awt.Color(0, 0, 102));
         colorModeComboBox.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        colorModeComboBox.setForeground(new java.awt.Color(255, 255, 255));
         colorModeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Colored", "B/W", " " }));
         colorModeComboBox.setPreferredSize(new java.awt.Dimension(800, 50));
+        colorModeComboBox.addActionListener(this::colorModeComboBoxActionPerformed);
 
         javax.swing.GroupLayout ColorModePanelLayout = new javax.swing.GroupLayout(ColorModePanel);
         ColorModePanel.setLayout(ColorModePanelLayout);
@@ -209,6 +221,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
         orderPanel.add(ColorModePanel);
 
+        PageCountPanel.setBackground(new java.awt.Color(0, 0, 102));
         PageCountPanel.setPreferredSize(new java.awt.Dimension(800, 35));
         PageCountPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -220,6 +233,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
         orderPanel.add(PageCountPanel);
 
+        pageCountPanel.setBackground(new java.awt.Color(0, 0, 102));
         pageCountPanel.setPreferredSize(new java.awt.Dimension(800, 35));
         pageCountPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -278,6 +292,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
         SummaryPanel.setPreferredSize(new java.awt.Dimension(500, 53));
         SummaryPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        SummaryLabel.setBackground(new java.awt.Color(0, 0, 102));
         SummaryLabel.setPreferredSize(new java.awt.Dimension(350, 50));
 
         summaryLabel.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
@@ -307,6 +322,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
         SummaryPanel.add(SummaryLabel);
 
+        PrintPanel.setBackground(new java.awt.Color(0, 0, 102));
         PrintPanel.setPreferredSize(new java.awt.Dimension(350, 50));
         PrintPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -368,6 +384,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
         SummaryPanel.add(PhotocopyPanel);
 
+        TotalAmount.setBackground(new java.awt.Color(0, 0, 102));
         TotalAmount.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         totalAmountLabel.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -377,6 +394,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
         SummaryPanel.add(TotalAmount);
 
+        TotalAmountPrice.setBackground(new java.awt.Color(0, 0, 102));
         TotalAmountPrice.setPreferredSize(new java.awt.Dimension(100, 50));
         TotalAmountPrice.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -386,6 +404,8 @@ public class printServicesTabPanel extends javax.swing.JPanel {
         TotalAmountPrice.add(TotalAmountPriceLabel);
 
         SummaryPanel.add(TotalAmountPrice);
+
+        PaymentPanel.setBackground(new java.awt.Color(0, 0, 102));
 
         proceedPaymentButton.setBackground(new java.awt.Color(255, 153, 0));
         proceedPaymentButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -505,6 +525,10 @@ public class printServicesTabPanel extends javax.swing.JPanel {
             TotalAmountPriceLabel.setText("PHP " + String.format("%.2f", runningTotal));
         }
     }//GEN-LAST:event_deletePhotocopyButtonActionPerformed
+
+    private void colorModeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorModeComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_colorModeComboBoxActionPerformed
 
     public void addPrintJob(PrintJob job) {
 
