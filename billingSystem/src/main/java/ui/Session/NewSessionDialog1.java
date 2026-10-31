@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package ui.Session;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,29 +14,27 @@ import system.DatabaseManager;
 import system.Station;
 import java.awt.Color;
 import javax.swing.BorderFactory;
+
 /**
  *
  * @author theo
  */
 public class NewSessionDialog1 extends javax.swing.JDialog {
-    
+
     private Station selectedStation;
-     private List<Station> currentStations = new ArrayList<>();
+    private List<Station> currentStations = new ArrayList<>();
     private JPanel[] unitPanels;
     private JLabel[] nameLabels;
     private JLabel[] statusLabels;
-    
-       
 
-public String getStationType() {
-    return String.valueOf(jComboBox1.getSelectedItem());      
-}
+    public String getStationType() {
+        return String.valueOf(jComboBox1.getSelectedItem());
+    }
 
-public String getDuration() {
-    return String.valueOf(jComboBox2.getSelectedItem());     
-}
-    
-    
+    public String getDuration() {
+        return String.valueOf(jComboBox2.getSelectedItem());
+    }
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(NewSessionDialog1.class.getName());
 
     /**
@@ -43,86 +42,87 @@ public String getDuration() {
      */
     public NewSessionDialog1(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        
-       
+
         initComponents();
-        
-        
-       unitPanels = new JPanel[]{unit1, unit2, unit3, unit4, unit5};
-    nameLabels = new JLabel[]{index0Label, index1Label, index2Label, index3Label, index4Label};
-    statusLabels = new JLabel[]{index0AvailabilityLabel, index1AvailabilityLabel,
+
+        unitPanels = new JPanel[]{unit1, unit2, unit3, unit4, unit5};
+        nameLabels = new JLabel[]{index0Label, index1Label, index2Label, index3Label, index4Label};
+        statusLabels = new JLabel[]{index0AvailabilityLabel, index1AvailabilityLabel,
             index2AvailabilityLabel, index3AvailabilityLabel, index4AvailabilityLabel};
 
-    setupTileClicks();   
-    loadStations();
+        setupTileClicks();
+        loadStations();
     }
-    
+
     private void loadStations() {
-    String type = (String) jComboBox1.getSelectedItem();   
-    selectedStation = null;                                
-    try {
-        currentStations = DatabaseManager.getStationsByType(type);  
-    } catch (SQLException ex) {
-        currentStations = new ArrayList<>();
-        JOptionPane.showMessageDialog(this,
-            "Could not load stations: " + ex.getMessage(),
-            "Database Error", JOptionPane.ERROR_MESSAGE);
-    }
-    
- for (int i = 0; i < unitPanels.length; i++) {
-        unitPanels[i].setBorder(null);
-        if (i < currentStations.size()) {
-            Station s = currentStations.get(i);
-            nameLabels[i].setText(s.getId());
-            statusLabels[i].setText(s.getStatus());
-            unitPanels[i].setVisible(true);
-        } else {
-            unitPanels[i].setVisible(false);
+        String type = (String) jComboBox1.getSelectedItem();
+        selectedStation = null;
+        try {
+            currentStations = DatabaseManager.getStationsByType(type);
+        } catch (Exception ex) {
+            currentStations = new ArrayList<>();
+            JOptionPane.showMessageDialog(this,
+                    "Could not load stations: " + ex.getMessage(),
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
-}
 
-private void setupTileClicks() {
-    for (int i = 0; i < unitPanels.length; i++) {
-        final int index = i;
-        java.awt.event.MouseAdapter listener = new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
-                selectTile(index);
+        for (int i = 0; i < unitPanels.length; i++) {
+            unitPanels[i].setBorder(null);
+            if (i < currentStations.size()) {
+                Station s = currentStations.get(i);
+                nameLabels[i].setText(s.getId());
+                statusLabels[i].setText(s.getStatus());
+                unitPanels[i].setVisible(true);
+            } else {
+                unitPanels[i].setVisible(false);
             }
-        };
-        unitPanels[i].addMouseListener(listener);
-        for (java.awt.Component child : unitPanels[i].getComponents()) {
-            child.addMouseListener(listener);
         }
     }
-}
 
-private void selectTile(int index) {
-    if (index >= currentStations.size()) return;
-    Station s = currentStations.get(index);
-
-    if (!"Available".equalsIgnoreCase(s.getStatus())) {
-        JOptionPane.showMessageDialog(this,
-            "Station " + s.getId() + " is " + s.getStatus() + ". Choose an available one.");
-        return;
+    private void setupTileClicks() {
+        for (int i = 0; i < unitPanels.length; i++) {
+            final int index = i;
+            java.awt.event.MouseAdapter listener = new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseClicked(java.awt.event.MouseEvent e) {
+                    selectTile(index);
+                }
+            };
+            unitPanels[i].addMouseListener(listener);
+            for (java.awt.Component child : unitPanels[i].getComponents()) {
+                child.addMouseListener(listener);
+            }
+        }
     }
 
-    selectedStation = s;
-    for (int i = 0; i < unitPanels.length; i++) {
-        unitPanels[i].setBorder(i == index
-            ? BorderFactory.createLineBorder(new Color(255, 102, 0), 3)
-            : null);
+    private void selectTile(int index) {
+        if (index >= currentStations.size()) {
+            return;
+        }
+        Station s = currentStations.get(index);
+
+        if (!"Available".equalsIgnoreCase(s.getStatus())) {
+            JOptionPane.showMessageDialog(this,
+                    "Station " + s.getId() + " is " + s.getStatus() + ". Choose an available one.");
+            return;
+        }
+
+        selectedStation = s;
+        for (int i = 0; i < unitPanels.length; i++) {
+            unitPanels[i].setBorder(i == index
+                    ? BorderFactory.createLineBorder(new Color(255, 102, 0), 3)
+                    : null);
+        }
     }
-}
 
-public Station getSelectedStation() {
-    return selectedStation;
-}
+    public Station getSelectedStation() {
+        return selectedStation;
+    }
 
-public String getSelectedStationName() {
-    return selectedStation == null ? "" : selectedStation.getId();
-}
+    public String getSelectedStationName() {
+        return selectedStation == null ? "" : selectedStation.getId();
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -175,7 +175,7 @@ public String getSelectedStationName() {
         nextButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("New Session");
+        setTitle("Start New Session");
         setMaximumSize(new java.awt.Dimension(810, 500));
         setMinimumSize(new java.awt.Dimension(500, 120));
         setPreferredSize(new java.awt.Dimension(810, 400));
@@ -416,17 +416,17 @@ public String getSelectedStationName() {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    private void nextButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonMouseClicked
-         if (selectedStation == null) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Please select a station.");
-        return;
-    }
 
-    NewSessionDialog2 next = new NewSessionDialog2(null, true, this);   
-    next.setLocationRelativeTo(this);
-    setVisible(false);      
-    next.setVisible(true);
+    private void nextButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonMouseClicked
+        if (selectedStation == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please select a station.");
+            return;
+        }
+
+        NewSessionDialog2 next = new NewSessionDialog2(null, true, this);
+        next.setLocationRelativeTo(this);
+        setVisible(false);
+        next.setVisible(true);
     }//GEN-LAST:event_nextButtonMouseClicked
 
     private void unit1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_unit1MouseClicked
@@ -438,7 +438,7 @@ public String getSelectedStationName() {
     }//GEN-LAST:event_unit3MouseClicked
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-       loadStations();
+        loadStations();
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
@@ -522,4 +522,3 @@ public String getSelectedStationName() {
     private javax.swing.JPanel unitPanel;
     // End of variables declaration//GEN-END:variables
 }
-

@@ -136,8 +136,8 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
         leftWrapper.add(lblRate, java.awt.BorderLayout.SOUTH);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Start New Session");
         setMinimumSize(new java.awt.Dimension(480, 300));
-        setPreferredSize(new java.awt.Dimension(810, 400));
         setResizable(false);
 
         java.awt.FlowLayout flowLayout2 = new java.awt.FlowLayout();
@@ -273,8 +273,9 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
         previousBTN.addActionListener(this::previousBTNActionPerformed);
         OptionBTNPanel.add(previousBTN);
 
+        strtSessBTN.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
         strtSessBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/chevron_right_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
-        strtSessBTN.setText("Start Session");
+        strtSessBTN.setText("Pay to Start Session");
         strtSessBTN.addActionListener(this::strtSessBTNActionPerformed);
         OptionBTNPanel.add(strtSessBTN);
 

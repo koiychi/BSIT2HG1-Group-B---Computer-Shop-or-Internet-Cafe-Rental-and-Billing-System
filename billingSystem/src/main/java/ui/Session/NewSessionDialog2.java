@@ -119,6 +119,8 @@ return resolvedCustomerID;
         nextBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Start New Session");
+        setPreferredSize(new java.awt.Dimension(810, 400));
         setResizable(false);
 
         java.awt.FlowLayout flowLayout2 = new java.awt.FlowLayout();
@@ -229,7 +231,7 @@ return resolvedCustomerID;
                     .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(creditRemain)
                     .addComponent(creditRemains))
-                .addContainerGap(337, Short.MAX_VALUE))
+                .addContainerGap(329, Short.MAX_VALUE))
         );
         memberonlyLayout.setVerticalGroup(
             memberonlyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -242,7 +244,7 @@ return resolvedCustomerID;
                 .addComponent(creditRemain)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(creditRemains)
-                .addContainerGap(162, Short.MAX_VALUE))
+                .addContainerGap(120, Short.MAX_VALUE))
         );
 
         centerPanel.add(memberonly, java.awt.BorderLayout.CENTER);
@@ -267,7 +269,6 @@ return resolvedCustomerID;
         nextBtn.setFont(new java.awt.Font("Inter", 0, 24)); // NOI18N
         nextBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/chevron_right_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
         nextBtn.setText("Next");
-        nextBtn.setPreferredSize(new java.awt.Dimension(126, 38));
         nextBtn.addActionListener(this::nextBtnActionPerformed);
         OptionBTNPanel.add(nextBtn);
 
