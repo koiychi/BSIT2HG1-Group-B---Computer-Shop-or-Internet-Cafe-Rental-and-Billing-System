@@ -4,20 +4,58 @@
  */
 package bsit2hg1groupb.billingSystem.ui.Station;
 
+import bsit2hg1groupb.billingSystem.system.GamingStation;
+import bsit2hg1groupb.billingSystem.system.RegularStation;
+import bsit2hg1groupb.billingSystem.system.Station;
+import javax.swing.DefaultComboBoxModel;
+
 /**
  *
  * @author Gian Carlo
  */
 public class EditStation extends javax.swing.JDialog {
-private boolean saved = false;
-private boolean deleted = false;
+
+    private boolean saved = false;
+    private boolean deleted = false;
+    private Station original;      // the station being edited
+    private Station edited;        // the validated result, read by the caller
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(EditStation.class.getName());
-    public void setStation(String name, String type, String status, String rate) {
-        nameField.setText(name);
-        typeCombo.setSelectedItem(type);
-        statusCombo.setSelectedItem(status);
-        rateField.setText(rate);
+
+    public EditStation(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
+        initComponents();
+        jLabel1.setText("Station ID: ");
+        nameField.setEditable(false);          // the ID cannot change
+        typeCombo.setEnabled(false);           // the type cannot change
+        statusCombo.setModel(new DefaultComboBoxModel<>(
+                new String[]{Station.AVAILABLE, Station.IN_USE, Station.MAINTENANCE}));
+    }
+
+    // Fills the form from a station
+    public void setStation(Station s) {
+        this.original = s;
+        nameField.setText(s.getStationID());
+        typeCombo.setSelectedItem(s.getType());
+        statusCombo.setSelectedItem(s.getStatus());
+        rateField.setText(String.valueOf(s.getHourlyRate()));
+        cpuField.setText(s.getCpu());
+        ramField.setText(String.valueOf(s.getRamGb()));
+        internetCheck.setSelected(s.hasInternet());
+
+        boolean gaming = s instanceof GamingStation;
+        gpuLabel.setVisible(gaming);
+        gpuField.setVisible(gaming);
+        monitorLabel.setVisible(gaming);
+        monitorField.setVisible(gaming);
+        printerCheck.setVisible(!gaming);
+        if (gaming) {
+            gpuField.setText(((GamingStation) s).getGpu());
+            monitorField.setText(String.valueOf(((GamingStation) s).getMonitorHz()));
+        } else {
+            printerCheck.setSelected(((RegularStation) s).hasPrinter());
+        }
+        pack();
     }
 
     public boolean isSaved() {
@@ -28,27 +66,8 @@ private boolean deleted = false;
         return deleted;
     }
 
-    public String getStationName() {
-        return nameField.getText().trim();
-    }
-
-    public String getStationType() {
-        return (String) typeCombo.getSelectedItem();
-    }
-
-    public String getStatus() {
-        return (String) statusCombo.getSelectedItem();
-    }
-
-    public String getRate() {
-        return rateField.getText().trim();
-    }
-    /**
-     * Creates new form EditStation
-     */
-    public EditStation(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
-        initComponents();
+    public Station getEditedStation() {
+        return edited;
     }
 
     /**
@@ -71,6 +90,16 @@ private boolean deleted = false;
         saveBtn = new javax.swing.JButton();
         cancelBtn = new javax.swing.JButton();
         DeleteBtn = new javax.swing.JButton();
+        cpuLabel = new javax.swing.JLabel();
+        cpuField = new javax.swing.JTextField();
+        ramLabel = new javax.swing.JLabel();
+        gpuLabel = new javax.swing.JLabel();
+        monitorLabel = new javax.swing.JLabel();
+        ramField = new javax.swing.JTextField();
+        gpuField = new javax.swing.JTextField();
+        monitorField = new javax.swing.JTextField();
+        internetCheck = new javax.swing.JCheckBox();
+        printerCheck = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Edit Station");
@@ -119,6 +148,29 @@ private boolean deleted = false;
             }
         });
 
+        cpuLabel.setText("CPU");
+
+        cpuField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cpuFieldActionPerformed(evt);
+            }
+        });
+
+        ramLabel.setText("RAM (GB)");
+
+        gpuLabel.setText("GPU");
+
+        monitorLabel.setText("Monitor Hz");
+
+        internetCheck.setText("Has Internet");
+        internetCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                internetCheckActionPerformed(evt);
+            }
+        });
+
+        printerCheck.setText("Has Printer");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -126,6 +178,11 @@ private boolean deleted = false;
             .addGroup(layout.createSequentialGroup()
                 .addGap(52, 52, 52)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(internetCheck)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(printerCheck)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(DeleteBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
@@ -139,13 +196,21 @@ private boolean deleted = false;
                                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
                                 .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cpuLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(gpuLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ramLabel)
+                            .addComponent(monitorLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(nameField)
-                            .addComponent(rateField)
-                            .addComponent(typeCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(statusCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(gpuField)
+                            .addComponent(ramField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nameField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(rateField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(typeCombo, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(statusCombo, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cpuField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(monitorField))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -167,7 +232,27 @@ private boolean deleted = false;
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(rateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cpuLabel)
+                    .addComponent(cpuField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ramLabel)
+                    .addComponent(ramField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(gpuLabel)
+                    .addComponent(gpuField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(monitorLabel)
+                    .addComponent(monitorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(internetCheck)
+                    .addComponent(printerCheck))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveBtn)
                     .addComponent(cancelBtn)
@@ -180,14 +265,26 @@ private boolean deleted = false;
 
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
         // TODO add your handling code here:
-    if (getStationName().isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Station name is required.");
-            return;
-        }
         try {
-            Double.parseDouble(getRate());
+            String status = (String) statusCombo.getSelectedItem();
+            double rate = Double.parseDouble(rateField.getText().trim());
+            int ram = Integer.parseInt(ramField.getText().trim());
+            String cpu = cpuField.getText().trim();
+            boolean internet = internetCheck.isSelected();
+
+            if (original instanceof GamingStation) {
+                int hz = Integer.parseInt(monitorField.getText().trim());
+                edited = new GamingStation(original.getStationID(), rate, internet, status, cpu, ram,
+                        gpuField.getText().trim(), hz, ((GamingStation) original).getGamesInstalled());
+            } else {
+                edited = new RegularStation(original.getStationID(), rate, internet, status, cpu, ram,
+                        ((RegularStation) original).getSoftwareList(), printerCheck.isSelected());
+            }
         } catch (NumberFormatException e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Rate must be a number.");
+            javax.swing.JOptionPane.showMessageDialog(this, "Rate, RAM and Hz must be valid numbers.");
+            return;
+        } catch (IllegalArgumentException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, e.getMessage());
             return;
         }
         saved = true;
@@ -216,6 +313,14 @@ private boolean deleted = false;
             dispose();
         }
     }//GEN-LAST:event_DeleteBtnActionPerformed
+
+    private void cpuFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpuFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cpuFieldActionPerformed
+
+    private void internetCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_internetCheckActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_internetCheckActionPerformed
 
     /**
      * @param args the command line arguments
@@ -257,11 +362,21 @@ private boolean deleted = false;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton DeleteBtn;
     private javax.swing.JButton cancelBtn;
+    private javax.swing.JTextField cpuField;
+    private javax.swing.JLabel cpuLabel;
+    private javax.swing.JTextField gpuField;
+    private javax.swing.JLabel gpuLabel;
+    private javax.swing.JCheckBox internetCheck;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JTextField monitorField;
+    private javax.swing.JLabel monitorLabel;
     private javax.swing.JTextField nameField;
+    private javax.swing.JCheckBox printerCheck;
+    private javax.swing.JTextField ramField;
+    private javax.swing.JLabel ramLabel;
     private javax.swing.JTextField rateField;
     private javax.swing.JButton saveBtn;
     private javax.swing.JComboBox<String> statusCombo;

@@ -28,6 +28,12 @@
               <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
+                      <Component id="internetCheck" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="printerCheck" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
                       <Component id="DeleteBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="108" max="32767" attributes="0"/>
                       <Component id="cancelBtn" min="-2" max="-2" attributes="0"/>
@@ -35,7 +41,7 @@
                       <Component id="saveBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                               <Component id="jLabel1" pref="85" max="32767" attributes="0"/>
@@ -43,13 +49,21 @@
                               <Component id="jLabel3" max="32767" attributes="0"/>
                           </Group>
                           <Component id="jLabel2" alignment="0" min="-2" pref="37" max="-2" attributes="0"/>
+                          <Component id="cpuLabel" alignment="0" min="-2" pref="37" max="-2" attributes="0"/>
+                          <Component id="gpuLabel" min="-2" pref="37" max="-2" attributes="0"/>
+                          <Component id="ramLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="monitorLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="nameField" max="32767" attributes="0"/>
-                          <Component id="rateField" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="gpuField" max="32767" attributes="0"/>
+                          <Component id="ramField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="nameField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="rateField" alignment="0" max="32767" attributes="0"/>
                           <Component id="typeCombo" alignment="0" max="32767" attributes="0"/>
-                          <Component id="statusCombo" max="32767" attributes="0"/>
+                          <Component id="statusCombo" alignment="0" max="32767" attributes="0"/>
+                          <Component id="cpuField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="monitorField" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -80,7 +94,32 @@
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="rateField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="48" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="cpuLabel" min="-2" max="-2" attributes="0"/>
+                  <Component id="cpuField" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="ramLabel" min="-2" max="-2" attributes="0"/>
+                  <Component id="ramField" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="gpuLabel" min="-2" max="-2" attributes="0"/>
+                  <Component id="gpuField" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="monitorLabel" min="-2" max="-2" attributes="0"/>
+                  <Component id="monitorField" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="internetCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="printerCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="53" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="saveBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cancelBtn" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -172,6 +211,50 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="DeleteBtnActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="cpuLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="CPU"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="cpuField">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cpuFieldActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="ramLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="RAM (GB)"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="gpuLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="GPU"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="monitorLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Monitor Hz"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="ramField">
+    </Component>
+    <Component class="javax.swing.JTextField" name="gpuField">
+    </Component>
+    <Component class="javax.swing.JTextField" name="monitorField">
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="internetCheck">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Has Internet"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="internetCheckActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="printerCheck">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Has Printer"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

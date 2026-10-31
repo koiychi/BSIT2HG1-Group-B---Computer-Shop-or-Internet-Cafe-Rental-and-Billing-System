@@ -7,11 +7,22 @@ public class RegularStation extends Station {
     private List<String> softwareList;
     private boolean hasPrinter;
 
-    //CONSTRUCTORS
-    public RegularStation(String stationID, double hourlyRate, boolean hasInternet, boolean isAvailable, List<String> softwareList, boolean hasPrinter) {
+    // CONSTRUCTORS
+    public RegularStation(String stationID, double hourlyRate, boolean hasInternet,
+                          String status, String cpu, int ramGb,
+                          List<String> softwareList, boolean hasPrinter) {
+        super(stationID, hourlyRate, hasInternet, status);
+        setCpu(cpu);
+        setRamGb(ramGb);
+        setSoftwareList(softwareList);
+        setHasPrinter(hasPrinter);
+    }
+
+    public RegularStation(String stationID, double hourlyRate, boolean hasInternet,
+                          boolean isAvailable, List<String> softwareList, boolean hasPrinter) {
         super(stationID, hourlyRate, hasInternet, isAvailable);
-        this.softwareList = new ArrayList<>(softwareList);
-        this.hasPrinter = hasPrinter;
+        setSoftwareList(softwareList);
+        setHasPrinter(hasPrinter);
     }
 
     public RegularStation() {
@@ -20,38 +31,46 @@ public class RegularStation extends Station {
         this.hasPrinter = false;
     }
 
-    //GETTERS
-    public List<String> getSoftwareList() {
-        return new ArrayList<>(softwareList);
-    }
+    // GETTERS
+    public List<String> getSoftwareList() { return new ArrayList<>(softwareList); }
+    public boolean hasPrinter() { return hasPrinter; }
 
-    public boolean hasPrinter() {
-        return hasPrinter;
-    }
+    @Override
+    public String getType() { return "Regular"; }
 
-    //SETTERS //TODO: VALIDATED SETTERS; After validating, use in the parameterized constructor
+    // SETTERS (validated)
     public void setHasPrinter(boolean hasPrinter) {
-        this.hasPrinter = hasPrinter;
+        this.hasPrinter = hasPrinter;   // boolean: any value is valid
     }
 
     public void setSoftwareList(List<String> softwareList) {
         if (softwareList == null) {
             throw new IllegalArgumentException("Software cannot be null");
         }
-        this.softwareList = new ArrayList<>(softwareList);
+        List<String> cleaned = new ArrayList<>();
+        for (String s : softwareList) {
+            if (s == null || s.trim().isEmpty()) {
+                throw new IllegalArgumentException("Software names cannot be blank.");
+            }
+            cleaned.add(s.trim());
+        }
+        this.softwareList = cleaned;
     }
 
-    //OTHER METHODS
+    // OTHER METHODS
     public void addSoftware(String softwareName) {
-        if (!softwareList.contains(softwareName)) {
-            softwareList.add(softwareName);
-            System.out.println(softwareName + " has been installed.");
-        } else {
-            System.out.println(softwareName + " is already installed.");
+        if (softwareName == null || softwareName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Software name cannot be blank.");
+        }
+        String name = softwareName.trim();
+        if (!softwareList.contains(name)) {
+            softwareList.add(name);
         }
     }
 
+    @Override
     public String getStationInfo() {
-        return "\nSoftware List: " + softwareList + "\nHas Printer: " + hasPrinter;
+        return "CPU: " + getCpu() + "\nRAM: " + getRamGb() + " GB"
+             + "\nSoftware List: " + softwareList + "\nHas Printer: " + hasPrinter;
     }
 } //END OF CLASS
