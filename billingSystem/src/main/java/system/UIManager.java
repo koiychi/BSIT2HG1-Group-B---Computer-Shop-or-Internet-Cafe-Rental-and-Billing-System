@@ -45,7 +45,7 @@ public class UIManager {
                         if (path.contains("Regular")) {
                             appFont = font.deriveFont(java.awt.Font.PLAIN, 14f);
                         }
-                        System.out.println("Registered font: " + font.getFontName());
+                        //System.out.println("Registered font: " + font.getFontName());
                     } else {
                         System.err.println("Not found: " + path);
                     }
