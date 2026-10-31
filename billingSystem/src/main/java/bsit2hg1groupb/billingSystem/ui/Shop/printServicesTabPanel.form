@@ -554,6 +554,14 @@
                 <Property name="alignment" type="int" value="0"/>
               </Layout>
               <SubComponents>
+                <Component class="javax.swing.JButton" name="deletePrintButton">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="DELETE"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deletePrintButtonActionPerformed"/>
+                  </Events>
+                </Component>
                 <Container class="javax.swing.JScrollPane" name="printList">
                   <Properties>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -578,7 +586,7 @@
                           <Connection code="printListModel" type="code"/>
                         </Property>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[193, 75]"/>
+                          <Dimension value="[193, 500]"/>
                         </Property>
                       </Properties>
                       <AuxValues>
@@ -616,7 +624,7 @@
             <Container class="javax.swing.JPanel" name="PhotocopyPanel">
               <Properties>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[250, 100]"/>
+                  <Dimension value="[300, 80]"/>
                 </Property>
               </Properties>
 
@@ -624,10 +632,18 @@
                 <Property name="alignment" type="int" value="0"/>
               </Layout>
               <SubComponents>
+                <Component class="javax.swing.JButton" name="deletePhotocopyButton">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="DELETE"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deletePhotocopyButtonActionPerformed"/>
+                  </Events>
+                </Component>
                 <Container class="javax.swing.JScrollPane" name="photocopyList">
                   <Properties>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[350, 100]"/>
+                      <Dimension value="[300, 80]"/>
                     </Property>
                   </Properties>
                   <AuxValues>
@@ -639,7 +655,7 @@
                     <Component class="javax.swing.JList" name="photocopyJList">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="66" green="66" red="66" type="rgb"/>
+                          <Color blue="99" green="99" red="99" type="rgb"/>
                         </Property>
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -651,7 +667,13 @@
                           <Dimension value="[350, 55]"/>
                         </Property>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[350, 60]"/>
+                          <Dimension value="[300, 500]"/>
+                        </Property>
+                        <Property name="selectionBackground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="99" green="99" red="99" type="rgb"/>
+                        </Property>
+                        <Property name="selectionForeground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
                       </Properties>
                       <AuxValues>
@@ -659,21 +681,6 @@
                       </AuxValues>
                     </Component>
                   </SubComponents>
-                </Container>
-                <Container class="javax.swing.JPanel" name="jPanel1">
-
-                  <Layout>
-                    <DimensionLayout dim="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <EmptySpace min="0" pref="100" max="32767" attributes="0"/>
-                      </Group>
-                    </DimensionLayout>
-                    <DimensionLayout dim="1">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <EmptySpace min="0" pref="100" max="32767" attributes="0"/>
-                      </Group>
-                    </DimensionLayout>
-                  </Layout>
                 </Container>
               </SubComponents>
             </Container>
@@ -716,6 +723,27 @@
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="PHP 89.00"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="PaymentPanel">
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JButton" name="proceedPaymentButton">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="0" green="99" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="PROCEED PAYMENT"/>
+                    <Property name="hideActionText" type="boolean" value="true"/>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[250, 23]"/>
+                    </Property>
                   </Properties>
                 </Component>
               </SubComponents>

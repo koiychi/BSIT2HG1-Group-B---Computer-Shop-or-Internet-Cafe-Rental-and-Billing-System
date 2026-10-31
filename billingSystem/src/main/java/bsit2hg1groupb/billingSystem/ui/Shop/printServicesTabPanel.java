@@ -77,18 +77,21 @@ public class printServicesTabPanel extends javax.swing.JPanel {
         PrintPanel = new javax.swing.JPanel();
         PrintLabel = new javax.swing.JLabel();
         PrintScrollPane = new javax.swing.JPanel();
+        deletePrintButton = new javax.swing.JButton();
         printList = new javax.swing.JScrollPane();
         printJList = new javax.swing.JList<>();
         PhotoCopyLabelPanel = new javax.swing.JPanel();
         PhotocopyHeaderLabel = new javax.swing.JLabel();
         PhotocopyPanel = new javax.swing.JPanel();
+        deletePhotocopyButton = new javax.swing.JButton();
         photocopyList = new javax.swing.JScrollPane();
         photocopyJList = new javax.swing.JList<>();
-        jPanel1 = new javax.swing.JPanel();
         TotalAmount = new javax.swing.JPanel();
         totalAmountLabel = new javax.swing.JLabel();
         TotalAmountPrice = new javax.swing.JPanel();
         TotalAmountPriceLabel = new javax.swing.JLabel();
+        PaymentPanel = new javax.swing.JPanel();
+        proceedPaymentButton = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(500, 500));
         setLayout(new java.awt.BorderLayout(25, 0));
@@ -317,12 +320,16 @@ public class printServicesTabPanel extends javax.swing.JPanel {
         PrintScrollPane.setPreferredSize(new java.awt.Dimension(300, 80));
         PrintScrollPane.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        deletePrintButton.setText("DELETE");
+        deletePrintButton.addActionListener(this::deletePrintButtonActionPerformed);
+        PrintScrollPane.add(deletePrintButton);
+
         printList.setPreferredSize(new java.awt.Dimension(300, 80));
 
         printJList.setBackground(new java.awt.Color(102, 102, 102));
         printJList.setForeground(new java.awt.Color(255, 255, 255));
         printJList.setModel(printListModel);
-        printJList.setPreferredSize(new java.awt.Dimension(193, 75));
+        printJList.setPreferredSize(new java.awt.Dimension(193, 500));
         printList.setViewportView(printJList);
 
         PrintScrollPane.add(printList);
@@ -339,32 +346,25 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
         SummaryPanel.add(PhotoCopyLabelPanel);
 
-        PhotocopyPanel.setPreferredSize(new java.awt.Dimension(250, 100));
+        PhotocopyPanel.setPreferredSize(new java.awt.Dimension(300, 80));
         PhotocopyPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        photocopyList.setPreferredSize(new java.awt.Dimension(350, 100));
+        deletePhotocopyButton.setText("DELETE");
+        deletePhotocopyButton.addActionListener(this::deletePhotocopyButtonActionPerformed);
+        PhotocopyPanel.add(deletePhotocopyButton);
 
-        photocopyJList.setBackground(new java.awt.Color(102, 102, 102));
+        photocopyList.setPreferredSize(new java.awt.Dimension(300, 80));
+
+        photocopyJList.setBackground(new java.awt.Color(153, 153, 153));
         photocopyJList.setForeground(new java.awt.Color(255, 255, 255));
         photocopyJList.setModel(photocopyListModel);
         photocopyJList.setMaximumSize(new java.awt.Dimension(350, 55));
-        photocopyJList.setPreferredSize(new java.awt.Dimension(350, 60));
+        photocopyJList.setPreferredSize(new java.awt.Dimension(300, 500));
+        photocopyJList.setSelectionBackground(new java.awt.Color(153, 153, 153));
+        photocopyJList.setSelectionForeground(new java.awt.Color(255, 255, 255));
         photocopyList.setViewportView(photocopyJList);
 
         PhotocopyPanel.add(photocopyList);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        PhotocopyPanel.add(jPanel1);
 
         SummaryPanel.add(PhotocopyPanel);
 
@@ -387,6 +387,15 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
         SummaryPanel.add(TotalAmountPrice);
 
+        proceedPaymentButton.setBackground(new java.awt.Color(255, 153, 0));
+        proceedPaymentButton.setForeground(new java.awt.Color(255, 255, 255));
+        proceedPaymentButton.setText("PROCEED PAYMENT");
+        proceedPaymentButton.setHideActionText(true);
+        proceedPaymentButton.setPreferredSize(new java.awt.Dimension(250, 23));
+        PaymentPanel.add(proceedPaymentButton);
+
+        SummaryPanel.add(PaymentPanel);
+
         rightPanel.add(SummaryPanel, java.awt.BorderLayout.CENTER);
 
         add(rightPanel, java.awt.BorderLayout.CENTER);
@@ -396,6 +405,20 @@ public class printServicesTabPanel extends javax.swing.JPanel {
        updatePricing();
     }//GEN-LAST:event_printRButtonActionPerformed
 
+    private double extractPriceFromRow(String row) {
+        try {
+            int phpIndex = row.indexOf("PHP");
+            if (phpIndex != -1) {
+                String sub = row.substring(phpIndex + 4);
+                sub = sub.replace(")", "").trim();
+                return Double.parseDouble(sub);
+            }
+        } catch (Exception e) {
+            // fallback
+        }
+        return 0.0;
+    }
+    
     private void addOrderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addOrderBtnActionPerformed
 
   // 1. Get selected service type and options from UI components
@@ -454,6 +477,35 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_addOrderBtnMouseClicked
 
+    private void deletePrintButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletePrintButtonActionPerformed
+        // TODO add your handling code here:
+                                              
+        int selectedIndex = printJList.getSelectedIndex();
+        if (selectedIndex != -1) {
+            String itemText = printListModel.getElementAt(selectedIndex);
+            double itemPrice = extractPriceFromRow(itemText);
+            
+            printListModel.remove(selectedIndex);
+            runningTotal -= itemPrice;
+            if (runningTotal < 0) runningTotal = 0.0; 
+            TotalAmountPriceLabel.setText("PHP " + String.format("%.2f", runningTotal));
+        }
+    }//GEN-LAST:event_deletePrintButtonActionPerformed
+
+    private void deletePhotocopyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletePhotocopyButtonActionPerformed
+        // TODO add your handling code here:
+        int selectedIndex = photocopyJList.getSelectedIndex();
+        if (selectedIndex != -1) {
+            String itemText = photocopyListModel.getElementAt(selectedIndex);
+            double itemPrice = extractPriceFromRow(itemText);
+            
+            photocopyListModel.remove(selectedIndex);
+            runningTotal -= itemPrice;
+            if (runningTotal < 0) runningTotal = 0.0;
+            TotalAmountPriceLabel.setText("PHP " + String.format("%.2f", runningTotal));
+        }
+    }//GEN-LAST:event_deletePhotocopyButtonActionPerformed
+
     public void addPrintJob(PrintJob job) {
 
 }
@@ -464,6 +516,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
     private javax.swing.JPanel PageCountPanel;
     private javax.swing.JSpinner PageCountSpinner;
     private javax.swing.JPanel PageSizeLabel;
+    private javax.swing.JPanel PaymentPanel;
     private javax.swing.JPanel PhotoCopyLabelPanel;
     private javax.swing.JLabel PhotocopyHeaderLabel;
     private javax.swing.JPanel PhotocopyPanel;
@@ -481,8 +534,9 @@ public class printServicesTabPanel extends javax.swing.JPanel {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> colorModeComboBox;
     private javax.swing.JLabel colorModeLabel;
+    private javax.swing.JButton deletePhotocopyButton;
+    private javax.swing.JButton deletePrintButton;
     private javax.swing.JLabel editPriceListLabel;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel leftPanell;
     private javax.swing.JPanel orderPanel;
     private javax.swing.JLabel pageCountLabel;
@@ -497,6 +551,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
     private javax.swing.JList<String> printJList;
     private javax.swing.JScrollPane printList;
     private javax.swing.JRadioButton printRButton;
+    private javax.swing.JButton proceedPaymentButton;
     private javax.swing.JPanel rightPanel;
     private javax.swing.JLabel serviceTypeLabel;
     private javax.swing.JPanel serviceTypePanel;
