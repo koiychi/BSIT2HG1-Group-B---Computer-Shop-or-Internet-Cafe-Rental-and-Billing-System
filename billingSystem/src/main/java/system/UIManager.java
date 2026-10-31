@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package system;
+import system.DatabaseManager;
 
 /**
  *
@@ -20,6 +21,8 @@ public class UIManager {
     private static AdminAppWindow appWindow;
 
     public static void main(String[] args) {
+        
+        DatabaseManager.initializeTables();
 
         try {
             java.awt.GraphicsEnvironment ge = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -42,7 +45,7 @@ public class UIManager {
                         if (path.contains("Regular")) {
                             appFont = font.deriveFont(java.awt.Font.PLAIN, 14f);
                         }
-                        System.out.println("Registered font: " + font.getFontName());
+                        //System.out.println("Registered font: " + font.getFontName());
                     } else {
                         System.err.println("Not found: " + path);
                     }

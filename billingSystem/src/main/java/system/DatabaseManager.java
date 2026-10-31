@@ -17,8 +17,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 public class DatabaseManager {
 
 // ==========================================
@@ -26,28 +25,23 @@ public class DatabaseManager {
 // ==========================================
     private static final String DBFile = "jdbc:sqlite:compShopDatabase.db";
     private static Connection connection = null;
+    private static boolean tablesInitialized = false;
 
-    public static Connection getConnection() {
-        try {
-            if (connection == null || connection.isClosed()) {
-                Class.forName("org.sqlite.JDBC");
-                connection = DriverManager.getConnection(DBFile);
-                
-                try (Statement stmt = connection.createStatement()) {
-                    stmt.execute("PRAGMA foreign_keys = ON;");
-                }
+    public static Connection getConnection() throws SQLException {
+        Connection conn = DriverManager.getConnection(DBFile);
 
-                initializeTables();
-            }
-        } catch (ClassNotFoundException e) {
-            System.err.println("Driver Error: " + e.getMessage());
-        } catch (SQLException e) {
-            System.err.println("Database Connection Error: " + e.getMessage());
+        try (Statement stmt = conn.createStatement()) {
+            stmt.execute("PRAGMA foreign_keys = ON;");
         }
-        return connection;
+
+        return conn;
     }
 
-    private static void initializeTables() {
+    public static synchronized void initializeTables() {
+        if (tablesInitialized) {
+            return;
+        }
+
         try (Statement stmt = getConnection().createStatement()) {
 
             // 1. CUSTOMER (SUPERTYPE)
@@ -93,7 +87,6 @@ public class DatabaseManager {
                     + "Monitor_Hz INTEGER NOT NULL, "
                     + "FOREIGN KEY (StationID) REFERENCES STATION(StationID) ON DELETE CASCADE);");
 
-           
             // 4. TRANSACTION
             stmt.execute("CREATE TABLE IF NOT EXISTS TRANSACTIONS ("
                     + "TransactionID INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -106,33 +99,16 @@ public class DatabaseManager {
                     + "FOREIGN KEY (CustomerID) REFERENCES CUSTOMER(CustomerID), "
                     + "FOREIGN KEY (StationID) REFERENCES STATION(StationID) ON DELETE SET NULL);");
 
-            
-            stmt.execute("CREATE TABLE IF NOT EXISTS SESSIONS (" 
-            + "SessionID INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + "CustomerID INTEGER NOT NULL, "
-            + "StationID TEXT NOT NULL, "
-            + "StartTime TEXT DEFAULT(datetime('now', 'localtime')), "
-            + "DurationMinutes INTEGER NOT NULL, "
-            + "EndTime TEXT NOT NULL, "
-            + "HourlyRate REAL NOT NULL, "
-            + "DiscountRate REAL DEFAULT 0.0, "
-            + "TotalAmount REAL NOT NULL, "
-            + "FOREIGN KEY (CustomerID) REFERENCES CUSTOMER(CustomerID), "
-            + "FOREIGN KEY (StationID) REFERENCES STATION(StationID));");
-                   
-            
             System.out.println("Database initialized successfully!");
 
         } catch (SQLException e) {
             System.err.println("Error initializing tables: " + e.getMessage());
         }
     }
+    // ==========================================
+    // ADDING CUSTOMERS (METHOD OVERLOADING)
+    // ==========================================
 
-    
-// ==========================================
-// ADDING CUSTOMERS (METHOD OVERLOADING)
-// ==========================================
-    
     // 1. BASE HELPER METHOD
     private static int insertBaseCustomer(String firstName, String lastName, String customerType) {
         String sql = "INSERT INTO CUSTOMER (FirstName, LastName, CustomerType) VALUES (?, ?, ?)";
@@ -171,74 +147,7 @@ public class DatabaseManager {
             return false;
         }
     }
-    
-    public static int getRegularID(String fullName) {
-        String[] parts = fullName.trim().split(" ", 2);
-        String firstName = parts[0];
-        String lastName = (parts.length > 1) ? parts[1] : "";
-        String sql = "SELECT c.CustomerID FROM CUSTOMER c "
-                + "JOIN REGULAR_CUSTOMER r ON c.CustomerID = r.CustomerID "
-                + "WHERE LOWER(c.FirstName) = LOWER(?) AND LOWER(c.LastName) = LOWER(?)";
-        try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
-            pstmt.setString(1, firstName);
-            pstmt.setString(2, lastName);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("CustomerID");            
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("Error finding regular customer: " + e.getMessage());
-            return -1;
-        }
 
-        // 2. Not found: create a new regular customer
-        int id = insertBaseCustomer(firstName, lastName, "REGULAR");
-        if (id == -1) {
-            return -1;
-        }
-        try (Connection c = getConnection();
-                PreparedStatement pstmt = c.prepareStatement("INSERT INTO REGULAR_CUSTOMER (CustomerID) VALUES (?)")) {
-            pstmt.setInt(1, id);
-            pstmt.executeUpdate();
-            return id;
-        } catch (SQLException e) {
-            System.err.println("Error creating regular customer: " + e.getMessage());
-            return -1;
-        }
-    }
-
-public static int getCustomerIdByUsername(String username) {
-        String sql = "SELECT CustomerID FROM MEMBER_CUSTOMER WHERE Username = ?";
-        try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
-            pstmt.setString(1, username);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("CustomerID");
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("Error finding member ID: " + e.getMessage());
-        }
-        return -1;
-    }
-    
-       
-    public static double getMemberDiscount(int customerId) {
-        String sql = "SELECT DiscountRate FROM MEMBER_CUSTOMER WHERE CustomerID = ?";
-        try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
-            pstmt.setInt(1, customerId);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getDouble("DiscountRate");
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("Error reading member discount: " + e.getMessage());
-        }
-        return 0.0;
-    }
-    
     // 3. OVERLOADED METHOD 2: MEMBER CUSTOMER
     public static boolean addCustomer(String firstName, String lastName, String user, String pass, double balance) {
         int id = insertBaseCustomer(firstName, lastName, "MEMBER");
@@ -264,7 +173,6 @@ public static int getCustomerIdByUsername(String username) {
 // ==========================================
 // READING MEMBER CUSTOMERS
 // ==========================================
-
     // READ MEMBER BY USERNAME
     public static MemberCustomer findMember(String username) {
         String sql = "SELECT c.FirstName, c.LastName, "
@@ -273,8 +181,7 @@ public static int getCustomerIdByUsername(String username) {
                 + "JOIN MEMBER_CUSTOMER m ON c.CustomerID = m.CustomerID "
                 + "WHERE m.Username = ?";
 
-        try (Connection c = getConnection();
-                PreparedStatement pstmt = c.prepareStatement(sql)) {
+        try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
 
             pstmt.setString(1, username);
 
@@ -306,9 +213,7 @@ public static int getCustomerIdByUsername(String username) {
                 + "ORDER BY c.LastName, c.FirstName";
         List<MemberCustomer> members = new ArrayList<>();
 
-        try (Connection c = getConnection();
-                Statement stmt = c.createStatement();
-                ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection c = getConnection(); Statement stmt = c.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 members.add(new MemberCustomer(
@@ -336,8 +241,7 @@ public static int getCustomerIdByUsername(String username) {
 
         try (Connection c = getConnection()) {
             c.setAutoCommit(false);
-            try (PreparedStatement customerStmt = c.prepareStatement(customerSql);
-                    PreparedStatement memberStmt = c.prepareStatement(memberSql)) {
+            try (PreparedStatement customerStmt = c.prepareStatement(customerSql); PreparedStatement memberStmt = c.prepareStatement(memberSql)) {
                 customerStmt.setString(1, firstName);
                 customerStmt.setString(2, lastName);
                 customerStmt.setInt(3, customerId);
@@ -369,8 +273,7 @@ public static int getCustomerIdByUsername(String username) {
     public static boolean deleteCustomer(int customerId) {
         String sql = "DELETE FROM CUSTOMER WHERE CustomerID = ?";
 
-        try (Connection c = getConnection();
-                PreparedStatement pstmt = c.prepareStatement(sql)) {
+        try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
             pstmt.setInt(1, customerId);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -397,8 +300,7 @@ public static int getCustomerIdByUsername(String username) {
     public static boolean updateCustomer(int customerId, String firstName, String lastName) {
         String sql = "UPDATE CUSTOMER SET FirstName = ?, LastName = ? WHERE CustomerID = ?";
 
-        try (Connection c = getConnection();
-                PreparedStatement pstmt = c.prepareStatement(sql)) {
+        try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
             pstmt.setString(1, firstName);
             pstmt.setString(2, lastName);
             pstmt.setInt(3, customerId);
@@ -412,7 +314,6 @@ public static int getCustomerIdByUsername(String username) {
 // ==========================================
 // STATION CRUD
 // ==========================================
-
     // READ STATION
     public static ResultSet getStation(String stationId) {
         String sql = "SELECT * FROM STATION WHERE StationID = ?";
@@ -427,29 +328,9 @@ public static int getCustomerIdByUsername(String username) {
         }
     }
 
-    // READ STATIONS BY TYPE
-    public static List<Station> getStationsByType(String type) throws SQLException {
-        List<Station> list = new ArrayList<>();
-        String sql = "SELECT * FROM STATION WHERE UPPER(StationType) = UPPER(?)";
-
-        PreparedStatement pstmt = getConnection().prepareStatement(sql);
-        pstmt.setString(1, type);
-        ResultSet rs = pstmt.executeQuery();
-
-        while (rs.next()) {
-            list.add(new Station(
-                    rs.getString("StationID"),
-                    rs.getString("StationType"),
-                    rs.getString("AvailabilityStatus"),
-                    rs.getDouble("HourlyRate")));
-        }
-        return list;
-    }
-
 // ==========================================
 // TRANSACTION CRUD
 // ==========================================
-
     // READ TRANSACTION
     public static ResultSet getTransaction(int transactionId) {
         String sql = "SELECT * FROM TRANSACTIONS WHERE TransactionID = ?";
@@ -592,98 +473,4 @@ public static int getCustomerIdByUsername(String username) {
         }
         return 0.0;
     }
-    
-    public static int startSession(int customerId,  String stationId, int durationMinutes, String paidBy)throws SQLException{
-    String endTime= LocalDateTime.now().plusMinutes(durationMinutes).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-    
-    try(Connection c = getConnection()){
-    c.setAutoCommit(false);
-    try{
-    double rate= 0;
-    try(PreparedStatement ps= c.prepareStatement("SELECT HourlyRate, AvailabilityStatus FROM STATION WHERE StationID = ?")){
-    ps.setString(1, stationId);
-    try (ResultSet rs= ps.executeQuery()){
-    if (!rs.next()){
-    throw new SQLException("Station not found.");
-    }
-    if (!"Available".equalsIgnoreCase(rs.getString("AvailabilityStatus"))){
-    throw new SQLException("This station is no longer available.");
-    } 
-    rate= rs.getDouble("HourlyRate");
-    }
-    }
-     double discount = 0.0;
-                double balance = 0.0;
-                try (PreparedStatement ps = c.prepareStatement(
-                        "SELECT DiscountRate, CreditBalance FROM MEMBER_CUSTOMER WHERE CustomerID = ?")) {
-                    ps.setInt(1, customerId);
-                    try (ResultSet rs = ps.executeQuery()) {
-                        if (rs.next()) {
-                            discount = rs.getDouble("DiscountRate");
-                            balance = rs.getDouble("CreditBalance");
-                        }
-                    }
-                }
-                
-                double total = rate * (durationMinutes / 60.0) * (1 - discount);
-                
-                if ("Member Credits".equals(paidBy)) {
-                    if (balance < total) {
-                        throw new SQLException("Not enough credit balance.");
-                    }
-                    try (PreparedStatement ps = c.prepareStatement(
-                            "UPDATE MEMBER_CUSTOMER SET CreditBalance = CreditBalance - ? WHERE CustomerID = ?")) {
-                        ps.setDouble(1, total);
-                        ps.setInt(2, customerId);
-                        ps.executeUpdate();
-                    }
-                }
-                int sessionId;
-                try (PreparedStatement ps = c.prepareStatement(
-                        "INSERT INTO SESSIONS (CustomerID, StationID, DurationMinutes, EndTime, HourlyRate, DiscountRate, TotalAmount) "
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
-                    ps.setInt(1, customerId);
-                    ps.setString(2, stationId);
-                    ps.setInt(3, durationMinutes);
-                    ps.setString(4, endTime);
-                    ps.setDouble(5, rate);
-                    ps.setDouble(6, discount);
-                    ps.setDouble(7, total);
-                    ps.executeUpdate();
-                    try (ResultSet keys = ps.getGeneratedKeys()) {
-                        if (!keys.next()) {
-                            throw new SQLException("Could not create the session.");
-                        }
-                        sessionId = keys.getInt(1);
-                    }
-                }
-                try (PreparedStatement ps = c.prepareStatement(
-                        "UPDATE STATION SET AvailabilityStatus = 'Occupied', SessionEndTime = ? WHERE StationID = ?")) {
-                    ps.setString(1, endTime);
-                    ps.setString(2, stationId);
-                    ps.executeUpdate();
-                }
-                try (PreparedStatement ps = c.prepareStatement(
-                        "INSERT INTO TRANSACTIONS (CustomerID, StationID, TransactionType, Amount, PaidBy) VALUES (?, ?, ?, ?, ?)")) {
-                    ps.setInt(1, customerId);
-                    ps.setString(2, stationId);
-                    ps.setString(3, "PC Rental");        
-                    ps.setDouble(4, total);
-                    ps.setString(5, paidBy);               
-                    ps.executeUpdate();
-                }
-
-                c.commit();                                
-                return sessionId;
-
-            } catch (SQLException e) {
-                c.rollback();                              
-                throw e;                                   
-            } finally {
-                c.setAutoCommit(true);
-            }
-        }
-    }
-  
-    
 } //end of class
