@@ -32,17 +32,30 @@ public final class PaymentUtil {
     public static final BigDecimal PRICE_COLOR = new BigDecimal("5.00");        // per page
     public static final BigDecimal MEMBER_DISCOUNT = new BigDecimal("0.10");
 
-    public static BigDecimal memberCredit = new BigDecimal("1.00");
-    public static final String USERNAME = "@cals";
-    public static final String FULL_NAME = "Carlo loves Eni";
+    public interface Committer {
+        String commit(String paidBy);
+    }
+    private static final java.util.concurrent.CopyOnWriteArrayList<Runnable> paymentListeners
+            = new java.util.concurrent.CopyOnWriteArrayList<>();
 
-    public interface TransactionLogger {
-
-        void log(boolean member, String action, BigDecimal amount, String status);
+    public static void addPaymentListener(Runnable listener) {
+        paymentListeners.addIfAbsent(listener);
     }
 
-    public static TransactionLogger logger = (member, action, amount, status) -> {
-    };
+    public static void removePaymentListener(Runnable listener) {
+        paymentListeners.remove(listener);
+    }
+
+    public static void firePaymentSaved() {
+        for (Runnable r : paymentListeners) {
+            r.run();
+        }
+    }
+
+    // UI says Cash / Credit; the database only accepts 'Cash' or 'Member Credits'
+    public static String paidBy(boolean usingCredit) {
+        return usingCredit ? "Member Credits" : "Cash";
+    }
 
     public static BigDecimal parseAmount(String text) {
         try {

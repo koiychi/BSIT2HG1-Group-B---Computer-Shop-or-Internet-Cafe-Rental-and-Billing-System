@@ -49,7 +49,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="PayBill" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="TotalAmountDue" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="ModeOfPayment" min="-2" pref="33" max="-2" attributes="0"/>
@@ -57,7 +57,7 @@
               <Component id="InputPayment" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="ProceedPay" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="18" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -69,27 +69,27 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="subtotalTitleLbl" alignment="0" min="-2" pref="66" max="-2" attributes="0"/>
                               <Component id="titleLbl" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="subtotalTitleLbl" alignment="0" min="-2" pref="66" max="-2" attributes="0"/>
                           </Group>
+                          <EmptySpace pref="204" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="typePcLbl" min="-2" pref="111" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="calcLbl" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="calcTotalLbl" min="-2" pref="72" max="-2" attributes="0"/>
-                              </Group>
+                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="customerNameLbl" max="32767" attributes="0"/>
+                              <Component id="typePcLbl" max="32767" attributes="0"/>
+                              <Component id="calcLbl" pref="135" max="32767" attributes="0"/>
                           </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="calcTotalLbl" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -100,12 +100,15 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="subtotalTitleLbl" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="typePcLbl" min="-2" max="-2" attributes="0"/>
+                  <Component id="customerNameLbl" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
+                  <Component id="typePcLbl" min="-2" pref="16" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="calcLbl" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="calcTotalLbl" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
                   </Group>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -141,6 +144,11 @@
           <Properties>
             <Property name="horizontalAlignment" type="int" value="4"/>
             <Property name="text" type="java.lang.String" value="PHP 30.00"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="customerNameLbl">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Customer Name"/>
           </Properties>
         </Component>
       </SubComponents>
