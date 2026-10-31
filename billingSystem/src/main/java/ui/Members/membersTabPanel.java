@@ -308,13 +308,13 @@ public class membersTabPanel extends javax.swing.JPanel {
         });
 
         // ADD MEMBER BUTTON
-        addMemberButton.addActionListener(e -> addMember());
+        addMemberButton.addActionListener(e -> showAddMemberDialog());
 
         this.revalidate();
         this.repaint();
     }
 
-    private void addMember() {
+    public void showAddMemberDialog() {
         Color bg = new Color(11, 11, 15);
         Color orange = new Color(255, 102, 0);
         Color fieldBg = new Color(242, 242, 242);

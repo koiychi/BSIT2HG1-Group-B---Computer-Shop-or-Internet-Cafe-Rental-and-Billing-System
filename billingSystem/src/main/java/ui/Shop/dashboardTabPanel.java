@@ -6,8 +6,16 @@ package ui.Shop;
 
 import ui.Session.NewSessionDialog1;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+
 import system.ActiveSessionsPanel;
+import system.AdminAppWindow;
 import system.ShopManager;
+import system.Station;
+import ui.Shop.TopUp;
 import java.awt.CardLayout;
 
 /**
@@ -22,7 +30,8 @@ public class dashboardTabPanel extends javax.swing.JPanel {
          public dashboardTabPanel() {
                   initComponents();
                   
-                  ShopManager.addStateListener(this::updateShopState);
+                  ShopManager.setDashboard(this);
+                  loadStatistics();
          }
 
          /**
@@ -664,7 +673,7 @@ public class dashboardTabPanel extends javax.swing.JPanel {
 
                   add(quickStatistics, java.awt.BorderLayout.NORTH);
 
-                  lowerSegments.setBorder(javax.swing.BorderFactory.createEmptyBorder(30, 1, 1, 1));
+                  lowerSegments.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 1, 1, 1));
                   lowerSegments.setLayout(new java.awt.BorderLayout(15, 0));
 
                   activeSessions.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 30, 1));
@@ -712,12 +721,13 @@ public class dashboardTabPanel extends javax.swing.JPanel {
                   lowerSegments.add(activeSessions, java.awt.BorderLayout.CENTER);
 
                   scrollPane.setForeground(new java.awt.Color(255, 102, 0));
-                  scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                  scrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+                  scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
                   quickActions.setBackground(new java.awt.Color(23, 26, 33));
                   quickActions.setAlignmentX(0.0F);
-                  quickActions.setMaximumSize(new java.awt.Dimension(400, 48));
-                  quickActions.setPreferredSize(new java.awt.Dimension(400, 229));
+                  quickActions.setMaximumSize(new java.awt.Dimension(400, 520));
+                  quickActions.setPreferredSize(new java.awt.Dimension(400, 520));
                   quickActions.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
                   quickActionsLabelPanel.setMaximumSize(new java.awt.Dimension(170, 40));
@@ -765,9 +775,9 @@ public class dashboardTabPanel extends javax.swing.JPanel {
                   newPrintOrderBtn.setText("New Print Order");
                   newPrintOrderBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
                   newPrintOrderBtn.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-                  newPrintOrderBtn.setMaximumSize(new java.awt.Dimension(450, 50));
+                  newPrintOrderBtn.setMaximumSize(new java.awt.Dimension(380, 50));
                   newPrintOrderBtn.setMinimumSize(new java.awt.Dimension(200, 26));
-                  newPrintOrderBtn.setPreferredSize(new java.awt.Dimension(450, 50));
+                  newPrintOrderBtn.setPreferredSize(new java.awt.Dimension(380, 50));
                   newPrintOrderBtn.addActionListener(this::newPrintOrderBtnActionPerformed);
                   printingServicesGroup.add(newPrintOrderBtn);
 
@@ -791,9 +801,9 @@ public class dashboardTabPanel extends javax.swing.JPanel {
                   topUpMemberBtn.setForeground(new java.awt.Color(255, 255, 255));
                   topUpMemberBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add_card_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
                   topUpMemberBtn.setText("Top Up Member Credits");
-                  topUpMemberBtn.setMaximumSize(new java.awt.Dimension(450, 50));
+                  topUpMemberBtn.setMaximumSize(new java.awt.Dimension(380, 50));
                   topUpMemberBtn.setMinimumSize(new java.awt.Dimension(200, 26));
-                  topUpMemberBtn.setPreferredSize(new java.awt.Dimension(450, 50));
+                  topUpMemberBtn.setPreferredSize(new java.awt.Dimension(380, 50));
                   topUpMemberBtn.addActionListener(this::topUpMemberBtnActionPerformed);
                   shopMembersGroup.add(topUpMemberBtn);
                   shopMembersGroup.add(filler1);
@@ -803,9 +813,9 @@ public class dashboardTabPanel extends javax.swing.JPanel {
                   addMemberBtn.setForeground(new java.awt.Color(255, 255, 255));
                   addMemberBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/person_add_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
                   addMemberBtn.setText("Add New Member");
-                  addMemberBtn.setMaximumSize(new java.awt.Dimension(450, 50));
+                  addMemberBtn.setMaximumSize(new java.awt.Dimension(380, 50));
                   addMemberBtn.setMinimumSize(new java.awt.Dimension(200, 26));
-                  addMemberBtn.setPreferredSize(new java.awt.Dimension(450, 50));
+                  addMemberBtn.setPreferredSize(new java.awt.Dimension(380, 50));
                   addMemberBtn.addActionListener(this::addMemberBtnActionPerformed);
                   shopMembersGroup.add(addMemberBtn);
 
@@ -827,9 +837,9 @@ public class dashboardTabPanel extends javax.swing.JPanel {
                   ViewTodaysSales.setForeground(new java.awt.Color(255, 255, 255));
                   ViewTodaysSales.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/payments_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
                   ViewTodaysSales.setText("View Today's Sales");
-                  ViewTodaysSales.setMaximumSize(new java.awt.Dimension(450, 50));
+                  ViewTodaysSales.setMaximumSize(new java.awt.Dimension(380, 50));
                   ViewTodaysSales.setMinimumSize(new java.awt.Dimension(200, 26));
-                  ViewTodaysSales.setPreferredSize(new java.awt.Dimension(450, 50));
+                  ViewTodaysSales.setPreferredSize(new java.awt.Dimension(380, 50));
                   ViewTodaysSales.addActionListener(this::ViewTodaysSalesActionPerformed);
                   shopManagementGroup.add(ViewTodaysSales);
                   shopManagementGroup.add(filler2);
@@ -839,16 +849,15 @@ public class dashboardTabPanel extends javax.swing.JPanel {
                   CloseShopBtn.setForeground(new java.awt.Color(255, 255, 255));
                   CloseShopBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/door_front_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
                   CloseShopBtn.setText("Close Shop");
-                  CloseShopBtn.setMaximumSize(new java.awt.Dimension(450, 50));
+                  CloseShopBtn.setMaximumSize(new java.awt.Dimension(380, 50));
                   CloseShopBtn.setMinimumSize(new java.awt.Dimension(200, 26));
-                  CloseShopBtn.setPreferredSize(new java.awt.Dimension(450, 50));
+                  CloseShopBtn.setPreferredSize(new java.awt.Dimension(380, 50));
                   CloseShopBtn.addActionListener(this::CloseShopBtnActionPerformed);
                   shopManagementGroup.add(CloseShopBtn);
 
                   quickActionsGroup.add(shopManagementGroup);
 
                   quickActions.add(quickActionsGroup);
-
                   scrollPane.setViewportView(quickActions);
 
                   lowerSegments.add(scrollPane, java.awt.BorderLayout.EAST);
@@ -857,7 +866,7 @@ public class dashboardTabPanel extends javax.swing.JPanel {
          }// </editor-fold>//GEN-END:initComponents
 
     private void newSessionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newSessionButtonMouseClicked
-             if (!ShopManager.ensureShopOpen(this)) {
+             if (!ShopManager.ensureShopOpen()) {
                       return;
              }
              NewSessionDialog1 dlg = new NewSessionDialog1(null, true);
@@ -870,54 +879,82 @@ public class dashboardTabPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_newSessionButtonActionPerformed
 
     private void newPrintOrderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newPrintOrderBtnActionPerformed
-             // TODO add your handling code here:
+             openTab(4);
     }//GEN-LAST:event_newPrintOrderBtnActionPerformed
 
     private void ViewTodaysSalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewTodaysSalesActionPerformed
-             // TODO add your handling code here:
+             openTab(5);
     }//GEN-LAST:event_ViewTodaysSalesActionPerformed
 
     private void CloseShopBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseShopBtnActionPerformed
-             ShopManager.toggleShop(this);
+             ShopManager.toggleShop();
     }//GEN-LAST:event_CloseShopBtnActionPerformed
 
     private void addMemberBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMemberBtnActionPerformed
-             // TODO add your handling code here:
+             openAddMemberDialog();
     }//GEN-LAST:event_addMemberBtnActionPerformed
 
     private void topUpMemberBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topUpMemberBtnActionPerformed
-             // TODO add your handling code here:
+             openTopUpDialog();
     }//GEN-LAST:event_topUpMemberBtnActionPerformed
 
          private void CloseShopBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseShopBtn1ActionPerformed
-                  ShopManager.toggleShop(this);
+                  ShopManager.toggleShop();
          }//GEN-LAST:event_CloseShopBtn1ActionPerformed
 
          private void ViewTodaysSales1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewTodaysSales1ActionPerformed
-                  // TODO add your handling code here:
+                  openTab(5);
          }//GEN-LAST:event_ViewTodaysSales1ActionPerformed
 
          private void addMemberBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMemberBtn1ActionPerformed
-                  // TODO add your handling code here:
+                  openAddMemberDialog();
          }//GEN-LAST:event_addMemberBtn1ActionPerformed
 
          private void topUpMemberBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topUpMemberBtn1ActionPerformed
-                  // TODO add your handling code here:
+                  openTopUpDialog();
          }//GEN-LAST:event_topUpMemberBtn1ActionPerformed
 
          private void newPrintOrderBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newPrintOrderBtn1ActionPerformed
-                  // TODO add your handling code here:
+                  openTab(4);
          }//GEN-LAST:event_newPrintOrderBtn1ActionPerformed
 
          private void newSessionButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSessionButton1ActionPerformed
                   // TODO add your handling code here:
          }//GEN-LAST:event_newSessionButton1ActionPerformed
 
+         private AdminAppWindow getAdminWindow() {
+                  java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+                  return window instanceof AdminAppWindow ? (AdminAppWindow) window : null;
+         }
+
+         private void openTab(int index) {
+                  AdminAppWindow window = getAdminWindow();
+                  if (window != null) {
+                           window.selectTab(index);
+                  }
+         }
+
+         private void openAddMemberDialog() {
+                  AdminAppWindow window = getAdminWindow();
+                  if (window != null) {
+                           window.showAddMemberDialog();
+                  }
+         }
+
+         private void openTopUpDialog() {
+                  if (!ShopManager.ensureShopOpen()) {
+                           return;
+                  }
+                  java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+                  java.awt.Frame frame = window instanceof java.awt.Frame ? (java.awt.Frame) window : null;
+                  new TopUp(frame, true).setVisible(true);
+         }
+
          private void newSessionButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newSessionButton1MouseClicked
                   newSessionButtonMouseClicked(evt);
          }//GEN-LAST:event_newSessionButton1MouseClicked
 
-         private void updateShopState(boolean open) {
+         public void updateShopState(boolean open) {
                   if (!javax.swing.SwingUtilities.isEventDispatchThread()) {
                            javax.swing.SwingUtilities.invokeLater(() -> updateShopState(open));
                            return;
@@ -933,8 +970,58 @@ public class dashboardTabPanel extends javax.swing.JPanel {
                            : "/icons/door_open_18dp_E3E3E3_FILL0_wght400_GRAD0_opsz20.png";
                   CloseShopBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource(iconPath)));
                   CloseShopBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource(iconPath)));
+                  if (open) {
+                           loadStatistics();
+                  } else {
+                           clearStatistics();
+                  }
                   revalidate();
                   repaint();
+         }
+
+         private void clearStatistics() {
+                  intAvailableStations.setText("-");
+                  intOccupiedStations.setText("-");
+                  intTotalSales.setText("-");
+                  intAvailableStations1.setText("-");
+                  intOccupiedStations1.setText("-");
+                  intTotalSales1.setText("-");
+         }
+
+         private void loadStatistics() {
+                  try {
+                           List<Station> stations = new ArrayList<>();
+                           stations.addAll(system.DatabaseManager.getStationsByType("REGULAR"));
+                           stations.addAll(system.DatabaseManager.getStationsByType("GAMING"));
+
+                           int available = 0;
+                           int occupied = 0;
+
+                           for (Station station : stations) {
+                                    if ("Available".equalsIgnoreCase(station.getStatus())) {
+                                             available++;
+                                    } else if ("Occupied".equalsIgnoreCase(station.getStatus())) {
+                                             occupied++;
+                                    }
+                           }
+
+                           String stationTotal = String.valueOf(stations.size());
+                           String sales = String.format(java.util.Locale.US, "PHP %.2f",
+                                    system.DatabaseManager.getTotalSales());
+
+                           intAvailableStations.setText(available + "/" + stationTotal);
+                           intOccupiedStations.setText(occupied + "/" + stationTotal);
+                           intTotalSales.setText(sales);
+                           intAvailableStations1.setText(available + "/" + stationTotal);
+                           intOccupiedStations1.setText(occupied + "/" + stationTotal);
+                           intTotalSales1.setText(sales);
+                  } catch (SQLException ex) {
+                           JOptionPane.showMessageDialog(
+                                    this,
+                                    "Could not load dashboard statistics: " + ex.getMessage(),
+                                    "Database Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                  }
          }
 
 

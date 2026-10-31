@@ -1,24 +1,24 @@
 package system;
 
-import java.awt.Component;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Consumer;
 import javax.swing.JOptionPane;
+import ui.Shop.dashboardTabPanel;
 
 public final class ShopManager {
 
-    private static final List<Consumer<Boolean>> STATE_LISTENERS = new CopyOnWriteArrayList<>();
-    private static Boolean shopOpen;
+    private static AdminAppWindow adminWindow;
+    private static dashboardTabPanel dashboard;
+    private static boolean shopOpen;
+    private static boolean statusLoaded;
 
     private ShopManager() {
     }
 
     public static synchronized boolean isShopOpen() {
-        if (shopOpen == null) {
+        if (!statusLoaded) {
             try {
                 shopOpen = DatabaseManager.getShopOpenStatus();
+                statusLoaded = true;
             } catch (SQLException ex) {
                 throw new IllegalStateException("Could not load the shop status.", ex);
             }
@@ -26,21 +26,26 @@ public final class ShopManager {
         return shopOpen;
     }
 
-    public static void addStateListener(Consumer<Boolean> listener) {
-        STATE_LISTENERS.add(listener);
-        listener.accept(isShopOpen());
+    public static void setAdminWindow(AdminAppWindow window) {
+        adminWindow = window;
+        window.updateShopStatus(isShopOpen());
     }
 
-    public static void toggleShop(Component parent) {
-        if (isShopOpen() && !confirmClosing(parent)) {
+    public static void setDashboard(dashboardTabPanel panel) {
+        dashboard = panel;
+        panel.updateShopState(isShopOpen());
+    }
+
+    public static void toggleShop() {
+        if (isShopOpen() && !confirmClosing()) {
             return;
         }
         setShopOpen(!isShopOpen());
     }
 
-    private static boolean confirmClosing(Component parent) {
+    private static boolean confirmClosing() {
             int response = JOptionPane.showConfirmDialog(
-                    parent,
+                    null,
                     "Are you sure you want to close the shop?\nNew sessions and transactions will be disabled.",
                     "Confirm Shop Closure",
                     JOptionPane.YES_NO_OPTION,
@@ -49,25 +54,31 @@ public final class ShopManager {
     }
 
     public static synchronized void setShopOpen(boolean open) {
-        if (shopOpen != null && shopOpen == open) {
+        if (statusLoaded && shopOpen == open) {
             return;
         }
         try {
             DatabaseManager.setShopOpenStatus(open);
             shopOpen = open;
+            statusLoaded = true;
         } catch (SQLException ex) {
             throw new IllegalStateException("Could not save the shop status.", ex);
         }
 
-        STATE_LISTENERS.forEach(listener -> listener.accept(open));
+        if (adminWindow != null) {
+            adminWindow.updateShopStatus(open);
+        }
+        if (dashboard != null) {
+            dashboard.updateShopState(open);
+        }
     }
 
-    public static boolean ensureShopOpen(Component parent) {
+    public static boolean ensureShopOpen() {
         if (isShopOpen()) {
             return true;
         }
         JOptionPane.showMessageDialog(
-                parent,
+                null,
                 "The shop is closed. Open the shop before starting this operation.",
                 "Shop Closed",
                 JOptionPane.INFORMATION_MESSAGE);
