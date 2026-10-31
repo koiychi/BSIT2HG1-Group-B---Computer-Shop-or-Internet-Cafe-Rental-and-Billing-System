@@ -57,7 +57,6 @@ public class NewSession extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
         NewSessionDialog1 dlg = new NewSessionDialog1(null, true);
         dlg.setLocationRelativeTo(this);
         dlg.setVisible(true);

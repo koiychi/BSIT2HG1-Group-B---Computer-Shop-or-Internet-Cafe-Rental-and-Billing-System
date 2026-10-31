@@ -14,11 +14,11 @@ public class BillingTesterTabPanel extends javax.swing.JPanel {
         setupButtons();
     }
       // the four buttons that have no handler yet
-    private void setupButtons() {
-        pcMemberBtn.addActionListener(e -> new PcMember(getFrame(), true).setVisible(true));
-        printRegularBtn.addActionListener(e -> new PrintRegular(getFrame(), true).setVisible(true));
-        printMemberBtn.addActionListener(e -> new PrintMember(getFrame(), true).setVisible(true));
-        topUpBtn.addActionListener(e -> new TopUp(getFrame(), true).setVisible(true));
+      private void setupButtons() {
+          pcMemberBtn.addActionListener(e -> new PcMember(getFrame(), true).setVisible(true));
+          printRegularBtn.addActionListener(e -> new PrintRegular(getFrame(), true).setVisible(true));
+          printMemberBtn.addActionListener(e -> new PrintMember(getFrame(), true).setVisible(true));
+          topUpBtn.addActionListener(e -> new TopUp(getFrame(), true).setVisible(true));
     }
 
     // the window this panel sits in, so each popup opens on top of it
