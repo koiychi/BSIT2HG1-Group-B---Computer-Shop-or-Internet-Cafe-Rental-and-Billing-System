@@ -84,6 +84,8 @@ public class printServicesTabPanel extends javax.swing.JPanel {
                   TotalAmountPrice = new javax.swing.JPanel();
                   totalAmountLabel = new javax.swing.JLabel();
                   TotalAmountPriceLabel = new javax.swing.JLabel();
+                  payPrintButton = new javax.swing.JPanel();
+                  payPrintBtn = new javax.swing.JButton();
 
                   setMaximumSize(new java.awt.Dimension(800, 500));
                   setMinimumSize(new java.awt.Dimension(800, 800));
@@ -322,6 +324,17 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
                   rightPanel.add(TotalAmountPrice);
 
+                  payPrintBtn.setText("Pay");
+                  payPrintBtn.setPreferredSize(new java.awt.Dimension(250, 100));
+                  payPrintBtn.addKeyListener(new java.awt.event.KeyAdapter() {
+                           public void keyPressed(java.awt.event.KeyEvent evt) {
+                                    payPrintBtnKeyPressed(evt);
+                           }
+                  });
+                  payPrintButton.add(payPrintBtn);
+
+                  rightPanel.add(payPrintButton);
+
                   add(rightPanel);
          }// </editor-fold>//GEN-END:initComponents
 
@@ -387,6 +400,11 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_addOrderBtnMouseClicked
 
+         private void payPrintBtnKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_payPrintBtnKeyPressed
+                  // TODO add your handling code here:
+                  
+         }//GEN-LAST:event_payPrintBtnKeyPressed
+
     public void addPrintJob(PrintJob job) {
 
 }
@@ -418,6 +436,8 @@ public class printServicesTabPanel extends javax.swing.JPanel {
          private javax.swing.JLabel pageSizeLabel;
          private javax.swing.JPanel pageSizePanel;
          private javax.swing.JComboBox<String> pagesizeComboBox;
+         private javax.swing.JButton payPrintBtn;
+         private javax.swing.JPanel payPrintButton;
          private javax.swing.JList<String> photocopyJList;
          private javax.swing.JScrollPane photocopyList;
          private javax.swing.JRadioButton photocopyRButton;
