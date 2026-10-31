@@ -26,7 +26,6 @@ public class DatabaseManager {
 // INITIALIZATION
 // ==========================================
     private static final String DBFile = "jdbc:sqlite:compShopDatabase.db";
-    private static Connection connection = null;
     private static boolean tablesInitialized = false;
 
     public static Connection getConnection() throws SQLException {
@@ -114,10 +113,40 @@ public class DatabaseManager {
                     + "FOREIGN KEY (CustomerID) REFERENCES CUSTOMER(CustomerID), "
                     + "FOREIGN KEY (StationID) REFERENCES STATION(StationID));");
 
+            stmt.execute("CREATE TABLE IF NOT EXISTS SHOP_STATUS ("
+                    + "StatusID INTEGER PRIMARY KEY CHECK (StatusID = 1), "
+                    + "IsOpen INTEGER NOT NULL CHECK (IsOpen IN (0, 1)));");
+            stmt.execute("INSERT OR IGNORE INTO SHOP_STATUS (StatusID, IsOpen) VALUES (1, 1);");
+
+            tablesInitialized = true;
             System.out.println("Database initialized successfully!");
 
         } catch (SQLException e) {
             System.err.println("Error initializing tables: " + e.getMessage());
+        }
+    }
+
+    public static boolean getShopOpenStatus() throws SQLException {
+        initializeTables();
+        String sql = "SELECT IsOpen FROM SHOP_STATUS WHERE StatusID = 1";
+        try (Connection c = getConnection();
+                PreparedStatement ps = c.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+            if (!rs.next()) {
+                throw new SQLException("Shop status has not been initialized.");
+            }
+            return rs.getInt("IsOpen") == 1;
+        }
+    }
+
+    public static void setShopOpenStatus(boolean open) throws SQLException {
+        initializeTables();
+        String sql = "UPDATE SHOP_STATUS SET IsOpen = ? WHERE StatusID = 1";
+        try (Connection c = getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, open ? 1 : 0);
+            if (ps.executeUpdate() != 1) {
+                throw new SQLException("Could not update the shop status.");
+            }
         }
     }
     // ==========================================
@@ -462,6 +491,10 @@ public class DatabaseManager {
     }
 
     public static int startSession(int customerId, String stationId, int durationMinutes, String paidBy) throws SQLException {
+        if (!ShopManager.isShopOpen()) {
+            throw new SQLException("The shop is closed. New sessions cannot be created.");
+        }
+
         String endTime = LocalDateTime.now().plusMinutes(durationMinutes).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
         try (Connection c = getConnection()) {
@@ -634,6 +667,11 @@ public class DatabaseManager {
 // ==========================================
     //PC Rental
     public static boolean addTransaction(int customerId, String stationId, String transactionType, double amount, String paidBy) {
+        if (!ShopManager.isShopOpen()) {
+            System.err.println("Cannot add transaction while the shop is closed.");
+            return false;
+        }
+
         String sql = "INSERT INTO TRANSACTIONS (CustomerID, StationID, TransactionType, Amount, PaidBy) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
