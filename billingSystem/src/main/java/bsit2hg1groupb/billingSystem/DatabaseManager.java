@@ -599,6 +599,7 @@ public class DatabaseManager {
 
         System.out.println("\n=== ALL TESTS COMPLETED SUCCESSFULLY ===");
     }
+    
 
     // Console-based logger simulator para makita ang laman na parang JTable
     private static void printTransactionLogs() {
