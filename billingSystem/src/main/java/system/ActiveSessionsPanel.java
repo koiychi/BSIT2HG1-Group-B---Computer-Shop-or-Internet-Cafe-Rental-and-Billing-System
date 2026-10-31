@@ -4,6 +4,13 @@
  */
 package system;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Koi
@@ -15,6 +22,8 @@ public class ActiveSessionsPanel extends javax.swing.JPanel {
           */
          public ActiveSessionsPanel() {
                   initComponents();
+                  loadActiveSessions();
+                  new javax.swing.Timer(30000, event -> loadActiveSessions()).start();
          }
 
          /**
@@ -29,41 +38,52 @@ public class ActiveSessionsPanel extends javax.swing.JPanel {
                   tableScrollPane = new javax.swing.JScrollPane();
                   activeSessionsTable = new javax.swing.JTable();
 
-                  setMaximumSize(new java.awt.Dimension(473, 387));
-                  setPreferredSize(new java.awt.Dimension(473, 387));
+                  setLayout(new java.awt.BorderLayout());
 
-                  tableScrollPane.setPreferredSize(new java.awt.Dimension(473, 387));
-
-                  activeSessionsTable.setModel(new javax.swing.table.DefaultTableModel(
-                           new Object [][] {
-                                    {null, null, null, null},
-                                    {null, null, null, null},
-                                    {null, null, null, null},
-                                    {null, null, null, null}
-                           },
-                           new String [] {
-                                    "Title 1", "Title 2", "Title 3", "Title 4"
+                  activeSessionsTable.setModel(new DefaultTableModel(
+                           new Object[][] {},
+                           new String[]{"Session", "Customer", "Station", "Started", "Ends", "Minutes"}) {
+                           @Override
+                           public boolean isCellEditable(int row, int column) {
+                                    return false;
                            }
-                  ));
+                  });
                   tableScrollPane.setViewportView(activeSessionsTable);
-
-                  javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-                  this.setLayout(layout);
-                  layout.setHorizontalGroup(
-                           layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                           .addGroup(layout.createSequentialGroup()
-                                    .addGap(0, 0, Short.MAX_VALUE)
-                                    .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(0, 0, Short.MAX_VALUE))
-                  );
-                  layout.setVerticalGroup(
-                           layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                           .addGroup(layout.createSequentialGroup()
-                                    .addGap(0, 0, Short.MAX_VALUE)
-                                    .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(0, 0, Short.MAX_VALUE))
-                  );
+                  add(tableScrollPane, java.awt.BorderLayout.CENTER);
          }// </editor-fold>//GEN-END:initComponents
+
+         private void loadActiveSessions() {
+                  String sql = "SELECT s.SessionID, "
+                           + "c.FirstName || ' ' || c.LastName AS CustomerName, "
+                           + "s.StationID, s.StartTime, s.EndTime, s.DurationMinutes "
+                           + "FROM SESSIONS s "
+                           + "JOIN CUSTOMER c ON c.CustomerID = s.CustomerID "
+                           + "WHERE s.EndTime > datetime('now', 'localtime') "
+                           + "ORDER BY (julianday(s.EndTime) - julianday('now', 'localtime')) ASC";
+
+                  try (Connection connection = DatabaseManager.getConnection();
+                           PreparedStatement statement = connection.prepareStatement(sql);
+                           ResultSet result = statement.executeQuery()) {
+                           DefaultTableModel model = (DefaultTableModel) activeSessionsTable.getModel();
+                           model.setRowCount(0);
+                           while (result.next()) {
+                                    model.addRow(new Object[]{
+                                             result.getInt("SessionID"),
+                                             result.getString("CustomerName"),
+                                             result.getString("StationID"),
+                                             result.getString("StartTime"),
+                                             result.getString("EndTime"),
+                                             result.getInt("DurationMinutes")
+                                    });
+                           }
+                  } catch (SQLException ex) {
+                           JOptionPane.showMessageDialog(
+                                    this,
+                                    "Could not load active sessions: " + ex.getMessage(),
+                                    "Database Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                  }
+         }
 
 
          // Variables declaration - do not modify//GEN-BEGIN:variables

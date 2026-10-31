@@ -22,6 +22,7 @@ import java.awt.*;
 public class AdminAppWindow extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminAppWindow.class.getName());
+    private membersTabPanel membersPanel;
 
     public AdminAppWindow() {
         initComponents();
@@ -31,7 +32,8 @@ public class AdminAppWindow extends javax.swing.JFrame {
         // TABS
         mainTabGroup.insertTab("Dashboard", null, new dashboardTabPanel(), null, 0);
         mainTabGroup.insertTab("Stations", null, new stationsTabPanel(), null, 1);
-        mainTabGroup.insertTab("Members", null, new membersTabPanel(), null, 2);
+        membersPanel = new membersTabPanel();
+        mainTabGroup.insertTab("Members", null, membersPanel, null, 2);
         mainTabGroup.insertTab("Billing Tester", null, new BillingTesterTabPanel(), null, 3);
         mainTabGroup.insertTab("Print Services", null, new printServicesTabPanel(), null, 4);
         mainTabGroup.insertTab("Transactions", null, new transactionsTabPanel(), null, 5);
@@ -52,7 +54,15 @@ public class AdminAppWindow extends javax.swing.JFrame {
         mainTabGroup.revalidate();
         mainTabGroup.repaint();
 
-        ShopManager.addStateListener(this::updateShopStatus);
+        ShopManager.setAdminWindow(this);
+    }
+
+    public void selectTab(int index) {
+        mainTabGroup.setSelectedIndex(index);
+    }
+
+    public void showAddMemberDialog() {
+        membersPanel.showAddMemberDialog();
     }
 
     /**
@@ -605,7 +615,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_shopToggleMouseClicked
 
     private void shopToggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shopToggleActionPerformed
-        ShopManager.toggleShop(this);
+        ShopManager.toggleShop();
     }//GEN-LAST:event_shopToggleActionPerformed
 
     private void newSessionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSessionButtonActionPerformed
@@ -645,7 +655,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         }
     }
 
-        private void updateShopStatus(boolean open) {
+        public void updateShopStatus(boolean open) {
             String statusIcon = open
                     ? "/icons/door_open_18dp_E3E3E3_FILL0_wght400_GRAD0_opsz20.png"
                     : "/icons/door_front_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png";
