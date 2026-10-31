@@ -25,28 +25,23 @@ public class DatabaseManager {
 // ==========================================
     private static final String DBFile = "jdbc:sqlite:compShopDatabase.db";
     private static Connection connection = null;
+    private static boolean tablesInitialized = false;
 
-    public static Connection getConnection() {
-        try {
-            if (connection == null || connection.isClosed()) {
-                Class.forName("org.sqlite.JDBC");
-                connection = DriverManager.getConnection(DBFile);
-                
-                try (Statement stmt = connection.createStatement()) {
-                    stmt.execute("PRAGMA foreign_keys = ON;");
-                }
+    public static Connection getConnection() throws SQLException {
+        Connection conn = DriverManager.getConnection(DBFile);
 
-                initializeTables();
-            }
-        } catch (ClassNotFoundException e) {
-            System.err.println("Driver Error: " + e.getMessage());
-        } catch (SQLException e) {
-            System.err.println("Database Connection Error: " + e.getMessage());
+        try (Statement stmt = conn.createStatement()) {
+            stmt.execute("PRAGMA foreign_keys = ON;");
         }
-        return connection;
+
+        return conn;
     }
 
-    private static void initializeTables() {
+    public static synchronized void initializeTables() {
+        if (tablesInitialized) {
+            return;
+        }
+
         try (Statement stmt = getConnection().createStatement()) {
 
             // 1. CUSTOMER (SUPERTYPE)
@@ -110,12 +105,10 @@ public class DatabaseManager {
             System.err.println("Error initializing tables: " + e.getMessage());
         }
     }
+    // ==========================================
+    // ADDING CUSTOMERS (METHOD OVERLOADING)
+    // ==========================================
 
-    
-// ==========================================
-// ADDING CUSTOMERS (METHOD OVERLOADING)
-// ==========================================
-    
     // 1. BASE HELPER METHOD
     private static int insertBaseCustomer(String firstName, String lastName, String customerType) {
         String sql = "INSERT INTO CUSTOMER (FirstName, LastName, CustomerType) VALUES (?, ?, ?)";
@@ -180,7 +173,6 @@ public class DatabaseManager {
 // ==========================================
 // READING MEMBER CUSTOMERS
 // ==========================================
-
     // READ MEMBER BY USERNAME
     public static MemberCustomer findMember(String username) {
         String sql = "SELECT c.FirstName, c.LastName, "
@@ -189,8 +181,7 @@ public class DatabaseManager {
                 + "JOIN MEMBER_CUSTOMER m ON c.CustomerID = m.CustomerID "
                 + "WHERE m.Username = ?";
 
-        try (Connection c = getConnection();
-                PreparedStatement pstmt = c.prepareStatement(sql)) {
+        try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
 
             pstmt.setString(1, username);
 
@@ -222,9 +213,7 @@ public class DatabaseManager {
                 + "ORDER BY c.LastName, c.FirstName";
         List<MemberCustomer> members = new ArrayList<>();
 
-        try (Connection c = getConnection();
-                Statement stmt = c.createStatement();
-                ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection c = getConnection(); Statement stmt = c.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 members.add(new MemberCustomer(
@@ -252,8 +241,7 @@ public class DatabaseManager {
 
         try (Connection c = getConnection()) {
             c.setAutoCommit(false);
-            try (PreparedStatement customerStmt = c.prepareStatement(customerSql);
-                    PreparedStatement memberStmt = c.prepareStatement(memberSql)) {
+            try (PreparedStatement customerStmt = c.prepareStatement(customerSql); PreparedStatement memberStmt = c.prepareStatement(memberSql)) {
                 customerStmt.setString(1, firstName);
                 customerStmt.setString(2, lastName);
                 customerStmt.setInt(3, customerId);
@@ -285,8 +273,7 @@ public class DatabaseManager {
     public static boolean deleteCustomer(int customerId) {
         String sql = "DELETE FROM CUSTOMER WHERE CustomerID = ?";
 
-        try (Connection c = getConnection();
-                PreparedStatement pstmt = c.prepareStatement(sql)) {
+        try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
             pstmt.setInt(1, customerId);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -313,8 +300,7 @@ public class DatabaseManager {
     public static boolean updateCustomer(int customerId, String firstName, String lastName) {
         String sql = "UPDATE CUSTOMER SET FirstName = ?, LastName = ? WHERE CustomerID = ?";
 
-        try (Connection c = getConnection();
-                PreparedStatement pstmt = c.prepareStatement(sql)) {
+        try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
             pstmt.setString(1, firstName);
             pstmt.setString(2, lastName);
             pstmt.setInt(3, customerId);
@@ -328,7 +314,6 @@ public class DatabaseManager {
 // ==========================================
 // STATION CRUD
 // ==========================================
-
     // READ STATION
     public static ResultSet getStation(String stationId) {
         String sql = "SELECT * FROM STATION WHERE StationID = ?";
@@ -343,11 +328,9 @@ public class DatabaseManager {
         }
     }
 
-
 // ==========================================
 // TRANSACTION CRUD
 // ==========================================
-
     // READ TRANSACTION
     public static ResultSet getTransaction(int transactionId) {
         String sql = "SELECT * FROM TRANSACTIONS WHERE TransactionID = ?";
