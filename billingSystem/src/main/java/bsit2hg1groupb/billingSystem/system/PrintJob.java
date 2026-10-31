@@ -16,13 +16,14 @@ public class PrintJob implements Billable {
     private int pageCount;
     private boolean isColored;
     private double pricePerPage;
-    private List<Object> printJobs = new ArrayList<>();
+    private final List<Object> printJobs;
 
     //public static List<String> AVAILABLE_PAPER_SIZES;
     //public static List<String> AVAILABLE_PAPER_TYPES;
 
     //CONSTRUCTORS
     public PrintJob(String serviceType, String pageSize, String paperType, int pageCount, boolean isColored, double pricePerPage1) {
+        this.printJobs = new ArrayList<>();
        
         this.serviceType = serviceType;
         this.pageSize = pageSize;
