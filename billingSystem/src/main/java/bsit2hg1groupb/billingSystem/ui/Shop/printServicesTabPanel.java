@@ -355,7 +355,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
         photocopyList.setPreferredSize(new java.awt.Dimension(300, 80));
 
-        photocopyJList.setBackground(new java.awt.Color(153, 153, 153));
+        photocopyJList.setBackground(new java.awt.Color(102, 102, 102));
         photocopyJList.setForeground(new java.awt.Color(255, 255, 255));
         photocopyJList.setModel(photocopyListModel);
         photocopyJList.setMaximumSize(new java.awt.Dimension(350, 55));
