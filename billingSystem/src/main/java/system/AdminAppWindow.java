@@ -7,7 +7,7 @@ package system;
 import ui.Session.NewSession;
 import ui.Shop.transactionsTabPanel;
 import ui.Shop.printServicesTabPanel;
-import ui.Shop.shopSettingsTabPanel;
+//import ui.Shop.shopSettingsTabPanel;
 import ui.Members.membersTabPanel;
 import ui.Shop.dashboardTabPanel;
 import ui.Station.stationsTabPanel;
@@ -36,7 +36,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
         mainTabGroup.insertTab("Members", null, membersPanel, null, 2);
         mainTabGroup.insertTab("Print Services", null, new printServicesTabPanel(), null, 3);
         mainTabGroup.insertTab("Transactions", null, new transactionsTabPanel(), null, 4);
-        mainTabGroup.insertTab("Shop Settings", null, new shopSettingsTabPanel(), null, 5);
+//        mainTabGroup.insertTab("Shop Settings", null, new shopSettingsTabPanel(), null, 5);
 
         mainTabGroup.setSelectedIndex(0);
 

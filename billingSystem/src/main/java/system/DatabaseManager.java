@@ -12,6 +12,7 @@ import logic.GamingStation;
 import logic.MemberCustomer;
 import logic.RegularStation;
 import logic.Station;
+import system.AdminLogin;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
 
 public class DatabaseManager {
 
@@ -109,17 +111,17 @@ public class DatabaseManager {
                     + "Monitor_Hz INTEGER NOT NULL, "
                     + "FOREIGN KEY (StationID) REFERENCES STATION(StationID) ON DELETE CASCADE);");
 
-            // 3. APPS & STATION_APPS 
-            stmt.execute("CREATE TABLE IF NOT EXISTS INSTALLED_APPS ("
-                    + "AppID INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + "AppName TEXT UNIQUE NOT NULL);");
-
-            stmt.execute("CREATE TABLE IF NOT EXISTS STATION_APPS ("
-                    + "StationID TEXT NOT NULL, "
-                    + "AppID INTEGER NOT NULL, "
-                    + "PRIMARY KEY (StationID, AppID), "
-                    + "FOREIGN KEY (StationID) REFERENCES STATION(StationID) ON DELETE CASCADE, "
-                    + "FOREIGN KEY (AppID) REFERENCES INSTALLED_APPS(AppID) ON DELETE CASCADE);");
+//            // 3. APPS & STATION_APPS 
+//            stmt.execute("CREATE TABLE IF NOT EXISTS INSTALLED_APPS ("
+//                    + "AppID INTEGER PRIMARY KEY AUTOINCREMENT, "
+//                    + "AppName TEXT UNIQUE NOT NULL);");
+//
+//            stmt.execute("CREATE TABLE IF NOT EXISTS STATION_APPS ("
+//                    + "StationID TEXT NOT NULL, "
+//                    + "AppID INTEGER NOT NULL, "
+//                    + "PRIMARY KEY (StationID, AppID), "
+//                    + "FOREIGN KEY (StationID) REFERENCES STATION(StationID) ON DELETE CASCADE, "
+//                    + "FOREIGN KEY (AppID) REFERENCES INSTALLED_APPS(AppID) ON DELETE CASCADE);");
 
             // 4. TRANSACTION
             stmt.execute("CREATE TABLE IF NOT EXISTS SESSIONS ("
@@ -139,8 +141,9 @@ public class DatabaseManager {
                     + "ShopID INTEGER PRIMARY KEY CHECK (ShopID = 1), "
                     + "IsOpen INTEGER NOT NULL DEFAULT 1);");
             addColumnIfMissing(stmt, "SHOP_STATUS", "ShopID", "INTEGER DEFAULT 1");
+            addColumnIfMissing(stmt, "SHOP_STATUS", "adminUsername", "STRING DEFAULT admin");
+            addColumnIfMissing(stmt, "SHOP_STATUS", "adminPassword", "STRING DEFAULT password");
             stmt.execute("INSERT OR IGNORE INTO SHOP_STATUS (ShopID, IsOpen) VALUES (1, 1);");
-                        // Upgrade older database files that were created before these columns existed
             addColumnIfMissing(stmt, "STATION", "HasInternet", "INTEGER NOT NULL DEFAULT 0");
             addColumnIfMissing(stmt, "REGULAR_STATION", "HasPrinter", "INTEGER NOT NULL DEFAULT 0");
 
@@ -237,7 +240,7 @@ public class DatabaseManager {
             }
             return members;
         }
-
+        
         public static int getCustomerIdByUsername(String username) {
             String sql = "SELECT CustomerID FROM MEMBER_CUSTOMER WHERE Username = ?";
             try (Connection c = getConnection();
@@ -252,6 +255,36 @@ public class DatabaseManager {
                 System.err.println("Error finding customer ID: " + e.getMessage());
             }
             return -1;
+        }
+
+        public static String getAdminUsername() {
+            String sql = "SELECT adminUsername FROM SHOP_STATUS";
+            try (Connection c = getConnection();
+                 PreparedStatement pstmt = c.prepareStatement(sql)) {
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        return rs.getString(1);
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Error getting admin username: " + e.getMessage());
+            }
+            return "Error";
+        }
+        
+        public static String getAdminPassword() {
+            String sql = "SELECT adminPassword FROM SHOP_STATUS";
+            try (Connection c = getConnection();
+                 PreparedStatement pstmt = c.prepareStatement(sql)) {
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        return rs.getString(1);
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Error getting admin username: " + e.getMessage());
+            }
+            return "Error";
         }
 
         public static int getRegularID(String name) {
