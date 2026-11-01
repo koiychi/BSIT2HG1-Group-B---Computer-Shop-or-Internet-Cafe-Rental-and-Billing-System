@@ -25,6 +25,13 @@ public class StationsService {
         return DatabaseManager.getAllStations();
     }
 
+    public List<Station> getStationsByType(String type) throws SQLException {
+        if (type == null || type.isBlank()) {
+            throw new IllegalArgumentException("Station type is required.");
+        }
+        return DatabaseManager.getStationsByType(type);
+    }
+
     public void resetOccupiedStations() {
         try {
             DatabaseManager.resetOccupiedStations();

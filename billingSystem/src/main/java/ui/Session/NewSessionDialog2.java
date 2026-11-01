@@ -4,7 +4,7 @@
  */
 package ui.Session;
 import logic.MemberCustomer;
-import system.DatabaseManager;
+import service.MembershipService;
 /**
  *
  * @author theo
@@ -17,6 +17,7 @@ public class NewSessionDialog2 extends javax.swing.JDialog {
      * Creates new form dialog1
      */
   private javax.swing.JDialog previous;
+  private final MembershipService membershipService = new MembershipService();
 
 public NewSessionDialog2(java.awt.Frame parent, boolean modal) {
     super(parent, modal);
@@ -60,7 +61,7 @@ private boolean lookupMember() {
         }
 
         // Search the database for the member
-        foundMember = DatabaseManager.findMember(username);
+        foundMember = membershipService.findMember(username);
         
         if (foundMember != null) {
             // Update your UI label to display the credit amount using your getter
@@ -287,14 +288,14 @@ return resolvedCustomerID;
         if (!lookupMember()){
         return;
         }
-      resolvedCustomerID = DatabaseManager.getCustomerIdByUsername(foundMember.getUsername());
+      resolvedCustomerID = membershipService.getCustomerIdByUsername(foundMember.getUsername());
         }
         else {
         if (getCustomerName().isEmpty()){
         javax.swing.JOptionPane.showMessageDialog(this, "Please enter a name.");
         return;
         }
-        resolvedCustomerID = DatabaseManager.getOrCreateRegularID(getCustomerName());
+        resolvedCustomerID = membershipService.getOrCreateRegularCustomerId(getCustomerName());
         
         
         }
