@@ -3,13 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package system;
-import system.DatabaseManager;
 
 /**
  *
  * @author koi
  */
-import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.Color;
 import java.awt.EventQueue;
 import javax.swing.JFrame;

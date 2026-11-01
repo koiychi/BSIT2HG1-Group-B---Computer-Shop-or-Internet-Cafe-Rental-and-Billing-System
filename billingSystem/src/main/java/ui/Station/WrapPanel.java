@@ -13,7 +13,6 @@ import java.awt.LayoutManager;
 import javax.swing.JPanel;
 import javax.swing.Scrollable;
 import java.awt.Rectangle;
-import java.awt.Component;
 public class WrapPanel extends JPanel implements Scrollable {
     public WrapPanel(LayoutManager layout) {
         super(layout);

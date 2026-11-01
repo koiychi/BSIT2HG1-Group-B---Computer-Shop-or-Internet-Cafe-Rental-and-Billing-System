@@ -1,13 +1,6 @@
 package logic;
 
-import java.sql.SQLOutput;
 import java.util.List;
-
-import logic.Customer;
-import logic.GamingStation;
-import logic.MemberCustomer;
-import logic.RegularStation;
-import logic.Session;
 
 @SuppressWarnings("ALL")
 public class Tester {

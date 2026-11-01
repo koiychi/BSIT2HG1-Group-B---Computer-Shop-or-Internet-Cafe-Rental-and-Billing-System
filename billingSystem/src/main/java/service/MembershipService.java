@@ -1,8 +1,5 @@
 package service;
 
-import system.DatabaseManager;
-import logic.MemberCustomer;
-
 public class MembershipService {
     //ADDING A MEMBER CUSTOMER
     public boolean addMemberCustomer (
