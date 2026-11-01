@@ -8,7 +8,7 @@ import logic.PrintJob;
 
 /**
  *
- * @author koi
+ * @author mj
  */
 public class printServicesTabPanel extends javax.swing.JPanel {
     private double runningTotal = 0.0;
