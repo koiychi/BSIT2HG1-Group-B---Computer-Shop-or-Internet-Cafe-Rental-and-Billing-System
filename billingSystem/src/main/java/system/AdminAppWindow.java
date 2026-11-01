@@ -22,6 +22,7 @@ import java.awt.*;
 public class AdminAppWindow extends javax.swing.JFrame {
 
     private membersTabPanel membersPanel;
+    private stationsTabPanel stationsPanel;
 
     public AdminAppWindow() {
         initComponents();
@@ -30,7 +31,8 @@ public class AdminAppWindow extends javax.swing.JFrame {
 
         // TABS
         mainTabGroup.insertTab("Dashboard", null, new dashboardTabPanel(), null, 0);
-        mainTabGroup.insertTab("Stations", null, new stationsTabPanel(), null, 1);
+        stationsPanel = new stationsTabPanel();
+        mainTabGroup.insertTab("Stations", null, stationsPanel, null, 1);
         membersPanel = new membersTabPanel();
         mainTabGroup.insertTab("Members", null, membersPanel, null, 2);
         mainTabGroup.insertTab("Billing Tester", null, new BillingTesterTabPanel(), null, 3);

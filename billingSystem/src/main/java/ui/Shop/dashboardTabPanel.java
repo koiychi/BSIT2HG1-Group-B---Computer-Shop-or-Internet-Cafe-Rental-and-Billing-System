@@ -29,7 +29,7 @@ public class dashboardTabPanel extends javax.swing.JPanel {
                   initComponents();
                   
                   ShopManager.setDashboard(this);
-                  loadStatistics();
+                  refreshStatistics();
          }
 
          /**
@@ -985,6 +985,14 @@ public class dashboardTabPanel extends javax.swing.JPanel {
                   intTotalSales1.setText("-");
          }
 
+         public void refreshStatistics() {
+                  if (ShopManager.isShopOpen()) {
+                           loadStatistics();
+                  } else {
+                           clearStatistics();
+                  }
+         }
+
          private void loadStatistics() {
                   try {
                            List<Station> stations = new ArrayList<>();
@@ -997,7 +1005,7 @@ public class dashboardTabPanel extends javax.swing.JPanel {
                            for (Station station : stations) {
                                     if ("Available".equalsIgnoreCase(station.getStatus())) {
                                              available++;
-                                    } else if ("Occupied".equalsIgnoreCase(station.getStatus())) {
+                                    } else if (logic.Station.IN_USE.equalsIgnoreCase(station.getStatus())) {
                                              occupied++;
                                     }
                            }

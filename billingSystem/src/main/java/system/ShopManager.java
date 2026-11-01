@@ -3,11 +3,13 @@ package system;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import ui.Shop.dashboardTabPanel;
+import ui.Station.stationsTabPanel;
 
 public final class ShopManager {
 
     private static AdminAppWindow adminWindow;
     private static dashboardTabPanel dashboard;
+    private static stationsTabPanel stations;
     private static boolean shopOpen;
     private static boolean statusLoaded;
 
@@ -34,6 +36,17 @@ public final class ShopManager {
     public static void setDashboard(dashboardTabPanel panel) {
         dashboard = panel;
         panel.updateShopState(isShopOpen());
+    }
+
+    public static void setStations(stationsTabPanel panel) {
+        stations = panel;
+        panel.updateShopState(isShopOpen());
+    }
+
+    public static void refreshDashboard() {
+        if (dashboard != null) {
+            dashboard.refreshStatistics();
+        }
     }
 
     public static void toggleShop() {
@@ -70,6 +83,9 @@ public final class ShopManager {
         }
         if (dashboard != null) {
             dashboard.updateShopState(open);
+        }
+        if (stations != null) {
+            stations.updateShopState(open);
         }
     }
 

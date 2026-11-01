@@ -36,6 +36,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import system.ShopManager;
 
 public class stationsTabPanel extends javax.swing.JPanel
 {
@@ -72,6 +73,13 @@ public class stationsTabPanel extends javax.swing.JPanel
         initComponents();
         applyTheme();
         setupToolbar();
+        ShopManager.setStations(this);
+        loadStations();
+    }
+
+    public void updateShopState(boolean open) {
+        statusBtn.setEnabled(open);
+        cboStatusFilter.setEnabled(open);
         loadStations();
     }
 
@@ -193,8 +201,10 @@ public class stationsTabPanel extends javax.swing.JPanel
     }
 
     private JPanel buildCard(Station s) {
+        boolean shopOpen = ShopManager.isShopOpen();
+        String displayStatus = shopOpen ? s.getStatus() : "-";
         Color statusColor;
-        switch (s.getStatus()) {
+        switch (displayStatus) {
             case Station.IN_USE:
                 statusColor = RED;
                 break;
@@ -230,7 +240,7 @@ public class stationsTabPanel extends javax.swing.JPanel
                 + "<font size='5'><b>" + s.getStationID() + "</b></font><br>"
                 + "<font color='#aab0ba'>" + s.getType() + " \u00B7 \u20B1"
                 + String.format("%.2f", s.getHourlyRate()) + "/hr</font><br>"
-                + "<font color='" + hex + "'>&#9679;</font> " + s.getStatus()
+                + "<font color='" + hex + "'>&#9679;</font> " + displayStatus
                 + "</center></html>");
         text.setForeground(Color.WHITE);
         text.setAlignmentX(Component.CENTER_ALIGNMENT);

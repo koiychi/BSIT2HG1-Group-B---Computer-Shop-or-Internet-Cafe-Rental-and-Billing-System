@@ -342,7 +342,11 @@ public class DatabaseManager {
             pstmt.setString(2, sessionEndTime);
             pstmt.setString(3, stationId);
 
-            return pstmt.executeUpdate() > 0;
+            boolean updated = pstmt.executeUpdate() > 0;
+            if (updated) {
+                ShopManager.refreshDashboard();
+            }
+            return updated;
         } catch (SQLException e) {
             System.err.println("Error updating station status: " + e.getMessage());
             return false;
@@ -360,7 +364,11 @@ public class DatabaseManager {
             pstmt.setInt(3, ramGb);
             pstmt.setString(4, stationId);
 
-            return pstmt.executeUpdate() > 0;
+            boolean updated = pstmt.executeUpdate() > 0;
+            if (updated) {
+                ShopManager.refreshDashboard();
+            }
+            return updated;
         } catch (SQLException e) {
             System.err.println("Error updating regular station specs: " + e.getMessage());
             return false;
@@ -391,6 +399,7 @@ public class DatabaseManager {
                 pstmt2.executeUpdate();
 
                 c.commit(); // Transaction save
+                ShopManager.refreshDashboard();
                 return true;
             } catch (SQLException e) {
                 c.rollback(); // Undo kapag nagka-error
@@ -451,6 +460,7 @@ public class DatabaseManager {
                 }
                 insertSubtype(c, s);
                 c.commit();
+                ShopManager.refreshDashboard();
                 return true;
             } catch (SQLException e) {
                 c.rollback();
@@ -631,7 +641,11 @@ public class DatabaseManager {
         String sql = "DELETE FROM STATION WHERE StationID = ?";
         try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
             pstmt.setString(1, stationId);
-            return pstmt.executeUpdate() > 0;
+            boolean deleted = pstmt.executeUpdate() > 0;
+            if (deleted) {
+                ShopManager.refreshDashboard();
+            }
+            return deleted;
         } catch (SQLException e) {
             System.err.println("Error deleting station: " + e.getMessage());
             return false;
@@ -653,7 +667,11 @@ public class DatabaseManager {
             pstmt.setDouble(4, amount);
             pstmt.setString(5, paidBy); // 'Cash' or 'Member Credits'
 
-            return pstmt.executeUpdate() > 0;
+            boolean recorded = pstmt.executeUpdate() > 0;
+            if (recorded) {
+                ShopManager.refreshDashboard();
+            }
+            return recorded;
         } catch (SQLException e) {
             System.err.println("Error logging transaction with station: " + e.getMessage());
             return false;
