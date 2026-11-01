@@ -31,6 +31,21 @@ public class dashboardTabPanel extends javax.swing.JPanel {
                   ShopManager.setDashboard(this);
                   refreshStatistics();
          }
+         private final Runnable refreshListener = this::loadStatistics;
+
+         @Override
+         public void addNotify() {
+                  super.addNotify();
+                  PaymentUtil.addPaymentListener(refreshListener);
+         }
+
+         @Override
+         public void removeNotify() {
+                  PaymentUtil.removePaymentListener(refreshListener);
+                  super.removeNotify();
+         }
+
+
 
          /**
           * This method is called from within the constructor to initialize the
@@ -876,11 +891,11 @@ public class dashboardTabPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_newSessionButtonActionPerformed
 
     private void newPrintOrderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newPrintOrderBtnActionPerformed
-             openTab(4);
+             openTab(3);
     }//GEN-LAST:event_newPrintOrderBtnActionPerformed
 
     private void ViewTodaysSalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewTodaysSalesActionPerformed
-             openTab(5);
+             openTab(4);
     }//GEN-LAST:event_ViewTodaysSalesActionPerformed
 
     private void CloseShopBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseShopBtnActionPerformed
@@ -900,7 +915,7 @@ public class dashboardTabPanel extends javax.swing.JPanel {
          }//GEN-LAST:event_CloseShopBtn1ActionPerformed
 
          private void ViewTodaysSales1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewTodaysSales1ActionPerformed
-                  openTab(5);
+                  openTab(4);
          }//GEN-LAST:event_ViewTodaysSales1ActionPerformed
 
          private void addMemberBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMemberBtn1ActionPerformed
@@ -912,7 +927,7 @@ public class dashboardTabPanel extends javax.swing.JPanel {
          }//GEN-LAST:event_topUpMemberBtn1ActionPerformed
 
          private void newPrintOrderBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newPrintOrderBtn1ActionPerformed
-                  openTab(4);
+                  openTab(3);
          }//GEN-LAST:event_newPrintOrderBtn1ActionPerformed
 
          private void newSessionButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSessionButton1ActionPerformed
@@ -930,21 +945,57 @@ public class dashboardTabPanel extends javax.swing.JPanel {
                            window.selectTab(index);
                   }
          }
-
+         //CARLO
          private void openAddMemberDialog() {
                   AdminAppWindow window = getAdminWindow();
                   if (window != null) {
                            window.showAddMemberDialog();
                   }
          }
-
-         private void openTopUpDialog() {
+        //CARLO
+                  private void openTopUpDialog() {
                   if (!ShopManager.ensureShopOpen()) {
                            return;
                   }
                   java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
                   java.awt.Frame frame = window instanceof java.awt.Frame ? (java.awt.Frame) window : null;
-                  new TopUp(frame, true).setVisible(true);
+
+                  // pick the member (search + combo box)
+                  SelectMemberTopUp picker = new SelectMemberTopUp(frame, true);
+                  picker.setVisible(true);
+                  String username = picker.getSelectedUsername();
+                  if (username == null) {
+                           return;   // cancelled
+                  }
+
+                  // fresh details from the database
+                  logic.MemberCustomer member = system.DatabaseManager.findMember(username);
+                  int customerId = system.DatabaseManager.getCustomerIdByUsername(username);
+                  if (member == null || customerId < 0) {
+                           JOptionPane.showMessageDialog(this, "Member not found.",
+                                    "Top Up", JOptionPane.ERROR_MESSAGE);
+                           return;
+                  }
+
+                  TopUp dlg = new TopUp(frame, true);
+                  dlg.setAccount(username, system.DatabaseManager.getCustomerFullName(customerId));
+                  dlg.setCurrentBalance(java.math.BigDecimal.valueOf(member.getCreditAmount())
+                           .setScale(2, java.math.RoundingMode.HALF_UP));
+                  dlg.setCommitter(paidBy -> saveTopUp(customerId, dlg.getTotal(), paidBy));
+                  dlg.setVisible(true);
+                  if (dlg.isPaid()) {
+                           PaymentUtil.firePaymentSaved();
+                  }
+         }
+         //CARLO
+         // returns null on success, or the database's error message
+         private String saveTopUp(int customerId, java.math.BigDecimal amount, String paidBy) {
+                  try {
+                           system.DatabaseManager.addCredit(customerId, amount.doubleValue());
+                           return null;
+                  } catch (java.sql.SQLException ex) {
+                           return ex.getMessage();
+                  }
          }
 
          private void newSessionButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newSessionButton1MouseClicked

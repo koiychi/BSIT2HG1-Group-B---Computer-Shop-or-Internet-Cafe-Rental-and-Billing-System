@@ -31,9 +31,7 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
     loadSummary();
 }
         private double parseHours(String d) {
-        String[] parts = d.trim().split(" ");
-        double n = Double.parseDouble(parts[0]);
-        return parts[1].startsWith("min") ? n / 60.0 : n;
+        return ui.Shop.SessionPayment.parseMinutes(d) / 60.0;
     }
 
     private void loadSummary() {
@@ -295,12 +293,42 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
     private void strtSessBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_strtSessBTNActionPerformed
          NewSessionDialog2 customerDlg = (NewSessionDialog2) previous;
     NewSessionDialog1 stationDlg = customerDlg.getStationDialog();
+    
+    //SI CARLO NAGLAGAY NITO!!!
+     boolean isMember = "Member".equals(customerDlg.getCustomerType());
+    int customerId = customerDlg.getResolvedCustomerID();
+    if (customerId <= 0) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+                "Could not identify the customer. Go back and try again.");
+        return;
+    }
 
-    System.out.println("Session Started!!");   
+    int sessionId;
+    if (isMember) {
+        String name = customerDlg.getCustomerName().isEmpty()
+                ? "@" + customerDlg.getUsername()
+                : customerDlg.getCustomerName() + " (@" + customerDlg.getUsername() + ")";
+        sessionId = ui.Shop.SessionPayment.payMember(this, customerId, name,
+                customerDlg.getUsername(),
+                stationDlg.getSelectedStationName(),
+                stationDlg.getStationType(),
+                stationDlg.getSelectedStation().getHourlyRate(),
+                stationDlg.getDuration());
+    } else {
+        sessionId = ui.Shop.SessionPayment.payRegular(this, customerId,
+                customerDlg.getCustomerName(),
+                stationDlg.getSelectedStationName(),
+                stationDlg.getStationType(),
+                stationDlg.getSelectedStation().getHourlyRate(),
+                stationDlg.getDuration());
+    }
+    if (sessionId < 0) {
+        return;   // closed with X: stay on the summary
+    }
 
-    dispose();              
-    customerDlg.dispose();  
-    stationDlg.dispose(); 
+    dispose();
+    customerDlg.dispose();
+    stationDlg.dispose();
     }//GEN-LAST:event_strtSessBTNActionPerformed
 
     /**

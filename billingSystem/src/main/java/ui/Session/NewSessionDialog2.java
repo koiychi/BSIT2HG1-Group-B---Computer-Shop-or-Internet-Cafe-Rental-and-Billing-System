@@ -294,7 +294,7 @@ return resolvedCustomerID;
         javax.swing.JOptionPane.showMessageDialog(this, "Please enter a name.");
         return;
         }
-        resolvedCustomerID= DatabaseManager.getRegularID(getCustomerName());
+        resolvedCustomerID = DatabaseManager.getOrCreateRegularID(getCustomerName());
         
         
         }
