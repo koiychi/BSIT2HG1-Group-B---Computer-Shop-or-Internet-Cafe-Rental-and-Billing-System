@@ -2,6 +2,7 @@ package system;
 
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import service.StationsService;
 import ui.Shop.dashboardTabPanel;
 import ui.Station.stationsTabPanel;
 
@@ -12,6 +13,7 @@ public final class ShopManager {
     private static stationsTabPanel stations;
     private static boolean shopOpen;
     private static boolean statusLoaded;
+    private static final StationsService stationsService = new StationsService();
 
     private ShopManager() {
     }
@@ -70,7 +72,11 @@ public final class ShopManager {
         if (statusLoaded && shopOpen == open) {
             return;
         }
+        boolean reopening = statusLoaded && !shopOpen && open;
         try {
+            if (reopening) {
+                stationsService.resetOccupiedStations();
+            }
             DatabaseManager.setShopOpenStatus(open);
             shopOpen = open;
             statusLoaded = true;
