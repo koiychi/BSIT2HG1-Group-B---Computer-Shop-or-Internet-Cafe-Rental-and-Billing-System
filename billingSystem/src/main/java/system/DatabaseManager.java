@@ -22,6 +22,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class DatabaseManager {
 
@@ -120,16 +122,18 @@ public class DatabaseManager {
                     + "FOREIGN KEY (AppID) REFERENCES INSTALLED_APPS(AppID) ON DELETE CASCADE);");
 
             // 4. TRANSACTION
-            stmt.execute("CREATE TABLE IF NOT EXISTS TRANSACTIONS ("
-                    + "TransactionID INTEGER PRIMARY KEY AUTOINCREMENT, "
+            stmt.execute("CREATE TABLE IF NOT EXISTS SESSIONS ("
+                    + "SessionID INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + "CustomerID INTEGER NOT NULL, "
-                    + "StationID TEXT, "
-                    + "DateAndTime TEXT DEFAULT (datetime('now', 'localtime')), "
-                    + "TransactionType TEXT NOT NULL, "
-                    + "Amount REAL NOT NULL, "
-                    + "PaidBy TEXT NOT NULL CHECK (PaidBy IN ('Cash', 'Member Credits')), "
+                    + "StationID TEXT NOT NULL, "
+                    + "StartTime TEXT DEFAULT(datetime('now', 'localtime')), "
+                    + "DurationMinutes INTEGER NOT NULL, "
+                    + "EndTime TEXT NOT NULL, "
+                    + "HourlyRate REAL NOT NULL, "
+                    + "DiscountRate REAL DEFAULT 0.0, "
+                    + "TotalAmount REAL NOT NULL, "
                     + "FOREIGN KEY (CustomerID) REFERENCES CUSTOMER(CustomerID), "
-                    + "FOREIGN KEY (StationID) REFERENCES STATION(StationID) ON DELETE SET NULL);");
+                    + "FOREIGN KEY (StationID) REFERENCES STATION(StationID));");
 
             stmt.execute("CREATE TABLE IF NOT EXISTS SHOP_STATUS ("
                     + "ShopID INTEGER PRIMARY KEY CHECK (ShopID = 1), "
@@ -695,6 +699,234 @@ public class DatabaseManager {
             System.err.println("Error calculating sales: " + e.getMessage());
         }
         return 0.0;
+    }
+        // READ ALL MEMBERS
+    //CARLO
+    public static List<MemberCustomer> getAllMembers() {
+        String sql = "SELECT c.FirstName, c.LastName, "
+                + "m.Username, m.Password, m.CreditBalance, m.DiscountRate "
+                + "FROM CUSTOMER c "
+                + "JOIN MEMBER_CUSTOMER m ON c.CustomerID = m.CustomerID "
+                + "ORDER BY c.LastName, c.FirstName";
+        List<MemberCustomer> members = new ArrayList<>();
+
+        try (Connection c = getConnection(); Statement stmt = c.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                members.add(new MemberCustomer(
+                        rs.getString("FirstName") + " " + rs.getString("LastName"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getDouble("CreditBalance"),
+                        rs.getDouble("DiscountRate")
+                ));
+            }
+
+            return members;
+        } catch (SQLException e) {
+            System.err.println("Error reading members: " + e.getMessage());
+            return members;
+        }
+    }
+
+    // READ TRANSACTION HISTORY (joined with customer, member and station)
+    public static List<Object[]> getTransactionHistory() {
+        String sql = "SELECT t.DateAndTime, m.Username, c.FirstName, c.LastName, "
+                + "t.StationID, s.StationType, t.TransactionType, t.PaidBy, t.Amount "
+                + "FROM TRANSACTIONS t "
+                + "LEFT JOIN CUSTOMER c ON c.CustomerID = t.CustomerID "
+                + "LEFT JOIN MEMBER_CUSTOMER m ON m.CustomerID = t.CustomerID "
+                + "LEFT JOIN STATION s ON s.StationID = t.StationID "
+                + "ORDER BY t.TransactionID DESC";
+        List<Object[]> rows = new ArrayList<>();
+
+        try (Connection c = getConnection(); Statement stmt = c.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                String username = rs.getString("Username");
+                String first = rs.getString("FirstName");
+                String last = rs.getString("LastName");
+                String fullName = ((first == null ? "" : first) + " " + (last == null ? "" : last)).trim();
+                String stationId = rs.getString("StationID");
+                String stationType = rs.getString("StationType");
+                String type = rs.getString("TransactionType");
+                String paidBy = rs.getString("PaidBy");
+
+                // "PC Rental" becomes PC-Gaming / PC-Regular, which is what the Action filter expects
+                String action = type;
+                if ("PC Rental".equals(type)) {
+                    if ("GAMING".equals(stationType)) {
+                        action = "PC-Gaming";
+                    } else if ("REGULAR".equals(stationType)) {
+                        action = "PC-Regular";
+                    }
+                }
+
+                rows.add(new Object[]{
+                    rs.getString("DateAndTime"),
+                    username == null ? "-" : username,
+                    fullName.isEmpty() ? "-" : fullName,
+                    stationId == null ? "-" : stationId,
+                    action,
+                    "Member Credits".equals(paidBy) ? "Credit" : paidBy,
+                    java.math.BigDecimal.valueOf(rs.getDouble("Amount")).setScale(2, java.math.RoundingMode.HALF_UP)
+                });
+            }
+        } catch (SQLException e) {
+            System.err.println("Error reading transaction history: " + e.getMessage());
+        }
+        return rows;
+    }
+
+    // START A SESSION: charges credit (if paying by credit), creates the session
+    public static int startSession(int customerId, String stationId, int durationMinutes, String paidBy) throws SQLException {
+        if (!ShopManager.isShopOpen()) {
+            throw new SQLException("The shop is closed. New sessions cannot be created.");
+        }
+
+        String endTime = LocalDateTime.now().plusMinutes(durationMinutes).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        try (Connection c = getConnection()) {
+            c.setAutoCommit(false);
+            try {
+                double rate = 0;
+                try (PreparedStatement ps = c.prepareStatement("SELECT HourlyRate, AvailabilityStatus FROM STATION WHERE StationID = ?")) {
+                    ps.setString(1, stationId);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (!rs.next()) {
+                            throw new SQLException("Station not found.");
+                        }
+                        if (!"Available".equalsIgnoreCase(rs.getString("AvailabilityStatus"))) {
+                            throw new SQLException("This station is no longer available.");
+                        }
+                        rate = rs.getDouble("HourlyRate");
+                    }
+                }
+                double discount = 0.0;
+                double balance = 0.0;
+                try (PreparedStatement ps = c.prepareStatement(
+                        "SELECT DiscountRate, CreditBalance FROM MEMBER_CUSTOMER WHERE CustomerID = ?")) {
+                    ps.setInt(1, customerId);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            discount = rs.getDouble("DiscountRate");
+                            balance = rs.getDouble("CreditBalance");
+                        }
+                    }
+                }
+
+                double total = Math.round(rate * (durationMinutes / 60.0) * (1 - discount) * 100.0) / 100.0;
+
+                if ("Member Credits".equals(paidBy)) {
+                    if (balance < total) {
+                        throw new SQLException("Not enough credit balance.");
+                    }
+                    try (PreparedStatement ps = c.prepareStatement(
+                            "UPDATE MEMBER_CUSTOMER SET CreditBalance = CreditBalance - ? WHERE CustomerID = ?")) {
+                        ps.setDouble(1, total);
+                        ps.setInt(2, customerId);
+                        ps.executeUpdate();
+                    }
+                }
+                int sessionId;
+                try (PreparedStatement ps = c.prepareStatement(
+                        "INSERT INTO SESSIONS (CustomerID, StationID, DurationMinutes, EndTime, HourlyRate, DiscountRate, TotalAmount) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+                    ps.setInt(1, customerId);
+                    ps.setString(2, stationId);
+                    ps.setInt(3, durationMinutes);
+                    ps.setString(4, endTime);
+                    ps.setDouble(5, rate);
+                    ps.setDouble(6, discount);
+                    ps.setDouble(7, total);
+                    ps.executeUpdate();
+                    try (ResultSet keys = ps.getGeneratedKeys()) {
+                        if (!keys.next()) {
+                            throw new SQLException("Could not create the session.");
+                        }
+                        sessionId = keys.getInt(1);
+                    }
+                }
+                try (PreparedStatement ps = c.prepareStatement(
+                        "UPDATE STATION SET AvailabilityStatus = 'Occupied', SessionEndTime = ? WHERE StationID = ?")) {
+                    ps.setString(1, endTime);
+                    ps.setString(2, stationId);
+                    ps.executeUpdate();
+                }
+                try (PreparedStatement ps = c.prepareStatement(
+                        "INSERT INTO TRANSACTIONS (CustomerID, StationID, TransactionType, Amount, PaidBy) VALUES (?, ?, ?, ?, ?)")) {
+                    ps.setInt(1, customerId);
+                    ps.setString(2, stationId);
+                    ps.setString(3, "PC Rental");
+                    ps.setDouble(4, total);
+                    ps.setString(5, paidBy);
+                    ps.executeUpdate();
+                }
+
+                c.commit();
+                return sessionId;
+
+            } catch (SQLException e) {
+                c.rollback();
+                throw e;
+            } finally {
+                c.setAutoCommit(true);
+            }
+        }
+    }
+
+    // TOP UP: adds credit and records the "Top-up" transaction in ONE database transaction
+    public static void addCredit(int customerId, double amount) throws SQLException {
+        if (!ShopManager.isShopOpen()) {
+            throw new SQLException("The shop is closed. Top ups cannot be recorded.");
+        }
+        double rounded = Math.round(amount * 100.0) / 100.0;
+        if (rounded <= 0) {
+            throw new SQLException("The top-up amount must be greater than zero.");
+        }
+
+        try (Connection c = getConnection()) {
+            c.setAutoCommit(false);
+            try {
+                try (PreparedStatement ps = c.prepareStatement(
+                        "UPDATE MEMBER_CUSTOMER SET CreditBalance = CreditBalance + ? WHERE CustomerID = ?")) {
+                    ps.setDouble(1, rounded);
+                    ps.setInt(2, customerId);
+                    if (ps.executeUpdate() == 0) {
+                        throw new SQLException("Member not found.");
+                    }
+                }
+                try (PreparedStatement ps = c.prepareStatement(
+                        "INSERT INTO TRANSACTIONS (CustomerID, StationID, TransactionType, Amount, PaidBy) VALUES (?, NULL, ?, ?, ?)")) {
+                    ps.setInt(1, customerId);
+                    ps.setString(2, "Top-up");
+                    ps.setDouble(3, rounded);
+                    ps.setString(4, "Cash");   // top ups are cash only
+                    ps.executeUpdate();
+                }
+                c.commit();
+            } catch (SQLException e) {
+                c.rollback();
+                throw e;
+            } finally {
+                c.setAutoCommit(true);
+            }
+        }
+    }
+
+    // "First Last" for a customer ID, or "" if not found
+    public static String getCustomerFullName(int customerId) {
+        String sql = "SELECT FirstName, LastName FROM CUSTOMER WHERE CustomerID = ?";
+        try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
+            pstmt.setInt(1, customerId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("FirstName") + " " + rs.getString("LastName");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error reading customer name: " + e.getMessage());
+        }
+        return "";
     }
 
     // Tester
