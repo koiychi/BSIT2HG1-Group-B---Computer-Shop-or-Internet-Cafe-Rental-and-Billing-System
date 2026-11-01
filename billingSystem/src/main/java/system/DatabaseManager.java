@@ -172,6 +172,15 @@ public class DatabaseManager {
             }
         }
 
+        public static void resetOccupiedStations() throws SQLException {
+            String sql = "UPDATE STATION SET AvailabilityStatus = 'Available', SessionEndTime = NULL "
+                    + "WHERE AvailabilityStatus = 'Occupied'";
+            try (Connection c = getConnection();
+                 PreparedStatement pstmt = c.prepareStatement(sql)) {
+                pstmt.executeUpdate();
+            }
+        }
+
         public static List<Station> getStationsByType(String type) throws SQLException {
             List<Station> stations = new ArrayList<>();
             for (Station station : getAllStations()) {
@@ -200,6 +209,33 @@ public class DatabaseManager {
                 System.err.println("Error finding member: " + e.getMessage());
             }
             return null;
+        }
+
+        public static List<MemberCustomer> getAllMembers() {
+            List<MemberCustomer> members = new ArrayList<>();
+            String sql = "SELECT c.CustomerID, c.FirstName || ' ' || c.LastName AS FullName, "
+                    + "m.Username, m.Password, m.CreditBalance, m.DiscountRate "
+                    + "FROM MEMBER_CUSTOMER m "
+                    + "JOIN CUSTOMER c ON c.CustomerID = m.CustomerID "
+                    + "ORDER BY m.Username";
+
+            try (Connection c = getConnection();
+                 PreparedStatement pstmt = c.prepareStatement(sql);
+                 ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    MemberCustomer member = new MemberCustomer(
+                            rs.getString("FullName"),
+                            rs.getString("Username"),
+                            rs.getString("Password"),
+                            rs.getDouble("CreditBalance"),
+                            rs.getDouble("DiscountRate"));
+                    member.setCustomerID(rs.getInt("CustomerID"));
+                    members.add(member);
+                }
+            } catch (SQLException e) {
+                System.err.println("Error loading members: " + e.getMessage());
+            }
+            return members;
         }
 
         public static int getCustomerIdByUsername(String username) {
@@ -331,6 +367,69 @@ public class DatabaseManager {
             System.err.println("Error adding member customer: " + e.getMessage());
             return false;
         }
+    }
+
+    public static boolean updateMember(String username, String fullName, double balance, double discountRate) {
+        String[] nameParts = splitFullName(fullName);
+        String updateCustomer = "UPDATE CUSTOMER SET FirstName = ?, LastName = ? "
+                + "WHERE CustomerID = (SELECT CustomerID FROM MEMBER_CUSTOMER WHERE Username = ?)";
+        String updateMember = "UPDATE MEMBER_CUSTOMER SET CreditBalance = ?, DiscountRate = ? "
+                + "WHERE Username = ?";
+
+        try (Connection c = getConnection()) {
+            c.setAutoCommit(false);
+            try (PreparedStatement customerStatement = c.prepareStatement(updateCustomer);
+                 PreparedStatement memberStatement = c.prepareStatement(updateMember)) {
+                customerStatement.setString(1, nameParts[0]);
+                customerStatement.setString(2, nameParts[1]);
+                customerStatement.setString(3, username);
+                customerStatement.executeUpdate();
+
+                memberStatement.setDouble(1, balance);
+                memberStatement.setDouble(2, discountRate);
+                memberStatement.setString(3, username);
+                int updated = memberStatement.executeUpdate();
+
+                if (updated == 0) {
+                    c.rollback();
+                    return false;
+                }
+                c.commit();
+                return true;
+            } catch (SQLException e) {
+                c.rollback();
+                throw e;
+            } finally {
+                c.setAutoCommit(true);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error updating member: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean deleteMember(String username) {
+        String sql = "DELETE FROM CUSTOMER WHERE CustomerID = "
+                + "(SELECT CustomerID FROM MEMBER_CUSTOMER WHERE Username = ?)";
+        try (Connection c = getConnection();
+             PreparedStatement statement = c.prepareStatement(sql)) {
+            statement.setString(1, username);
+            return statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error deleting member: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private static String[] splitFullName(String fullName) {
+        int separator = fullName.indexOf(' ');
+        if (separator <= 0 || separator == fullName.length() - 1) {
+            return new String[]{fullName, ""};
+        }
+        return new String[]{
+            fullName.substring(0, separator),
+            fullName.substring(separator + 1)
+        };
     }
 
 // ==========================================
