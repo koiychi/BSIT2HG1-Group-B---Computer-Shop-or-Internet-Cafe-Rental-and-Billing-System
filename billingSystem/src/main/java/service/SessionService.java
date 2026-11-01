@@ -4,9 +4,7 @@ import java.sql.SQLException;
 import logic.MemberCustomer;
 import system.DatabaseManager;
 
-/**
- * Coordinates session-related reads and writes for the UI.
- */
+
 public class SessionService {
 
     public MemberCustomer findMember(String username) {

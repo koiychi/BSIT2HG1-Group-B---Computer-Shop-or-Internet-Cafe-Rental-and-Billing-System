@@ -6,7 +6,7 @@ package ui.Session;
 
 /**
  *
- * @author koi
+ * @author theo
  */
 public class NewSession extends javax.swing.JPanel {
 
