@@ -2,7 +2,7 @@ package logic;
 
 /**
  *
- * @author MaryJane and Koi
+ * @author MaryJane
  
  */
 import java.util.ArrayList;
