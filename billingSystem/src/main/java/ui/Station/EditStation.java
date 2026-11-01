@@ -8,6 +8,7 @@ import logic.GamingStation;
 import logic.RegularStation;
 import logic.Station;
 import javax.swing.DefaultComboBoxModel;
+import system.ShopManager;
 
 /**
  *
@@ -38,6 +39,7 @@ public class EditStation extends javax.swing.JDialog {
         nameField.setText(s.getStationID());
         typeCombo.setSelectedItem(s.getType());
         statusCombo.setSelectedItem(s.getStatus());
+        statusCombo.setEnabled(ShopManager.isShopOpen());
         rateField.setText(String.valueOf(s.getHourlyRate()));
         cpuField.setText(s.getCpu());
         ramField.setText(String.valueOf(s.getRamGb()));
