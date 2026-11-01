@@ -7,7 +7,9 @@ package ui.Members;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import logic.MemberCustomer;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -23,6 +25,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import service.MembershipService;
+
 /**
  *
  * @author koi
@@ -32,6 +36,7 @@ public class membersTabPanel extends javax.swing.JPanel {
     // --- State & UI Variables ---
     private DefaultTableModel membersTableModel;
     private TableRowSorter<DefaultTableModel> membersSorter;
+    private final MembershipService membershipService = new MembershipService();
 
     // Nagtatago ng password pansamantala
     private final Map<String, String> memberPasswords = new HashMap<>();
@@ -281,6 +286,7 @@ public class membersTabPanel extends javax.swing.JPanel {
         content.add(tableScroll, java.awt.BorderLayout.CENTER);
 
         this.add(content, java.awt.BorderLayout.CENTER);
+        loadMembers();
 
         // SEARCH FUNCTION
         searchUsernameField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
@@ -442,14 +448,15 @@ public class membersTabPanel extends javax.swing.JPanel {
                     throw new NumberFormatException();
                 }
 
-                membersTableModel.addRow(new Object[]{
-                    username,
-                    lastName + ", " + givenName,
-                    String.format(java.util.Locale.US, "%.2f", credit),
-                    "0.00%",
-                    "Edit Member"
-                });
-                memberPasswords.put(username, password);
+                if (!membershipService.addMemberCustomer(
+                        givenName, lastName, username, password, credit)) {
+                    JOptionPane.showMessageDialog(dialog,
+                            "Could not add member. Username may already exist.",
+                            "Database Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                loadMembers();
                 dialog.dispose();
 
             } catch (NumberFormatException ex) {
@@ -465,6 +472,21 @@ public class membersTabPanel extends javax.swing.JPanel {
         );
 
         dialog.setVisible(true);
+    }
+
+    private void loadMembers() {
+        membersTableModel.setRowCount(0);
+        List<MemberCustomer> members = membershipService.getMembers();
+
+        for (MemberCustomer member : members) {
+            membersTableModel.addRow(new Object[]{
+                member.getUsername(),
+                member.getName(),
+                String.format(java.util.Locale.US, "%.2f", member.getCreditAmount()),
+                String.format(java.util.Locale.US, "%.2f%%", member.getDiscountRate() * 100),
+                "Edit Member"
+            });
+        }
     }
 
     private void addDialogLabel(JPanel panel, String text, int x, int y, int w, int h, int size, boolean bold) {
@@ -519,9 +541,12 @@ public class membersTabPanel extends javax.swing.JPanel {
                     throw new NumberFormatException();
                 }
 
-                membersTableModel.setValueAt(name, row, 1);
-                membersTableModel.setValueAt(String.format(java.util.Locale.US, "%.2f", balance), row, 2);
-                membersTableModel.setValueAt(String.format(java.util.Locale.US, "%.2f%%", discount), row, 3);
+                if (!membershipService.updateMember(username, name, balance, discount / 100)) {
+                    JOptionPane.showMessageDialog(this, "Could not save member changes.",
+                            "Database Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                loadMembers();
 
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Enter a valid balance and a discount from 0 to 100.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
@@ -536,8 +561,12 @@ public class membersTabPanel extends javax.swing.JPanel {
                     JOptionPane.WARNING_MESSAGE
             );
             if (confirm == JOptionPane.YES_OPTION) {
-                membersTableModel.removeRow(row);
-                memberPasswords.remove(username);
+                if (!membershipService.deleteMember(username)) {
+                    JOptionPane.showMessageDialog(this, "Could not delete member.",
+                            "Database Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                loadMembers();
             }
         }
     }
