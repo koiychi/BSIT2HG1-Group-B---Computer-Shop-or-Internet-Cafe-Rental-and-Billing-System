@@ -271,6 +271,45 @@ public class DatabaseManager {
             return -1;
         }
 
+        // finds a regular customer by full name, or creates one if it is a new name; -1 on failure
+        public static int getOrCreateRegularID(String fullName) {
+            String name = fullName == null ? "" : fullName.trim().replaceAll("\\s+", " ");
+            if (name.isEmpty()) {
+                return -1;
+            }
+
+            String find = "SELECT CustomerID FROM CUSTOMER "
+                    + "WHERE CustomerType = 'REGULAR' AND TRIM(FirstName || ' ' || LastName) = ? COLLATE NOCASE";
+            try (Connection c = getConnection();
+                 PreparedStatement pstmt = c.prepareStatement(find)) {
+                pstmt.setString(1, name);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        return rs.getInt(1);
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Error finding regular customer: " + e.getMessage());
+                return -1;
+            }
+
+            // new walk-in: save them as a regular customer
+            String[] parts = splitFullName(name);
+            int id = insertBaseCustomer(parts[0], parts[1], "REGULAR");
+            if (id <= 0) {
+                return -1;
+            }
+            try (Connection c = getConnection();
+                 PreparedStatement pstmt = c.prepareStatement("INSERT INTO REGULAR_CUSTOMER (CustomerID) VALUES (?)")) {
+                pstmt.setInt(1, id);
+                pstmt.executeUpdate();
+                return id;
+            } catch (SQLException e) {
+                System.err.println("Error adding regular customer: " + e.getMessage());
+                return -1;
+            }
+        }
+
         public static double getMemberDiscount(int customerId) {
             String sql = "SELECT DiscountRate FROM MEMBER_CUSTOMER WHERE CustomerID = ?";
             try (Connection c = getConnection();
@@ -799,35 +838,7 @@ public class DatabaseManager {
         }
         return 0.0;
     }
-        // READ ALL MEMBERS
-    //CARLO
-    public static List<MemberCustomer> getAllMembers() {
-        String sql = "SELECT c.FirstName, c.LastName, "
-                + "m.Username, m.Password, m.CreditBalance, m.DiscountRate "
-                + "FROM CUSTOMER c "
-                + "JOIN MEMBER_CUSTOMER m ON c.CustomerID = m.CustomerID "
-                + "ORDER BY c.LastName, c.FirstName";
-        List<MemberCustomer> members = new ArrayList<>();
-
-        try (Connection c = getConnection(); Statement stmt = c.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
-
-            while (rs.next()) {
-                members.add(new MemberCustomer(
-                        rs.getString("FirstName") + " " + rs.getString("LastName"),
-                        rs.getString("Username"),
-                        rs.getString("Password"),
-                        rs.getDouble("CreditBalance"),
-                        rs.getDouble("DiscountRate")
-                ));
-            }
-
-            return members;
-        } catch (SQLException e) {
-            System.err.println("Error reading members: " + e.getMessage());
-            return members;
-        }
-    }
-
+ 
     // READ TRANSACTION HISTORY (joined with customer, member and station)
     public static List<Object[]> getTransactionHistory() {
         String sql = "SELECT t.DateAndTime, m.Username, c.FirstName, c.LastName, "
