@@ -1,9 +1,9 @@
-package bsit2hg1groupb.billingSystem.ui.Station;
+package ui.Station;
 
-import bsit2hg1groupb.billingSystem.service.StationsService;
-import bsit2hg1groupb.billingSystem.system.GamingStation;
-import bsit2hg1groupb.billingSystem.system.RegularStation;
-import bsit2hg1groupb.billingSystem.system.Station;
+import service.StationsService;
+import logic.GamingStation;
+import logic.RegularStation;
+import logic.Station;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;

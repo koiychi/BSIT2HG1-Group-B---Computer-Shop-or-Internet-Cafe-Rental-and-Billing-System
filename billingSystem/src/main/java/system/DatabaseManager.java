@@ -2,15 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package bsit2hg1groupb.billingSystem;
+package system;
 
 /**
  *
  * @author koi
  */
-import bsit2hg1groupb.billingSystem.system.GamingStation;
-import bsit2hg1groupb.billingSystem.system.RegularStation;
-import bsit2hg1groupb.billingSystem.system.Station;
+import logic.GamingStation;
+import logic.MemberCustomer;
+import logic.RegularStation;
+import logic.Station;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,8 @@ public class DatabaseManager {
 // ==========================================
     private static final String DBFile = "jdbc:sqlite:compShopDatabase.db";
     private static Connection connection = null;
+    private static boolean tablesInitialized = false;
+    private static boolean initializationInProgress = false;
 
     public static Connection getConnection() {
         try {
@@ -40,7 +43,9 @@ public class DatabaseManager {
                     stmt.execute("PRAGMA foreign_keys = ON;");
                 }
 
-                initializeTables();
+                if (!tablesInitialized && !initializationInProgress) {
+                    initializeTables();
+                }
             }
         } catch (ClassNotFoundException e) {
             System.err.println("Driver Error: " + e.getMessage());
@@ -50,7 +55,11 @@ public class DatabaseManager {
         return connection;
     }
 
-    private static void initializeTables() {
+    public static void initializeTables() {
+        if (tablesInitialized || initializationInProgress) {
+            return;
+        }
+        initializationInProgress = true;
         try (Statement stmt = getConnection().createStatement()) {
 
             // 1. CUSTOMER (SUPERTYPE)
@@ -121,16 +130,122 @@ public class DatabaseManager {
                     + "PaidBy TEXT NOT NULL CHECK (PaidBy IN ('Cash', 'Member Credits')), "
                     + "FOREIGN KEY (CustomerID) REFERENCES CUSTOMER(CustomerID), "
                     + "FOREIGN KEY (StationID) REFERENCES STATION(StationID) ON DELETE SET NULL);");
+
+            stmt.execute("CREATE TABLE IF NOT EXISTS SHOP_STATUS ("
+                    + "ShopID INTEGER PRIMARY KEY CHECK (ShopID = 1), "
+                    + "IsOpen INTEGER NOT NULL DEFAULT 1);");
+            addColumnIfMissing(stmt, "SHOP_STATUS", "ShopID", "INTEGER DEFAULT 1");
+            stmt.execute("INSERT OR IGNORE INTO SHOP_STATUS (ShopID, IsOpen) VALUES (1, 1);");
                         // Upgrade older database files that were created before these columns existed
             addColumnIfMissing(stmt, "STATION", "HasInternet", "INTEGER NOT NULL DEFAULT 0");
             addColumnIfMissing(stmt, "REGULAR_STATION", "HasPrinter", "INTEGER NOT NULL DEFAULT 0");
 
+            tablesInitialized = true;
             System.out.println("Database initialized successfully!");
 
         } catch (SQLException e) {
             System.err.println("Error initializing tables: " + e.getMessage());
+        } finally {
+            initializationInProgress = false;
         }
     }
+
+        public static boolean getShopOpenStatus() throws SQLException {
+            String sql = "SELECT IsOpen FROM SHOP_STATUS WHERE ShopID = 1";
+            try (Connection c = getConnection();
+                 PreparedStatement pstmt = c.prepareStatement(sql);
+                 ResultSet rs = pstmt.executeQuery()) {
+                return rs.next() && rs.getInt(1) == 1;
+            }
+        }
+
+        public static void setShopOpenStatus(boolean open) throws SQLException {
+            String sql = "UPDATE SHOP_STATUS SET IsOpen = ? WHERE ShopID = 1";
+            try (Connection c = getConnection();
+                 PreparedStatement pstmt = c.prepareStatement(sql)) {
+                pstmt.setInt(1, open ? 1 : 0);
+                pstmt.executeUpdate();
+            }
+        }
+
+        public static List<Station> getStationsByType(String type) throws SQLException {
+            List<Station> stations = new ArrayList<>();
+            for (Station station : getAllStations()) {
+                if (station.getType().equalsIgnoreCase(type)) {
+                    stations.add(station);
+                }
+            }
+            return stations;
+        }
+
+        public static MemberCustomer findMember(String username) {
+            String sql = "SELECT c.FirstName || ' ' || c.LastName, m.Username, m.Password, "
+                    + "m.CreditBalance, m.DiscountRate "
+                    + "FROM MEMBER_CUSTOMER m JOIN CUSTOMER c ON c.CustomerID = m.CustomerID "
+                    + "WHERE m.Username = ?";
+            try (Connection c = getConnection();
+                 PreparedStatement pstmt = c.prepareStatement(sql)) {
+                pstmt.setString(1, username);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        return new MemberCustomer(rs.getString(1), rs.getString(2),
+                                rs.getString(3), rs.getDouble(4), rs.getDouble(5));
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Error finding member: " + e.getMessage());
+            }
+            return null;
+        }
+
+        public static int getCustomerIdByUsername(String username) {
+            String sql = "SELECT CustomerID FROM MEMBER_CUSTOMER WHERE Username = ?";
+            try (Connection c = getConnection();
+                 PreparedStatement pstmt = c.prepareStatement(sql)) {
+                pstmt.setString(1, username);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        return rs.getInt(1);
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Error finding customer ID: " + e.getMessage());
+            }
+            return -1;
+        }
+
+        public static int getRegularID(String name) {
+            String sql = "SELECT CustomerID FROM CUSTOMER "
+                    + "WHERE CustomerType = 'REGULAR' AND (FirstName || ' ' || LastName) = ?";
+            try (Connection c = getConnection();
+                 PreparedStatement pstmt = c.prepareStatement(sql)) {
+                pstmt.setString(1, name);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        return rs.getInt(1);
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Error finding regular customer ID: " + e.getMessage());
+            }
+            return -1;
+        }
+
+        public static double getMemberDiscount(int customerId) {
+            String sql = "SELECT DiscountRate FROM MEMBER_CUSTOMER WHERE CustomerID = ?";
+            try (Connection c = getConnection();
+                 PreparedStatement pstmt = c.prepareStatement(sql)) {
+                pstmt.setInt(1, customerId);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        return rs.getDouble(1);
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Error finding member discount: " + e.getMessage());
+            }
+            return 0.0;
+        }
         // Adds a column only if the table doesn't have it yet (safe to run every time)
     private static void addColumnIfMissing(Statement stmt, String table, String column, String definition)
             throws SQLException {

@@ -1,4 +1,4 @@
-package bsit2hg1groupb.billingSystem.system;
+package logic;
 
 public abstract class Station {
 

@@ -30,7 +30,7 @@ public class PrintJob implements Billable {
         this.paperType = paperType;
         this.pageCount = pageCount;
         this.isColored = isColored;
-        this.pricePerPage = pricePerPage;
+        this.pricePerPage = pricePerPage1;
     }
 
 
@@ -71,7 +71,7 @@ public class PrintJob implements Billable {
     }
 
     public void setPageSize(int PageSize) {
-        this.pageSize = pageSize;
+        this.pageSize = String.valueOf(PageSize);
     }
 
     public void setPaperType(String paperType) {

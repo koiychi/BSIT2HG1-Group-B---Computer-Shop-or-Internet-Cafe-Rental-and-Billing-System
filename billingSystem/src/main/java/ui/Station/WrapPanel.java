@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package bsit2hg1groupb.billingSystem.ui.Station;
+package ui.Station;
 
 /**
  *
@@ -13,7 +13,6 @@ import java.awt.LayoutManager;
 import javax.swing.JPanel;
 import javax.swing.Scrollable;
 import java.awt.Rectangle;
-import java.awt.Component;
 public class WrapPanel extends JPanel implements Scrollable {
     public WrapPanel(LayoutManager layout) {
         super(layout);
