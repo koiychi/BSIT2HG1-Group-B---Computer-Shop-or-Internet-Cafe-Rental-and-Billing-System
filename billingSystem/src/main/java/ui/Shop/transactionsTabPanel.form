@@ -114,13 +114,13 @@
                                   <Component id="actionLbl" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="dateLbl" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="12" max="32767" attributes="0"/>
                           </Group>
                       </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="searchBarText" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="dateTimeBox" alignment="3" min="-2" max="-2" attributes="0"/>

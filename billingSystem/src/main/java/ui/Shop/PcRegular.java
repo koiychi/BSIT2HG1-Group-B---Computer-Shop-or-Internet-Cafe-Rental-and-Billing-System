@@ -18,10 +18,28 @@ public class PcRegular extends javax.swing.JDialog {
      */
     public PcRegular(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        setUndecorated(true);
+        setUndecorated(true); 
         initComponents();
         setupLogic();
         setLocationRelativeTo(parent);
+    }
+    private boolean paymentDone = false;
+
+    public PcRegular(java.awt.Window owner) {
+        super(owner, java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        setUndecorated(true);
+        initComponents();
+        setupLogic();
+        setLocationRelativeTo(owner);
+    }
+
+    public boolean isPaid() {
+        return paymentDone;
+    }
+    private PaymentUtil.Committer committer;
+
+    public void setCommitter(PaymentUtil.Committer committer) {
+        this.committer = committer;
     }
 
     /**
@@ -38,6 +56,7 @@ public class PcRegular extends javax.swing.JDialog {
         typePcLbl = new javax.swing.JLabel();
         calcLbl = new javax.swing.JLabel();
         calcTotalLbl = new javax.swing.JLabel();
+        customerNameLbl = new javax.swing.JLabel();
         TotalAmountDue = new javax.swing.JPanel();
         totalTitleLbl = new javax.swing.JLabel();
         totalLbl = new javax.swing.JLabel();
@@ -66,26 +85,29 @@ public class PcRegular extends javax.swing.JDialog {
         calcTotalLbl.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         calcTotalLbl.setText("PHP 30.00");
 
+        customerNameLbl.setText("Customer Name");
+
         javax.swing.GroupLayout PayBillLayout = new javax.swing.GroupLayout(PayBill);
         PayBill.setLayout(PayBillLayout);
         PayBillLayout.setHorizontalGroup(
             PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PayBillLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PayBillLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(subtotalTitleLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(titleLbl)))
+                            .addComponent(titleLbl)
+                            .addComponent(subtotalTitleLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(204, Short.MAX_VALUE))
                     .addGroup(PayBillLayout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(typePcLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(PayBillLayout.createSequentialGroup()
-                                .addComponent(calcLbl)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(calcTotalLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(26, 26, 26))
+                        .addGap(21, 21, 21)
+                        .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(customerNameLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(typePcLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(calcLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(calcTotalLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(23, 23, 23))))
         );
         PayBillLayout.setVerticalGroup(
             PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -94,11 +116,14 @@ public class PcRegular extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(subtotalTitleLbl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(typePcLbl)
+                .addComponent(customerNameLbl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(typePcLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(calcLbl)
-                    .addComponent(calcTotalLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(calcTotalLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         TotalAmountDue.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(38, 42, 52), 2, true));
@@ -216,7 +241,7 @@ public class PcRegular extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(PayBill, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(TotalAmountDue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ModeOfPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -224,7 +249,7 @@ public class PcRegular extends javax.swing.JDialog {
                 .addComponent(InputPayment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ProceedPay)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -283,6 +308,11 @@ public class PcRegular extends javax.swing.JDialog {
         totalLbl.setText(PaymentUtil.money(totalDue));
         total = totalDue;
         updateChange();
+        pack();                               
+        setLocationRelativeTo(getOwner());    
+    }
+    public void setCustomerName(String name) {
+        customerNameLbl.setText(name);
     }
 
     //(no discount for regular)
@@ -395,6 +425,9 @@ public class PcRegular extends javax.swing.JDialog {
 
     // Finish Payment
     private void finishPayment() {
+        if (paymentDone) {
+            return;   // already saved (double-click)
+        }
         BigDecimal paid = PaymentUtil.parseAmount(payField.getText());
 
         // 1. nothing entered
@@ -414,16 +447,30 @@ public class PcRegular extends javax.swing.JDialog {
             return;
         }
 
+        // save to the database first; only show success if it worked
+        if (committer != null) {
+            ProceedPay.setEnabled(false);
+            String error = committer.commit(PaymentUtil.paidBy(false));
+            if (error != null) {
+                ProceedPay.setEnabled(true);
+                javax.swing.JOptionPane.showMessageDialog(this, error,
+                        "Payment Failed", javax.swing.JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+        paymentDone = true;
+
         // confirmation text
         StringBuilder receipt = new StringBuilder("Payment successful.\n\n");
         receipt.append("Service: PC - Regular\n");
+        receipt.append("Station: ").append(typePcLbl.getText()).append("\n");
+        receipt.append("Customer: ").append(customerNameLbl.getText()).append("\n");
         receipt.append("Total Amount: ").append(PaymentUtil.money(total)).append("\n");
         receipt.append("Payment Method: Cash\n");
         receipt.append("Amount Received: ").append(PaymentUtil.money(paid)).append("\n");
         receipt.append("Change: ").append(PaymentUtil.money(paid.subtract(total))).append("\n");
         receipt.append("\nThis transaction has been recorded in Transactions.");
 
-        PaymentUtil.logger.log(false, "PC-Regular", total, "Cash");
 
         java.awt.Window owner = getOwner();
         dispose();
@@ -476,6 +523,7 @@ public class PcRegular extends javax.swing.JDialog {
     private javax.swing.JRadioButton cashRb;
     private javax.swing.JLabel changeLbl;
     private javax.swing.JRadioButton creditRb;
+    private javax.swing.JLabel customerNameLbl;
     private javax.swing.JTextField payField;
     private javax.swing.JLabel payWithLbl;
     private javax.swing.JLabel subtotalTitleLbl;

@@ -23,6 +23,33 @@ public class PcMember extends javax.swing.JDialog {
         setLocationRelativeTo(parent);
     }
 
+    private boolean paymentDone = false;
+
+    public PcMember(java.awt.Window owner) {
+        super(owner, java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        setUndecorated(true);
+        initComponents();
+        setupLogic();
+        setLocationRelativeTo(owner);
+    }
+
+    public boolean isPaid() {
+        return paymentDone;
+    }
+    private PaymentUtil.Committer committer;
+    private BigDecimal creditBalance = BigDecimal.ZERO;
+
+    public void setCommitter(PaymentUtil.Committer committer) {
+        this.committer = committer;
+    }
+
+    // the member's real balance from the database
+    public void setCreditBalance(BigDecimal balance) {
+        creditBalance = balance;
+        creditRb.setText("Credit (" + PaymentUtil.money(balance) + ")");
+        creditRb.setEnabled(balance.compareTo(BigDecimal.ZERO) > 0);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,6 +67,7 @@ public class PcMember extends javax.swing.JDialog {
         calcTotalLbl = new javax.swing.JLabel();
         discountLbl = new javax.swing.JLabel();
         discountAppliedLbl = new javax.swing.JLabel();
+        customerNameLbl = new javax.swing.JLabel();
         TotalAmountDue = new javax.swing.JPanel();
         totalTitleLbl = new javax.swing.JLabel();
         totalLbl = new javax.swing.JLabel();
@@ -74,6 +102,8 @@ public class PcMember extends javax.swing.JDialog {
         discountAppliedLbl.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         discountAppliedLbl.setText("PHP -4.00");
 
+        customerNameLbl.setText("Customer Name");
+
         javax.swing.GroupLayout PayBillLayout = new javax.swing.GroupLayout(PayBill);
         PayBill.setLayout(PayBillLayout);
         PayBillLayout.setHorizontalGroup(
@@ -88,14 +118,17 @@ public class PcMember extends javax.swing.JDialog {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(PayBillLayout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(calcLbl)
-                            .addComponent(typePcLbl, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(discountLbl, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(calcTotalLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(discountAppliedLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PayBillLayout.createSequentialGroup()
+                                .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(calcLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                                    .addComponent(discountLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(discountAppliedLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(calcTotalLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(customerNameLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(typePcLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(23, 23, 23))))
         );
         PayBillLayout.setVerticalGroup(
@@ -104,6 +137,8 @@ public class PcMember extends javax.swing.JDialog {
                 .addComponent(titleLbl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(subtotalTitleLbl)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(customerNameLbl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(typePcLbl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -271,8 +306,8 @@ public class PcMember extends javax.swing.JDialog {
         PaymentUtil.setupPaymentField(payField);
 
         // shop credit option: shows the balance, only clickable if the member has credit
-        creditRb.setText("Credit (" + PaymentUtil.money(PaymentUtil.memberCredit) + ")");
-        creditRb.setEnabled(PaymentUtil.memberCredit.compareTo(BigDecimal.ZERO) > 0);
+        creditRb.setText("Credit (" + PaymentUtil.money(creditBalance) + ")");
+        creditRb.setEnabled(creditBalance.compareTo(BigDecimal.ZERO) > 0);
         cashRb.setSelected(true);
 
         payField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
@@ -377,23 +412,13 @@ public class PcMember extends javax.swing.JDialog {
     // recomputes the labels and the total from the type and hours
     // placeholder bill: no computation, values come from the other class
     private void updateBill() {
-        boolean useDiscount = creditRb.isSelected();   // discount only for credit
-        total = useDiscount ? creditTotal : subtotal;
-
-        boolean visibilityChanged = discountLbl.isVisible() != useDiscount;
-        discountLbl.setVisible(useDiscount);
-        discountAppliedLbl.setVisible(useDiscount); 
+        total = creditTotal;   // members always get the discount, cash or credit
 
         calcTotalLbl.setText(PaymentUtil.money(subtotal));
         discountAppliedLbl.setText("PHP -" + discountAmt.setScale(2, RoundingMode.HALF_UP));
         totalLbl.setText(PaymentUtil.money(total));
 
         updateChange();
-           // re-fit the window (and the orange border) to the new height
-        if (visibilityChanged) {
-            pack();
-            setLocationRelativeTo(getOwner());   // keep it centered after resizing
-        }
     }
 
     // the other class calls this to send the real bill values
@@ -405,6 +430,14 @@ public class PcMember extends javax.swing.JDialog {
         this.discountAmt = discount;       // PHP 12.00
         this.creditTotal = creditTotal;    // PHP 108.00
         updateBill();
+        pack();
+        setLocationRelativeTo(getOwner());
+    }
+    public void setCustomerName(String name) {
+        customerNameLbl.setText(name);
+    }
+    public void setDiscountText(String text) {
+        discountLbl.setText(text);
     }
         // the Change label only shows when paying with cash and the amount covers the total
     private void updateChange() {
@@ -429,9 +462,13 @@ public class PcMember extends javax.swing.JDialog {
 
     // Finish Payment
     private void finishPayment() {
+        if (paymentDone) {
+            return;   // already saved (double-click)
+        }
         BigDecimal paid = PaymentUtil.parseAmount(payField.getText());
+        boolean useCredit = creditRb.isSelected();
 
-        if (cashRb.isSelected()) {
+        if (!useCredit) {
             // 1. nothing entered
             if (paid.compareTo(BigDecimal.ZERO) <= 0) {
                 javax.swing.JOptionPane.showMessageDialog(this,
@@ -451,34 +488,48 @@ public class PcMember extends javax.swing.JDialog {
         }
 
         // shop credit: balance must cover the total
-        if (creditRb.isSelected() && PaymentUtil.memberCredit.compareTo(total) < 0) {
+        if (useCredit && creditBalance.compareTo(total) < 0) {
             javax.swing.JOptionPane.showMessageDialog(this,
                     "Insufficient Shop Credit.\n\n"
-                    + "Credit Balance: " + PaymentUtil.money(PaymentUtil.memberCredit) + "\n"
+                    + "Credit Balance: " + PaymentUtil.money(creditBalance) + "\n"
                     + "Total Amount Due: " + PaymentUtil.money(total),
                     "Insufficient Credit", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
 
+        // save to the database first (this also deducts the credit); only show success if it worked
+        if (committer != null) {
+            ProceedPay.setEnabled(false);
+            String error = committer.commit(PaymentUtil.paidBy(useCredit));
+            if (error != null) {
+                ProceedPay.setEnabled(true);
+                javax.swing.JOptionPane.showMessageDialog(this, error,
+                        "Payment Failed", javax.swing.JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+        paymentDone = true;
+        if (useCredit) {
+            creditBalance = creditBalance.subtract(total);   // for the receipt only; the database is already updated
+        }
+
         // build the confirmation text
-        String method = cashRb.isSelected() ? "Cash" : "Shop Credit";
+        String method = useCredit ? "Shop Credit" : "Cash";
         StringBuilder receipt = new StringBuilder("Payment successful.\n\n");
         receipt.append("Service: PC - Member (").append(typePcLbl.getText()).append(")\n");
+        receipt.append("Customer: ").append(customerNameLbl.getText()).append("\n");
         receipt.append("Total Amount: ").append(PaymentUtil.money(total)).append("\n");
         receipt.append("Payment Method: ").append(method).append("\n");
 
-        if (cashRb.isSelected()) {
+        if (!useCredit) {
             receipt.append("Amount Received: ").append(PaymentUtil.money(paid)).append("\n");
             receipt.append("Change: ").append(PaymentUtil.money(paid.subtract(total))).append("\n");
-        } else {
-            PaymentUtil.memberCredit = PaymentUtil.memberCredit.subtract(total);   // pay with credit: deduct it
         }
 
-        receipt.append("Remaining Credit: ").append(PaymentUtil.money(PaymentUtil.memberCredit)).append("\n");
+        receipt.append("Remaining Credit: ").append(PaymentUtil.money(creditBalance)).append("\n");
         receipt.append("\nThis transaction has been recorded in Transactions.");
 
-        PaymentUtil.logger.log(true, "PC-" + typePcLbl.getText(), total, cashRb.isSelected() ? "Cash" : "Credit");
-        
+
         java.awt.Window owner = getOwner();
         dispose();
         javax.swing.JOptionPane.showMessageDialog(owner, receipt.toString(),
@@ -531,6 +582,7 @@ public class PcMember extends javax.swing.JDialog {
     private javax.swing.JRadioButton cashRb;
     private javax.swing.JLabel changeLbl;
     private javax.swing.JRadioButton creditRb;
+    private javax.swing.JLabel customerNameLbl;
     private javax.swing.JLabel discountAppliedLbl;
     private javax.swing.JLabel discountLbl;
     private javax.swing.JTextField payField;

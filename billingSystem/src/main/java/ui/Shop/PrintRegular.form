@@ -130,8 +130,8 @@
                               <Component id="printLbl" alignment="0" min="-2" pref="111" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="details" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="calcTotalLbl" min="-2" pref="72" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="calcTotalLbl" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
