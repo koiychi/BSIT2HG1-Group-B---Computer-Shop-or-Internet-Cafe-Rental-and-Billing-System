@@ -4,6 +4,8 @@
  */
 package ui.Shop;
 
+import service.TransactionService;
+
 import java.math.*;
 import java.text.*;
 import java.time.*;
@@ -16,6 +18,7 @@ import javax.swing.table.*;
  * @author cals
  */
 public class transactionsTabPanel extends javax.swing.JPanel {
+    private final TransactionService transactionService = new TransactionService();
 
     /**
      * Creates new form transactionsTabPanel
@@ -363,7 +366,21 @@ public class transactionsTabPanel extends javax.swing.JPanel {
     private static final DateTimeFormatter STAMP = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final DecimalFormat PESO = new DecimalFormat("#,##0.00");
     private static final boolean COUNT_CREDIT_PAYMENTS = false;
-    private static final boolean SHOW_SAMPLE_HISTORY = true;
+    private boolean loading = false;   // true while the table is being refilled
+    private final Runnable refreshListener = this::loadFromDatabase;
+
+    // reload whenever a payment is saved anywhere in the shop (same pattern as the dashboard)
+    @Override
+    public void addNotify() {
+        super.addNotify();
+        PaymentUtil.addPaymentListener(refreshListener);
+    }
+
+    @Override
+    public void removeNotify() {
+        PaymentUtil.removePaymentListener(refreshListener);
+        super.removeNotify();
+    }
 
     private void setupLogic() {
         // 0 date, 1 username, 2 name, 3 unit, 4 action, 5 payment, 6 amount
@@ -414,31 +431,32 @@ public class transactionsTabPanel extends javax.swing.JPanel {
         actionbox.addActionListener(e -> applyFilters());
         paymentBox.addActionListener(e -> applyFilters());
         customerBox.addActionListener(e -> applyFilters());
-        model.addTableModelListener(e -> refreshStats());
-        
+        model.addTableModelListener(e -> {
+            if (!loading) {
+                refreshStats();
+            }
+        });
+
         new javax.swing.Timer(60_000, e -> refreshStats()).start();
 
-        // every successful payment from the Shop dialogs lands in this table
-        PaymentUtil.logger = (member, action, amount, payment) -> recordTransaction(member, action, amount, payment);
-        
-         if (SHOW_SAMPLE_HISTORY) {
-            loadSampleHistory();
-        }
-        updateStats();
+        loadFromDatabase();   // real history from the database
     }
 
-    // adds one row
-    public void recordTransaction(boolean member, String action, BigDecimal amount, String payment) {
-        model.addRow(new Object[] {
-            LocalDateTime.now().format(STAMP),
-            member ? PaymentUtil.USERNAME : "-",
-            member ? PaymentUtil.FULL_NAME : "-",
-            "-",
-            action,
-            payment,
-            amount
-        });
-         updateStats();
+    // refills the table from the database (at startup and after every saved payment)
+    private void loadFromDatabase() {
+        if (model == null) {
+            return;
+        }
+        loading = true;   // so the stats are not recalculated for every single row
+        try {
+            model.setRowCount(0);
+            for (Object[] row : transactionService.getHistory()) {
+                model.addRow(row);
+            }
+        } finally {
+            loading = false;
+        }
+        refreshStats();
     }
 
      // lowercase, no spaces or dashes, so "PC - Gaming" and "PC-Gaming" are the same
@@ -548,84 +566,6 @@ public class transactionsTabPanel extends javax.swing.JPanel {
                 return true;
             }
         });
-    }
-
-    // adds up the whole history 
-    private void updateStats() {
-        LocalDate today = LocalDate.now();
-        LocalDate weekStart = today.minusDays(6);          // today + the 6 days before = 7 days
-        YearMonth thisMonth = YearMonth.from(today);
-        LocalDate monthStart = thisMonth.atDay(1);         // the 1st
-        LocalDate monthEnd = thisMonth.atEndOfMonth();     // the 28th, 29th, 30th or 31st
-
-        BigDecimal all = BigDecimal.ZERO;
-        BigDecimal day = BigDecimal.ZERO;
-        BigDecimal week = BigDecimal.ZERO;
-        BigDecimal month = BigDecimal.ZERO;
-
-        for (int i = 0; i < model.getRowCount(); i++) {
-            String payment = String.valueOf(model.getValueAt(i, 5));
-            if (!COUNT_CREDIT_PAYMENTS && norm(payment).contains("credit")) {
-                continue;   // paying with shop credit is not new money
-            }
-            BigDecimal amount = (BigDecimal) model.getValueAt(i, 6);
-            LocalDate d = LocalDate.parse(((String) model.getValueAt(i, 0)).substring(0, 10));
-
-            all = all.add(amount);
-            if (d.equals(today)) {
-                day = day.add(amount);
-            }
-            if (!d.isBefore(weekStart) && !d.isAfter(today)) {
-                week = week.add(amount);
-            }
-            if (!d.isBefore(monthStart) && !d.isAfter(monthEnd)) {
-                month = month.add(amount);
-            }
-        }
-
-        amountEarnedLbl.setText(peso(all));      // Total Amount Earned
-        amountEarnedLbl1.setText(peso(day));     // Today
-        amountEarnedLbl2.setText(peso(week));    // Last 7 days
-        amountEarnedLbl3.setText(peso(month));   // This month
-    }
-
-    // one fixed demo row
-    private void addSample(int daysAgo, int hour, int minute, boolean member,
-            String action, String payment, String amount) {
-        LocalDateTime when = LocalDate.now().minusDays(daysAgo).atTime(hour, minute);
-        model.addRow(new Object[] {
-            when.format(STAMP),
-            member ? PaymentUtil.USERNAME : "-",
-            member ? PaymentUtil.FULL_NAME : "-",
-            "-",
-            action,
-            payment,
-            new BigDecimal(amount)
-        });
-    }
-
-    // fixed demo history
-    private void loadSampleHistory() {
-        // today
-        addSample(0, 8, 15, true, "PC-Gaming", "Cash", "36.00");
-        addSample(0, 9, 40, false, "PC-Regular", "Cash", "60.00");
-        addSample(0, 10, 5, true, "Printing", "Credit", "9.00");
-        addSample(0, 10, 30, false, "Printing", "Cash", "12.00");
-        addSample(0, 11, 0, true, "Top-up", "Cash", "200.00");
-        // earlier this week
-        addSample(1, 14, 20, true, "PC-Regular", "Cash", "54.00");
-        addSample(1, 16, 45, false, "Printing", "Cash", "20.00");
-        addSample(2, 13, 10, false, "PC-Regular", "Cash", "90.00");
-        addSample(2, 15, 30, true, "Top-up", "Cash", "500.00");
-        addSample(4, 9, 50, true, "PC-Gaming", "Credit", "108.00");
-        addSample(4, 18, 0, false, "PC-Regular", "Cash", "30.00");
-        addSample(6, 12, 25, true, "Printing", "Cash", "18.00");
-        // older
-        addSample(9, 17, 15, false, "PC-Regular", "Cash", "120.00");
-        addSample(15, 11, 35, true, "Top-up", "Cash", "300.00");
-        addSample(22, 10, 10, false, "Printing", "Cash", "45.00");
-        addSample(40, 14, 0, true, "PC-Gaming", "Cash", "72.00");
-        addSample(75, 19, 20, false, "PC-Regular", "Cash", "60.00");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

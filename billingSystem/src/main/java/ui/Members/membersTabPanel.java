@@ -29,7 +29,7 @@ import service.MembershipService;
 
 /**
  *
- * @author koi
+ * @author gerald
  */
 public class membersTabPanel extends javax.swing.JPanel {
 
@@ -38,7 +38,6 @@ public class membersTabPanel extends javax.swing.JPanel {
     private TableRowSorter<DefaultTableModel> membersSorter;
     private final MembershipService membershipService = new MembershipService();
 
-    // Nagtatago ng password pansamantala
     private final Map<String, String> memberPasswords = new HashMap<>();
 
     /**

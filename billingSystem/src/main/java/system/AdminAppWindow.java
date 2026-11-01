@@ -5,7 +5,6 @@
 package system;
 
 import ui.Session.NewSession;
-import ui.Shop.BillingTesterTabPanel;
 import ui.Shop.transactionsTabPanel;
 import ui.Shop.printServicesTabPanel;
 import ui.Shop.shopSettingsTabPanel;
@@ -35,10 +34,9 @@ public class AdminAppWindow extends javax.swing.JFrame {
         mainTabGroup.insertTab("Stations", null, stationsPanel, null, 1);
         membersPanel = new membersTabPanel();
         mainTabGroup.insertTab("Members", null, membersPanel, null, 2);
-        mainTabGroup.insertTab("Billing Tester", null, new BillingTesterTabPanel(), null, 3);
-        mainTabGroup.insertTab("Print Services", null, new printServicesTabPanel(), null, 4);
-        mainTabGroup.insertTab("Transactions", null, new transactionsTabPanel(), null, 5);
-        mainTabGroup.insertTab("Shop Settings", null, new shopSettingsTabPanel(), null, 6);
+        mainTabGroup.insertTab("Print Services", null, new printServicesTabPanel(), null, 3);
+        mainTabGroup.insertTab("Transactions", null, new transactionsTabPanel(), null, 4);
+        mainTabGroup.insertTab("Shop Settings", null, new shopSettingsTabPanel(), null, 5);
 
         mainTabGroup.setSelectedIndex(0);
 

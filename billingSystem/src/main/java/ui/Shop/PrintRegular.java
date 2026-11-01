@@ -24,6 +24,16 @@ public class PrintRegular extends javax.swing.JDialog {
         setupLogic();
         setLocationRelativeTo(parent);
     }
+    private boolean paymentDone = false;
+    private PaymentUtil.Committer committer;
+
+    public boolean isPaid() {
+        return paymentDone;
+    }
+
+    public void setCommitter(PaymentUtil.Committer committer) {
+        this.committer = committer;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -110,8 +120,8 @@ public class PrintRegular extends javax.swing.JDialog {
                             .addComponent(printLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(PayBillLayout.createSequentialGroup()
                                 .addComponent(details)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(calcTotalLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGap(18, 18, 18)
+                                .addComponent(calcTotalLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addGap(26, 26, 26))
         );
         PayBillLayout.setVerticalGroup(
@@ -280,13 +290,19 @@ public class PrintRegular extends javax.swing.JDialog {
     }
 
     // the other class calls this to send the real bill values
+    private String detailsPlain = "";   // plain text for the receipt (the label shows HTML)
+
     public void setBill(String typeText, String detailsText, BigDecimal totalDue) {
         printLbl.setText(typeText);                       // Print - Colored
-        details.setText(detailsText);                     // Short size - 6 page(s) x PHP 5.00
+        detailsPlain = detailsText;
+        details.setText("<html>" + detailsText.replace("&", "&amp;").replace("<", "&lt;")
+                .replace("\n", "<br>") + "</html>");      // one order per line
         calcTotalLbl.setText(PaymentUtil.money(totalDue));
         totalLbl.setText(PaymentUtil.money(totalDue));
         total = totalDue;
         updateChange();
+        pack();                                           // fit the window to the content
+        setLocationRelativeTo(getOwner());
     }
 
     // dark background, orange border, close X, orange rounded button
@@ -394,6 +410,9 @@ public class PrintRegular extends javax.swing.JDialog {
 
     // Finish Payment
     private void finishPayment() {
+        if (paymentDone) {
+            return;   // already saved (double-click)
+        }
         BigDecimal paid = PaymentUtil.parseAmount(payField.getText());
 
         // 1. nothing entered
@@ -412,18 +431,29 @@ public class PrintRegular extends javax.swing.JDialog {
             payField.requestFocusInWindow();
             return;
         }
+                // save to the database first; only show success if it worked
+        if (committer != null) {
+            ProceedPay.setEnabled(false);
+            String error = committer.commit(PaymentUtil.paidBy(false));
+            if (error != null) {
+                ProceedPay.setEnabled(true);
+                javax.swing.JOptionPane.showMessageDialog(this, error,
+                        "Payment Failed", javax.swing.JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+        paymentDone = true;
 
         // confirmation text
         StringBuilder receipt = new StringBuilder("Payment successful.\n\n");
         receipt.append("Service: Print - Regular (").append(printLbl.getText()).append(")\n");
-        receipt.append("Details: ").append(details.getText()).append("\n");
+        receipt.append("Details: ").append(detailsPlain.replace("\n", "\n    ")).append("\n");
         receipt.append("Total Amount: ").append(PaymentUtil.money(total)).append("\n");
         receipt.append("Payment Method: Cash\n");
         receipt.append("Amount Received: ").append(PaymentUtil.money(paid)).append("\n");
         receipt.append("Change: ").append(PaymentUtil.money(paid.subtract(total))).append("\n");
         receipt.append("\nThis transaction has been recorded in Transactions.");
 
-        PaymentUtil.logger.log(false, "Printing", total, "Cash");
 
         java.awt.Window owner = getOwner();
         dispose();

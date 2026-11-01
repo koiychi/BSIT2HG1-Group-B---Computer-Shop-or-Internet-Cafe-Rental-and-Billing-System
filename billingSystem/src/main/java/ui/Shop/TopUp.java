@@ -24,6 +24,27 @@ public TopUp(java.awt.Frame parent, boolean modal) {
     setupLogic();
     setLocationRelativeTo(parent);
 }
+    private boolean paymentDone = false;
+    private PaymentUtil.Committer committer;
+    private BigDecimal currentBalance = BigDecimal.ZERO;
+
+    public boolean isPaid() {
+        return paymentDone;
+    }
+
+    public void setCommitter(PaymentUtil.Committer committer) {
+        this.committer = committer;
+    }
+
+    // the member's balance before the top up (used for the receipt only)
+    public void setCurrentBalance(BigDecimal balance) {
+        currentBalance = balance;
+    }
+
+    // the amount being credited, so the caller can save it
+    public BigDecimal getTotal() {
+        return total;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -249,8 +270,8 @@ private BigDecimal total = BigDecimal.ZERO;   // the amount being credited
 
 private void setupLogic() {
     // account details (placeholders until the real account is sent in with setAccount)
-    usernameLbl.setText(PaymentUtil.USERNAME);
-    nameCustomerLbl.setText(PaymentUtil.FULL_NAME);
+    usernameLbl.setText("(no member selected)");
+    nameCustomerLbl.setText("");
 
     // amount to credit choices (can be replaced with setAmountOptions)
     jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {
@@ -288,6 +309,8 @@ private void setupLogic() {
 public void setAccount(String username, String fullName) {
     usernameLbl.setText(username);
     nameCustomerLbl.setText(fullName);
+    pack();                              // re-fit the window now that the name line has text
+    setLocationRelativeTo(getOwner());   // keep it centered
 }
 
 // the amounts the cashier can pick from, e.g. "PHP 50.00", "PHP 100.00"
@@ -406,6 +429,9 @@ private void paintTree(java.awt.Container container, java.awt.Color bg) {
 
 // Finish Payment
 private void finishPayment() {
+    if (paymentDone) {
+        return;   // already saved (double-click)
+    }
     BigDecimal paid = PaymentUtil.parseAmount(payField.getText());
 
     // 1. nothing entered
@@ -425,8 +451,19 @@ private void finishPayment() {
         return;
     }
 
-    // add the credit
-    PaymentUtil.memberCredit = PaymentUtil.memberCredit.add(total);
+    // save to the database first (adds the credit); only show success if it worked
+    if (committer != null) {
+        ProceedPay.setEnabled(false);
+        String error = committer.commit(PaymentUtil.paidBy(false));   // top ups are cash only
+        if (error != null) {
+            ProceedPay.setEnabled(true);
+            javax.swing.JOptionPane.showMessageDialog(this, error,
+                    "Payment Failed", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    }
+    paymentDone = true;
+    BigDecimal newBalance = currentBalance.add(total);   // receipt only; the database is already updated
 
     // confirmation text
     StringBuilder receipt = new StringBuilder("Top up successful.\n\n");
@@ -436,50 +473,15 @@ private void finishPayment() {
     receipt.append("Payment Method: Cash\n");
     receipt.append("Amount Received: ").append(PaymentUtil.money(paid)).append("\n");
     receipt.append("Change: ").append(PaymentUtil.money(paid.subtract(total))).append("\n");
-    receipt.append("Remaining Credit: ").append(PaymentUtil.money(PaymentUtil.memberCredit)).append("\n");
+    receipt.append("Remaining Credit: ").append(PaymentUtil.money(newBalance)).append("\n");
     receipt.append("\nThis transaction has been recorded in Transactions.");
 
-    PaymentUtil.logger.log(true, "Top-up", total, "Cash");
 
     java.awt.Window owner = getOwner();
     dispose();
     javax.swing.JOptionPane.showMessageDialog(owner, receipt.toString(),
             "Payment Confirmation", javax.swing.JOptionPane.INFORMATION_MESSAGE);
 }
-
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                TopUp dialog = new TopUp(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel InputPayment;

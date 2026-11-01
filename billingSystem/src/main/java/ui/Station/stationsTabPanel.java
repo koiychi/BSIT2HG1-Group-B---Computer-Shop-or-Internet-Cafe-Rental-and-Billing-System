@@ -6,7 +6,7 @@ package ui.Station;
 
 /**
  *
- * @author koi
+ * @author gian
  */
 
 import service.StationsService;
