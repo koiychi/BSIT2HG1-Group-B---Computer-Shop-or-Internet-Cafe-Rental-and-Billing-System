@@ -18,6 +18,7 @@ public class SelectMemberTopUp extends javax.swing.JDialog {
     private final java.util.List<logic.MemberCustomer> allMembers = new java.util.ArrayList<>();
     private final java.util.List<logic.MemberCustomer> shown = new java.util.ArrayList<>();
     private String selectedUsername = null;
+    private final service.MembershipService membershipService = new service.MembershipService();
     public SelectMemberTopUp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         setUndecorated(true);
@@ -37,7 +38,7 @@ public class SelectMemberTopUp extends javax.swing.JDialog {
 
         searchBar.setText("");   // clear the typed-in hint, use a real placeholder instead
         searchBar.putClientProperty("JTextField.placeholderText", "Search Member...");
-        allMembers.addAll(system.DatabaseManager.getAllMembers());
+        allMembers.addAll(membershipService.getMembers());
 
         // filter the combo box while typing
         searchBar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {

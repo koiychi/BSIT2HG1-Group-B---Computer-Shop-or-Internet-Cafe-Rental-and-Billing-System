@@ -26,6 +26,44 @@ public class MembershipService {
                   return DatabaseManager.deleteMember(username);
          }
 
+         public MemberCustomer findMember(String username) {
+                           if (username == null || username.isBlank()) {
+                                    return null;
+                           }
+                           return DatabaseManager.findMember(username.trim());
+         }
+
+         public int getCustomerIdByUsername(String username) {
+                           if (username == null || username.isBlank()) {
+                                    return -1;
+                           }
+                           return DatabaseManager.getCustomerIdByUsername(username.trim());
+         }
+
+         public int getOrCreateRegularCustomerId(String fullName) {
+                           if (fullName == null || fullName.isBlank()) {
+                                    return -1;
+                           }
+                           return DatabaseManager.getOrCreateRegularID(fullName);
+         }
+
+         public String getCustomerFullName(int customerId) {
+                  if (customerId <= 0) {
+                           return null;
+                  }
+                  return DatabaseManager.getCustomerFullName(customerId);
+         }
+
+         public void addCredit(int customerId, double amount) throws java.sql.SQLException {
+                           if (customerId <= 0) {
+                                    throw new IllegalArgumentException("A valid member is required.");
+                           }
+                           if (!Double.isFinite(amount) || amount <= 0) {
+                                    throw new IllegalArgumentException("Top-up amount must be greater than zero.");
+                           }
+                           DatabaseManager.addCredit(customerId, amount);
+         }
+
          //ADDING A MEMBER CUSTOMER
 
          public boolean addMemberCustomer(
