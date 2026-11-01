@@ -2,23 +2,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package system;
+package bsit2hg1groupb.billingSystem;
 
 /**
  *
  * @author koi
  */
-import logic.MemberCustomer;
+import bsit2hg1groupb.billingSystem.system.GamingStation;
+import bsit2hg1groupb.billingSystem.system.RegularStation;
+import bsit2hg1groupb.billingSystem.system.Station;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class DatabaseManager {
 
@@ -26,23 +28,29 @@ public class DatabaseManager {
 // INITIALIZATION
 // ==========================================
     private static final String DBFile = "jdbc:sqlite:compShopDatabase.db";
-    private static boolean tablesInitialized = false;
+    private static Connection connection = null;
 
-    public static Connection getConnection() throws SQLException {
-        Connection conn = DriverManager.getConnection(DBFile);
+    public static Connection getConnection() {
+        try {
+            if (connection == null || connection.isClosed()) {
+                Class.forName("org.sqlite.JDBC");
+                connection = DriverManager.getConnection(DBFile);
 
-        try (Statement stmt = conn.createStatement()) {
-            stmt.execute("PRAGMA foreign_keys = ON;");
+                try (Statement stmt = connection.createStatement()) {
+                    stmt.execute("PRAGMA foreign_keys = ON;");
+                }
+
+                initializeTables();
+            }
+        } catch (ClassNotFoundException e) {
+            System.err.println("Driver Error: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Database Connection Error: " + e.getMessage());
         }
-
-        return conn;
+        return connection;
     }
 
-    public static synchronized void initializeTables() {
-        if (tablesInitialized) {
-            return;
-        }
-
+    private static void initializeTables() {
         try (Statement stmt = getConnection().createStatement()) {
 
             // 1. CUSTOMER (SUPERTYPE)
@@ -72,6 +80,7 @@ public class DatabaseManager {
                     + "HourlyRate REAL NOT NULL, "
                     + "CPU_Model TEXT NOT NULL, "
                     + "RAM_GB INTEGER NOT NULL, "
+                    + "HasInternet INTEGER NOT NULL DEFAULT 0, "
                     + "AvailabilityStatus TEXT DEFAULT 'Available' CHECK (AvailabilityStatus IN ('Available', 'Occupied', 'Maintenance')), "
                     + "SessionEndTime TEXT, "
                     + "StationType TEXT NOT NULL CHECK (StationType IN ('REGULAR', 'GAMING')));");
@@ -79,6 +88,7 @@ public class DatabaseManager {
             // 2A. REGULAR_STATION (SUBTYPE)
             stmt.execute("CREATE TABLE IF NOT EXISTS REGULAR_STATION ("
                     + "StationID TEXT PRIMARY KEY, "
+                    + "HasPrinter INTEGER NOT NULL DEFAULT 0, "
                     + "FOREIGN KEY (StationID) REFERENCES STATION(StationID) ON DELETE CASCADE);");
 
             // 2B. GAMING_STATION (SUBTYPE)
@@ -87,6 +97,18 @@ public class DatabaseManager {
                     + "GPU_Model TEXT NOT NULL, "
                     + "Monitor_Hz INTEGER NOT NULL, "
                     + "FOREIGN KEY (StationID) REFERENCES STATION(StationID) ON DELETE CASCADE);");
+
+            // 3. APPS & STATION_APPS 
+            stmt.execute("CREATE TABLE IF NOT EXISTS INSTALLED_APPS ("
+                    + "AppID INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + "AppName TEXT UNIQUE NOT NULL);");
+
+            stmt.execute("CREATE TABLE IF NOT EXISTS STATION_APPS ("
+                    + "StationID TEXT NOT NULL, "
+                    + "AppID INTEGER NOT NULL, "
+                    + "PRIMARY KEY (StationID, AppID), "
+                    + "FOREIGN KEY (StationID) REFERENCES STATION(StationID) ON DELETE CASCADE, "
+                    + "FOREIGN KEY (AppID) REFERENCES INSTALLED_APPS(AppID) ON DELETE CASCADE);");
 
             // 4. TRANSACTION
             stmt.execute("CREATE TABLE IF NOT EXISTS TRANSACTIONS ("
@@ -99,60 +121,38 @@ public class DatabaseManager {
                     + "PaidBy TEXT NOT NULL CHECK (PaidBy IN ('Cash', 'Member Credits')), "
                     + "FOREIGN KEY (CustomerID) REFERENCES CUSTOMER(CustomerID), "
                     + "FOREIGN KEY (StationID) REFERENCES STATION(StationID) ON DELETE SET NULL);");
+                        // Upgrade older database files that were created before these columns existed
+            addColumnIfMissing(stmt, "STATION", "HasInternet", "INTEGER NOT NULL DEFAULT 0");
+            addColumnIfMissing(stmt, "REGULAR_STATION", "HasPrinter", "INTEGER NOT NULL DEFAULT 0");
 
-            stmt.execute("CREATE TABLE IF NOT EXISTS SESSIONS ("
-                    + "SessionID INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + "CustomerID INTEGER NOT NULL, "
-                    + "StationID TEXT NOT NULL, "
-                    + "StartTime TEXT DEFAULT(datetime('now', 'localtime')), "
-                    + "DurationMinutes INTEGER NOT NULL, "
-                    + "EndTime TEXT NOT NULL, "
-                    + "HourlyRate REAL NOT NULL, "
-                    + "DiscountRate REAL DEFAULT 0.0, "
-                    + "TotalAmount REAL NOT NULL, "
-                    + "FOREIGN KEY (CustomerID) REFERENCES CUSTOMER(CustomerID), "
-                    + "FOREIGN KEY (StationID) REFERENCES STATION(StationID));");
-
-            stmt.execute("CREATE TABLE IF NOT EXISTS SHOP_STATUS ("
-                    + "StatusID INTEGER PRIMARY KEY CHECK (StatusID = 1), "
-                    + "IsOpen INTEGER NOT NULL CHECK (IsOpen IN (0, 1)));");
-            stmt.execute("INSERT OR IGNORE INTO SHOP_STATUS (StatusID, IsOpen) VALUES (1, 1);");
-
-            tablesInitialized = true;
             System.out.println("Database initialized successfully!");
 
         } catch (SQLException e) {
             System.err.println("Error initializing tables: " + e.getMessage());
         }
     }
-
-    public static boolean getShopOpenStatus() throws SQLException {
-        initializeTables();
-        String sql = "SELECT IsOpen FROM SHOP_STATUS WHERE StatusID = 1";
-        try (Connection c = getConnection();
-                PreparedStatement ps = c.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()) {
-            if (!rs.next()) {
-                throw new SQLException("Shop status has not been initialized.");
-            }
-            return rs.getInt("IsOpen") == 1;
-        }
-    }
-
-    public static void setShopOpenStatus(boolean open) throws SQLException {
-        initializeTables();
-        String sql = "UPDATE SHOP_STATUS SET IsOpen = ? WHERE StatusID = 1";
-        try (Connection c = getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setInt(1, open ? 1 : 0);
-            if (ps.executeUpdate() != 1) {
-                throw new SQLException("Could not update the shop status.");
+        // Adds a column only if the table doesn't have it yet (safe to run every time)
+    private static void addColumnIfMissing(Statement stmt, String table, String column, String definition)
+            throws SQLException {
+        boolean exists = false;
+        try (ResultSet rs = stmt.executeQuery("PRAGMA table_info(" + table + ")")) {
+            while (rs.next()) {
+                if (column.equalsIgnoreCase(rs.getString("name"))) {
+                    exists = true;
+                    break;
+                }
             }
         }
+        if (!exists) {
+            stmt.execute("ALTER TABLE " + table + " ADD COLUMN " + column + " " + definition);
+            System.out.println("Added missing column " + table + "." + column);
+        }
     }
-    // ==========================================
-    // ADDING CUSTOMERS (METHOD OVERLOADING)
-    // ==========================================
-
+   
+// ==========================================
+// ADDING CUSTOMERS (METHOD OVERLOADING)
+// ==========================================
+    
     // 1. BASE HELPER METHOD
     private static int insertBaseCustomer(String firstName, String lastName, String customerType) {
         String sql = "INSERT INTO CUSTOMER (FirstName, LastName, CustomerType) VALUES (?, ?, ?)";
@@ -192,71 +192,6 @@ public class DatabaseManager {
         }
     }
 
-    public static int getRegularID(String fullName) {
-        String[] parts = fullName.trim().split(" ", 2);
-        String firstName = parts[0];
-        String lastName = (parts.length > 1) ? parts[1] : "";
-        String sql = "SELECT c.CustomerID FROM CUSTOMER c "
-                + "JOIN REGULAR_CUSTOMER r ON c.CustomerID = r.CustomerID "
-                + "WHERE LOWER(c.FirstName) = LOWER(?) AND LOWER(c.LastName) = LOWER(?)";
-        try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
-            pstmt.setString(1, firstName);
-            pstmt.setString(2, lastName);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("CustomerID");
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("Error finding regular customer: " + e.getMessage());
-            return -1;
-        }
-
-        // 2. Not found: create a new regular customer
-        int id = insertBaseCustomer(firstName, lastName, "REGULAR");
-        if (id == -1) {
-            return -1;
-        }
-        try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement("INSERT INTO REGULAR_CUSTOMER (CustomerID) VALUES (?)")) {
-            pstmt.setInt(1, id);
-            pstmt.executeUpdate();
-            return id;
-        } catch (SQLException e) {
-            System.err.println("Error creating regular customer: " + e.getMessage());
-            return -1;
-        }
-    }
-
-    public static int getCustomerIdByUsername(String username) {
-        String sql = "SELECT CustomerID FROM MEMBER_CUSTOMER WHERE Username = ?";
-        try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
-            pstmt.setString(1, username);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("CustomerID");
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("Error finding member ID: " + e.getMessage());
-        }
-        return -1;
-    }
-
-    public static double getMemberDiscount(int customerId) {
-        String sql = "SELECT DiscountRate FROM MEMBER_CUSTOMER WHERE CustomerID = ?";
-        try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
-            pstmt.setInt(1, customerId);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getDouble("DiscountRate");
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("Error reading member discount: " + e.getMessage());
-        }
-        return 0.0;
-    }
-
     // 3. OVERLOADED METHOD 2: MEMBER CUSTOMER
     public static boolean addCustomer(String firstName, String lastName, String user, String pass, double balance) {
         int id = insertBaseCustomer(firstName, lastName, "MEMBER");
@@ -279,309 +214,6 @@ public class DatabaseManager {
         }
     }
 
-    // READ STATIONS BY TYPE
-    public static List<Station> getStationsByType(String type) throws SQLException {
-        List<Station> list = new ArrayList<>();
-        String sql = "SELECT * FROM STATION WHERE UPPER(StationType) = UPPER(?)";
-
-        PreparedStatement pstmt = getConnection().prepareStatement(sql);
-        pstmt.setString(1, type);
-        ResultSet rs = pstmt.executeQuery();
-
-        while (rs.next()) {
-            list.add(new Station(
-                    rs.getString("StationID"),
-                    rs.getString("StationType"),
-                    rs.getString("AvailabilityStatus"),
-                    rs.getDouble("HourlyRate")));
-        }
-        return list;
-    }
-
-// ==========================================
-// READING MEMBER CUSTOMERS
-// ==========================================
-    // READ MEMBER BY USERNAME
-    public static MemberCustomer findMember(String username) {
-        String sql = "SELECT c.FirstName, c.LastName, "
-                + "m.Username, m.Password, m.CreditBalance, m.DiscountRate "
-                + "FROM CUSTOMER c "
-                + "JOIN MEMBER_CUSTOMER m ON c.CustomerID = m.CustomerID "
-                + "WHERE m.Username = ?";
-
-        try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
-
-            pstmt.setString(1, username);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (!rs.next()) {
-                    return null;
-                }
-
-                return new MemberCustomer(
-                        rs.getString("FirstName") + " " + rs.getString("LastName"),
-                        rs.getString("Username"),
-                        rs.getString("Password"),
-                        rs.getDouble("CreditBalance"),
-                        rs.getDouble("DiscountRate")
-                );
-            }
-        } catch (SQLException e) {
-            System.err.println("Error finding member: " + e.getMessage());
-            return null;
-        }
-    }
-
-    // READ ALL MEMBERS
-    public static List<MemberCustomer> getAllMembers() {
-        String sql = "SELECT c.FirstName, c.LastName, "
-                + "m.Username, m.Password, m.CreditBalance, m.DiscountRate "
-                + "FROM CUSTOMER c "
-                + "JOIN MEMBER_CUSTOMER m ON c.CustomerID = m.CustomerID "
-                + "ORDER BY c.LastName, c.FirstName";
-        List<MemberCustomer> members = new ArrayList<>();
-
-        try (Connection c = getConnection(); Statement stmt = c.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
-
-            while (rs.next()) {
-                members.add(new MemberCustomer(
-                        rs.getString("FirstName") + " " + rs.getString("LastName"),
-                        rs.getString("Username"),
-                        rs.getString("Password"),
-                        rs.getDouble("CreditBalance"),
-                        rs.getDouble("DiscountRate")
-                ));
-            }
-
-            return members;
-        } catch (SQLException e) {
-            System.err.println("Error reading members: " + e.getMessage());
-            return members;
-        }
-    }
-
-    // UPDATE MEMBER
-    public static boolean updateMember(int customerId, String firstName, String lastName,
-            String username, String password, double creditBalance, double discountRate) {
-        String customerSql = "UPDATE CUSTOMER SET FirstName = ?, LastName = ? WHERE CustomerID = ?";
-        String memberSql = "UPDATE MEMBER_CUSTOMER SET Username = ?, Password = ?, "
-                + "CreditBalance = ?, DiscountRate = ? WHERE CustomerID = ?";
-
-        try (Connection c = getConnection()) {
-            c.setAutoCommit(false);
-            try (PreparedStatement customerStmt = c.prepareStatement(customerSql); PreparedStatement memberStmt = c.prepareStatement(memberSql)) {
-                customerStmt.setString(1, firstName);
-                customerStmt.setString(2, lastName);
-                customerStmt.setInt(3, customerId);
-                customerStmt.executeUpdate();
-
-                memberStmt.setString(1, username);
-                memberStmt.setString(2, password);
-                memberStmt.setDouble(3, creditBalance);
-                memberStmt.setDouble(4, discountRate);
-                memberStmt.setInt(5, customerId);
-                memberStmt.executeUpdate();
-
-                c.commit();
-                return true;
-            } catch (SQLException e) {
-                c.rollback();
-                System.err.println("Member update rolled back: " + e.getMessage());
-                return false;
-            } finally {
-                c.setAutoCommit(true);
-            }
-        } catch (SQLException e) {
-            System.err.println("Error updating member: " + e.getMessage());
-            return false;
-        }
-    }
-
-    // DELETE CUSTOMER
-    public static boolean deleteCustomer(int customerId) {
-        String sql = "DELETE FROM CUSTOMER WHERE CustomerID = ?";
-
-        try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
-            pstmt.setInt(1, customerId);
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Error deleting customer: " + e.getMessage());
-            return false;
-        }
-    }
-
-    // RETRIEVE CUSTOMER
-    public static ResultSet getCustomer(int customerId) {
-        String sql = "SELECT * FROM CUSTOMER WHERE CustomerID = ?";
-
-        try {
-            PreparedStatement pstmt = getConnection().prepareStatement(sql);
-            pstmt.setInt(1, customerId);
-            return pstmt.executeQuery();
-        } catch (SQLException e) {
-            System.err.println("Error reading customer: " + e.getMessage());
-            return null;
-        }
-    }
-
-    // UPDATE CUSTOMER
-    public static boolean updateCustomer(int customerId, String firstName, String lastName) {
-        String sql = "UPDATE CUSTOMER SET FirstName = ?, LastName = ? WHERE CustomerID = ?";
-
-        try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
-            pstmt.setString(1, firstName);
-            pstmt.setString(2, lastName);
-            pstmt.setInt(3, customerId);
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Error updating customer: " + e.getMessage());
-            return false;
-        }
-    }
-
-// ==========================================
-// STATION CRUD
-// ==========================================
-    // READ STATION
-    public static ResultSet getStation(String stationId) {
-        String sql = "SELECT * FROM STATION WHERE StationID = ?";
-
-        try {
-            PreparedStatement pstmt = getConnection().prepareStatement(sql);
-            pstmt.setString(1, stationId);
-            return pstmt.executeQuery();
-        } catch (SQLException e) {
-            System.err.println("Error reading station: " + e.getMessage());
-            return null;
-        }
-    }
-
-// ==========================================
-// TRANSACTION CRUD
-// ==========================================
-    // READ TRANSACTION
-    public static ResultSet getTransaction(int transactionId) {
-        String sql = "SELECT * FROM TRANSACTIONS WHERE TransactionID = ?";
-
-        try {
-            PreparedStatement pstmt = getConnection().prepareStatement(sql);
-            pstmt.setInt(1, transactionId);
-            return pstmt.executeQuery();
-        } catch (SQLException e) {
-            System.err.println("Error reading transaction: " + e.getMessage());
-            return null;
-        }
-    }
-
-    // READ ALL TRANSACTIONS
-    public static ResultSet getAllTransactions() {
-        String sql = "SELECT * FROM TRANSACTIONS ORDER BY TransactionID ASC";
-
-        try {
-            Statement stmt = getConnection().createStatement();
-            return stmt.executeQuery(sql);
-        } catch (SQLException e) {
-            System.err.println("Error reading transactions: " + e.getMessage());
-            return null;
-        }
-    }
-
-    public static int startSession(int customerId, String stationId, int durationMinutes, String paidBy) throws SQLException {
-        if (!ShopManager.isShopOpen()) {
-            throw new SQLException("The shop is closed. New sessions cannot be created.");
-        }
-
-        String endTime = LocalDateTime.now().plusMinutes(durationMinutes).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-
-        try (Connection c = getConnection()) {
-            c.setAutoCommit(false);
-            try {
-                double rate = 0;
-                try (PreparedStatement ps = c.prepareStatement("SELECT HourlyRate, AvailabilityStatus FROM STATION WHERE StationID = ?")) {
-                    ps.setString(1, stationId);
-                    try (ResultSet rs = ps.executeQuery()) {
-                        if (!rs.next()) {
-                            throw new SQLException("Station not found.");
-                        }
-                        if (!"Available".equalsIgnoreCase(rs.getString("AvailabilityStatus"))) {
-                            throw new SQLException("This station is no longer available.");
-                        }
-                        rate = rs.getDouble("HourlyRate");
-                    }
-                }
-                double discount = 0.0;
-                double balance = 0.0;
-                try (PreparedStatement ps = c.prepareStatement(
-                        "SELECT DiscountRate, CreditBalance FROM MEMBER_CUSTOMER WHERE CustomerID = ?")) {
-                    ps.setInt(1, customerId);
-                    try (ResultSet rs = ps.executeQuery()) {
-                        if (rs.next()) {
-                            discount = rs.getDouble("DiscountRate");
-                            balance = rs.getDouble("CreditBalance");
-                        }
-                    }
-                }
-
-                double total = rate * (durationMinutes / 60.0) * (1 - discount);
-
-                if ("Member Credits".equals(paidBy)) {
-                    if (balance < total) {
-                        throw new SQLException("Not enough credit balance.");
-                    }
-                    try (PreparedStatement ps = c.prepareStatement(
-                            "UPDATE MEMBER_CUSTOMER SET CreditBalance = CreditBalance - ? WHERE CustomerID = ?")) {
-                        ps.setDouble(1, total);
-                        ps.setInt(2, customerId);
-                        ps.executeUpdate();
-                    }
-                }
-                int sessionId;
-                try (PreparedStatement ps = c.prepareStatement(
-                        "INSERT INTO SESSIONS (CustomerID, StationID, DurationMinutes, EndTime, HourlyRate, DiscountRate, TotalAmount) "
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
-                    ps.setInt(1, customerId);
-                    ps.setString(2, stationId);
-                    ps.setInt(3, durationMinutes);
-                    ps.setString(4, endTime);
-                    ps.setDouble(5, rate);
-                    ps.setDouble(6, discount);
-                    ps.setDouble(7, total);
-                    ps.executeUpdate();
-                    try (ResultSet keys = ps.getGeneratedKeys()) {
-                        if (!keys.next()) {
-                            throw new SQLException("Could not create the session.");
-                        }
-                        sessionId = keys.getInt(1);
-                    }
-                }
-                try (PreparedStatement ps = c.prepareStatement(
-                        "UPDATE STATION SET AvailabilityStatus = 'Occupied', SessionEndTime = ? WHERE StationID = ?")) {
-                    ps.setString(1, endTime);
-                    ps.setString(2, stationId);
-                    ps.executeUpdate();
-                }
-                try (PreparedStatement ps = c.prepareStatement(
-                        "INSERT INTO TRANSACTIONS (CustomerID, StationID, TransactionType, Amount, PaidBy) VALUES (?, ?, ?, ?, ?)")) {
-                    ps.setInt(1, customerId);
-                    ps.setString(2, stationId);
-                    ps.setString(3, "PC Rental");
-                    ps.setDouble(4, total);
-                    ps.setString(5, paidBy);
-                    ps.executeUpdate();
-                }
-
-                c.commit();
-                return sessionId;
-
-            } catch (SQLException e) {
-                c.rollback();
-                throw e;
-            } finally {
-                c.setAutoCommit(true);
-            }
-        }
-    }
-
 // ==========================================
 // UPDATING STATIONS
 // ==========================================
@@ -591,7 +223,7 @@ public class DatabaseManager {
 
         try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
 
-            pstmt.setString(1, status);
+            pstmt.setString(1, toDbStatus(status));
             pstmt.setString(2, sessionEndTime);
             pstmt.setString(3, stationId);
 
@@ -646,7 +278,7 @@ public class DatabaseManager {
                 c.commit(); // Transaction save
                 return true;
             } catch (SQLException e) {
-                c.rollback(); // Undo 
+                c.rollback(); // Undo kapag nagka-error
                 System.err.println("Transaction rolled back: " + e.getMessage());
                 return false;
             } finally {
@@ -657,17 +289,245 @@ public class DatabaseManager {
             return false;
         }
     }
+// ==========================================
+// STATIONS: CREATE / READ / UPDATE / DELETE
+// ==========================================
+
+    // --- Status translation: UI says "In Use", database says "Occupied" ---
+    private static String toDbStatus(String uiStatus) {
+        return Station.IN_USE.equals(uiStatus) ? "Occupied" : uiStatus;
+    }
+
+    private static String fromDbStatus(String dbStatus) {
+        return "Occupied".equals(dbStatus) ? Station.IN_USE : dbStatus;
+    }
+
+    // --- Duplicate check (friendly pre-check; the PRIMARY KEY is the real guarantee) ---
+    public static boolean stationExists(String stationId) {
+        String sql = "SELECT 1 FROM STATION WHERE StationID = ?";
+        try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
+            pstmt.setString(1, stationId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error checking station: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // --- CREATE: saves STATION + subtype table + apps, all-or-nothing ---
+    public static boolean insertStation(Station s) {
+        String sql = "INSERT INTO STATION (StationID, HourlyRate, CPU_Model, RAM_GB, "
+                + "AvailabilityStatus, StationType, HasInternet) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection c = getConnection()) {
+            c.setAutoCommit(false);
+            try {
+                try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+                    pstmt.setString(1, s.getStationID());
+                    pstmt.setDouble(2, s.getHourlyRate());
+                    pstmt.setString(3, s.getCpu());
+                    pstmt.setInt(4, s.getRamGb());
+                    pstmt.setString(5, toDbStatus(s.getStatus()));
+                    pstmt.setString(6, s.getType().toUpperCase());   // "REGULAR" / "GAMING"
+                    pstmt.setInt(7, s.hasInternet() ? 1 : 0);
+                    pstmt.executeUpdate();
+                }
+                insertSubtype(c, s);
+                c.commit();
+                return true;
+            } catch (SQLException e) {
+                c.rollback();
+                System.err.println("Station insert rolled back: " + e.getMessage());
+                return false;
+            } finally {
+                c.setAutoCommit(true);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error inserting station: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // Writes the subtype row and the installed apps, using the SAME connection
+    private static void insertSubtype(Connection c, Station s) throws SQLException {
+        if (s instanceof GamingStation) {
+            GamingStation g = (GamingStation) s;
+            try (PreparedStatement pstmt = c.prepareStatement(
+                    "INSERT INTO GAMING_STATION (StationID, GPU_Model, Monitor_Hz) VALUES (?, ?, ?)")) {
+                pstmt.setString(1, g.getStationID());
+                pstmt.setString(2, g.getGpu());
+                pstmt.setInt(3, g.getMonitorHz());
+                pstmt.executeUpdate();
+            }
+            saveApps(c, g.getStationID(), g.getGamesInstalled());
+        } else if (s instanceof RegularStation) {
+            RegularStation r = (RegularStation) s;
+            try (PreparedStatement pstmt = c.prepareStatement(
+                    "INSERT INTO REGULAR_STATION (StationID, HasPrinter) VALUES (?, ?)")) {
+                pstmt.setString(1, r.getStationID());
+                pstmt.setInt(2, r.hasPrinter() ? 1 : 0);
+                pstmt.executeUpdate();
+            }
+            saveApps(c, r.getStationID(), r.getSoftwareList());
+        }
+    }
+
+    // Adds each app name to INSTALLED_APPS (if new) and links it to the station
+    private static void saveApps(Connection c, String stationId, List<String> apps) throws SQLException {
+        String addApp = "INSERT OR IGNORE INTO INSTALLED_APPS (AppName) VALUES (?)";
+        String link = "INSERT OR IGNORE INTO STATION_APPS (StationID, AppID) "
+                + "SELECT ?, AppID FROM INSTALLED_APPS WHERE AppName = ?";
+        try (PreparedStatement p1 = c.prepareStatement(addApp); PreparedStatement p2 = c.prepareStatement(link)) {
+            for (String app : apps) {
+                p1.setString(1, app);
+                p1.executeUpdate();
+                p2.setString(1, stationId);
+                p2.setString(2, app);
+                p2.executeUpdate();
+            }
+        }
+    }
+
+    // --- READ: loads every station as a RegularStation or GamingStation object ---
+    public static List<Station> getAllStations() {
+        List<Station> stations = new ArrayList<>();
+        String sql = "SELECT s.StationID, s.HourlyRate, s.CPU_Model, s.RAM_GB, s.AvailabilityStatus, "
+                + "s.StationType, s.HasInternet, g.GPU_Model, g.Monitor_Hz, r.HasPrinter "
+                + "FROM STATION s "
+                + "LEFT JOIN GAMING_STATION g ON s.StationID = g.StationID "
+                + "LEFT JOIN REGULAR_STATION r ON s.StationID = r.StationID "
+                + "ORDER BY s.StationID";
+
+        try (Connection c = getConnection()) {
+            Map<String, List<String>> appsByStation = loadAppsByStation(c);
+
+            try (Statement stmt = c.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    String id = rs.getString("StationID");
+                    try {
+                        double rate = rs.getDouble("HourlyRate");
+                        boolean internet = rs.getInt("HasInternet") == 1;
+                        String status = fromDbStatus(rs.getString("AvailabilityStatus"));
+                        String cpu = rs.getString("CPU_Model");
+                        int ram = rs.getInt("RAM_GB");
+                        List<String> apps = appsByStation.getOrDefault(id, new ArrayList<String>());
+
+                        if ("GAMING".equals(rs.getString("StationType"))) {
+                            stations.add(new GamingStation(id, rate, internet, status, cpu, ram,
+                                    rs.getString("GPU_Model"), rs.getInt("Monitor_Hz"), apps));
+                        } else {
+                            stations.add(new RegularStation(id, rate, internet, status, cpu, ram,
+                                    apps, rs.getInt("HasPrinter") == 1));
+                        }
+                    } catch (IllegalArgumentException e) {
+                        // A bad row should not hide every other station
+                        System.err.println("Skipped invalid station " + id + ": " + e.getMessage());
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error loading stations: " + e.getMessage());
+        }
+        return stations;
+    }
+
+    private static Map<String, List<String>> loadAppsByStation(Connection c) throws SQLException {
+        Map<String, List<String>> map = new HashMap<>();
+        String sql = "SELECT sa.StationID, a.AppName FROM STATION_APPS sa "
+                + "JOIN INSTALLED_APPS a ON sa.AppID = a.AppID ORDER BY a.AppName";
+        try (Statement stmt = c.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                map.computeIfAbsent(rs.getString(1), k -> new ArrayList<String>()).add(rs.getString(2));
+            }
+        }
+        return map;
+    }
+
+    // --- UPDATE: edits everything about one station (ID and type cannot change) ---
+    public static boolean updateStation(Station s) {
+        String sqlBase = "UPDATE STATION SET HourlyRate = ?, CPU_Model = ?, RAM_GB = ?, "
+                + "AvailabilityStatus = ?, HasInternet = ? WHERE StationID = ?";
+
+        try (Connection c = getConnection()) {
+            c.setAutoCommit(false);
+            try {
+                try (PreparedStatement pstmt = c.prepareStatement(sqlBase)) {
+                    pstmt.setDouble(1, s.getHourlyRate());
+                    pstmt.setString(2, s.getCpu());
+                    pstmt.setInt(3, s.getRamGb());
+                    pstmt.setString(4, toDbStatus(s.getStatus()));
+                    pstmt.setInt(5, s.hasInternet() ? 1 : 0);
+                    pstmt.setString(6, s.getStationID());
+                    if (pstmt.executeUpdate() == 0) {          // no such station
+                        c.rollback();
+                        return false;
+                    }
+                }
+
+                if (s instanceof GamingStation) {
+                    GamingStation g = (GamingStation) s;
+                    try (PreparedStatement pstmt = c.prepareStatement(
+                            "UPDATE GAMING_STATION SET GPU_Model = ?, Monitor_Hz = ? WHERE StationID = ?")) {
+                        pstmt.setString(1, g.getGpu());
+                        pstmt.setInt(2, g.getMonitorHz());
+                        pstmt.setString(3, g.getStationID());
+                        pstmt.executeUpdate();
+                    }
+                } else if (s instanceof RegularStation) {
+                    RegularStation r = (RegularStation) s;
+                    try (PreparedStatement pstmt = c.prepareStatement(
+                            "UPDATE REGULAR_STATION SET HasPrinter = ? WHERE StationID = ?")) {
+                        pstmt.setInt(1, r.hasPrinter() ? 1 : 0);
+                        pstmt.setString(2, r.getStationID());
+                        pstmt.executeUpdate();
+                    }
+                }
+
+                // Replace the app list: remove old links, add the current ones
+                try (PreparedStatement pstmt = c.prepareStatement(
+                        "DELETE FROM STATION_APPS WHERE StationID = ?")) {
+                    pstmt.setString(1, s.getStationID());
+                    pstmt.executeUpdate();
+                }
+                List<String> apps = (s instanceof GamingStation)
+                        ? ((GamingStation) s).getGamesInstalled()
+                        : ((RegularStation) s).getSoftwareList();
+                saveApps(c, s.getStationID(), apps);
+
+                c.commit();
+                return true;
+            } catch (SQLException e) {
+                c.rollback();
+                System.err.println("Station update rolled back: " + e.getMessage());
+                return false;
+            } finally {
+                c.setAutoCommit(true);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error updating station: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // --- DELETE: the subtype row and app links are removed by ON DELETE CASCADE ---
+    public static boolean deleteStation(String stationId) {
+        String sql = "DELETE FROM STATION WHERE StationID = ?";
+        try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
+            pstmt.setString(1, stationId);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error deleting station: " + e.getMessage());
+            return false;
+        }
+    }
 
 // ==========================================
 // ADD TRANSACTION
 // ==========================================
     //PC Rental
     public static boolean addTransaction(int customerId, String stationId, String transactionType, double amount, String paidBy) {
-        if (!ShopManager.isShopOpen()) {
-            System.err.println("Cannot add transaction while the shop is closed.");
-            return false;
-        }
-
         String sql = "INSERT INTO TRANSACTIONS (CustomerID, StationID, TransactionType, Amount, PaidBy) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
@@ -687,6 +547,7 @@ public class DatabaseManager {
 
     //Print Services and Top-ups
     public static boolean addTransaction(int customerId, String transactionType, double amount, String paidBy) {
+        // Ipapasok bilang null ang StationID
         return addTransaction(customerId, null, transactionType, amount, paidBy);
     }
 
@@ -702,4 +563,80 @@ public class DatabaseManager {
         }
         return 0.0;
     }
+
+    // Tester
+    public static void main(String[] args) {
+        /*
+        // 1. TEST: ADD REGULAR CUSTOMER (Overloaded addCustomer)
+        System.out.println("[TEST 1] Adding Regular Customer...");
+        boolean isRegularAdded = DatabaseManager.addCustomer("Juan", "Dela Cruz");
+        System.out.println("Regular Customer Added: " + isRegularAdded);
+
+        // 2. TEST: ADD MEMBER CUSTOMER (Overloaded addCustomer)
+        System.out.println("\n[TEST 2] Adding Member Customer...");
+        boolean isMemberAdded = DatabaseManager.addCustomer("Miles", "Rodriguez", "koiychi", "securePass123", 150.00);
+        System.out.println("Member Customer Added: " + isMemberAdded);
+
+        // 3. TEST: ADD TRANSACTIONS
+        System.out.println("\n[TEST 3] Logging Transactions...");
+
+        // Transaction A: PC Rental for Customer ID 1 at Station PC-01
+        boolean tx1 = DatabaseManager.addTransaction(1, "PC-01", "Rental", 40.00, "Cash");
+
+        // Transaction B: Printing Services for Customer ID 1 (No Station)
+        boolean tx2 = DatabaseManager.addTransaction(1, "Printing", 15.00, "Cash");
+
+        // Transaction C: Top-Up Credits for Member Customer ID 2
+        boolean tx3 = DatabaseManager.addTransaction(2, "Top-Up", 100.00, "Member Credits");
+
+        System.out.println("Rental Transaction Logged: " + tx1);
+        System.out.println("Printing Transaction Logged: " + tx2);
+        System.out.println("Top-Up Transaction Logged: " + tx3);
+*/
+        // 4. TEST: FETCH & PRINT TRANSACTIONS LOG FROM DATABASE
+        System.out.println("\n[TEST 4] Fetching Transactions Log from SQLite...");
+        printTransactionLogs();
+
+        System.out.println("\n=== ALL TESTS COMPLETED SUCCESSFULLY ===");
+    }
+    
+
+    // Console-based logger simulator para makita ang laman na parang JTable
+    private static void printTransactionLogs() {
+        String sql = "SELECT "
+                + "  t.TransactionID, "
+                + "  c.FirstName || ' ' || c.LastName AS CustomerName, "
+                + "  IFNULL(t.StationID, 'N/A') AS Station, "
+                + "  t.TransactionType, "
+                + "  t.Amount, "
+                + "  t.PaidBy, "
+                + "  t.DateAndTime "
+                + "FROM TRANSACTIONS t "
+                + "JOIN CUSTOMER c ON t.CustomerID = c.CustomerID "
+                + "ORDER BY t.TransactionID ASC";
+
+        try (java.sql.Connection c = DatabaseManager.getConnection(); java.sql.Statement stmt = c.createStatement(); java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+
+            System.out.println("---------------------------------------------------------------------------------------------------------");
+            System.out.printf("| %-5s | %-18s | %-8s | %-12s | %-10s | %-15s | %-19s |\n",
+                    "TxID", "Customer Name", "Station", "Type", "Amount", "Paid By", "Date & Time");
+            System.out.println("---------------------------------------------------------------------------------------------------------");
+
+            while (rs.next()) {
+                System.out.printf("| %-5d | %-18s | %-8s | %-12s | ₱%-9.2f | %-15s | %-19s |\n",
+                        rs.getInt("TransactionID"),
+                        rs.getString("CustomerName"),
+                        rs.getString("Station"),
+                        rs.getString("TransactionType"),
+                        rs.getDouble("Amount"),
+                        rs.getString("PaidBy"),
+                        rs.getString("DateAndTime"));
+            }
+            System.out.println("---------------------------------------------------------------------------------------------------------");
+
+        } catch (java.sql.SQLException e) {
+            System.err.println("Error reading test logs: " + e.getMessage());
+        }
+    }
+
 } //end of class
