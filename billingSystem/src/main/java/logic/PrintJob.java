@@ -6,6 +6,7 @@ package logic;
  
  */
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 public class PrintJob implements Billable {
 
@@ -22,15 +23,14 @@ public class PrintJob implements Billable {
     //public static List<String> AVAILABLE_PAPER_TYPES;
 
     //CONSTRUCTORS
-    public PrintJob(String serviceType, String pageSize, String paperType, int pageCount, boolean isColored, double pricePerPage1) {
+    public PrintJob(String serviceType, String pageSize, String paperType, int pageCount, boolean isColored, double pricePerPage) {
         this.printJobs = new ArrayList<>();
-       
-        this.serviceType = serviceType;
-        this.pageSize = pageSize;
-        this.paperType = paperType;
-        this.pageCount = pageCount;
-        this.isColored = isColored;
-        this.pricePerPage = pricePerPage1;
+        setServiceType(serviceType);
+        setPageSize(pageSize);
+        setPaperType(paperType);
+        setPageCount(pageCount);
+        setColored(isColored);
+        setPricePerPage(pricePerPage);
     }
 
 
@@ -61,24 +61,36 @@ public class PrintJob implements Billable {
     }
     
     public List<Object> getPrintJobs() {
-        return printJobs;
+        return Collections.unmodifiableList(printJobs);
     }
 
     //SETTERS
   
     public void setServiceType(String serviceType) {
-        this.serviceType = serviceType;
+        if (serviceType == null || serviceType.isBlank()) {
+            throw new IllegalArgumentException("Service type is required.");
+        }
+        this.serviceType = serviceType.trim();
     }
 
-    public void setPageSize(int PageSize) {
-        this.pageSize = String.valueOf(PageSize);
+    public void setPageSize(String pageSize) {
+        if (pageSize == null || pageSize.isBlank()) {
+            throw new IllegalArgumentException("Page size is required.");
+        }
+        this.pageSize = pageSize.trim();
     }
 
     public void setPaperType(String paperType) {
-        this.paperType = paperType;
+        if (paperType == null || paperType.isBlank()) {
+            throw new IllegalArgumentException("Paper type is required.");
+        }
+        this.paperType = paperType.trim();
     }
 
     public void setPageCount(int pageCount) {
+        if (pageCount <= 0) {
+            throw new IllegalArgumentException("Page count must be greater than zero.");
+        }
         this.pageCount = pageCount;
     }
 
@@ -87,21 +99,39 @@ public class PrintJob implements Billable {
     }
 
     public void setPricePerPage(double pricePerPage) {
+        if (!Double.isFinite(pricePerPage) || pricePerPage < 0) {
+            throw new IllegalArgumentException("Price per page cannot be negative.");
+        }
         this.pricePerPage = pricePerPage;
     }
     
     public void addPrintJob(PrintJob toAdd) {
+        if (toAdd == null) {
+            throw new IllegalArgumentException("Print job cannot be null.");
+        }
         printJobs.add(toAdd);
     }
 
     @Override
     public double calculateTotalCharge() {
-        return 0;
+        double total = pageCount * pricePerPage;
+        for (Object job : printJobs) {
+            total += ((PrintJob) job).calculateTotalCharge();
+        }
+        return total;
     }
 
     @Override
     public String generateInvoice() {
-        return "";
+        return "===== PRINT INVOICE =====\n"
+                + "Service: " + serviceType + "\n"
+                + "Page size: " + pageSize + "\n"
+                + "Paper type: " + paperType + "\n"
+                + "Pages: " + pageCount + "\n"
+                + "Colored: " + (isColored ? "Yes" : "No") + "\n"
+                + String.format("Price per page: %.2f%n", pricePerPage)
+                + String.format("Total charge: %.2f%n", calculateTotalCharge())
+                + "========================";
     }
 
     //OTHER METHODS

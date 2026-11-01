@@ -4,6 +4,10 @@
  */
 package ui.Shop;
 
+import service.MembershipService;
+import service.StationsService;
+import service.TransactionService;
+
 import ui.Session.NewSessionDialog1;
 
 import java.sql.SQLException;
@@ -21,6 +25,9 @@ import java.awt.CardLayout;
  * @author koi
  */
 public class dashboardTabPanel extends javax.swing.JPanel {
+         private final MembershipService membershipService = new MembershipService();
+         private final StationsService stationsService = new StationsService();
+         private final TransactionService transactionService = new TransactionService();
 
          /**
           * Creates new form dashboardTabPanel
@@ -969,8 +976,8 @@ public class dashboardTabPanel extends javax.swing.JPanel {
                   }
 
                   // fresh details from the database
-                  logic.MemberCustomer member = system.DatabaseManager.findMember(username);
-                  int customerId = system.DatabaseManager.getCustomerIdByUsername(username);
+                  logic.MemberCustomer member = membershipService.findMember(username);
+                  int customerId = membershipService.getCustomerIdByUsername(username);
                   if (member == null || customerId < 0) {
                            JOptionPane.showMessageDialog(this, "Member not found.",
                                     "Top Up", JOptionPane.ERROR_MESSAGE);
@@ -978,7 +985,7 @@ public class dashboardTabPanel extends javax.swing.JPanel {
                   }
 
                   TopUp dlg = new TopUp(frame, true);
-                  dlg.setAccount(username, system.DatabaseManager.getCustomerFullName(customerId));
+                  dlg.setAccount(username, membershipService.getCustomerFullName(customerId));
                   dlg.setCurrentBalance(java.math.BigDecimal.valueOf(member.getCreditAmount())
                            .setScale(2, java.math.RoundingMode.HALF_UP));
                   dlg.setCommitter(paidBy -> saveTopUp(customerId, dlg.getTotal(), paidBy));
@@ -991,7 +998,7 @@ public class dashboardTabPanel extends javax.swing.JPanel {
          // returns null on success, or the database's error message
          private String saveTopUp(int customerId, java.math.BigDecimal amount, String paidBy) {
                   try {
-                           system.DatabaseManager.addCredit(customerId, amount.doubleValue());
+                           membershipService.addCredit(customerId, amount.doubleValue());
                            return null;
                   } catch (java.sql.SQLException ex) {
                            return ex.getMessage();
@@ -1047,8 +1054,8 @@ public class dashboardTabPanel extends javax.swing.JPanel {
          private void loadStatistics() {
                   try {
                            List<Station> stations = new ArrayList<>();
-                           stations.addAll(system.DatabaseManager.getStationsByType("REGULAR"));
-                           stations.addAll(system.DatabaseManager.getStationsByType("GAMING"));
+                           stations.addAll(stationsService.getStationsByType("REGULAR"));
+                           stations.addAll(stationsService.getStationsByType("GAMING"));
 
                            int available = 0;
                            int occupied = 0;
@@ -1063,7 +1070,7 @@ public class dashboardTabPanel extends javax.swing.JPanel {
 
                            String stationTotal = String.valueOf(stations.size());
                            String sales = String.format(java.util.Locale.US, "PHP %.2f",
-                                    system.DatabaseManager.getTotalSales());
+                                    transactionService.getTotalSales());
 
                            intAvailableStations.setText(available + "/" + stationTotal);
                            intOccupiedStations.setText(occupied + "/" + stationTotal);

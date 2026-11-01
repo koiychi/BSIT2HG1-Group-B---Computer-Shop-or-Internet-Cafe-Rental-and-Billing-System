@@ -4,6 +4,8 @@
  */
 package ui.Shop;
 
+import service.TransactionService;
+
 import java.math.*;
 import java.text.*;
 import java.time.*;
@@ -16,6 +18,7 @@ import javax.swing.table.*;
  * @author cals
  */
 public class transactionsTabPanel extends javax.swing.JPanel {
+    private final TransactionService transactionService = new TransactionService();
 
     /**
      * Creates new form transactionsTabPanel
@@ -447,7 +450,7 @@ public class transactionsTabPanel extends javax.swing.JPanel {
         loading = true;   // so the stats are not recalculated for every single row
         try {
             model.setRowCount(0);
-            for (Object[] row : system.DatabaseManager.getTransactionHistory()) {
+            for (Object[] row : transactionService.getHistory()) {
                 model.addRow(row);
             }
         } finally {

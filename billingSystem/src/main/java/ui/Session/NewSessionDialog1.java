@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import logic.Station;
-import system.DatabaseManager;
+import service.StationsService;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 
@@ -25,6 +25,7 @@ public class NewSessionDialog1 extends javax.swing.JDialog {
     private JPanel[] unitPanels;
     private JLabel[] nameLabels;
     private JLabel[] statusLabels;
+    private final StationsService stationsService = new StationsService();
 
     public String getStationType() {
         return String.valueOf(jComboBox1.getSelectedItem());
@@ -57,7 +58,7 @@ public class NewSessionDialog1 extends javax.swing.JDialog {
         String type = (String) jComboBox1.getSelectedItem();
         selectedStation = null;
         try {
-            currentStations = DatabaseManager.getStationsByType(type);
+            currentStations = stationsService.getStationsByType(type);
         } catch (Exception ex) {
             currentStations = new ArrayList<>();
             JOptionPane.showMessageDialog(this,

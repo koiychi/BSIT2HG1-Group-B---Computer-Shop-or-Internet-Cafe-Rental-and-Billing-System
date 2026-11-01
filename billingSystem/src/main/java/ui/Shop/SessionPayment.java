@@ -10,9 +10,11 @@ package ui.Shop;
  */
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import system.DatabaseManager;
+import service.SessionService;
 
 public final class SessionPayment {
+
+    private static final SessionService sessionService = new SessionService();
 
     private SessionPayment() {
     }
@@ -43,13 +45,13 @@ public final class SessionPayment {
     public static int payMember(java.awt.Window owner, int customerId, String customerName,
             String username, String stationId, String stationType, double hourlyRate, String duration) {
         // fresh balance and discount from the database, not the earlier snapshot
-        logic.MemberCustomer member = DatabaseManager.findMember(username);
+        logic.MemberCustomer member = sessionService.findMember(username);
         if (member == null) {
             javax.swing.JOptionPane.showMessageDialog(owner, "Member not found.",
                     "Payment Failed", javax.swing.JOptionPane.ERROR_MESSAGE);
             return -1;
         }
-        double discountRate = DatabaseManager.getMemberDiscount(customerId);
+        double discountRate = sessionService.getMemberDiscount(customerId);
         BigDecimal balance = BigDecimal.valueOf(member.getCreditAmount()).setScale(2, RoundingMode.HALF_UP);
 
         int minutes = parseMinutes(duration);
@@ -83,7 +85,7 @@ public final class SessionPayment {
     private static String saveSession(int customerId, String stationId, int minutes,
             String paidBy, int[] out) {
         try {
-            out[0] = DatabaseManager.startSession(customerId, stationId, minutes, paidBy);
+            out[0] = sessionService.startSession(customerId, stationId, minutes, paidBy);
             return null;
         } catch (java.sql.SQLException ex) {
             return ex.getMessage();

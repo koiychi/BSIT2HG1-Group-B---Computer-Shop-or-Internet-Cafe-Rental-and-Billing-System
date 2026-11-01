@@ -105,8 +105,4 @@ public void setCustomerID(int customerID) {
                 + "\nDiscount Rate: " + this.discountRate;
     }
 
-    private Exception IllegalArgumentsException(String discount_rate_must_be_between_0_and_1) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
 } //END OF CLASS
