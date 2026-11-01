@@ -5,6 +5,7 @@ import logic.GamingStation;
 import logic.Station;
 import java.util.Comparator;
 import java.util.List;
+import java.sql.SQLException;
 
 /**
  * Bridge between the station screens (AddStation, stationsTabPanel) and DatabaseManager.
@@ -22,6 +23,14 @@ public class StationsService {
     // ---------- READ ----------
     public List<Station> getAllStations() {
         return DatabaseManager.getAllStations();
+    }
+
+    public void resetOccupiedStations() {
+        try {
+            DatabaseManager.resetOccupiedStations();
+        } catch (SQLException ex) {
+            throw new IllegalStateException("The occupied stations could not be reset.", ex);
+        }
     }
 
     public Station findStation(String stationId) {

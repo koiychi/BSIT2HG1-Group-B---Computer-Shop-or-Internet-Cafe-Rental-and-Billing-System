@@ -9,11 +9,11 @@ package logic;
  * @author @author hazyth (Theo)
  */
 public class MemberCustomer extends Customer {
-    private String username;
-    private String password;
-    private double creditAmount;
-    private double discountRate;
-
+   private int customerID;
+private String username;
+private String password;
+private double creditAmount;
+private double discountRate;
     // CONSTRUCTORS
     public MemberCustomer() {
         this("Default Customer", "username", "password", 0.0, 0.20);
@@ -28,6 +28,17 @@ public class MemberCustomer extends Customer {
     }
 
     // GETTERS
+public int getCustomerID() {
+    return customerID;
+}
+
+public void setCustomerID(int customerID) {
+    if (customerID < 0) {
+        throw new IllegalArgumentException("Customer ID cannot be negative");
+    }
+    this.customerID = customerID;
+}
+    
     public String getUsername() {
         return username;
     }
@@ -56,17 +67,18 @@ public class MemberCustomer extends Customer {
     }
 
     public void setCreditAmount(double creditAmount) {
-        if (creditAmount < 0) {
+        if (!Double.isFinite(creditAmount) || creditAmount < 0) {
             throw new IllegalArgumentException("Credit amount cannot be negative");
         }
         this.creditAmount = creditAmount;
     }
 
-    public void setDiscountRate(double discountRate) {
-        if (discountRate < 0) {
-            throw new IllegalArgumentException("Discount rate cannot be negative");
+    public void setDiscountRate(double discountRate ) {
+        if (!Double.isFinite(discountRate)|| discountRate < 0 || discountRate > 1) {
+            throw new IllegalArgumentException("Discount rate must be between 0 and 1");
         }
         this.discountRate = discountRate;
+        
     }
 
     // OTHER METHODS
@@ -89,9 +101,12 @@ public class MemberCustomer extends Customer {
     public String getCustomerInfo() {
         return super.getCustomerInfo()
                 + "\nUsername: " + this.username
-                + "\nPassword: " + this.password //FIXME: Dislaying password; security risk
                 + "\nCredit Amount: " + this.creditAmount
                 + "\nDiscount Rate: " + this.discountRate;
+    }
+
+    private Exception IllegalArgumentsException(String discount_rate_must_be_between_0_and_1) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 } //END OF CLASS
