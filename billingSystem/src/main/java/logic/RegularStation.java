@@ -7,7 +7,6 @@ public class RegularStation extends Station {
     private List<String> softwareList;
     private boolean hasPrinter;
 
-    // CONSTRUCTORS
     public RegularStation(String stationID, double hourlyRate, boolean hasInternet,
                           String status, String cpu, int ramGb,
                           List<String> softwareList, boolean hasPrinter) {
@@ -31,14 +30,21 @@ public class RegularStation extends Station {
         this.hasPrinter = false;
     }
 
-    // GETTERS
+    public RegularStation(RegularStation other) {
+        super(other.getStationID(), other.getHourlyRate(), other.hasInternet(),
+                other.getStatus());
+        setCpu(other.getCpu());
+        setRamGb(other.getRamGb());
+        setSoftwareList(other.getSoftwareList());
+        setHasPrinter(other.hasPrinter());
+    }
+
     public List<String> getSoftwareList() { return new ArrayList<>(softwareList); }
     public boolean hasPrinter() { return hasPrinter; }
 
     @Override
     public String getType() { return "Regular"; }
 
-    // SETTERS (validated)
     public void setHasPrinter(boolean hasPrinter) {
         this.hasPrinter = hasPrinter;   // boolean: any value is valid
     }
@@ -57,7 +63,6 @@ public class RegularStation extends Station {
         this.softwareList = cleaned;
     }
 
-    // OTHER METHODS
     public void addSoftware(String softwareName) {
         if (softwareName == null || softwareName.trim().isEmpty()) {
             throw new IllegalArgumentException("Software name cannot be blank.");
@@ -73,4 +78,4 @@ public class RegularStation extends Station {
         return "CPU: " + getCpu() + "\nRAM: " + getRamGb() + " GB"
              + "\nSoftware List: " + softwareList + "\nHas Printer: " + hasPrinter;
     }
-} //END OF CLASS
+}

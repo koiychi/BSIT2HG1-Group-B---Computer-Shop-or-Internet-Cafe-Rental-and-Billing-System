@@ -1,10 +1,5 @@
 package logic;
 
-/**
- *
- * @author MaryJane
- 
- */
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,10 +14,6 @@ public class PrintJob implements Billable {
     private double pricePerPage;
     private final List<Object> printJobs;
 
-    //public static List<String> AVAILABLE_PAPER_SIZES;
-    //public static List<String> AVAILABLE_PAPER_TYPES;
-
-    //CONSTRUCTORS
     public PrintJob(String serviceType, String pageSize, String paperType, int pageCount, boolean isColored, double pricePerPage) {
         this.printJobs = new ArrayList<>();
         setServiceType(serviceType);
@@ -33,8 +24,13 @@ public class PrintJob implements Billable {
         setPricePerPage(pricePerPage);
     }
 
-
-    //GETTERS
+    public PrintJob(PrintJob other) {
+        this(other.getServiceType(), other.getPageSize(), other.getPaperType(),
+                other.getPageCount(), other.getIsColored(), other.getPricePerPage());
+        for (Object job : other.getPrintJobs()) {
+            addPrintJob(new PrintJob((PrintJob) job));
+        }
+    }
  
     public String getServiceType() {
         return serviceType;
@@ -64,8 +60,6 @@ public class PrintJob implements Billable {
         return Collections.unmodifiableList(printJobs);
     }
 
-    //SETTERS
-  
     public void setServiceType(String serviceType) {
         if (serviceType == null || serviceType.isBlank()) {
             throw new IllegalArgumentException("Service type is required.");
@@ -134,7 +128,4 @@ public class PrintJob implements Billable {
                 + "========================";
     }
 
-    //OTHER METHODS
-
-
-} //END OF CLASS
+}
