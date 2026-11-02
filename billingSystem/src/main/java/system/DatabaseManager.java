@@ -170,6 +170,104 @@ public class DatabaseManager {
             }
         }
 
+        public static void endSession(int sessionId) throws SQLException {
+            try (Connection c = getConnection()) {
+                c.setAutoCommit(false);
+                try {
+                    String stationId = null;
+                    try (PreparedStatement ps = c.prepareStatement(
+                            "SELECT StationID FROM SESSIONS WHERE SessionID = ?")) {
+                        ps.setInt(1, sessionId);
+                        try (ResultSet rs = ps.executeQuery()) {
+                            if (rs.next()) {
+                                stationId = rs.getString("StationID");
+                            }
+                        }
+                    }
+
+                    if (stationId == null) {
+                        throw new SQLException("Session not found or already ended.");
+                    }
+
+                    try (PreparedStatement ps = c.prepareStatement(
+                            "UPDATE SESSIONS SET EndTime = datetime('now', 'localtime') "
+                            + "WHERE SessionID = ?")) {
+                        ps.setInt(1, sessionId);
+                        ps.executeUpdate();
+                    }
+
+                    makeStationAvailable(c, stationId);
+                    c.commit();
+                } catch (SQLException ex) {
+                    c.rollback();
+                    throw ex;
+                } finally {
+                    c.setAutoCommit(true);
+                }
+            }
+            ShopManager.refreshStations();
+            ShopManager.refreshDashboard();
+        }
+
+        public static int endExpiredSessions() throws SQLException {
+            return endSessions("EndTime <= datetime('now', 'localtime')");
+        }
+
+        public static void endAllSessions() throws SQLException {
+            endSessions("1 = 1");
+        }
+
+        private static int endSessions(String condition) throws SQLException {
+            int endedSessions;
+            try (Connection c = getConnection()) {
+                c.setAutoCommit(false);
+                try {
+                    try (PreparedStatement ps = c.prepareStatement(
+                            "SELECT StationID FROM SESSIONS WHERE " + condition);
+                            ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            makeStationAvailable(c, rs.getString("StationID"));
+                        }
+                    }
+                    try (PreparedStatement ps = c.prepareStatement(
+                            "SELECT COUNT(*) FROM SESSIONS WHERE " + condition);
+                            ResultSet rs = ps.executeQuery()) {
+                        rs.next();
+                        endedSessions = rs.getInt(1);
+                    }
+                    try (PreparedStatement ps = c.prepareStatement(
+                            "UPDATE SESSIONS SET EndTime = datetime('now', 'localtime') "
+                            + "WHERE " + condition)) {
+                        ps.executeUpdate();
+                    }
+                    c.commit();
+                } catch (SQLException ex) {
+                    c.rollback();
+                    throw ex;
+                } finally {
+                    c.setAutoCommit(true);
+                }
+            }
+            if (endedSessions > 0) {
+                ShopManager.refreshStations();
+                ShopManager.refreshDashboard();
+            }
+            return endedSessions;
+        }
+
+        private static void makeStationAvailable(Connection c, String stationId) throws SQLException {
+            try (PreparedStatement ps = c.prepareStatement(
+                    "UPDATE STATION SET AvailabilityStatus = 'Available', SessionEndTime = NULL "
+                    + "WHERE StationID = ? AND AvailabilityStatus = 'Occupied' "
+                    + "AND NOT EXISTS ("
+                    + "SELECT 1 FROM SESSIONS active "
+                    + "WHERE active.StationID = STATION.StationID "
+                    + "AND active.EndTime > datetime('now', 'localtime'))")) {
+                ps.setString(1, stationId);
+                ps.executeUpdate();
+            }
+        }
+
         public static List<Station> getStationsByType(String type) throws SQLException {
             List<Station> stations = new ArrayList<>();
             for (Station station : getAllStations()) {
@@ -869,8 +967,10 @@ public class DatabaseManager {
             throw new SQLException("The shop is closed. New sessions cannot be created.");
         }
 
-        String endTime = LocalDateTime.now().plusMinutes(durationMinutes).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String endTime = LocalDateTime.now().plusMinutes(durationMinutes)
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
+        int sessionId;
         try (Connection c = getConnection()) {
             c.setAutoCommit(false);
             try {
@@ -887,21 +987,19 @@ public class DatabaseManager {
                         rate = rs.getDouble("HourlyRate");
                     }
                 }
-                double discount = 0.0;
                 double balance = 0.0;
                 try (PreparedStatement ps = c.prepareStatement(
-                        "SELECT DiscountRate, CreditBalance FROM MEMBER_CUSTOMER WHERE CustomerID = ?")) {
+                        "SELECT CreditBalance FROM MEMBER_CUSTOMER WHERE CustomerID = ?")) {
                     ps.setInt(1, customerId);
                     try (ResultSet rs = ps.executeQuery()) {
                         if (rs.next()) {
-                            discount = rs.getDouble("DiscountRate");
                             balance = rs.getDouble("CreditBalance");
                         }
                     }
                 }
 
-                double appliedDiscount = "Member Credits".equals(paidBy) ? discount : 0.0;
-                double total = Math.round(rate * (durationMinutes / 60.0) * (1 - appliedDiscount) * 100.0) / 100.0;
+                double appliedDiscount = 0.0;
+                double total = Math.round(rate * (durationMinutes / 60.0) * 100.0) / 100.0;
 
                 if ("Member Credits".equals(paidBy)) {
                     if (balance < total) {
@@ -914,7 +1012,6 @@ public class DatabaseManager {
                         ps.executeUpdate();
                     }
                 }
-                int sessionId;
                 try (PreparedStatement ps = c.prepareStatement(
                         "INSERT INTO SESSIONS (CustomerID, StationID, DurationMinutes, EndTime, HourlyRate, DiscountRate, TotalAmount) "
                         + "VALUES (?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
@@ -937,7 +1034,9 @@ public class DatabaseManager {
                         "UPDATE STATION SET AvailabilityStatus = 'Occupied', SessionEndTime = ? WHERE StationID = ?")) {
                     ps.setString(1, endTime);
                     ps.setString(2, stationId);
-                    ps.executeUpdate();
+                    if (ps.executeUpdate() != 1) {
+                        throw new SQLException("The station could not be marked as occupied.");
+                    }
                 }
                 try (PreparedStatement ps = c.prepareStatement(
                         "INSERT INTO TRANSACTIONS (CustomerID, StationID, TransactionType, Amount, PaidBy) VALUES (?, ?, ?, ?, ?)")) {
@@ -950,7 +1049,6 @@ public class DatabaseManager {
                 }
 
                 c.commit();
-                return sessionId;
 
             } catch (SQLException e) {
                 c.rollback();
@@ -959,6 +1057,9 @@ public class DatabaseManager {
                 c.setAutoCommit(true);
             }
         }
+        ShopManager.refreshStations();
+        ShopManager.refreshDashboard();
+        return sessionId;
     }
 
     // TOP UP: adds credit and records the "Top-up" transaction in ONE database transaction

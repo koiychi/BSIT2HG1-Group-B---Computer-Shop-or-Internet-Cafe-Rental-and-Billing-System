@@ -69,6 +69,8 @@ public class stationsTabPanel extends javax.swing.JPanel
     private final JButton addBtn = new JButton("+ Add Station");
     private final JButton statusBtn = new JButton("Set Status \u25BE");
     private final JButton deleteBtn = new JButton("Delete");
+    private final javax.swing.Timer stationRefreshTimer =
+            new javax.swing.Timer(1000, event -> loadStations());
 
     public stationsTabPanel() {
         initComponents();
@@ -76,11 +78,26 @@ public class stationsTabPanel extends javax.swing.JPanel
         setupToolbar();
         ShopManager.setStations(this);
         loadStations();
+        stationRefreshTimer.start();
+    }
+
+    @Override
+    public void removeNotify() {
+        stationRefreshTimer.stop();
+        super.removeNotify();
     }
 
     public void updateShopState(boolean open) {
         statusBtn.setEnabled(open);
         cboStatusFilter.setEnabled(open);
+        loadStations();
+    }
+
+    public void refreshStations() {
+        if (!javax.swing.SwingUtilities.isEventDispatchThread()) {
+            javax.swing.SwingUtilities.invokeLater(this::loadStations);
+            return;
+        }
         loadStations();
     }
 

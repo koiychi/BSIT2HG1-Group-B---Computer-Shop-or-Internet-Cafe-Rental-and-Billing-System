@@ -51,6 +51,12 @@ public final class ShopManager {
         }
     }
 
+    public static void refreshStations() {
+        if (stations != null) {
+            stations.refreshStations();
+        }
+    }
+
     public static void toggleShop() {
         if (isShopOpen() && !confirmClosing()) {
             return;
@@ -61,7 +67,7 @@ public final class ShopManager {
     private static boolean confirmClosing() {
             int response = JOptionPane.showConfirmDialog(
                     null,
-                    "Are you sure you want to close the shop?\nNew sessions and transactions will be disabled.",
+                    "Are you sure you want to close the shop?\nAll running sessions will end immediately.\nNew sessions and transactions will be disabled.",
                     "Confirm Shop Closure",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE);
@@ -74,6 +80,9 @@ public final class ShopManager {
         }
         boolean reopening = statusLoaded && !shopOpen && open;
         try {
+            if (!open) {
+                new service.SessionService().endAllSessions();
+            }
             if (reopening) {
                 stationsService.resetOccupiedStations();
             }
