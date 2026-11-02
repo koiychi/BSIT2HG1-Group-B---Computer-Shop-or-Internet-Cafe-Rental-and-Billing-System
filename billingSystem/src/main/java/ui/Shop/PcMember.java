@@ -412,8 +412,11 @@ public class PcMember extends javax.swing.JDialog {
     // recomputes the labels and the total from the type and hours
     // placeholder bill: no computation, values come from the other class
     private void updateBill() {
-        total = creditTotal;   // members always get the discount, cash or credit
+        boolean credit = creditRb.isSelected();
+        total = credit ? creditTotal : subtotal;   // discount only applies to credit
 
+        discountLbl.setVisible(credit);
+        discountAppliedLbl.setVisible(credit);
         calcTotalLbl.setText(PaymentUtil.money(subtotal));
         discountAppliedLbl.setText("PHP -" + discountAmt.setScale(2, RoundingMode.HALF_UP));
         totalLbl.setText(PaymentUtil.money(total));
@@ -452,6 +455,11 @@ public class PcMember extends javax.swing.JDialog {
     // Cash <-> Shop Credit
     private void payMethodChanged() {
         payField.setEnabled(cashRb.isSelected());   // typing only for cash
+        InputPayment.setVisible(cashRb.isSelected());   // hide the whole panel
+        updateBill();
+        pack();
+        setLocationRelativeTo(getOwner());
+        
         if (cashRb.isSelected()) {
             payField.requestFocusInWindow();
         } else {
