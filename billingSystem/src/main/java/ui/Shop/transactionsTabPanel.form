@@ -120,7 +120,6 @@
                               <EmptySpace min="0" pref="12" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="searchBarText" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="dateTimeBox" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -274,11 +273,11 @@
                       <Group type="102" attributes="0">
                           <EmptySpace min="34" pref="34" max="-2" attributes="0"/>
                           <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -286,7 +285,7 @@
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="40" max="32767" attributes="0"/>
+                  <EmptySpace pref="187" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -388,14 +387,15 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="amountEarnedLbl1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="totalEarnLbl1" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="amountEarnedLbl1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="38" max="32767" attributes="0"/>
+                          </Group>
+                          <Component id="totalEarnLbl1" alignment="1" max="32767" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -418,7 +418,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="14" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Total Amount Earned/Today:"/>
+                <Property name="text" type="java.lang.String" value="Today&apos;s Sales"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="amountEarnedLbl1">
@@ -451,7 +451,7 @@
                           <Component id="amountEarnedLbl2" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="totalEarnLbl2" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="50" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -473,7 +473,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="14" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Total Amount Earned/Week:"/>
+                <Property name="text" type="java.lang.String" value="Weekly Sales"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="amountEarnedLbl2">
@@ -506,7 +506,7 @@
                           <Component id="amountEarnedLbl3" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="totalEarnLbl3" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="47" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -528,7 +528,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="14" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Total Amount Earned/Month:"/>
+                <Property name="text" type="java.lang.String" value="Monthly Sales"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="amountEarnedLbl3">

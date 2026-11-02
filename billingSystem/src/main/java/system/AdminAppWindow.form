@@ -826,7 +826,7 @@
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/icons/check_box_28dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png"/>
+                      <Image iconType="3" name="/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"/>
                     </Property>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                   </Properties>
@@ -913,7 +913,7 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="appName">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="App Name"/>
+                    <Property name="text" type="java.lang.String" value="Computer Shop Billing System"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="shopName">

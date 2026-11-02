@@ -84,7 +84,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
                                     java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
                                     g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
                                     g2.setColor(getBackground());
-                                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 35, 35); 
+                                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 35, 35); // 35 = roundness
                                     g2.dispose();
                            }
                   };
@@ -496,7 +496,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
                   appLogo.setLayout(flowLayout2);
 
                   logo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                  logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/check_box_28dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
+                  logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/computer_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
                   logo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
                   appLogo.add(logo);
 
@@ -505,7 +505,7 @@ public class AdminAppWindow extends javax.swing.JFrame {
                   names.setPreferredSize(new java.awt.Dimension(300, 50));
                   names.setLayout(new java.awt.GridLayout(2, 1));
 
-                  appName.setText("App Name");
+                  appName.setText("Computer Shop Billing System");
                   names.add(appName);
 
                   shopName.setFont(new java.awt.Font("Inter", 0, 23)); // NOI18N
