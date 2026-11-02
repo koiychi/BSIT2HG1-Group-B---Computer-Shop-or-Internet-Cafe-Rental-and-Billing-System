@@ -99,9 +99,9 @@ public class PrintRegular extends javax.swing.JDialog {
         subtotalTitleLbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         subtotalTitleLbl.setText("SubTotal");
 
-        printLbl.setText("Print: Size - Color");
+        printLbl.setText("Print: Size - Color (#)");
 
-        details.setText("Photocopy: Size - Color");
+        details.setText("Photocopy: Size - Color (#)");
 
         calcTotalLbl.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         calcTotalLbl.setText("PHP 00.00");

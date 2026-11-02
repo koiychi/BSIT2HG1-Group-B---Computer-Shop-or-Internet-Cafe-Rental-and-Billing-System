@@ -183,12 +183,12 @@
         </Component>
         <Component class="javax.swing.JLabel" name="printLbl">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Print: Size - Color"/>
+            <Property name="text" type="java.lang.String" value="Print: Size - Color (#)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="details">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Photocopy: Size - Color"/>
+            <Property name="text" type="java.lang.String" value="Photocopy: Size - Color (#)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="calcTotalLbl">

@@ -173,9 +173,9 @@ public class PrintMember extends javax.swing.JDialog {
         subtotalTitleLbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         subtotalTitleLbl.setText("SubTotal");
 
-        printLbl.setText("Print:  Size - color");
+        printLbl.setText("Print:  Size - color (#)");
 
-        photocopyLbl.setText("Photocopy: Size - color ");
+        photocopyLbl.setText("Photocopy: Size - color (#)");
 
         calcTotalLbl.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         calcTotalLbl.setText("PHP 00.00");
@@ -483,37 +483,41 @@ public void setOrders(java.util.List<String> printOrders,
     setBill(type, plain.toString().trim(), totalDue);   // also resizes the window
 }
 
-// "Print: Short - Colored" for each row; also adds the plain lines to the receipt text
+// one line per size + color: "Print: Short - Colored (4)"; the number is the total pages
+// of all the orders with that same size and color. Also adds the lines to the receipt text.
 private String buildOrderLabel(String title, java.util.List<String> rows,
                                boolean showPages, StringBuilder plain) {
+    java.util.Map<String, Integer> grouped = new java.util.LinkedHashMap<>();
+    for (String row : rows) {
+        java.util.regex.Matcher m = ORDER_ROW.matcher(row.trim());
+        if (!m.matches()) {
+            grouped.merge(row.trim(), 0, Integer::sum);   // unknown format: show it as it is
+            continue;
+        }
+        String color = m.group(1).trim().isEmpty() ? "B/W" : m.group(1).trim();
+        String size = m.group(2).split("\\(")[0].trim();
+        int pages = Integer.parseInt(m.group(3));
+        BigDecimal lineTotal = PaymentUtil.parseAmount(m.group(4));
+        orderPages += pages;
+        if (pages > 0) {
+            orderRates.add(lineTotal.divide(BigDecimal.valueOf(pages), 2, RoundingMode.HALF_UP));
+        }
+        grouped.merge(size + " - " + color, pages, Integer::sum);
+    }
+
     StringBuilder html = new StringBuilder("<html>");
-    for (int i = 0; i < rows.size(); i++) {
-        String line = describeOrder(rows.get(i), showPages);
-        html.append(title).append(": ")
-                .append(line.replace("&", "&amp;").replace("<", "&lt;"));
-        if (i < rows.size() - 1) {
+    boolean first = true;
+    for (java.util.Map.Entry<String, Integer> e : grouped.entrySet()) {
+        String line = e.getValue() > 0 ? e.getKey() + " (" + e.getValue() + ")" : e.getKey();
+        if (!first) {
             html.append("<br>");
         }
+        first = false;
+        html.append(title).append(": ")
+                .append(line.replace("&", "&amp;").replace("<", "&lt;"));
         plain.append(title).append(": ").append(line).append("\n");
     }
     return html.append("</html>").toString();
-}
-
-// "Short - Colored" (size first, like your design); counts the pages and the rate per page
-private String describeOrder(String row, boolean showPages) {
-    java.util.regex.Matcher m = ORDER_ROW.matcher(row.trim());
-    if (!m.matches()) {
-        return row.trim();   // unknown format: show it as it is
-    }
-    String color = m.group(1).trim().isEmpty() ? "B/W" : m.group(1).trim();
-    String size = m.group(2).split("\\(")[0].trim();
-    int pages = Integer.parseInt(m.group(3));
-    BigDecimal lineTotal = PaymentUtil.parseAmount(m.group(4));
-    orderPages += pages;
-    if (pages > 0) {
-        orderRates.add(lineTotal.divide(BigDecimal.valueOf(pages), 2, RoundingMode.HALF_UP));
-    }
-    return size + " - " + color + (showPages ? " x" + pages : "");
 }
 
 

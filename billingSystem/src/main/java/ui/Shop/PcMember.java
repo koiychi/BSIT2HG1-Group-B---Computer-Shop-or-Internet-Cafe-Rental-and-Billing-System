@@ -295,10 +295,9 @@ public class PcMember extends javax.swing.JDialog {
         finishPayment();
     }//GEN-LAST:event_ProceedPayActionPerformed
     private BigDecimal total = BigDecimal.ZERO;
-    private BigDecimal subtotal = new BigDecimal("40.00");      // cash total, no discount
-    private BigDecimal discountAmt = new BigDecimal("4.00");    // shown only for credit
-    private BigDecimal creditTotal = new BigDecimal("36.00");   // credit total, after discount
-
+    private BigDecimal subtotal = BigDecimal.ZERO;     
+    private BigDecimal discountAmt = BigDecimal.ZERO;    
+    private BigDecimal creditTotal = BigDecimal.ZERO;   
     
     private void setupLogic() {
         
@@ -309,6 +308,10 @@ public class PcMember extends javax.swing.JDialog {
         creditRb.setText("Credit (" + PaymentUtil.money(creditBalance) + ")");
         creditRb.setEnabled(creditBalance.compareTo(BigDecimal.ZERO) > 0);
         cashRb.setSelected(true);
+        customerNameLbl.setText("");
+        typePcLbl.setText("");
+        calcLbl.setText("");
+        discountLbl.setText("");
 
         payField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
@@ -428,10 +431,10 @@ public class PcMember extends javax.swing.JDialog {
     public void setBill(String typeText, String calcText,
                         BigDecimal subtotal, BigDecimal discount, BigDecimal creditTotal) {
         typePcLbl.setText(typeText);       // Gaming PC
-        calcLbl.setText(calcText);         // 3 hour(s) x PHP 40.00
-        this.subtotal = subtotal;          // PHP 120.00
-        this.discountAmt = discount;       // PHP 12.00
-        this.creditTotal = creditTotal;    // PHP 108.00
+        calcLbl.setText(calcText);         
+        this.subtotal = subtotal;          
+        this.discountAmt = discount;       
+        this.creditTotal = subtotal.subtract(discount);
         updateBill();
         pack();
         setLocationRelativeTo(getOwner());
