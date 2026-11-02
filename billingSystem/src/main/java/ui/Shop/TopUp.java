@@ -124,7 +124,7 @@ public TopUp(java.awt.Frame parent, boolean modal) {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cashRb)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(creditRb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(creditRb, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
                 .addContainerGap())
         );
         ModeOfPaymentLayout.setVerticalGroup(
@@ -142,7 +142,7 @@ public TopUp(java.awt.Frame parent, boolean modal) {
         titleLbl.setText("Top Up Credit");
 
         detailsTitleLbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        detailsTitleLbl.setText("SubTotal");
+        detailsTitleLbl.setText("Infomation");
 
         usernameLbl.setText("@CalsLoveEni");
 
@@ -157,14 +157,14 @@ public TopUp(java.awt.Frame parent, boolean modal) {
                     .addGroup(PayBillLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(detailsTitleLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(titleLbl)))
+                            .addComponent(titleLbl)
+                            .addComponent(detailsTitleLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(PayBillLayout.createSequentialGroup()
                         .addGap(27, 27, 27)
-                        .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(usernameLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(nameCustomerLbl))))
-                .addContainerGap(125, Short.MAX_VALUE))
+                        .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(usernameLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(nameCustomerLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE))))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         PayBillLayout.setVerticalGroup(
             PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -307,7 +307,7 @@ private void setupLogic() {
 
 // who is topping up
 public void setAccount(String username, String fullName) {
-    usernameLbl.setText(username);
+    usernameLbl.setText("@" + username);
     nameCustomerLbl.setText(fullName);
     pack();                              // re-fit the window now that the name line has text
     setLocationRelativeTo(getOwner());   // keep it centered

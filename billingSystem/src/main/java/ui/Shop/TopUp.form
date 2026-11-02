@@ -142,7 +142,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="cashRb" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="creditRb" max="32767" attributes="0"/>
+                  <Component id="creditRb" pref="149" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -198,19 +198,19 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="detailsTitleLbl" alignment="0" min="-2" pref="66" max="-2" attributes="0"/>
-                              <Component id="titleLbl" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="titleLbl" min="-2" max="-2" attributes="0"/>
+                              <Component id="detailsTitleLbl" min="-2" pref="150" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="usernameLbl" alignment="0" min="-2" pref="111" max="-2" attributes="0"/>
-                              <Component id="nameCustomerLbl" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="usernameLbl" max="32767" attributes="0"/>
+                              <Component id="nameCustomerLbl" pref="241" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace pref="125" max="32767" attributes="0"/>
+                  <EmptySpace pref="22" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -242,7 +242,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="SubTotal"/>
+            <Property name="text" type="java.lang.String" value="Infomation"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="usernameLbl">
