@@ -195,6 +195,7 @@ public class DatabaseManager {
                         ps.setInt(1, sessionId);
                         ps.executeUpdate();
                     }
+
                     makeStationAvailable(c, stationId);
                     c.commit();
                 } catch (SQLException ex) {
@@ -204,6 +205,8 @@ public class DatabaseManager {
                     c.setAutoCommit(true);
                 }
             }
+            ShopManager.refreshStations();
+            ShopManager.refreshDashboard();
         }
 
         public static int endExpiredSessions() throws SQLException {
@@ -215,6 +218,7 @@ public class DatabaseManager {
         }
 
         private static int endSessions(String condition) throws SQLException {
+            int endedSessions;
             try (Connection c = getConnection()) {
                 c.setAutoCommit(false);
                 try {
@@ -225,7 +229,6 @@ public class DatabaseManager {
                             makeStationAvailable(c, rs.getString("StationID"));
                         }
                     }
-                    int endedSessions;
                     try (PreparedStatement ps = c.prepareStatement(
                             "SELECT COUNT(*) FROM SESSIONS WHERE " + condition);
                             ResultSet rs = ps.executeQuery()) {
@@ -238,7 +241,6 @@ public class DatabaseManager {
                         ps.executeUpdate();
                     }
                     c.commit();
-                    return endedSessions;
                 } catch (SQLException ex) {
                     c.rollback();
                     throw ex;
@@ -246,12 +248,21 @@ public class DatabaseManager {
                     c.setAutoCommit(true);
                 }
             }
+            if (endedSessions > 0) {
+                ShopManager.refreshStations();
+                ShopManager.refreshDashboard();
+            }
+            return endedSessions;
         }
 
         private static void makeStationAvailable(Connection c, String stationId) throws SQLException {
             try (PreparedStatement ps = c.prepareStatement(
                     "UPDATE STATION SET AvailabilityStatus = 'Available', SessionEndTime = NULL "
-                    + "WHERE StationID = ? AND AvailabilityStatus = 'Occupied'")) {
+                    + "WHERE StationID = ? AND AvailabilityStatus = 'Occupied' "
+                    + "AND NOT EXISTS ("
+                    + "SELECT 1 FROM SESSIONS active "
+                    + "WHERE active.StationID = STATION.StationID "
+                    + "AND active.EndTime > datetime('now', 'localtime'))")) {
                 ps.setString(1, stationId);
                 ps.executeUpdate();
             }
@@ -956,8 +967,10 @@ public class DatabaseManager {
             throw new SQLException("The shop is closed. New sessions cannot be created.");
         }
 
-        String endTime = LocalDateTime.now().plusMinutes(durationMinutes).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String endTime = LocalDateTime.now().plusMinutes(durationMinutes)
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
+        int sessionId;
         try (Connection c = getConnection()) {
             c.setAutoCommit(false);
             try {
@@ -1001,7 +1014,6 @@ public class DatabaseManager {
                         ps.executeUpdate();
                     }
                 }
-                int sessionId;
                 try (PreparedStatement ps = c.prepareStatement(
                         "INSERT INTO SESSIONS (CustomerID, StationID, DurationMinutes, EndTime, HourlyRate, DiscountRate, TotalAmount) "
                         + "VALUES (?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
@@ -1024,7 +1036,9 @@ public class DatabaseManager {
                         "UPDATE STATION SET AvailabilityStatus = 'Occupied', SessionEndTime = ? WHERE StationID = ?")) {
                     ps.setString(1, endTime);
                     ps.setString(2, stationId);
-                    ps.executeUpdate();
+                    if (ps.executeUpdate() != 1) {
+                        throw new SQLException("The station could not be marked as occupied.");
+                    }
                 }
                 try (PreparedStatement ps = c.prepareStatement(
                         "INSERT INTO TRANSACTIONS (CustomerID, StationID, TransactionType, Amount, PaidBy) VALUES (?, ?, ?, ?, ?)")) {
@@ -1037,7 +1051,6 @@ public class DatabaseManager {
                 }
 
                 c.commit();
-                return sessionId;
 
             } catch (SQLException e) {
                 c.rollback();
@@ -1046,6 +1059,9 @@ public class DatabaseManager {
                 c.setAutoCommit(true);
             }
         }
+        ShopManager.refreshStations();
+        ShopManager.refreshDashboard();
+        return sessionId;
     }
 
     // TOP UP: adds credit and records the "Top-up" transaction in ONE database transaction

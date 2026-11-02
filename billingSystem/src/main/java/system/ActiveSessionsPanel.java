@@ -26,7 +26,7 @@ public class ActiveSessionsPanel extends javax.swing.JPanel {
          public ActiveSessionsPanel() {
                   initComponents();
                   loadActiveSessions();
-                  refreshTimer = new javax.swing.Timer(1000, event -> loadActiveSessions());
+                  refreshTimer = new javax.swing.Timer(1, event -> loadActiveSessions());
                   refreshTimer.start();
          }
 

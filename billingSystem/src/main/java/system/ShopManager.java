@@ -51,6 +51,12 @@ public final class ShopManager {
         }
     }
 
+    public static void refreshStations() {
+        if (stations != null) {
+            stations.refreshStations();
+        }
+    }
+
     public static void toggleShop() {
         if (isShopOpen() && !confirmClosing()) {
             return;
