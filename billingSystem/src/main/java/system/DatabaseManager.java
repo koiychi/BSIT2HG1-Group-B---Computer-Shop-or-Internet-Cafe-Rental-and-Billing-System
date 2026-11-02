@@ -170,6 +170,93 @@ public class DatabaseManager {
             }
         }
 
+        public static void endSession(int sessionId) throws SQLException {
+            try (Connection c = getConnection()) {
+                c.setAutoCommit(false);
+                try {
+                    String stationId = null;
+                    try (PreparedStatement ps = c.prepareStatement(
+                            "SELECT StationID FROM SESSIONS WHERE SessionID = ?")) {
+                        ps.setInt(1, sessionId);
+                        try (ResultSet rs = ps.executeQuery()) {
+                            if (rs.next()) {
+                                stationId = rs.getString("StationID");
+                            }
+                        }
+                    }
+
+                    if (stationId == null) {
+                        throw new SQLException("Session not found or already ended.");
+                    }
+
+                    try (PreparedStatement ps = c.prepareStatement(
+                            "UPDATE SESSIONS SET EndTime = datetime('now', 'localtime') "
+                            + "WHERE SessionID = ?")) {
+                        ps.setInt(1, sessionId);
+                        ps.executeUpdate();
+                    }
+                    makeStationAvailable(c, stationId);
+                    c.commit();
+                } catch (SQLException ex) {
+                    c.rollback();
+                    throw ex;
+                } finally {
+                    c.setAutoCommit(true);
+                }
+            }
+        }
+
+        public static int endExpiredSessions() throws SQLException {
+            return endSessions("EndTime <= datetime('now', 'localtime')");
+        }
+
+        public static void endAllSessions() throws SQLException {
+            endSessions("1 = 1");
+        }
+
+        private static int endSessions(String condition) throws SQLException {
+            try (Connection c = getConnection()) {
+                c.setAutoCommit(false);
+                try {
+                    try (PreparedStatement ps = c.prepareStatement(
+                            "SELECT StationID FROM SESSIONS WHERE " + condition);
+                            ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            makeStationAvailable(c, rs.getString("StationID"));
+                        }
+                    }
+                    int endedSessions;
+                    try (PreparedStatement ps = c.prepareStatement(
+                            "SELECT COUNT(*) FROM SESSIONS WHERE " + condition);
+                            ResultSet rs = ps.executeQuery()) {
+                        rs.next();
+                        endedSessions = rs.getInt(1);
+                    }
+                    try (PreparedStatement ps = c.prepareStatement(
+                            "UPDATE SESSIONS SET EndTime = datetime('now', 'localtime') "
+                            + "WHERE " + condition)) {
+                        ps.executeUpdate();
+                    }
+                    c.commit();
+                    return endedSessions;
+                } catch (SQLException ex) {
+                    c.rollback();
+                    throw ex;
+                } finally {
+                    c.setAutoCommit(true);
+                }
+            }
+        }
+
+        private static void makeStationAvailable(Connection c, String stationId) throws SQLException {
+            try (PreparedStatement ps = c.prepareStatement(
+                    "UPDATE STATION SET AvailabilityStatus = 'Available', SessionEndTime = NULL "
+                    + "WHERE StationID = ? AND AvailabilityStatus = 'Occupied'")) {
+                ps.setString(1, stationId);
+                ps.executeUpdate();
+            }
+        }
+
         public static List<Station> getStationsByType(String type) throws SQLException {
             List<Station> stations = new ArrayList<>();
             for (Station station : getAllStations()) {
