@@ -521,7 +521,11 @@ public class printServicesTabPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_deletePhotocopyButtonActionPerformed
 
     private void payPrintBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payPrintBtnActionPerformed
-        // TODO add your handling code here:
+        java.awt.Window owner = javax.swing.SwingUtilities.getWindowAncestor(this);
+        boolean paid = PrintPayment.pay(owner, getPrintOrders(), getPhotocopyOrders(), getOrderTotal());
+        if (paid) {
+            clearOrders();
+        }
     }//GEN-LAST:event_payPrintBtnActionPerformed
 
     private void colorModeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorModeComboBoxActionPerformed
@@ -531,6 +535,24 @@ public class printServicesTabPanel extends javax.swing.JPanel {
     public void addPrintJob(PrintJob job) {
 
 }
+        public java.util.List<String> getPrintOrders() {
+        return java.util.Collections.list(printListModel.elements());
+    }
+
+    public java.util.List<String> getPhotocopyOrders() {
+        return java.util.Collections.list(photocopyListModel.elements());
+    }
+
+    public java.math.BigDecimal getOrderTotal() {
+        return java.math.BigDecimal.valueOf(runningTotal)
+                .setScale(2, java.math.RoundingMode.HALF_UP);
+    }
+    public void clearOrders() {
+        printListModel.clear();
+        photocopyListModel.clear();
+        runningTotal = 0.0;
+        TotalAmountPriceLabel.setText("PHP 0.00");
+    }
 
          // Variables declaration - do not modify//GEN-BEGIN:variables
          private javax.swing.JPanel ColorModeLabelPanel;

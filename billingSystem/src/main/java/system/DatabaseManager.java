@@ -1100,6 +1100,66 @@ public class DatabaseManager {
             }
         }
     }
+        // PRINT / PHOTOCOPY: takes credit (only if paying by credit) and saves the
+    // "Printing" transaction in ONE database transaction. Returns the amount charged.
+    public static double addPrintPayment(int customerId, double subtotal, String paidBy) throws SQLException {
+        if (!ShopManager.isShopOpen()) {
+            throw new SQLException("The shop is closed. Print payments cannot be recorded.");
+        }
+        if (subtotal <= 0) {
+            throw new SQLException("There is nothing to pay.");
+        }
+
+        try (Connection c = getConnection()) {
+            c.setAutoCommit(false);
+            try {
+                double discount = 0.0;
+                double balance = 0.0;
+                try (PreparedStatement ps = c.prepareStatement(
+                        "SELECT DiscountRate, CreditBalance FROM MEMBER_CUSTOMER WHERE CustomerID = ?")) {
+                    ps.setInt(1, customerId);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            discount = rs.getDouble("DiscountRate");
+                            balance = rs.getDouble("CreditBalance");
+                        }
+                    }
+                }
+
+                boolean byCredit = "Member Credits".equals(paidBy);
+                double appliedDiscount = byCredit ? discount : 0.0;   // discount only for credit
+                double total = Math.round(subtotal * (1 - appliedDiscount) * 100.0) / 100.0;
+
+                if (byCredit) {
+                    if (balance < total) {
+                        throw new SQLException("Not enough credit balance.");
+                    }
+                    try (PreparedStatement ps = c.prepareStatement(
+                            "UPDATE MEMBER_CUSTOMER SET CreditBalance = CreditBalance - ? WHERE CustomerID = ?")) {
+                        ps.setDouble(1, total);
+                        ps.setInt(2, customerId);
+                        ps.executeUpdate();
+                    }
+                }
+
+                try (PreparedStatement ps = c.prepareStatement(
+                        "INSERT INTO TRANSACTIONS (CustomerID, StationID, TransactionType, Amount, PaidBy) VALUES (?, NULL, ?, ?, ?)")) {
+                    ps.setInt(1, customerId);
+                    ps.setString(2, "Printing");
+                    ps.setDouble(3, total);
+                    ps.setString(4, paidBy);
+                    ps.executeUpdate();
+                }
+                c.commit();
+                return total;
+            } catch (SQLException e) {
+                c.rollback();
+                throw e;
+            } finally {
+                c.setAutoCommit(true);
+            }
+        }
+    }
 
     // "First Last" for a customer ID, or "" if not found
     public static String getCustomerFullName(int customerId) {
