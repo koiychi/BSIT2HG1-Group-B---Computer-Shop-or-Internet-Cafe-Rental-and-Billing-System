@@ -4,7 +4,7 @@
  */
 package ui.Shop;
 import logic.PrintJob;
-
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,6 +19,8 @@ public class printServicesTabPanel extends javax.swing.JPanel {
     public printServicesTabPanel() {
 
     initComponents();
+    
+    TotalAmountPriceLabel.setText("PHP 0.00");
 
     printJList.setModel(printListModel);
     photocopyJList.setModel(photocopyListModel);
@@ -403,20 +405,47 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
     private void addOrderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addOrderBtnActionPerformed
 
+                                        
+    // 1. Validate that a service type (Print or Photocopy) is selected first
+    if (!printRButton.isSelected() && !photocopyRButton.isSelected()) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "Please select a service type (Print or Photocopy) first!", 
+            "Selection Required", 
+            javax.swing.JOptionPane.WARNING_MESSAGE);
+        return; // Stops execution so it won't add an order
+    }
+
+    // 2. Get selected service type and options from UI components
     String type = printRButton.isSelected() ? "Print" : "Photocopy";
     String colorMode = colorModeComboBox.getSelectedItem().toString();
     String pageSize = pagesizeComboBox.getSelectedItem().toString();
+    
+    // Read the value from the JSpinner
     int pageCount = (Integer) PageCountSpinner.getValue();
-
-
-    double pricePerPage = calculatePricePerPage();
-
+    
+    double pricePerPage = 5.0; // default base price
+    
+    if (colorMode.equalsIgnoreCase("Colored")) {
+        if (pageSize.contains("Long")) {
+            pricePerPage = 12.0;
+        } else {
+            pricePerPage = 10.0; // A4 or Letter Colored
+        }
+    } else {
+        // Black & White (B/W) pricing
+        if (pageSize.contains("Long")) {
+            pricePerPage = 6.0;
+        } else {
+            pricePerPage = 5.0; // A4 or Letter B/W
+        }
+    }
 
     double totalItemPrice = pricePerPage * pageCount;
-
-    String itemRow = colorMode + " - " + pageSize + " x" + pageCount + " (PHP " + String.format("%.2f", totalItemPrice) + ")";
-
-
+    
+    // 3. Build the item row string for the summary list
+    String itemRow = colorMode + " - " + pageSize + " x " + pageCount + " (PHP " + String.format("%.2f", totalItemPrice) + ")";
+    
+    // 4. Add to the correct list model and refresh the JList UI
     if (type.equals("Print")) {
         printListModel.addElement(itemRow);
         printJList.revalidate();
@@ -426,11 +455,10 @@ public class printServicesTabPanel extends javax.swing.JPanel {
         photocopyJList.revalidate();
         photocopyJList.repaint();
     }
-
-
+    
+    // 5. Update running total and display it on your TotalAmountPriceLabel
     runningTotal += totalItemPrice;
     TotalAmountPriceLabel.setText("PHP " + String.format("%.2f", runningTotal));
-
 
     }//GEN-LAST:event_addOrderBtnActionPerformed
    
@@ -450,23 +478,74 @@ public class printServicesTabPanel extends javax.swing.JPanel {
          }//GEN-LAST:event_payPrintBtnKeyPressed
 
     private void deletePrintButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletePrintButtonActionPerformed
-       int selectedIndex = printJList.getSelectedIndex();
-       if (selectedIndex != -1) {
-       
-            printListModel.remove(selectedIndex);
-            printJList.revalidate();
-            printJList.repaint();
+     int selectedIndex = printJList.getSelectedIndex();
+    
+    if (selectedIndex != -1) {
+        String itemRow = printListModel.getElementAt(selectedIndex);
+        
+        try {
+            int startIndex = itemRow.lastIndexOf("PHP ") + 4;
+            int endIndex = itemRow.lastIndexOf(")");
+            String priceString = itemRow.substring(startIndex, endIndex);
+            double itemPrice = Double.parseDouble(priceString);
+            
+            // Subtract from running total and update label
+            runningTotal -= itemPrice;
+            if (runningTotal < 0) {
+                runningTotal = 0.0;
+            }
+            TotalAmountPriceLabel.setText("PHP " + String.format("%.2f", runningTotal));
+            
+        } catch (Exception e) {
+            System.out.println("Error parsing price: " + e.getMessage());
         }
+        
+        // Remove item from the Print list
+        printListModel.remove(selectedIndex);
+        
+    } else {
+        JOptionPane.showMessageDialog(this, 
+            "Please select a print order to delete first.", 
+            "No Selection", 
+            JOptionPane.WARNING_MESSAGE);
+    }
+
     }//GEN-LAST:event_deletePrintButtonActionPerformed
 
     private void deletePhotocopyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletePhotocopyButtonActionPerformed
-        int selectedIndex = photocopyJList.getSelectedIndex();
-        if (selectedIndex != -1) {
-        // Remove the selected item from the photocopy list model
-            photocopyListModel.remove(selectedIndex);
-            photocopyJList.revalidate();
-            photocopyJList.repaint();
+ 
+    int selectedIndex = photocopyJList.getSelectedIndex();
+    
+    if (selectedIndex != -1) {
+        String itemRow = photocopyListModel.getElementAt(selectedIndex);
+        
+        try {
+            int startIndex = itemRow.lastIndexOf("PHP ") + 4;
+            int endIndex = itemRow.lastIndexOf(")");
+            String priceString = itemRow.substring(startIndex, endIndex);
+            double itemPrice = Double.parseDouble(priceString);
+            
+            // Subtract from running total and update label
+            runningTotal -= itemPrice;
+            if (runningTotal < 0) {
+                runningTotal = 0.0;
+            }
+            TotalAmountPriceLabel.setText("PHP " + String.format("%.2f", runningTotal));
+            
+        } catch (Exception e) {
+            System.out.println("Error parsing price: " + e.getMessage());
         }
+        
+        // Remove item from the Photocopy list
+        photocopyListModel.remove(selectedIndex);
+        
+    } else {
+        JOptionPane.showMessageDialog(this, 
+            "Please select a photocopy order to delete first.", 
+            "No Selection", 
+            JOptionPane.WARNING_MESSAGE);
+    }
+
     }//GEN-LAST:event_deletePhotocopyButtonActionPerformed
 
     private void payPrintBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payPrintBtnActionPerformed
