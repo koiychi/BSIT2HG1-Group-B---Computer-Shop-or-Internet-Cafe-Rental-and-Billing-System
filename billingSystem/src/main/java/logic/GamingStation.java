@@ -8,7 +8,6 @@ public class GamingStation extends Station {
     private String gpu = "";
     private int monitorHz = 0;
 
-    // CONSTRUCTORS
     public GamingStation(String stationID, double hourlyRate, boolean hasInternet,
                          String status, String cpu, int ramGb,
                          String gpu, int monitorHz, List<String> gamesInstalled) {
@@ -20,7 +19,6 @@ public class GamingStation extends Station {
         setGamesInstalled(gamesInstalled);
     }
 
-    // original constructor, kept
     public GamingStation(String stationID, double hourlyRate, boolean hasInternet,
                          boolean isAvailable, List<String> gamesInstalled) {
         super(stationID, hourlyRate, hasInternet, isAvailable);
@@ -32,7 +30,16 @@ public class GamingStation extends Station {
         this.gamesInstalled = new ArrayList<>();
     }
 
-    // GETTERS
+    public GamingStation(GamingStation other) {
+        super(other.getStationID(), other.getHourlyRate(), other.hasInternet(),
+                other.getStatus());
+        setCpu(other.getCpu());
+        setRamGb(other.getRamGb());
+        setGpu(other.getGpu());
+        setMonitorHz(other.getMonitorHz());
+        setGamesInstalled(other.getGamesInstalled());
+    }
+
     public List<String> getGamesInstalled() {
         return new ArrayList<>(gamesInstalled);
     }
@@ -50,7 +57,6 @@ public class GamingStation extends Station {
         return "Gaming";
     }
 
-    // SETTERS (validated)
     public void setGamesInstalled(List<String> gamesInstalled) {
         if (gamesInstalled == null) {
             throw new IllegalArgumentException("Games installed cannot be null");
@@ -79,7 +85,6 @@ public class GamingStation extends Station {
         this.monitorHz = monitorHz;
     }
 
-    // OTHER METHODS
     public void addGame(String gameName) {
         if (gameName == null || gameName.trim().isEmpty()) {
             throw new IllegalArgumentException("Game name cannot be blank.");
@@ -104,4 +109,4 @@ public class GamingStation extends Station {
              + "\nGPU: " + gpu + "\nMonitor: " + monitorHz + " Hz"
              + "\nGames Installed: " + gamesInstalled;
     }
-} //END OF CLASS
+}

@@ -15,7 +15,6 @@ public abstract class Station {
     private String cpu = ""; 
     private int ramGb = 0;
 
-    // CONSTRUCTORS
     public Station(String stationID, double hourlyRate, boolean hasInternet, String status) {
         this.stationID = validateStationID(stationID);
         setHourlyRate(hourlyRate);
@@ -36,7 +35,6 @@ public abstract class Station {
         this("PC 0", 0.00, false, false);
     }
 
-    // VALIDATION
     private static String validateStationID(String id) {
         if (id == null || id.trim().isEmpty()) {
             throw new IllegalArgumentException("Station ID is required.");
@@ -48,7 +46,6 @@ public abstract class Station {
         return cleaned;
     }
 
-    // GETTERS
     public static int getTotalStations(){ 
         return totalStationsCreated; 
     }
@@ -73,7 +70,6 @@ public abstract class Station {
     public int getRamGb(){
         return ramGb; 
     }
-    // SETTERS (validated)
     public void setStatus(String status) {
         if (!AVAILABLE.equals(status) && !IN_USE.equals(status) && !MAINTENANCE.equals(status)) {
             throw new IllegalArgumentException("Invalid station status: " + status);
@@ -110,7 +106,6 @@ public abstract class Station {
         this.ramGb = ramGb;
     }
 
-    // OTHER METHODS
     public abstract String getType();
     public abstract String getStationInfo();
 
