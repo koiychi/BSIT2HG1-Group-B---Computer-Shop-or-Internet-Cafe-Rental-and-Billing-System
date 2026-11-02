@@ -14,9 +14,7 @@ import logic.RegularStation;
 import logic.Station;
 import system.AdminLogin;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -110,18 +108,6 @@ public class DatabaseManager {
                     + "GPU_Model TEXT NOT NULL, "
                     + "Monitor_Hz INTEGER NOT NULL, "
                     + "FOREIGN KEY (StationID) REFERENCES STATION(StationID) ON DELETE CASCADE);");
-
-//            // 3. APPS & STATION_APPS 
-//            stmt.execute("CREATE TABLE IF NOT EXISTS INSTALLED_APPS ("
-//                    + "AppID INTEGER PRIMARY KEY AUTOINCREMENT, "
-//                    + "AppName TEXT UNIQUE NOT NULL);");
-//
-//            stmt.execute("CREATE TABLE IF NOT EXISTS STATION_APPS ("
-//                    + "StationID TEXT NOT NULL, "
-//                    + "AppID INTEGER NOT NULL, "
-//                    + "PRIMARY KEY (StationID, AppID), "
-//                    + "FOREIGN KEY (StationID) REFERENCES STATION(StationID) ON DELETE CASCADE, "
-//                    + "FOREIGN KEY (AppID) REFERENCES INSTALLED_APPS(AppID) ON DELETE CASCADE);");
 
             // 4. TRANSACTION
             stmt.execute("CREATE TABLE IF NOT EXISTS SESSIONS ("
@@ -615,7 +601,7 @@ public class DatabaseManager {
         }
     }
 
-    // --- CREATE: saves STATION + subtype table + apps, all-or-nothing ---
+        // --- CREATE: saves STATION and subtype table, all-or-nothing ---
     public static boolean insertStation(Station s) {
         String sql = "INSERT INTO STATION (StationID, HourlyRate, CPU_Model, RAM_GB, "
                 + "AvailabilityStatus, StationType, HasInternet) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -650,7 +636,7 @@ public class DatabaseManager {
         }
     }
 
-    // Writes the subtype row and the installed apps, using the SAME connection
+    // Writes the subtype row using the SAME connection
     private static void insertSubtype(Connection c, Station s) throws SQLException {
         if (s instanceof GamingStation) {
             GamingStation g = (GamingStation) s;
@@ -661,7 +647,6 @@ public class DatabaseManager {
                 pstmt.setInt(3, g.getMonitorHz());
                 pstmt.executeUpdate();
             }
-            saveApps(c, g.getStationID(), g.getGamesInstalled());
         } else if (s instanceof RegularStation) {
             RegularStation r = (RegularStation) s;
             try (PreparedStatement pstmt = c.prepareStatement(
@@ -669,23 +654,6 @@ public class DatabaseManager {
                 pstmt.setString(1, r.getStationID());
                 pstmt.setInt(2, r.hasPrinter() ? 1 : 0);
                 pstmt.executeUpdate();
-            }
-            saveApps(c, r.getStationID(), r.getSoftwareList());
-        }
-    }
-
-    // Adds each app name to INSTALLED_APPS (if new) and links it to the station
-    private static void saveApps(Connection c, String stationId, List<String> apps) throws SQLException {
-        String addApp = "INSERT OR IGNORE INTO INSTALLED_APPS (AppName) VALUES (?)";
-        String link = "INSERT OR IGNORE INTO STATION_APPS (StationID, AppID) "
-                + "SELECT ?, AppID FROM INSTALLED_APPS WHERE AppName = ?";
-        try (PreparedStatement p1 = c.prepareStatement(addApp); PreparedStatement p2 = c.prepareStatement(link)) {
-            for (String app : apps) {
-                p1.setString(1, app);
-                p1.executeUpdate();
-                p2.setString(1, stationId);
-                p2.setString(2, app);
-                p2.executeUpdate();
             }
         }
     }
@@ -701,8 +669,6 @@ public class DatabaseManager {
                 + "ORDER BY s.StationID";
 
         try (Connection c = getConnection()) {
-            Map<String, List<String>> appsByStation = loadAppsByStation(c);
-
             try (Statement stmt = c.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
                 while (rs.next()) {
                     String id = rs.getString("StationID");
@@ -712,7 +678,7 @@ public class DatabaseManager {
                         String status = fromDbStatus(rs.getString("AvailabilityStatus"));
                         String cpu = rs.getString("CPU_Model");
                         int ram = rs.getInt("RAM_GB");
-                        List<String> apps = appsByStation.getOrDefault(id, new ArrayList<String>());
+                        List<String> apps = new ArrayList<>();
 
                         if ("GAMING".equals(rs.getString("StationType"))) {
                             stations.add(new GamingStation(id, rate, internet, status, cpu, ram,
@@ -731,18 +697,6 @@ public class DatabaseManager {
             System.err.println("Error loading stations: " + e.getMessage());
         }
         return stations;
-    }
-
-    private static Map<String, List<String>> loadAppsByStation(Connection c) throws SQLException {
-        Map<String, List<String>> map = new HashMap<>();
-        String sql = "SELECT sa.StationID, a.AppName FROM STATION_APPS sa "
-                + "JOIN INSTALLED_APPS a ON sa.AppID = a.AppID ORDER BY a.AppName";
-        try (Statement stmt = c.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
-            while (rs.next()) {
-                map.computeIfAbsent(rs.getString(1), k -> new ArrayList<String>()).add(rs.getString(2));
-            }
-        }
-        return map;
     }
 
     // --- UPDATE: edits everything about one station (ID and type cannot change) ---
@@ -785,17 +739,6 @@ public class DatabaseManager {
                     }
                 }
 
-                // Replace the app list: remove old links, add the current ones
-                try (PreparedStatement pstmt = c.prepareStatement(
-                        "DELETE FROM STATION_APPS WHERE StationID = ?")) {
-                    pstmt.setString(1, s.getStationID());
-                    pstmt.executeUpdate();
-                }
-                List<String> apps = (s instanceof GamingStation)
-                        ? ((GamingStation) s).getGamesInstalled()
-                        : ((RegularStation) s).getSoftwareList();
-                saveApps(c, s.getStationID(), apps);
-
                 c.commit();
                 return true;
             } catch (SQLException e) {
@@ -811,7 +754,7 @@ public class DatabaseManager {
         }
     }
 
-    // --- DELETE: the subtype row and app links are removed by ON DELETE CASCADE ---
+    // --- DELETE: the subtype row is removed by ON DELETE CASCADE ---
     public static boolean deleteStation(String stationId) {
         String sql = "DELETE FROM STATION WHERE StationID = ?";
         try (Connection c = getConnection(); PreparedStatement pstmt = c.prepareStatement(sql)) {
