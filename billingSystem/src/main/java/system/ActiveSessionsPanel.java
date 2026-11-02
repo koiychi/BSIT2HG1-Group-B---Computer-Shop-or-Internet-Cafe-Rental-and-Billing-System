@@ -10,12 +10,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import service.SessionService;
 
 /**
  *
  * @author Koi
  */
 public class ActiveSessionsPanel extends javax.swing.JPanel {
+         private final SessionService sessionService = new SessionService();
+         private final javax.swing.Timer refreshTimer;
 
          /**
           * Creates new form activeSessionsPanel
@@ -23,7 +26,14 @@ public class ActiveSessionsPanel extends javax.swing.JPanel {
          public ActiveSessionsPanel() {
                   initComponents();
                   loadActiveSessions();
-                  new javax.swing.Timer(30000, event -> loadActiveSessions()).start();
+                  refreshTimer = new javax.swing.Timer(1, event -> loadActiveSessions());
+                  refreshTimer.start();
+         }
+
+         @Override
+         public void removeNotify() {
+                  refreshTimer.stop();
+                  super.removeNotify();
          }
 
          /**
@@ -41,10 +51,20 @@ public class ActiveSessionsPanel extends javax.swing.JPanel {
 
                   activeSessionsTable.setModel(new DefaultTableModel(
                            new Object[][] {},
-                           new String[]{"Session", "Customer", "Station", "Started", "Ends", "Minutes"}) {
+                  new String[]{"Session", "Customer", "Station", "Started", "Ends", "Time Left", "Action"}) {
                            @Override
                            public boolean isCellEditable(int row, int column) {
                                     return false;
+                           }
+                  });
+                  activeSessionsTable.addMouseListener(new java.awt.event.MouseAdapter() {
+                           @Override
+                           public void mouseClicked(java.awt.event.MouseEvent event) {
+                                    int row = activeSessionsTable.rowAtPoint(event.getPoint());
+                                    int column = activeSessionsTable.columnAtPoint(event.getPoint());
+                                    if (row >= 0 && column == 6) {
+                                             stopSession(row);
+                                    }
                            }
                   });
                   tableScrollPane.setViewportView(activeSessionsTable);
@@ -52,6 +72,16 @@ public class ActiveSessionsPanel extends javax.swing.JPanel {
          }// </editor-fold>//GEN-END:initComponents
 
          private void loadActiveSessions() {
+                  try {
+                           int endedSessions = sessionService.endExpiredSessions();
+                           if (endedSessions > 0) {
+                                    ShopManager.refreshDashboard();
+                           }
+                  } catch (SQLException ex) {
+                           showDatabaseError("Could not end expired sessions: " + ex.getMessage());
+                           return;
+                  }
+
                   String sql = "SELECT s.SessionID, "
                            + "c.FirstName || ' ' || c.LastName AS CustomerName, "
                            + "s.StationID, s.StartTime, s.EndTime, s.DurationMinutes "
@@ -72,16 +102,49 @@ public class ActiveSessionsPanel extends javax.swing.JPanel {
                                              result.getString("StationID"),
                                              result.getString("StartTime"),
                                              result.getString("EndTime"),
-                                             result.getInt("DurationMinutes")
+                                             getTimeLeft(result.getString("EndTime")),
+                                             "Stop"
                                     });
                            }
                   } catch (SQLException ex) {
-                           JOptionPane.showMessageDialog(
-                                    this,
-                                    "Could not load active sessions: " + ex.getMessage(),
-                                    "Database Error",
-                                    JOptionPane.ERROR_MESSAGE);
+                           showDatabaseError("Could not load active sessions: " + ex.getMessage());
                   }
+         }
+
+         private String getTimeLeft(String endTime) {
+                  try {
+                           java.time.LocalDateTime end = java.time.LocalDateTime.parse(
+                                    endTime, java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                           long seconds = java.time.Duration.between(
+                                    java.time.LocalDateTime.now(), end).getSeconds();
+                           long minutes = seconds / 60;
+                           long remainingSeconds = seconds % 60;
+                           return String.format("%02d:%02d", minutes, remainingSeconds);
+                  } catch (java.time.format.DateTimeParseException ex) {
+                           return "Unknown";
+                  }
+         }
+
+         private void stopSession(int row) {
+                  int sessionId = (Integer) activeSessionsTable.getValueAt(row, 0);
+                  int answer = JOptionPane.showConfirmDialog(
+                           this,
+                           "Stop session " + sessionId + " now?\nThe prepaid amount will not be refunded.",
+                           "Stop Session",
+                           JOptionPane.YES_NO_OPTION);
+                  if (answer != JOptionPane.YES_OPTION) {
+                           return;
+                  }
+                  try {
+                           sessionService.endSession(sessionId);
+                           loadActiveSessions();
+                  } catch (SQLException | IllegalArgumentException ex) {
+                           showDatabaseError("Could not stop session: " + ex.getMessage());
+                  }
+         }
+
+         private void showDatabaseError(String message) {
+                  JOptionPane.showMessageDialog(this, message, "Database Error", JOptionPane.ERROR_MESSAGE);
          }
 
 

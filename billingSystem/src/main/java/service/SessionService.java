@@ -39,4 +39,19 @@ public class SessionService {
     public int getOrCreateRegularCustomerId(String fullName) {
         return DatabaseManager.getOrCreateRegularID(fullName);
     }
+
+    public void endSession(int sessionId) throws SQLException {
+        if (sessionId <= 0) {
+            throw new IllegalArgumentException("A valid session is required.");
+        }
+        DatabaseManager.endSession(sessionId);
+    }
+
+    public int endExpiredSessions() throws SQLException {
+        return DatabaseManager.endExpiredSessions();
+    }
+
+    public void endAllSessions() throws SQLException {
+        DatabaseManager.endAllSessions();
+    }
 }
