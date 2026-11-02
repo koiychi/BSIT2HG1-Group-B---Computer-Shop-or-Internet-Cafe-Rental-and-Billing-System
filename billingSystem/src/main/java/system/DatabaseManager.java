@@ -31,30 +31,28 @@ public class DatabaseManager {
 // INITIALIZATION
 // ==========================================
     private static final String DBFile = "jdbc:sqlite:compShopDatabase.db";
-    private static Connection connection = null;
     private static boolean tablesInitialized = false;
     private static boolean initializationInProgress = false;
 
-    public static Connection getConnection() {
+    public static synchronized Connection getConnection() {
         try {
-            if (connection == null || connection.isClosed()) {
-                Class.forName("org.sqlite.JDBC");
-                connection = DriverManager.getConnection(DBFile);
+            Class.forName("org.sqlite.JDBC");
+            Connection connection = DriverManager.getConnection(DBFile);
 
-                try (Statement stmt = connection.createStatement()) {
-                    stmt.execute("PRAGMA foreign_keys = ON;");
-                }
-
-                if (!tablesInitialized && !initializationInProgress) {
-                    initializeTables();
-                }
+            try (Statement stmt = connection.createStatement()) {
+                stmt.execute("PRAGMA foreign_keys = ON;");
             }
+
+            if (!tablesInitialized && !initializationInProgress) {
+                initializeTables();
+            }
+            return connection;
         } catch (ClassNotFoundException e) {
             System.err.println("Driver Error: " + e.getMessage());
         } catch (SQLException e) {
             System.err.println("Database Connection Error: " + e.getMessage());
         }
-        return connection;
+        return null;
     }
 
     public static void initializeTables() {
@@ -62,7 +60,8 @@ public class DatabaseManager {
             return;
         }
         initializationInProgress = true;
-        try (Statement stmt = getConnection().createStatement()) {
+        try (Connection c = getConnection();
+             Statement stmt = c.createStatement()) {
 
             // 1. CUSTOMER (SUPERTYPE)
             stmt.execute("CREATE TABLE IF NOT EXISTS CUSTOMER ("
@@ -351,6 +350,24 @@ public class DatabaseManager {
             return -1;
         }
 
+        public static boolean hasActiveSessionForMember(String username) {
+            String sql = "SELECT 1 "
+                    + "FROM SESSIONS s "
+                    + "JOIN MEMBER_CUSTOMER m ON m.CustomerID = s.CustomerID "
+                    + "WHERE m.Username = ? "
+                    + "AND s.EndTime > datetime('now', 'localtime') "
+                    + "LIMIT 1";
+            try (Connection c = getConnection();
+                 PreparedStatement pstmt = c.prepareStatement(sql)) {
+                pstmt.setString(1, username);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    return rs.next();
+                }
+            } catch (SQLException e) {
+                throw new IllegalStateException("Could not check the member's active sessions.", e);
+            }
+        }
+
         public static String getAdminUsername() {
             String sql = "SELECT adminUsername FROM SHOP_STATUS";
             try (Connection c = getConnection();
@@ -575,12 +592,72 @@ public class DatabaseManager {
     }
 
     public static boolean deleteMember(String username) {
-        String sql = "DELETE FROM CUSTOMER WHERE CustomerID = "
-                + "(SELECT CustomerID FROM MEMBER_CUSTOMER WHERE Username = ?)";
-        try (Connection c = getConnection();
-             PreparedStatement statement = c.prepareStatement(sql)) {
-            statement.setString(1, username);
-            return statement.executeUpdate() > 0;
+        if (username == null || username.isBlank()) {
+            return false;
+        }
+
+        try (Connection c = getConnection()) {
+            c.setAutoCommit(false);
+            try {
+                int customerId = -1;
+                try (PreparedStatement statement = c.prepareStatement(
+                        "SELECT CustomerID FROM MEMBER_CUSTOMER WHERE Username = ?")) {
+                    statement.setString(1, username.trim());
+                    try (ResultSet rs = statement.executeQuery()) {
+                        if (!rs.next()) {
+                            c.rollback();
+                            return false;
+                        }
+                        customerId = rs.getInt(1);
+                    }
+                }
+
+                try (PreparedStatement statement = c.prepareStatement(
+                        "SELECT StationID FROM SESSIONS "
+                        + "WHERE CustomerID = ? AND EndTime > datetime('now', 'localtime')")) {
+                    statement.setInt(1, customerId);
+                    try (ResultSet rs = statement.executeQuery()) {
+                        while (rs.next()) {
+                            try (PreparedStatement stationStatement = c.prepareStatement(
+                                    "UPDATE STATION SET AvailabilityStatus = 'Available', SessionEndTime = NULL "
+                                    + "WHERE StationID = ?")) {
+                                stationStatement.setString(1, rs.getString("StationID"));
+                                stationStatement.executeUpdate();
+                            }
+                        }
+                    }
+                }
+
+                try (PreparedStatement statement = c.prepareStatement(
+                        "DELETE FROM TRANSACTIONS WHERE CustomerID = ?")) {
+                    statement.setInt(1, customerId);
+                    statement.executeUpdate();
+                }
+                try (PreparedStatement statement = c.prepareStatement(
+                        "DELETE FROM SESSIONS WHERE CustomerID = ?")) {
+                    statement.setInt(1, customerId);
+                    statement.executeUpdate();
+                }
+                try (PreparedStatement statement = c.prepareStatement(
+                        "DELETE FROM CUSTOMER WHERE CustomerID = ?")) {
+                    statement.setInt(1, customerId);
+                    boolean deleted = statement.executeUpdate() > 0;
+                    if (!deleted) {
+                        c.rollback();
+                        return false;
+                    }
+                }
+
+                c.commit();
+                ShopManager.refreshStations();
+                ShopManager.refreshDashboard();
+                return true;
+            } catch (SQLException e) {
+                c.rollback();
+                throw e;
+            } finally {
+                c.setAutoCommit(true);
+            }
         } catch (SQLException e) {
             System.err.println("Error deleting member: " + e.getMessage());
             return false;
@@ -984,6 +1061,18 @@ public class DatabaseManager {
         try (Connection c = getConnection()) {
             c.setAutoCommit(false);
             try {
+                try (PreparedStatement ps = c.prepareStatement(
+                        "SELECT 1 FROM SESSIONS WHERE CustomerID = ? "
+                        + "AND EndTime > datetime('now', 'localtime') LIMIT 1")) {
+                    ps.setInt(1, customerId);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            throw new SQLException(
+                                    "This member already has an active session and cannot start another one.");
+                        }
+                    }
+                }
+
                 double rate = 0;
                 try (PreparedStatement ps = c.prepareStatement("SELECT HourlyRate, AvailabilityStatus FROM STATION WHERE StationID = ?")) {
                     ps.setString(1, stationId);

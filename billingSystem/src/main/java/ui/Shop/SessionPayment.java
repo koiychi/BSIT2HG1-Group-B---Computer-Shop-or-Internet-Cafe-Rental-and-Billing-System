@@ -51,6 +51,12 @@ public final class SessionPayment {
                     "Payment Failed", javax.swing.JOptionPane.ERROR_MESSAGE);
             return -1;
         }
+        if (sessionService.hasActiveSessionForMember(username)) {
+            javax.swing.JOptionPane.showMessageDialog(owner,
+                    "This member already has an active session and cannot start another one.",
+                    "Session Not Allowed", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return -1;
+        }
         BigDecimal balance = BigDecimal.valueOf(member.getCreditAmount()).setScale(2, RoundingMode.HALF_UP);
 
         int minutes = parseMinutes(duration);
