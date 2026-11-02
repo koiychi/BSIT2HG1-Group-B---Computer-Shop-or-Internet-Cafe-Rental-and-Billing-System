@@ -676,7 +676,7 @@
                             </Property>
                             <Property name="opaque" type="boolean" value="false"/>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[450, 75]"/>
+                              <Dimension value="[450, 150]"/>
                             </Property>
                           </Properties>
                           <AuxValues>
@@ -760,7 +760,7 @@
                             </Property>
                             <Property name="opaque" type="boolean" value="false"/>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[300, 75]"/>
+                              <Dimension value="[450, 150]"/>
                             </Property>
                           </Properties>
                           <AuxValues>
