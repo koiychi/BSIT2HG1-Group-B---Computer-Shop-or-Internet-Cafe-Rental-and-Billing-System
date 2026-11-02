@@ -55,18 +55,21 @@ public class PrintMember extends javax.swing.JDialog {
         payWithLbl = new javax.swing.JLabel();
         cashRb = new javax.swing.JRadioButton();
         creditRb = new javax.swing.JRadioButton();
-        PayBill = new javax.swing.JPanel();
-        titleLbl = new javax.swing.JLabel();
-        subtotalTitleLbl = new javax.swing.JLabel();
-        printLbl = new javax.swing.JLabel();
-        details = new javax.swing.JLabel();
-        calcTotalLbl = new javax.swing.JLabel();
-        discountLbl = new javax.swing.JLabel();
-        discountAppliedLbl = new javax.swing.JLabel();
         InputPayment = new javax.swing.JPanel();
         payField = new javax.swing.JTextField();
         changeLbl = new javax.swing.JLabel();
         ProceedPay = new javax.swing.JButton();
+        PayBill = new javax.swing.JPanel();
+        titleLbl = new javax.swing.JLabel();
+        subtotalTitleLbl = new javax.swing.JLabel();
+        printLbl = new javax.swing.JLabel();
+        photocopyLbl = new javax.swing.JLabel();
+        calcTotalLbl = new javax.swing.JLabel();
+        copyLbl = new javax.swing.JLabel();
+        dicountLbl = new javax.swing.JLabel();
+        customerTypeLbl = new javax.swing.JLabel();
+        customerTypeBox = new javax.swing.JComboBox<>();
+        discountLbl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(293, 353));
@@ -77,7 +80,7 @@ public class PrintMember extends javax.swing.JDialog {
         totalTitleLbl.setText("Total Amount Due");
 
         totalLbl.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        totalLbl.setText("PHP 30.00");
+        totalLbl.setText("PHP 00.00");
 
         javax.swing.GroupLayout TotalAmountDueLayout = new javax.swing.GroupLayout(TotalAmountDue);
         TotalAmountDue.setLayout(TotalAmountDueLayout);
@@ -88,7 +91,7 @@ public class PrintMember extends javax.swing.JDialog {
                 .addGroup(TotalAmountDueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(totalLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(totalTitleLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         TotalAmountDueLayout.setVerticalGroup(
             TotalAmountDueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,69 +135,6 @@ public class PrintMember extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        titleLbl.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        titleLbl.setText("Pay Bill");
-
-        subtotalTitleLbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        subtotalTitleLbl.setText("SubTotal");
-
-        printLbl.setText("Type PC");
-
-        details.setText("Size - color x1 ");
-
-        calcTotalLbl.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        calcTotalLbl.setText("PHP 30.00");
-
-        discountLbl.setText("Discount 10%");
-
-        discountAppliedLbl.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        discountAppliedLbl.setText("PHP -3.00");
-
-        javax.swing.GroupLayout PayBillLayout = new javax.swing.GroupLayout(PayBill);
-        PayBill.setLayout(PayBillLayout);
-        PayBillLayout.setHorizontalGroup(
-            PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PayBillLayout.createSequentialGroup()
-                .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PayBillLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(subtotalTitleLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(titleLbl)))
-                    .addGroup(PayBillLayout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(PayBillLayout.createSequentialGroup()
-                                .addComponent(discountLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(discountAppliedLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(PayBillLayout.createSequentialGroup()
-                                .addComponent(printLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(PayBillLayout.createSequentialGroup()
-                                .addComponent(details)
-                                .addGap(39, 39, 39)
-                                .addComponent(calcTotalLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                .addGap(26, 26, 26))
-        );
-        PayBillLayout.setVerticalGroup(
-            PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PayBillLayout.createSequentialGroup()
-                .addComponent(titleLbl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(subtotalTitleLbl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(printLbl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(details)
-                    .addComponent(calcTotalLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(discountLbl)
-                    .addComponent(discountAppliedLbl)))
-        );
-
         payField.setText("PHP 0.00");
         payField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         payField.addActionListener(this::payFieldActionPerformed);
@@ -227,12 +167,92 @@ public class PrintMember extends javax.swing.JDialog {
         ProceedPay.setText("Finish Payment");
         ProceedPay.addActionListener(this::ProceedPayActionPerformed);
 
+        titleLbl.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        titleLbl.setText("Pay Bill");
+
+        subtotalTitleLbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        subtotalTitleLbl.setText("SubTotal");
+
+        printLbl.setText("Print:  Size - color (#)");
+
+        photocopyLbl.setText("Photocopy: Size - color (#)");
+
+        calcTotalLbl.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        calcTotalLbl.setText("PHP 00.00");
+
+        copyLbl.setText("Page Count(#) x value");
+
+        dicountLbl.setText("Discount 10%");
+
+        customerTypeLbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        customerTypeLbl.setText("Customer Type");
+
+        customerTypeBox.setEditable(true);
+        customerTypeBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Member", "Regular" }));
+        customerTypeBox.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+
+        discountLbl.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        discountLbl.setText("PHP -00.00");
+        discountLbl.setToolTipText("");
+
+        javax.swing.GroupLayout PayBillLayout = new javax.swing.GroupLayout(PayBill);
+        PayBill.setLayout(PayBillLayout);
+        PayBillLayout.setHorizontalGroup(
+            PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PayBillLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(titleLbl)
+                    .addComponent(subtotalTitleLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(customerTypeBox, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(customerTypeLbl))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PayBillLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(photocopyLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(PayBillLayout.createSequentialGroup()
+                        .addComponent(dicountLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(discountLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PayBillLayout.createSequentialGroup()
+                        .addComponent(copyLbl)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(calcTotalLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(printLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(15, 15, 15))
+        );
+        PayBillLayout.setVerticalGroup(
+            PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PayBillLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(titleLbl)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(customerTypeLbl)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(customerTypeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(subtotalTitleLbl)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(printLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(photocopyLbl)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(copyLbl)
+                    .addComponent(calcTotalLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(PayBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dicountLbl)
+                    .addComponent(discountLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(ModeOfPayment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(PayBill, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(InputPayment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -243,11 +263,11 @@ public class PrintMember extends javax.swing.JDialog {
                         .addContainerGap()
                         .addComponent(TotalAmountDue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addComponent(PayBill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(PayBill, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(TotalAmountDue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -293,7 +313,10 @@ private BigDecimal creditTotal = new BigDecimal("27.00");   // credit total, aft
         payGroup.add(creditRb);
         cashRb.setSelected(true);
         
-        setCreditBalance(BigDecimal.ZERO);
+        customerTypeBox.setEditable(false);   // only Regular or Member, no typing
+        customerTypeBox.setSelectedItem("Regular"); 
+        customerTypeBox.addActionListener(e -> customerTypeChanged());
+        applyRegularMode();                   // starts as Regular: cash only, no discount
 
         payField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
@@ -313,14 +336,11 @@ private void updateBill() {
     boolean credit = creditRb.isSelected();
     total = credit ? creditTotal : subtotal;   // discount only applies to credit
 
-    discountLbl.setVisible(credit);
-    discountAppliedLbl.setVisible(credit);
-
-    discountLbl.setVisible(true);
-    discountAppliedLbl.setVisible(true);
+    dicountLbl.setVisible(credit);    // "Discount 10%"
+    discountLbl.setVisible(credit);   // "PHP -3.00"
 
     calcTotalLbl.setText(PaymentUtil.money(subtotal));
-    discountAppliedLbl.setText("PHP -" + discountAmt.setScale(2, RoundingMode.HALF_UP));
+    discountLbl.setText("PHP -" + discountAmt.setScale(2, RoundingMode.HALF_UP));
     totalLbl.setText(PaymentUtil.money(total));
 
     updateChange();
@@ -416,10 +436,8 @@ private String detailsPlain = "";   // plain text for the receipt (the label sho
 
 public void setBill(String typeText, String detailsText,
                     BigDecimal subtotal, BigDecimal discount, BigDecimal creditTotal) {
-    printLbl.setText(typeText);        // Print - Colored
-    detailsPlain = detailsText;
-    details.setText("<html>" + detailsText.replace("&", "&amp;").replace("<", "&lt;")
-            .replace("\n", "<br>") + "</html>");   // one order per line
+      typePlain = typeText;  
+      detailsPlain = detailsText;
     this.subtotal = subtotal;          // PHP 30.00
     this.discountAmt = discount;       // PHP 3.00
     this.creditTotal = creditTotal;    // PHP 27.00
@@ -430,6 +448,142 @@ public void setBill(String typeText, String detailsText,
 
 public void setDiscountText(String text) {
     discountLbl.setText(text);         // Discount 10%
+}
+public void setBill(String typeText, String detailsText, BigDecimal subtotalDue) {
+    setBill(typeText, detailsText, subtotalDue, BigDecimal.ZERO, subtotalDue);
+}
+// ---------- orders from the print tab ----------
+private String typePlain = "";
+private int orderPages = 0;
+private final java.util.Set<BigDecimal> orderRates = new java.util.HashSet<>();
+
+// a tab row looks like: "Colored - Short  (8.5 x 11 inches) x 2 (PHP 10.00)"
+private static final java.util.regex.Pattern ORDER_ROW = java.util.regex.Pattern.compile(
+        "^(.*?)\\s*-\\s*(.*?)\\s*x\\s*(\\d+)\\s*\\(PHP\\s*([0-9.,]+)\\)\\s*$");
+
+// fills the Print / Photocopy / Copy labels; a label with no orders is hidden
+public void setOrders(java.util.List<String> printOrders,
+                      java.util.List<String> photocopyOrders, BigDecimal totalDue) {
+    orderPages = 0;
+    orderRates.clear();
+    boolean showPages = printOrders.size() + photocopyOrders.size() > 1;
+
+    StringBuilder plain = new StringBuilder();   // plain text for the receipt
+    printLbl.setText(buildOrderLabel("Print", printOrders, showPages, plain));
+    photocopyLbl.setText(buildOrderLabel("Photocopy", photocopyOrders, showPages, plain));
+    printLbl.setVisible(!printOrders.isEmpty());
+    photocopyLbl.setVisible(!photocopyOrders.isEmpty());
+
+    String rate = orderRates.size() == 1
+            ? " x " + PaymentUtil.money(orderRates.iterator().next()) : "";
+    copyLbl.setText("Copy (" + orderPages + ")" + rate);
+
+    String type = printOrders.isEmpty() ? "Photocopy"
+            : photocopyOrders.isEmpty() ? "Print" : "Print + Photocopy";
+    setBill(type, plain.toString().trim(), totalDue);   // also resizes the window
+}
+
+// one line per size + color: "Print: Short - Colored (4)"; the number is the total pages
+// of all the orders with that same size and color. Also adds the lines to the receipt text.
+private String buildOrderLabel(String title, java.util.List<String> rows,
+                               boolean showPages, StringBuilder plain) {
+    java.util.Map<String, Integer> grouped = new java.util.LinkedHashMap<>();
+    for (String row : rows) {
+        java.util.regex.Matcher m = ORDER_ROW.matcher(row.trim());
+        if (!m.matches()) {
+            grouped.merge(row.trim(), 0, Integer::sum);   // unknown format: show it as it is
+            continue;
+        }
+        String color = m.group(1).trim().isEmpty() ? "B/W" : m.group(1).trim();
+        String size = m.group(2).split("\\(")[0].trim();
+        int pages = Integer.parseInt(m.group(3));
+        BigDecimal lineTotal = PaymentUtil.parseAmount(m.group(4));
+        orderPages += pages;
+        if (pages > 0) {
+            orderRates.add(lineTotal.divide(BigDecimal.valueOf(pages), 2, RoundingMode.HALF_UP));
+        }
+        grouped.merge(size + " - " + color, pages, Integer::sum);
+    }
+
+    StringBuilder html = new StringBuilder("<html>");
+    boolean first = true;
+    for (java.util.Map.Entry<String, Integer> e : grouped.entrySet()) {
+        String line = e.getValue() > 0 ? e.getKey() + " (" + e.getValue() + ")" : e.getKey();
+        if (!first) {
+            html.append("<br>");
+        }
+        first = false;
+        html.append(title).append(": ")
+                .append(line.replace("&", "&amp;").replace("<", "&lt;"));
+        plain.append(title).append(": ").append(line).append("\n");
+    }
+    return html.append("</html>").toString();
+}
+
+
+// ---------- Regular / Member ----------
+private boolean memberMode = false;
+private int memberId = -1;
+private boolean switchingType = false;
+
+public boolean isMemberMode() {
+    return memberMode;
+}
+
+public int getMemberId() {
+    return memberId;
+}
+
+// Regular: cash only, credit is shown but cannot be clicked, no discount
+private void applyRegularMode() {
+    memberMode = false;
+    memberId = -1;
+    creditBalance = BigDecimal.ZERO;
+    discountAmt = BigDecimal.ZERO;
+    creditTotal = subtotal;
+    creditRb.setText("Membership required");
+    creditRb.setEnabled(false);
+    cashRb.setSelected(true);
+    payMethodChanged();
+}
+
+private void customerTypeChanged() {
+    if (switchingType) {
+        return;
+    }
+    if ("Member".equals(String.valueOf(customerTypeBox.getSelectedItem()))) {
+        String username = SelectMemberPrint.pick(this);
+        if (username != null && applyMember(username.trim())) {
+            return;
+        }
+        switchingType = true;                       // not found or cancelled: back to Regular
+        customerTypeBox.setSelectedItem("Regular");
+        switchingType = false;
+    }
+    applyRegularMode();
+}
+
+// Member: real balance and discount from the database; discount applies to credit only
+private boolean applyMember(String username) {
+    logic.MemberCustomer member = system.DatabaseManager.findMember(username);
+    int id = system.DatabaseManager.getCustomerIdByUsername(username);
+    if (member == null || id <= 0) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Member not found.",
+                "Member Lookup", javax.swing.JOptionPane.ERROR_MESSAGE);
+        return false;
+    }
+    double rate = system.DatabaseManager.getMemberDiscount(id);
+    creditTotal = subtotal.multiply(BigDecimal.valueOf(1 - rate)).setScale(2, RoundingMode.HALF_UP);
+    discountAmt = subtotal.subtract(creditTotal);
+    String percent = BigDecimal.valueOf(rate).multiply(BigDecimal.valueOf(100))
+            .stripTrailingZeros().toPlainString();
+    setDiscountText("Discount " + percent + "%");
+    setCreditBalance(BigDecimal.valueOf(member.getCreditAmount()).setScale(2, RoundingMode.HALF_UP));
+    memberMode = true;
+    memberId = id;
+    cashRb.setSelected(true);
+    payMethodChanged();
+    return true;
 }
 
     // the Change label only shows when paying with cash and the amount covers the total
@@ -514,7 +668,8 @@ public void setDiscountText(String text) {
         // build the confirmation text
         String method = useCredit ? "Shop Credit" : "Cash";
         StringBuilder receipt = new StringBuilder("Payment successful.\n\n");
-        receipt.append("Service: Print - Member (").append(printLbl.getText()).append(")\n");
+        receipt.append(memberMode ? "Service: Print - Member (" : "Service: Print - Regular (")
+                 .append(typePlain).append(")\n");
         receipt.append("Details: ").append(detailsPlain.replace("\n", "\n    ")).append("\n");
         receipt.append("Total Amount: ").append(PaymentUtil.money(total)).append("\n");
         receipt.append("Payment Method: ").append(method).append("\n");
@@ -524,7 +679,9 @@ public void setDiscountText(String text) {
             receipt.append("Change: ").append(PaymentUtil.money(paid.subtract(total))).append("\n");
         }
 
-        receipt.append("Remaining Credit: ").append(PaymentUtil.money(creditBalance)).append("\n");
+        if (memberMode) {
+            receipt.append("Remaining Credit: ").append(PaymentUtil.money(creditBalance)).append("\n");
+        }
         receipt.append("\nThis transaction has been recorded in Transactions.");
 
 
@@ -577,12 +734,15 @@ public void setDiscountText(String text) {
     private javax.swing.JLabel calcTotalLbl;
     private javax.swing.JRadioButton cashRb;
     private javax.swing.JLabel changeLbl;
+    private javax.swing.JLabel copyLbl;
     private javax.swing.JRadioButton creditRb;
-    private javax.swing.JLabel details;
-    private javax.swing.JLabel discountAppliedLbl;
+    private javax.swing.JComboBox<String> customerTypeBox;
+    private javax.swing.JLabel customerTypeLbl;
+    private javax.swing.JLabel dicountLbl;
     private javax.swing.JLabel discountLbl;
     private javax.swing.JTextField payField;
     private javax.swing.JLabel payWithLbl;
+    private javax.swing.JLabel photocopyLbl;
     private javax.swing.JLabel printLbl;
     private javax.swing.JLabel subtotalTitleLbl;
     private javax.swing.JLabel titleLbl;

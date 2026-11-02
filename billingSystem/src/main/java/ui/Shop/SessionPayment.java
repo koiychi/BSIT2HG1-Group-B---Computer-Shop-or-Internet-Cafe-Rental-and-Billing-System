@@ -51,23 +51,41 @@ public final class SessionPayment {
                     "Payment Failed", javax.swing.JOptionPane.ERROR_MESSAGE);
             return -1;
         }
+        if (sessionService.hasActiveSessionForMember(username)) {
+            javax.swing.JOptionPane.showMessageDialog(owner,
+                    "This member already has an active session and cannot start another one.",
+                    "Session Not Allowed", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return -1;
+        }
         BigDecimal balance = BigDecimal.valueOf(member.getCreditAmount()).setScale(2, RoundingMode.HALF_UP);
 
         int minutes = parseMinutes(duration);
         BigDecimal rate = BigDecimal.valueOf(hourlyRate).setScale(2, RoundingMode.HALF_UP);
         BigDecimal subtotal = rate.multiply(BigDecimal.valueOf(minutes))
                 .divide(BigDecimal.valueOf(60), 2, RoundingMode.HALF_UP);
+        
         int[] sessionId = {-1};
         PcMember dlg = new PcMember(owner);
         String fullName = system.DatabaseManager.getCustomerFullName(customerId);
+        
         dlg.setCustomerName(fullName.trim().isEmpty()
                 ? "@" + username
                 : fullName.trim() + " - @" + username);
         dlg.setCreditBalance(balance);
         dlg.setCommitter(paidBy -> saveSession(customerId, stationId, minutes, paidBy, sessionId));
+                double discountRate = system.DatabaseManager.getMemberDiscount(customerId);
+                        if (discountRate <= 0) {
+            discountRate = PaymentUtil.MEMBER_DISCOUNT.doubleValue();   // 10% default
+        }
+        BigDecimal creditTotal = subtotal.multiply(BigDecimal.valueOf(1 - discountRate))
+                .setScale(2, RoundingMode.HALF_UP);
+        BigDecimal discountAmt = subtotal.subtract(creditTotal);
+        String percent = BigDecimal.valueOf(discountRate).multiply(BigDecimal.valueOf(100))
+                .stripTrailingZeros().toPlainString();
+        dlg.setDiscountText("Discount " + percent + "%");
         dlg.setBill(stationId + " (" + stationType + ")",
                 duration + " x " + PaymentUtil.money(rate) + "/hr",
-                subtotal, BigDecimal.ZERO, subtotal);
+                subtotal, discountAmt, creditTotal);
         dlg.setVisible(true);
         if (dlg.isPaid()) {
             PaymentUtil.firePaymentSaved();   // tell the dashboard etc. to reload

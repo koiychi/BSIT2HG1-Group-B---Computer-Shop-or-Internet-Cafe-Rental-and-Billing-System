@@ -23,7 +23,7 @@ public class MembershipService {
                   if (username == null || username.isBlank()) {
                            return false;
                   }
-                  return DatabaseManager.deleteMember(username);
+                  return DatabaseManager.deleteMember(username.trim());
          }
 
          public MemberCustomer findMember(String username) {

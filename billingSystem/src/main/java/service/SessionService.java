@@ -36,6 +36,13 @@ public class SessionService {
         return DatabaseManager.getCustomerIdByUsername(username);
     }
 
+    public boolean hasActiveSessionForMember(String username) {
+        if (username == null || username.isBlank()) {
+            return false;
+        }
+        return DatabaseManager.hasActiveSessionForMember(username.trim());
+    }
+
     public int getOrCreateRegularCustomerId(String fullName) {
         return DatabaseManager.getOrCreateRegularID(fullName);
     }

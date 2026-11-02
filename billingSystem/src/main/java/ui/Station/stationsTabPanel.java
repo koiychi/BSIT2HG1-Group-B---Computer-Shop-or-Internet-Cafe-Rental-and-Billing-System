@@ -184,9 +184,10 @@ public class stationsTabPanel extends javax.swing.JPanel
 
     // ---------- load cards from the database ----------
         private void loadStations() {
-        regularcardsPanel.removeAll();
-        regularcardsPanel2.removeAll();
-        selectedCard = null;
+            String currentSelection = selectedId;
+            regularcardsPanel.removeAll();
+            regularcardsPanel2.removeAll();
+            selectedCard = null;
 
         List<Station> shown = service.searchFilterSort(
                 service.getAllStations(),
@@ -202,7 +203,7 @@ public class stationsTabPanel extends javax.swing.JPanel
             } else {
                 regularcardsPanel.add(card);
             }
-            if (s.getStationID().equals(selectedId)) {
+            if (s.getStationID().equals(currentSelection)) {
                 selectCard(card);
             }
         }
@@ -240,11 +241,11 @@ public class stationsTabPanel extends javax.swing.JPanel
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
         card.setPreferredSize(new Dimension(190, 135));
         card.setBackground(normalColor);
+        card.setFocusable(true);
         card.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        card.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(statusColor, 2, true),
-                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        card.setBorder(cardBorder(statusColor, false));
         card.putClientProperty("stationId", s.getStationID());
+        card.putClientProperty("statusColor", statusColor);
         card.setToolTipText("<html>" + s.getStationInfo().replace("\n", "<br>") + "</html>");
 
         JLabel icon = new JLabel();
@@ -272,8 +273,15 @@ public class stationsTabPanel extends javax.swing.JPanel
 
         MouseAdapter click = new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 selectCard(card);
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && javax.swing.SwingUtilities.isLeftMouseButton(e)) {
+                    editSelectedStation();
+                }
             }
         };
         card.addMouseListener(click);
@@ -283,10 +291,25 @@ public class stationsTabPanel extends javax.swing.JPanel
     }
 
     private void selectCard(JPanel card) {
-        if (selectedCard != null) selectedCard.setBackground(normalColor);
+        if (selectedCard != null) {
+            selectedCard.setBackground(normalColor);
+            Color statusColor = (Color) selectedCard.getClientProperty("statusColor");
+            selectedCard.setBorder(cardBorder(statusColor, false));
+        }
         selectedCard = card;
         selectedId = (String) card.getClientProperty("stationId");
         card.setBackground(selectedColor);
+        Color statusColor = (Color) card.getClientProperty("statusColor");
+        card.setBorder(cardBorder(statusColor, true));
+        card.requestFocusInWindow();
+        card.repaint();
+    }
+
+    private javax.swing.border.Border cardBorder(Color statusColor, boolean selected) {
+        Color borderColor = selected ? ORANGE : statusColor;
+        return BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(borderColor, selected ? 3 : 2, true),
+                BorderFactory.createEmptyBorder(9, 9, 9, 9));
     }
 
     // ---------- actions ----------
@@ -342,6 +365,38 @@ public class stationsTabPanel extends javax.swing.JPanel
         }
         return true;
     }
+
+    private void editSelectedStation() {
+        if (!hasSelection()) return;
+        Station s = service.findStation(selectedId);
+        if (s == null) {
+            selectedId = null;
+            loadStations();
+            return;
+        }
+
+        java.awt.Window w = javax.swing.SwingUtilities.getWindowAncestor(this);
+        java.awt.Frame owner = (w instanceof java.awt.Frame) ? (java.awt.Frame) w : null;
+        EditStation dialog = new EditStation(owner, true);
+        dialog.setStation(s);
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+
+        try {
+            if (dialog.isDeleted()) {
+                service.deleteStation(s.getStationID());
+                selectedId = null;
+                loadStations();
+            } else if (dialog.isSaved()) {
+                service.editStation(dialog.getEditedStation());
+                loadStations();
+            }
+        } catch (IllegalArgumentException | IllegalStateException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(),
+                    "Could Not Save Changes", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
         * WARNING: Do NOT modify this code. The content of this method is always
@@ -627,35 +682,7 @@ public class stationsTabPanel extends javax.swing.JPanel
          }// </editor-fold>//GEN-END:initComponents
 
     private void editStationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editStationBtnActionPerformed
-        // TODO add your handling code here:
-         if (!hasSelection()) return;
-        Station s = service.findStation(selectedId);
-        if (s == null) {
-            selectedId = null;
-            loadStations();
-            return;
-        }
-
-        java.awt.Window w = javax.swing.SwingUtilities.getWindowAncestor(this);
-        java.awt.Frame owner = (w instanceof java.awt.Frame) ? (java.awt.Frame) w : null;
-        EditStation dialog = new EditStation(owner, true);
-        dialog.setStation(s);
-        dialog.setLocationRelativeTo(this);
-        dialog.setVisible(true);                       // modal: waits here until it closes
-
-        try {
-            if (dialog.isDeleted()) {
-                service.deleteStation(s.getStationID());
-                selectedId = null;
-                loadStations();
-            } else if (dialog.isSaved()) {
-                service.editStation(dialog.getEditedStation());
-                loadStations();
-            }
-        } catch (IllegalArgumentException | IllegalStateException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(),
-                    "Could Not Save Changes", JOptionPane.WARNING_MESSAGE);
-        }
+        editSelectedStation();
     }//GEN-LAST:event_editStationBtnActionPerformed
     private void updateCounts() {
         jLabel1.setText("Regular Station (" + countCards(regularcardsPanel) + ")");

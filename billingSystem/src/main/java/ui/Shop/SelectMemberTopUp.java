@@ -19,6 +19,7 @@ public class SelectMemberTopUp extends javax.swing.JDialog {
     private final java.util.List<logic.MemberCustomer> shown = new java.util.ArrayList<>();
     private String selectedUsername = null;
     private final service.MembershipService membershipService = new service.MembershipService();
+    
     public SelectMemberTopUp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         setUndecorated(true);
