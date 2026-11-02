@@ -4,6 +4,7 @@
  */
 package ui.Shop;
 import logic.PrintJob;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -306,7 +307,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
         printJList.setModel(printListModel);
         printJList.setMaximumSize(new java.awt.Dimension(450, 100));
         printJList.setOpaque(false);
-        printJList.setPreferredSize(new java.awt.Dimension(450, 75));
+        printJList.setPreferredSize(new java.awt.Dimension(450, 85));
         printList.setViewportView(printJList);
 
         PrintPanel.add(printList);
@@ -335,7 +336,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
         photocopyJList.setModel(photocopyListModel);
         photocopyJList.setMaximumSize(new java.awt.Dimension(350, 55));
         photocopyJList.setOpaque(false);
-        photocopyJList.setPreferredSize(new java.awt.Dimension(300, 75));
+        photocopyJList.setPreferredSize(new java.awt.Dimension(300, 85));
         photocopyList.setViewportView(photocopyJList);
 
         PhotocopyPanel.add(photocopyList);
@@ -381,19 +382,25 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
     private void addOrderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addOrderBtnActionPerformed
 
+    // 1. Check if a service type is actually selected
+    if (!printRButton.isSelected() && !photocopyRButton.isSelected()) {
+        JOptionPane.showMessageDialog(this, 
+            "Please select a service type (Print or Photocopy) before adding an order.", 
+            "Selection Required", 
+            JOptionPane.WARNING_MESSAGE);
+        return; // Stops execution so no order gets added
+    }
+
+    // 2. Your existing logic continues safely here
     String type = printRButton.isSelected() ? "Print" : "Photocopy";
     String colorMode = colorModeComboBox.getSelectedItem().toString();
-    String pageSize = pagesizeComboBox.getSelectedItem().toString();
+    String pagesize = pagesizeComboBox.getSelectedItem().toString();
     int pageCount = (Integer) PageCountSpinner.getValue();
 
-
     double pricePerPage = calculatePricePerPage();
-
-
     double totalItemPrice = pricePerPage * pageCount;
 
-    String itemRow = colorMode + " - " + pageSize + " x" + pageCount + " (PHP " + String.format("%.2f", totalItemPrice) + ")";
-
+    String itemRow = colorMode + " - " + pagesize + " x" + pageCount + " (PHP " + String.format("%.2f", totalItemPrice) + ")";
 
     if (type.equals("Print")) {
         printListModel.addElement(itemRow);
@@ -404,7 +411,6 @@ public class printServicesTabPanel extends javax.swing.JPanel {
         photocopyJList.revalidate();
         photocopyJList.repaint();
     }
-
 
     runningTotal += totalItemPrice;
     TotalAmountPriceLabel.setText("PHP " + String.format("%.2f", runningTotal));
