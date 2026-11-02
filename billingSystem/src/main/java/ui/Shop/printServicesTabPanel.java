@@ -15,7 +15,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
     private javax.swing.DefaultListModel<String> printListModel = new javax.swing.DefaultListModel<>();
     private javax.swing.DefaultListModel<String> photocopyListModel = new javax.swing.DefaultListModel<>();
 
-    // === THIS IS YOUR CONSTRUCTOR ===
+    
     public printServicesTabPanel() {
 
     initComponents();
@@ -24,30 +24,20 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
     printJList.setModel(printListModel);
     photocopyJList.setModel(photocopyListModel);
+    updatePricing();
 
 }
     private double calculatePricePerPage() {
     String colorMode = colorModeComboBox.getSelectedItem() != null ? colorModeComboBox.getSelectedItem().toString() : "";
     String pageSize = pagesizeComboBox.getSelectedItem() != null ? pagesizeComboBox.getSelectedItem().toString() : "";
-    
-    double pricePerPage = 5.0; // default base price
-    
-    if (colorMode.equalsIgnoreCase("Colored")) {
-        if (pageSize.contains("Long")) {
-            pricePerPage = 12.0;
-        } else {
-            pricePerPage = 10.0; // A4 or Short Colored
-        }
-    } else {
-        // Black & White (B/W) pricing
-        if (pageSize.contains("Long")) {
-            pricePerPage = 6.0;
-        } else {
-            pricePerPage = 5.0; // A4 or Short B/W
-        }
+
+    boolean colored = "Colored".equalsIgnoreCase(colorMode.trim());
+    boolean longPage = pageSize.contains("Long");
+
+    if (colored) {
+        return longPage ? 12.0 : 10.0;
     }
-    
-    return pricePerPage;
+    return longPage ? 6.0 : 5.0;
 }
 
     private void updatePricing() {
@@ -64,9 +54,9 @@ public class printServicesTabPanel extends javax.swing.JPanel {
          private void initComponents() {
 
                   buttonGroup1 = new javax.swing.ButtonGroup();
+                  editPriceListLabel = new javax.swing.JLabel();
                   leftPanell = new javax.swing.JPanel();
                   topBar = new javax.swing.JPanel();
-                  editPriceListLabel = new javax.swing.JLabel();
                   orderPanel = new javax.swing.JPanel();
                   TypeLabel = new javax.swing.JPanel();
                   serviceTypeLabelPanel = new javax.swing.JPanel();
@@ -111,6 +101,10 @@ public class printServicesTabPanel extends javax.swing.JPanel {
                   payPrintButton = new javax.swing.JPanel();
                   payPrintBtn = new javax.swing.JButton();
 
+                  editPriceListLabel.setBackground(new java.awt.Color(255, 153, 0));
+                  editPriceListLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Screenshot 2026-10-25 151145.png"))); // NOI18N
+                  editPriceListLabel.setText("EDIT PRICELIST  ");
+
                   setMaximumSize(new java.awt.Dimension(800, 500));
                   setMinimumSize(new java.awt.Dimension(800, 800));
                   setPreferredSize(new java.awt.Dimension(500, 500));
@@ -124,12 +118,6 @@ public class printServicesTabPanel extends javax.swing.JPanel {
                   topBar.setOpaque(false);
                   topBar.setPreferredSize(new java.awt.Dimension(0, 40));
                   topBar.setLayout(new java.awt.BorderLayout());
-
-                  editPriceListLabel.setBackground(new java.awt.Color(255, 153, 0));
-                  editPriceListLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Screenshot 2026-10-25 151145.png"))); // NOI18N
-                  editPriceListLabel.setText("EDIT PRICELIST  ");
-                  topBar.add(editPriceListLabel, java.awt.BorderLayout.EAST);
-
                   leftPanell.add(topBar, java.awt.BorderLayout.NORTH);
 
                   orderPanel.setBackground(new java.awt.Color(0, 0, 102));
@@ -314,7 +302,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
                   printJList.setModel(printListModel);
                   printJList.setMaximumSize(new java.awt.Dimension(450, 100));
                   printJList.setOpaque(false);
-                  printJList.setPreferredSize(new java.awt.Dimension(450, 75));
+                  printJList.setPreferredSize(new java.awt.Dimension(450, 150));
                   printList.setViewportView(printJList);
 
                   PrintPanel.add(printList);
@@ -345,7 +333,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
                   photocopyJList.setModel(photocopyListModel);
                   photocopyJList.setMaximumSize(new java.awt.Dimension(350, 55));
                   photocopyJList.setOpaque(false);
-                  photocopyJList.setPreferredSize(new java.awt.Dimension(300, 75));
+                  photocopyJList.setPreferredSize(new java.awt.Dimension(450, 150));
                   photocopyList.setViewportView(photocopyJList);
 
                   PhotocopyPanel.add(photocopyList);
@@ -423,23 +411,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
     // Read the value from the JSpinner
     int pageCount = (Integer) PageCountSpinner.getValue();
     
-    double pricePerPage = 5.0; // default base price
-    
-    if (colorMode.equalsIgnoreCase("Colored")) {
-        if (pageSize.contains("Long")) {
-            pricePerPage = 12.0;
-        } else {
-            pricePerPage = 10.0; // A4 or Letter Colored
-        }
-    } else {
-        // Black & White (B/W) pricing
-        if (pageSize.contains("Long")) {
-            pricePerPage = 6.0;
-        } else {
-            pricePerPage = 5.0; // A4 or Letter B/W
-        }
-    }
-
+    double pricePerPage = calculatePricePerPage();
     double totalItemPrice = pricePerPage * pageCount;
     
     // 3. Build the item row string for the summary list
@@ -553,7 +525,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_payPrintBtnActionPerformed
 
     private void colorModeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorModeComboBoxActionPerformed
-        // TODO add your handling code here:
+        updatePricing();
     }//GEN-LAST:event_colorModeComboBoxActionPerformed
 
     public void addPrintJob(PrintJob job) {
