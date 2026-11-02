@@ -4,17 +4,17 @@
  */
 package ui.Shop;
 
-/**
- *
- * @author Cals
- */
+
+
+
+
 public class SelectMemberTopUp extends javax.swing.JDialog {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SelectMemberTopUp.class.getName());
 
-    /**
-     * Creates new form SelectMemberTopUp
-     */
+    
+
+
     private final java.util.List<logic.MemberCustomer> allMembers = new java.util.ArrayList<>();
     private final java.util.List<logic.MemberCustomer> shown = new java.util.ArrayList<>();
     private String selectedUsername = null;
@@ -28,7 +28,7 @@ public class SelectMemberTopUp extends javax.swing.JDialog {
         setLocationRelativeTo(parent);
     }
 
-    // the picked member's username, or null if the cashier cancelled
+    
     public String getSelectedUsername() {
         return selectedUsername;
     }
@@ -37,11 +37,11 @@ public class SelectMemberTopUp extends javax.swing.JDialog {
         setTitle("Select Member");
         setResizable(false);
 
-        searchBar.setText("");   // clear the typed-in hint, use a real placeholder instead
+        searchBar.setText("");   
         searchBar.putClientProperty("JTextField.placeholderText", "Search Member...");
         allMembers.addAll(membershipService.getMembers());
 
-        // filter the combo box while typing
+        
         searchBar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override public void insertUpdate(javax.swing.event.DocumentEvent e) { applyFilter(); }
             @Override public void removeUpdate(javax.swing.event.DocumentEvent e) { applyFilter(); }
@@ -50,10 +50,10 @@ public class SelectMemberTopUp extends javax.swing.JDialog {
 
         continueBtn.addActionListener(e -> confirmSelection());
         cancelBtn.addActionListener(e -> dispose());
-        getRootPane().setDefaultButton(continueBtn);   // Enter = Continue
+        getRootPane().setDefaultButton(continueBtn);   
         getRootPane().registerKeyboardAction(e -> dispose(),
                 javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0),
-                javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW);   // Esc = Cancel
+                javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW);   
 
         applyFilter();
         applyTheme();
@@ -87,12 +87,12 @@ public class SelectMemberTopUp extends javax.swing.JDialog {
         selectedUsername = shown.get(i).getUsername();
         dispose();
     }
-    // COLOR!!
+    
     private void applyTheme() {
         final java.awt.Color ORANGE = new java.awt.Color(0xFF6600);
         final java.awt.Color BG = new java.awt.Color(0x0B0B0F);
 
-        // top bar with a close X and a thin white line under it
+        
         javax.swing.JPanel header = new javax.swing.JPanel(new java.awt.BorderLayout());
         header.setBackground(BG);
         header.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.WHITE));
@@ -107,7 +107,7 @@ public class SelectMemberTopUp extends javax.swing.JDialog {
         });
         header.add(closeLbl, java.awt.BorderLayout.EAST);
 
-        // put the header on top of the existing content
+        
         java.awt.Container body = getContentPane();
         body.setBackground(BG);
         paintTree(body, BG);
@@ -117,14 +117,14 @@ public class SelectMemberTopUp extends javax.swing.JDialog {
         root.add(body, java.awt.BorderLayout.CENTER);
         setContentPane(root);
 
-        // orange border
+        
         getRootPane().setBorder(javax.swing.BorderFactory.createLineBorder(ORANGE, 2));
 
-        // the "Select the member to top up" card (same look as the total amount box in TopUp)
+        
         jPanel2.setBackground(new java.awt.Color(0x15151B));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(70, 70, 70), 1));
 
-        // light input fields
+        
         searchBar.setBackground(new java.awt.Color(0xF2F2F2));
         searchBar.setForeground(java.awt.Color.BLACK);
         searchBar.setBorder(javax.swing.BorderFactory.createCompoundBorder(
@@ -133,14 +133,14 @@ public class SelectMemberTopUp extends javax.swing.JDialog {
         memberBox.setBackground(new java.awt.Color(0xF2F2F2));
         memberBox.setForeground(java.awt.Color.BLACK);
 
-        // orange rounded buttons
+        
         styleOrangeButton(continueBtn, ORANGE);
         styleOrangeButton(cancelBtn, ORANGE);
 
-        pack();   // grow the window to fit everything, header included
+        pack();   
     }
 
-    // orange rounded button (grey while disabled)
+    
     private void styleOrangeButton(javax.swing.JButton button, java.awt.Color orange) {
         button.setForeground(java.awt.Color.WHITE);
         button.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 13));
@@ -164,7 +164,7 @@ public class SelectMemberTopUp extends javax.swing.JDialog {
         });
     }
 
-    // gives every panel, label, and radio button the dark theme colors
+    
     private void paintTree(java.awt.Container container, java.awt.Color bg) {
         for (java.awt.Component c : container.getComponents()) {
             if (c instanceof javax.swing.JPanel) {
@@ -181,11 +181,11 @@ public class SelectMemberTopUp extends javax.swing.JDialog {
         }
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
+    
+
+
+
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -318,26 +318,26 @@ public class SelectMemberTopUp extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBarActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_searchBarActionPerformed
 
     private void memberBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_memberBoxActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_memberBoxActionPerformed
 
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_cancelBtnActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    
+
+
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
+        
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+        
+
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -350,7 +350,7 @@ public class SelectMemberTopUp extends javax.swing.JDialog {
         }
         //</editor-fold>
 
-        /* Create and display the dialog */
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {

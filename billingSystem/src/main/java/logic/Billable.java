@@ -3,10 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
 package logic;
-/**
- *
- * @author Koi
- */
+
+
+
+
 public interface Billable {
     double calculateTotalCharge();
     String generateInvoice();

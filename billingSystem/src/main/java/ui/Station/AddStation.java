@@ -23,15 +23,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-/**
- * Form for adding a station (new AddStation()) or editing one (new AddStation(station)).
- * Saves through StationsService. The callback is called after a successful save so the
- * caller can refresh its screen.
- */
+
+
+
+
+
 public class AddStation extends JFrame {
 
     private final StationsService service = new StationsService();
-    private final Station editing;                 // null = add mode
+    private final Station editing;                 
     private Consumer<Station> onStationSaved;
 
     private final JTextField txtId = new JTextField(18);
@@ -72,7 +72,7 @@ public class AddStation extends JFrame {
         return (String) cboStatus.getSelectedItem();
     }
 
-    // ---------- layout ----------
+    
     private void buildForm() {
         setTitle(editing == null ? "Add Station" : "Edit Station");
 
@@ -145,9 +145,9 @@ public class AddStation extends JFrame {
 
     private void fillFrom(Station s) {
         txtId.setText(s.getStationID());
-        txtId.setEditable(false);                  // ID cannot change
+        txtId.setEditable(false);                  
         cboType.setSelectedItem(s.getType());
-        cboType.setEnabled(false);                 // type cannot change
+        cboType.setEnabled(false);                 
         chkInternet.setSelected(s.hasInternet());
         txtRate.setText(String.valueOf(s.getHourlyRate()));
         cboStatus.setSelectedItem(s.getStatus());
@@ -162,7 +162,7 @@ public class AddStation extends JFrame {
         }
     }
 
-    // ---------- save ----------
+    
     private void save() {
         String id = txtId.getText().trim();
         String type = (String) cboType.getSelectedItem();

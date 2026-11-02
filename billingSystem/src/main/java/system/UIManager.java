@@ -4,10 +4,10 @@
  */
 package system;
 
-/**
- *
- * @author koi
- */
+
+
+
+
 import java.awt.Color;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -43,7 +43,7 @@ public class UIManager {
                         if (path.contains("Regular")) {
                             appFont = font.deriveFont(java.awt.Font.PLAIN, 14f);
                         }
-                        //System.out.println("Registered font: " + font.getFontName());
+                        
                     } else {
                         System.err.println("Not found: " + path);
                     }
@@ -73,7 +73,7 @@ public class UIManager {
             javax.swing.UIManager.put("CheckBox.font", appFont);
             javax.swing.UIManager.put("RadioButton.font", appFont);
 
-            // Tab colors
+            
             javax.swing.UIManager.put("TabbedPane.selectedForeground", Color.decode("#FF6600"));
             javax.swing.UIManager.put("TabbedPane.selectedBackground", Color.decode("#1E293B"));
             javax.swing.UIManager.put("TabbedPane.background", Color.decode("#0F172A"));
@@ -82,11 +82,11 @@ public class UIManager {
             javax.swing.UIManager.put("TabbedPane.contentAreaColor", Color.decode("#0F172A"));
             javax.swing.UIManager.put("TabbedPane.hasFullBorder", false);
 
-// Tab sizing
+
             javax.swing.UIManager.put("TabbedPane.tabAreaAlignment", "fill");
             javax.swing.UIManager.put("TabbedPane.tabWidthMode", "equal");
 
-// Frame / panel background
+
             javax.swing.UIManager.put("Panel.background", Color.decode("#0B0B0F"));
 
         } catch (Exception e) {

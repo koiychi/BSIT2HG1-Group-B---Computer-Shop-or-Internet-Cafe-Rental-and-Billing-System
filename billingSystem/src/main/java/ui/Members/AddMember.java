@@ -4,17 +4,17 @@
  */
 package ui.Members;
 
-/**
- *
- * @author Cals
- */
+
+
+
+
 public class AddMember extends javax.swing.JDialog {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AddMember.class.getName());
 
-    /**
-     * Creates new form AddMember
-     */
+    
+
+
     public AddMember(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         setUndecorated(true);
@@ -29,7 +29,7 @@ public class AddMember extends javax.swing.JDialog {
     private static final String USER_HINT = "Enter Username...";
     private static final String PASS_HINT = "Enter Password...";
     private javax.swing.JPasswordField passwordField;
-    private boolean passwordHint = true;     // true while the hint text is showing
+    private boolean passwordHint = true;     
     private boolean added = false;
     private String addedUsername = null;
 
@@ -46,12 +46,12 @@ public class AddMember extends javax.swing.JDialog {
         hint(firstNField, FIRST_HINT);
         hint(usernameField, USER_HINT);
 
-        // swap the password text box for a password field with the same look, so typing is hidden
+        
         passwordField = new javax.swing.JPasswordField();
         passwordField.setBorder(firstNField1.getBorder());
         passwordField.setFont(firstNField1.getFont());
         final char hiddenChar = passwordField.getEchoChar();
-        passwordField.setEchoChar((char) 0);      // the hint shows as normal text
+        passwordField.setEchoChar((char) 0);      
         passwordField.setText(PASS_HINT);
         ((javax.swing.GroupLayout) CustomerNamePanel1.getLayout()).replace(firstNField1, passwordField);
 
@@ -60,7 +60,7 @@ public class AddMember extends javax.swing.JDialog {
             public void focusGained(java.awt.event.FocusEvent e) {
                 if (passwordHint) {
                     passwordField.setText("");
-                    passwordField.setEchoChar(hiddenChar);   // from here on the typing is hidden
+                    passwordField.setEchoChar(hiddenChar);   
                     passwordHint = false;
                 }
             }
@@ -75,12 +75,12 @@ public class AddMember extends javax.swing.JDialog {
             }
         });
     }
-        // COLORR
+        
     private void applyTheme() {
         final java.awt.Color ORANGE = new java.awt.Color(0xFF6600);
         final java.awt.Color BG = new java.awt.Color(0x0B0B0F);
 
-        // top bar with a close X and a thin white line under it
+        
         javax.swing.JPanel header = new javax.swing.JPanel(new java.awt.BorderLayout());
         header.setBackground(BG);
         header.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.WHITE));
@@ -95,7 +95,7 @@ public class AddMember extends javax.swing.JDialog {
         });
         header.add(closeLbl, java.awt.BorderLayout.EAST);
 
-        // put the header on top of the existing content
+        
         java.awt.Container body = getContentPane();
         paintTree(body, BG);
         javax.swing.JPanel root = new javax.swing.JPanel(new java.awt.BorderLayout());
@@ -104,10 +104,10 @@ public class AddMember extends javax.swing.JDialog {
         root.add(body, java.awt.BorderLayout.CENTER);
         setContentPane(root);
 
-        // orange border around the whole window
+        
         getRootPane().setBorder(javax.swing.BorderFactory.createLineBorder(ORANGE, 2));
 
-        // the two boxes: slightly lighter card
+        
         java.awt.Color card = new java.awt.Color(0x15151B);
         javax.swing.JPanel[] panels = {CustomerNamePanel, CustomerNamePanel1};
         for (javax.swing.JPanel p : panels) {
@@ -115,7 +115,7 @@ public class AddMember extends javax.swing.JDialog {
             p.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(70, 70, 70), 1));
         }
 
-        // light input fields
+        
         javax.swing.JTextField[] fields = {lastNField, firstNField, usernameField, passwordField};
         for (javax.swing.JTextField f : fields) {
             f.setBackground(new java.awt.Color(0xF2F2F2));
@@ -126,8 +126,8 @@ public class AddMember extends javax.swing.JDialog {
                     javax.swing.BorderFactory.createEmptyBorder(4, 6, 4, 6)));
         }
 
-        // orange rounded button
-        proceedBtn.setPreferredSize(null);   // let the layout use the real button height
+        
+        proceedBtn.setPreferredSize(null);   
         proceedBtn.setForeground(java.awt.Color.WHITE);
         proceedBtn.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 13));
         proceedBtn.setContentAreaFilled(false);
@@ -149,10 +149,10 @@ public class AddMember extends javax.swing.JDialog {
             }
         });
 
-        pack();   // grow to fit everything, header included
+        pack();   
     }
 
-    // gives every panel and label the dark theme colors
+    
     private void paintTree(java.awt.Container container, java.awt.Color bg) {
         for (java.awt.Component c : container.getComponents()) {
             if (c instanceof javax.swing.JPanel) {
@@ -166,7 +166,7 @@ public class AddMember extends javax.swing.JDialog {
         }
     }
 
-    // clears the hint text when the box is clicked, puts it back if left empty
+    
     private void hint(final javax.swing.JTextField f, final String hintText) {
         f.addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
@@ -186,17 +186,17 @@ public class AddMember extends javax.swing.JDialog {
     }
     
 
-    // the typed value, or "" if the box still shows the hint
+    
     private String valueOf(javax.swing.JTextField f, String hintText) {
         String t = f.getText().trim();
         return t.equals(hintText) ? "" : t;
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
+    
+
+
+
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -378,9 +378,9 @@ public class AddMember extends javax.swing.JDialog {
             return;
         }
         if (!system.ShopManager.ensureShopOpen()) {
-            return;   // the top up needs the shop to be open
+            return;   
         }
-        // the member is saved with no credit; the starting balance comes from the top up
+        
         if (!membershipService.addMemberCustomer(firstName, lastName, username, password, 0.0)) {
             javax.swing.JOptionPane.showMessageDialog(this,
                     "Could not add member. Username may already exist.",
@@ -390,7 +390,7 @@ public class AddMember extends javax.swing.JDialog {
 
         added = true;
         addedUsername = username;
-        // the Top Up dialog opens here (next step)
+        
         dispose();
         
         java.awt.Window owner = getOwner();
@@ -411,42 +411,42 @@ public class AddMember extends javax.swing.JDialog {
         topUp.setCommitter(paidBy -> {
             try {
                 membershipService.addCredit(customerId, topUp.getTotal().doubleValue());
-                return null;   // success
+                return null;   
             } catch (java.sql.SQLException | IllegalArgumentException ex) {
                 return ex.getMessage();
             }
         });
         topUp.setVisible(true);
         if (topUp.isPaid()) {
-            ui.Shop.PaymentUtil.firePaymentSaved();   // refresh the dashboard and transactions
+            ui.Shop.PaymentUtil.firePaymentSaved();   
         }
     }//GEN-LAST:event_proceedBtnActionPerformed
 
     private void firstNFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstNFieldActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_firstNFieldActionPerformed
 
     private void firstNField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstNField1ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_firstNField1ActionPerformed
 
     private void lastNFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastNFieldActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_lastNFieldActionPerformed
 
     private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameFieldActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_usernameFieldActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    
+
+
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
+        
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+        
+
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -459,7 +459,7 @@ public class AddMember extends javax.swing.JDialog {
         }
         //</editor-fold>
 
-        /* Create and display the dialog */
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {

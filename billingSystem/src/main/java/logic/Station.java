@@ -60,7 +60,7 @@ public abstract class Station {
     }
     public boolean isAvailable(){ 
         return AVAILABLE.equals(status); 
-    }   // derived from status
+    }   
     public String getStatus(){
         return status; 
     }
@@ -109,4 +109,4 @@ public abstract class Station {
     public abstract String getType();
     public abstract String getStationInfo();
 
-} //END OF CLASS
+} 

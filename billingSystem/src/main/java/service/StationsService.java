@@ -7,20 +7,20 @@ import java.util.Comparator;
 import java.util.List;
 import java.sql.SQLException;
 
-/**
- * Bridge between the station screens (AddStation, stationsTabPanel) and DatabaseManager.
- * Business rules live here so every screen gets them automatically.
- *
- * Errors: IllegalArgumentException = bad input, IllegalStateException = a rule or the
- * database said no. The UI catches both and shows ex.getMessage().
- */
+
+
+
+
+
+
+
 public class StationsService {
 
     public static final String SORT_ID = "Station ID";
     public static final String SORT_RATE = "Hourly Rate";
     public static final String SORT_STATUS = "Status";
 
-    // ---------- READ ----------
+    
     public List<Station> getAllStations() {
         return DatabaseManager.getAllStations();
     }
@@ -60,7 +60,7 @@ public class StationsService {
         return s;
     }
 
-    // ---------- CREATE ----------
+    
     public void addStation(Station s) {
         validateReadyToSave(s);
         if (findStation(s.getStationID()) != null) {
@@ -71,7 +71,7 @@ public class StationsService {
         }
     }
 
-    // ---------- UPDATE (full edit) ----------
+    
     public void editStation(Station s) {
         validateReadyToSave(s);
         Station existing = requireStation(s.getStationID());
@@ -87,7 +87,7 @@ public class StationsService {
         }
     }
 
-    // ---------- UPDATE (status only) ----------
+    
     public void changeStatus(String stationId, String newStatus) {
         changeStatus(stationId, newStatus, null);
     }
@@ -108,7 +108,7 @@ public class StationsService {
         }
     }
 
-    // ---------- DELETE ----------
+    
     public void deleteStation(String stationId) {
         Station existing = requireStation(stationId);
         if (Station.IN_USE.equals(existing.getStatus())) {
@@ -120,8 +120,8 @@ public class StationsService {
         }
     }
 
-    // ---------- SEARCH / FILTER / SORT (in memory, on a list already loaded) ----------
-    // type: "All", "Regular" or "Gaming"; status: "All", "Available", "In Use" or "Maintenance"
+    
+    
     public List<Station> searchFilterSort(List<Station> stations, String searchText,
                                           String type, String status, String sortBy) {
         String q = (searchText == null) ? "" : searchText.trim().toLowerCase();
@@ -145,7 +145,7 @@ public class StationsService {
                 .toList();
     }
 
-    // ---------- BUSINESS RULES ----------
+    
     private void validateReadyToSave(Station s) {
         if (s == null) {
             throw new IllegalArgumentException("There is no station to save.");

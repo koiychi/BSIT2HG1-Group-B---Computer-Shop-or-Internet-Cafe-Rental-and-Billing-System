@@ -16,20 +16,20 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-/**
- *
- * @author cals
- */
+
+
+
+
 public final class PaymentUtil {
 
     private PaymentUtil() {
     }
 
-    // ---------- prices ----------
-    public static final BigDecimal PC_RATE_GAMING = new BigDecimal("40.00");    // per hour
-    public static final BigDecimal PC_RATE_REGULAR = new BigDecimal("30.00");   // per hour
-    public static final BigDecimal PRICE_BW = new BigDecimal("2.00");           // per page
-    public static final BigDecimal PRICE_COLOR = new BigDecimal("5.00");        // per page
+    
+    public static final BigDecimal PC_RATE_GAMING = new BigDecimal("40.00");    
+    public static final BigDecimal PC_RATE_REGULAR = new BigDecimal("30.00");   
+    public static final BigDecimal PRICE_BW = new BigDecimal("2.00");           
+    public static final BigDecimal PRICE_COLOR = new BigDecimal("5.00");        
     public static final BigDecimal MEMBER_DISCOUNT = new BigDecimal("0.10");
 
     public interface Committer {
@@ -52,7 +52,7 @@ public final class PaymentUtil {
         }
     }
 
-    // UI says Cash / Credit; the database only accepts 'Cash' or 'Member Credits'
+    
     public static String paidBy(boolean usingCredit) {
         return usingCredit ? "Member Credits" : "Cash";
     }
@@ -65,7 +65,7 @@ public final class PaymentUtil {
         }
     }
 
-    // "PHP 12.00"
+    
     public static String money(BigDecimal value) {
         return "PHP " + value.setScale(2, RoundingMode.HALF_UP);
     }
@@ -81,7 +81,7 @@ public final class PaymentUtil {
         return p;
     }
 
-    // creates the modal dialog every button uses
+    
     public static JDialog newDialog(Component parent, String title) {
         Window owner = SwingUtilities.getWindowAncestor(parent);
         return new JDialog(owner, title, Dialog.ModalityType.APPLICATION_MODAL);
@@ -95,7 +95,7 @@ public final class PaymentUtil {
         dialog.setVisible(true);
     }
 
-    // PAYMENT FIELD: always "PHP <whole number>.<2 decimals>", editable, never empty, never negative
+    
     public static void setupPaymentField(JTextField field) {
         field.setText("PHP 0.00");
         ((javax.swing.text.AbstractDocument) field.getDocument()).setDocumentFilter(new javax.swing.text.DocumentFilter() {
@@ -116,13 +116,13 @@ public final class PaymentUtil {
                 int dotIdx = current.indexOf('.');
                 String input = text == null ? "" : text;
 
-                // typing "." jumps the cursor to the decimals
+                
                 if (input.equals(".")) {
                     field.setCaretPosition(Math.min(dotIdx + 1, current.length()));
                     return;
                 }
 
-                boolean fullAmount = input.contains(".") && input.length() > 1;   // pasted amount like 100.50
+                boolean fullAmount = input.contains(".") && input.length() > 1;   
                 String candidate;
                 int caretE = 0;
 

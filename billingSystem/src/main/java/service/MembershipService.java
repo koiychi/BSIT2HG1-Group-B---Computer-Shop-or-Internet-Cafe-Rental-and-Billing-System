@@ -64,7 +64,7 @@ public class MembershipService {
                            DatabaseManager.addCredit(customerId, amount);
          }
 
-         //ADDING A MEMBER CUSTOMER
+         
 
          public boolean addMemberCustomer(
                  String firstName,

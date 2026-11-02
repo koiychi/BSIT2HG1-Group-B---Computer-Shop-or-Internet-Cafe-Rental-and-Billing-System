@@ -9,7 +9,7 @@ public class TransactionService {
         return DatabaseManager.getTransactionHistory();
     }
 
-    public double getTotalSales() {
-        return DatabaseManager.getTotalSales();
+    public double getSalesToday() {
+        return DatabaseManager.getSalesToday();
     }
 }

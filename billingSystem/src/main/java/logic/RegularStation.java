@@ -46,7 +46,7 @@ public class RegularStation extends Station {
     public String getType() { return "Regular"; }
 
     public void setHasPrinter(boolean hasPrinter) {
-        this.hasPrinter = hasPrinter;   // boolean: any value is valid
+        this.hasPrinter = hasPrinter;   
     }
 
     public void setSoftwareList(List<String> softwareList) {
