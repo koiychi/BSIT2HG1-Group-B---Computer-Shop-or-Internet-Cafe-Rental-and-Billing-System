@@ -987,8 +987,9 @@ public class DatabaseManager {
         return addTransaction(customerId, null, transactionType, amount, paidBy);
     }
 
-    public static double getTotalSales() {
-        String sql = "SELECT SUM(Amount) FROM TRANSACTIONS";
+    public static double getSalesToday() {
+        String sql = "SELECT COALESCE(SUM(Amount), 0) FROM TRANSACTIONS "
+                + "WHERE date(DateAndTime) = date('now', 'localtime')";
         try (Connection c = getConnection(); Statement stmt = c.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
             if (rs.next()) {

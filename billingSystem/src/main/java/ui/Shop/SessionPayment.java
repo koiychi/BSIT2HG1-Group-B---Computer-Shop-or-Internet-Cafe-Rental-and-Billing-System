@@ -4,10 +4,10 @@
  */
 package ui.Shop;
 
-/**
- *
- * @author cals
- */
+
+
+
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import service.SessionService;
@@ -19,7 +19,7 @@ public final class SessionPayment {
     private SessionPayment() {
     }
 
-    // returns true only if the customer finished paying
+    
     public static int payRegular(java.awt.Window owner, int customerId, String customerName,
             String stationId, String stationType, double hourlyRate, String duration) {
         int minutes = parseMinutes(duration);
@@ -36,7 +36,7 @@ public final class SessionPayment {
                 subtotal, subtotal);
         dlg.setVisible(true);
         if (dlg.isPaid()) {
-            PaymentUtil.firePaymentSaved();   // tell the dashboard etc. to reload
+            PaymentUtil.firePaymentSaved();   
             return sessionId[0];
         }
         return -1;
@@ -44,7 +44,7 @@ public final class SessionPayment {
 
     public static int payMember(java.awt.Window owner, int customerId, String customerName,
             String username, String stationId, String stationType, double hourlyRate, String duration) {
-        // fresh balance and discount from the database, not the earlier snapshot
+        
         logic.MemberCustomer member = sessionService.findMember(username);
         if (member == null) {
             javax.swing.JOptionPane.showMessageDialog(owner, "Member not found.",
@@ -75,7 +75,7 @@ public final class SessionPayment {
         dlg.setCommitter(paidBy -> saveSession(customerId, stationId, minutes, paidBy, sessionId));
                 double discountRate = system.DatabaseManager.getMemberDiscount(customerId);
                         if (discountRate <= 0) {
-            discountRate = PaymentUtil.MEMBER_DISCOUNT.doubleValue();   // 10% default
+            discountRate = PaymentUtil.MEMBER_DISCOUNT.doubleValue();   
         }
         BigDecimal creditTotal = subtotal.multiply(BigDecimal.valueOf(1 - discountRate))
                 .setScale(2, RoundingMode.HALF_UP);
@@ -88,13 +88,13 @@ public final class SessionPayment {
                 subtotal, discountAmt, creditTotal);
         dlg.setVisible(true);
         if (dlg.isPaid()) {
-            PaymentUtil.firePaymentSaved();   // tell the dashboard etc. to reload
+            PaymentUtil.firePaymentSaved();   
             return sessionId[0];
         }
         return -1;
     }
 
-    // returns null on success, or the database's error message
+    
     private static String saveSession(int customerId, String stationId, int minutes,
             String paidBy, int[] out) {
         try {
@@ -105,7 +105,7 @@ public final class SessionPayment {
         }
    
     }
-        // "30 minutes", "1 hour", "1 hour 30 minutes", "2 hours" -> total minutes
+        
     public static int parseMinutes(String duration) {
         int minutes = 0;
         String[] p = duration.trim().toLowerCase().split("\\s+");
