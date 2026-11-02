@@ -310,7 +310,11 @@ private BigDecimal creditTotal = new BigDecimal("27.00");   // credit total, aft
 
     // placeholder bill 
 private void updateBill() {
-    total = creditTotal;   // members always get the discount, whether paying cash or credit
+    boolean credit = creditRb.isSelected();
+    total = credit ? creditTotal : subtotal;   // discount only applies to credit
+
+    discountLbl.setVisible(credit);
+    discountAppliedLbl.setVisible(credit);
 
     discountLbl.setVisible(true);
     discountAppliedLbl.setVisible(true);
@@ -441,6 +445,11 @@ public void setDiscountText(String text) {
     // Cash <-> Shop Credit
     private void payMethodChanged() {
         payField.setEnabled(cashRb.isSelected());   // typing only for cash
+        InputPayment.setVisible(cashRb.isSelected());   // hide the whole panel
+        updateBill();
+        pack();
+        setLocationRelativeTo(getOwner());
+        
         if (cashRb.isSelected()) {
             payField.requestFocusInWindow();
         } else {

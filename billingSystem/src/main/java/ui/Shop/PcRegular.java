@@ -312,7 +312,11 @@ public class PcRegular extends javax.swing.JDialog {
         setLocationRelativeTo(getOwner());    
     }
     public void setCustomerName(String name) {
-        customerNameLbl.setText(name);
+        boolean hasName = name != null && !name.trim().isEmpty();
+        customerNameLbl.setText(hasName ? name.trim() : "");
+        customerNameLbl.setVisible(hasName);   // hide the label
+        pack();             
+        setLocationRelativeTo(getOwner());
     }
 
     //(no discount for regular)
@@ -464,7 +468,9 @@ public class PcRegular extends javax.swing.JDialog {
         StringBuilder receipt = new StringBuilder("Payment successful.\n\n");
         receipt.append("Service: PC - Regular\n");
         receipt.append("Station: ").append(typePcLbl.getText()).append("\n");
-        receipt.append("Customer: ").append(customerNameLbl.getText()).append("\n");
+        if (!customerNameLbl.getText().isEmpty()) {
+            receipt.append("Customer: ").append(customerNameLbl.getText()).append("\n");
+        }
         receipt.append("Total Amount: ").append(PaymentUtil.money(total)).append("\n");
         receipt.append("Payment Method: Cash\n");
         receipt.append("Amount Received: ").append(PaymentUtil.money(paid)).append("\n");

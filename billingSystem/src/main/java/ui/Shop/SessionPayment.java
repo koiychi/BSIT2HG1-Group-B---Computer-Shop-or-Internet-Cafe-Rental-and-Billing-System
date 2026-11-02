@@ -66,7 +66,10 @@ public final class SessionPayment {
 
         int[] sessionId = {-1};
         PcMember dlg = new PcMember(owner);
-        dlg.setCustomerName(customerName);
+        String fullName = system.DatabaseManager.getCustomerFullName(customerId);
+        dlg.setCustomerName(fullName.trim().isEmpty()
+                ? "@" + username
+                : fullName.trim() + " - @" + username);
         dlg.setCreditBalance(balance);
         dlg.setDiscountText("Discount " + percent + "%");
         dlg.setCommitter(paidBy -> saveSession(customerId, stationId, minutes, paidBy, sessionId));
