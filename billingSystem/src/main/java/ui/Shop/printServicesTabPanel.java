@@ -20,6 +20,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
     public printServicesTabPanel() {
 
     initComponents();
+    TotalAmountPriceLabel.setText("PHP 0.00");
 
     printJList.setModel(printListModel);
     photocopyJList.setModel(photocopyListModel);
@@ -336,7 +337,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
         photocopyJList.setModel(photocopyListModel);
         photocopyJList.setMaximumSize(new java.awt.Dimension(350, 55));
         photocopyJList.setOpaque(false);
-        photocopyJList.setPreferredSize(new java.awt.Dimension(300, 85));
+        photocopyJList.setPreferredSize(new java.awt.Dimension(450, 85));
         photocopyList.setViewportView(photocopyJList);
 
         PhotocopyPanel.add(photocopyList);
