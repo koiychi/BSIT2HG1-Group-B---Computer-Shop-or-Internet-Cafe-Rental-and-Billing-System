@@ -24,15 +24,33 @@ public class printServicesTabPanel extends javax.swing.JPanel {
     photocopyJList.setModel(photocopyListModel);
 
 }
+    private double calculatePricePerPage() {
+    String colorMode = colorModeComboBox.getSelectedItem() != null ? colorModeComboBox.getSelectedItem().toString() : "";
+    String pageSize = pagesizeComboBox.getSelectedItem() != null ? pagesizeComboBox.getSelectedItem().toString() : "";
+    
+    double pricePerPage = 5.0; // default base price
+    
+    if (colorMode.equalsIgnoreCase("Colored")) {
+        if (pageSize.contains("Long")) {
+            pricePerPage = 12.0;
+        } else {
+            pricePerPage = 10.0; // A4 or Short Colored
+        }
+    } else {
+        // Black & White (B/W) pricing
+        if (pageSize.contains("Long")) {
+            pricePerPage = 6.0;
+        } else {
+            pricePerPage = 5.0; // A4 or Short B/W
+        }
+    }
+    
+    return pricePerPage;
+}
 
     private void updatePricing() {
-   if (printRButton.isSelected()) {
-        // Print mode pricing
-        pagePriceLabel.setText("PHP 10.00 / per Page"); // Or your specific label name
-    } else {
-        // Photocopy mode pricing
-        pagePriceLabel.setText("PHP 5.00 / per Page");
-    }
+    double currentPrice = calculatePricePerPage();
+    pagePriceLabel.setText(String.format("PHP %.2f / per Page", currentPrice));
     }
 
     /**
@@ -199,6 +217,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
         colorModeComboBox.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         colorModeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Colored", "B/W", " " }));
         colorModeComboBox.setPreferredSize(new java.awt.Dimension(380, 30));
+        colorModeComboBox.addActionListener(this::colorModeComboBoxActionPerformed);
         ColorModePanel.add(colorModeComboBox);
 
         ColorModeLabelPanel.add(ColorModePanel);
@@ -324,7 +343,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
         rightPanel.add(PhotocopyPanel);
 
         TotalAmountPrice.setMaximumSize(new java.awt.Dimension(350, 100));
-        TotalAmountPrice.setPreferredSize(new java.awt.Dimension(350, 70));
+        TotalAmountPrice.setPreferredSize(new java.awt.Dimension(350, 75));
         TotalAmountPrice.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         totalAmountLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -340,6 +359,7 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
         rightPanel.add(TotalAmountPrice);
 
+        payPrintBtn.setBackground(new java.awt.Color(255, 102, 0));
         payPrintBtn.setText("Pay");
         payPrintBtn.setPreferredSize(new java.awt.Dimension(300, 30));
         payPrintBtn.addActionListener(this::payPrintBtnActionPerformed);
@@ -361,55 +381,40 @@ public class printServicesTabPanel extends javax.swing.JPanel {
 
     private void addOrderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addOrderBtnActionPerformed
 
-  // 1. Get selected service type and options from UI components
-        String type = printRButton.isSelected() ? "Print" : "Photocopy";
-        String colorMode = colorModeComboBox.getSelectedItem().toString();
-        String pageSize = pagesizeComboBox.getSelectedItem().toString();
-        
-        // FIX: Read the value from the JSpinner instead of a JLabel
-        int pageCount = (Integer) PageCountSpinner.getValue();
+    String type = printRButton.isSelected() ? "Print" : "Photocopy";
+    String colorMode = colorModeComboBox.getSelectedItem().toString();
+    String pageSize = pagesizeComboBox.getSelectedItem().toString();
+    int pageCount = (Integer) PageCountSpinner.getValue();
 
-        double pricePerPage = 5.0; // default base price
-        
-        if (colorMode.equalsIgnoreCase("Colored")) {
-            if (pageSize.contains("Long")) {
-                pricePerPage = 12.0;
-            } else {
-                pricePerPage = 10.0; // A4 or Letter Colored
-            }
-        } else {
-            // Black & White (B/W) pricing
-            if (pageSize.contains("Long")) {
-                pricePerPage = 6.0;
-            } else {
-                pricePerPage = 5.0; // A4 or Letter B/W
-            }
-        }
-        
-        double totalItemPrice = pricePerPage * pageCount;
 
-        // 3. Build the item row string for the summary list
-        String itemRow = colorMode + " - " + pageSize + " x" + pageCount + " (PHP " + String.format("%.2f", totalItemPrice) + ")";
+    double pricePerPage = calculatePricePerPage();
 
-        // 4. Add to the correct list model and refresh the JList UI
-        if (type.equals("Print")) {
-            printListModel.addElement(itemRow);
-            printJList.revalidate();
-            printJList.repaint();
-        } else {
-            photocopyListModel.addElement(itemRow);
-            photocopyJList.revalidate();
-            photocopyJList.repaint();
-        }
 
-        // 5. Update running total and display it on your TotalAmountPriceLabel
-        runningTotal += totalItemPrice;
-        TotalAmountPriceLabel.setText("PHP " + String.format("%.2f", runningTotal));
+    double totalItemPrice = pricePerPage * pageCount;
+
+    String itemRow = colorMode + " - " + pageSize + " x" + pageCount + " (PHP " + String.format("%.2f", totalItemPrice) + ")";
+
+
+    if (type.equals("Print")) {
+        printListModel.addElement(itemRow);
+        printJList.revalidate();
+        printJList.repaint();
+    } else {
+        photocopyListModel.addElement(itemRow);
+        photocopyJList.revalidate();
+        photocopyJList.repaint();
+    }
+
+
+    runningTotal += totalItemPrice;
+    TotalAmountPriceLabel.setText("PHP " + String.format("%.2f", runningTotal));
+
 
     }//GEN-LAST:event_addOrderBtnActionPerformed
    
     private void pagesizeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pagesizeComboBoxActionPerformed
-        // TODO add your handling code here:
+       double currentPrice = calculatePricePerPage();
+        pagePriceLabel.setText(String.format("PHP %.2f / per Page", currentPrice));
         
     }//GEN-LAST:event_pagesizeComboBoxActionPerformed
 
@@ -445,6 +450,10 @@ public class printServicesTabPanel extends javax.swing.JPanel {
     private void payPrintBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payPrintBtnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_payPrintBtnActionPerformed
+
+    private void colorModeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorModeComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_colorModeComboBoxActionPerformed
 
     public void addPrintJob(PrintJob job) {
 
