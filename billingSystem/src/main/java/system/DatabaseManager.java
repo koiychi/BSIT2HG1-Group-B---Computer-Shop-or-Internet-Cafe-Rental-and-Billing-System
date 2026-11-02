@@ -900,7 +900,8 @@ public class DatabaseManager {
                     }
                 }
 
-                double total = Math.round(rate * (durationMinutes / 60.0) * (1 - discount) * 100.0) / 100.0;
+                double appliedDiscount = "Member Credits".equals(paidBy) ? discount : 0.0;
+                double total = Math.round(rate * (durationMinutes / 60.0) * (1 - appliedDiscount) * 100.0) / 100.0;
 
                 if ("Member Credits".equals(paidBy)) {
                     if (balance < total) {
@@ -922,7 +923,7 @@ public class DatabaseManager {
                     ps.setInt(3, durationMinutes);
                     ps.setString(4, endTime);
                     ps.setDouble(5, rate);
-                    ps.setDouble(6, discount);
+                    ps.setDouble(6, appliedDiscount);
                     ps.setDouble(7, total);
                     ps.executeUpdate();
                     try (ResultSet keys = ps.getGeneratedKeys()) {
