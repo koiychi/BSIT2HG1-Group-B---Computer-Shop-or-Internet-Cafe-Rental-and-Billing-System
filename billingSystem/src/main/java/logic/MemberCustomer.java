@@ -4,17 +4,13 @@
  */
 package logic;
 
-/**
- *
- * @author @author hazyth (Theo)
- */
 public class MemberCustomer extends Customer {
-   private int customerID;
-private String username;
-private String password;
-private double creditAmount;
-private double discountRate;
-    // CONSTRUCTORS
+    private int customerID;
+    private String username;
+    private String password;
+    private double creditAmount;
+    private double discountRate;
+
     public MemberCustomer() {
         this("Default Customer", "username", "password", 0.0, 0.20);
     }
@@ -27,18 +23,33 @@ private double discountRate;
         setDiscountRate(discountRate);
     }
 
-    // GETTERS
-public int getCustomerID() {
-    return customerID;
-}
-
-public void setCustomerID(int customerID) {
-    if (customerID < 0) {
-        throw new IllegalArgumentException("Customer ID cannot be negative");
+    public MemberCustomer(MemberCustomer other) {
+        super(requireOther(other));
+        setCustomerID(other.getCustomerID());
+        setUsername(other.getUsername());
+        setPassword(other.password);
+        setCreditAmount(other.getCreditAmount());
+        setDiscountRate(other.getDiscountRate());
     }
-    this.customerID = customerID;
-}
-    
+
+    private static MemberCustomer requireOther(MemberCustomer other) {
+        if (other == null) {
+            throw new IllegalArgumentException("Member customer cannot be null");
+        }
+        return other;
+    }
+
+    public int getCustomerID() {
+        return customerID;
+    }
+
+    public void setCustomerID(int customerID) {
+        if (customerID < 0) {
+            throw new IllegalArgumentException("Customer ID cannot be negative");
+        }
+        this.customerID = customerID;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -51,7 +62,6 @@ public void setCustomerID(int customerID) {
         return discountRate;
     }
 
-    // SETTERS
     public void setUsername(String username) {
         if (username == null || username.isBlank()) {
             throw new IllegalArgumentException("Username cannot be null or blank");
@@ -81,7 +91,6 @@ public void setCustomerID(int customerID) {
         
     }
 
-    // OTHER METHODS
     public boolean checkPassword(String inputPass) {
         if (inputPass == null || inputPass.isBlank()) {
             return false;
@@ -105,4 +114,4 @@ public void setCustomerID(int customerID) {
                 + "\nDiscount Rate: " + this.discountRate;
     }
 
-} //END OF CLASS
+}

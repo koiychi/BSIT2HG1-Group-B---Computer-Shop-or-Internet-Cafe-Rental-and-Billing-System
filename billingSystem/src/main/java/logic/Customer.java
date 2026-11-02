@@ -1,13 +1,8 @@
 package logic;
 
-/**
- *
- * @author hazyth (Theo)
- */
 public class Customer {
     private String name;
 
-    // CONSTRUCTORS
     public Customer() {
         this("Default Customer");
     }
@@ -16,12 +11,17 @@ public class Customer {
         setName(name);
     }
 
-    // GETTERS
+    public Customer(Customer other) {
+        if (other == null) {
+            throw new IllegalArgumentException("Customer cannot be null");
+        }
+        setName(other.getName());
+    }
+
     public String getName() {
         return name;
     }
 
-    // SETTERS
     public void setName(String name) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Name cannot be null or blank");
@@ -29,8 +29,7 @@ public class Customer {
         this.name = name;
     }
 
-    // OTHER METHODS
     public String getCustomerInfo() {
         return "Customer Name: " + name;
     }
-} //END OF CLASS
+}

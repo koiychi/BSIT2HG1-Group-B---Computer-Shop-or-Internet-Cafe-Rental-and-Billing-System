@@ -2,12 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-//@author Carlo
 package logic;
 
 public class Session implements Billable {
 
-    //ATTRIBUTES
     private int sessionID;
     private Customer customer;
     private Station station;
@@ -17,7 +15,6 @@ public class Session implements Billable {
     private String currentActivity;
     private boolean isActive;
 
-    //PARAMETERIZED CONSTRUCTOR
     public Session(int sessionID, Customer customer, Station station) {
         this.setSessionID(sessionID);
         this.setCustomer(customer);
@@ -29,12 +26,41 @@ public class Session implements Billable {
         this.isActive = false;
     }
 
-    //GETTERS
+    public Session(Session other) {
+        if (other == null) {
+            throw new IllegalArgumentException("Session cannot be null.");
+        }
+        this.sessionID = other.sessionID;
+        this.customer = copyCustomer(other.customer);
+        this.station = copyStation(other.station);
+        this.startTime = other.startTime;
+        this.endTime = other.endTime;
+        this.duration = other.duration;
+        this.currentActivity = other.currentActivity;
+        this.isActive = other.isActive;
+    }
+
+    private static Customer copyCustomer(Customer customer) {
+        if (customer instanceof MemberCustomer member) {
+            return new MemberCustomer(member);
+        }
+        return new Customer(customer);
+    }
+
+    private static Station copyStation(Station station) {
+        if (station instanceof GamingStation gaming) {
+            return new GamingStation(gaming);
+        }
+        if (station instanceof RegularStation regular) {
+            return new RegularStation(regular);
+        }
+        throw new IllegalArgumentException("Unsupported station type.");
+    }
+
     public int getSessionID() {
         return sessionID;
     }
 
-    //SETTERS
     public void setSessionID(int sessionID) {
         if (sessionID <= 0) {
             throw new IllegalArgumentException("Session ID must be greater than 0.");
@@ -91,7 +117,6 @@ public class Session implements Billable {
         return isActive;
     }
 
-    //METHODS
     public void startSession() {
         if (isActive) {
             throw new IllegalStateException("Session is already active.");
@@ -127,7 +152,6 @@ public class Session implements Billable {
 
     @Override
     public String generateInvoice() {
-        //TODO in UI: Invoice must only be generated after the session has ended.
         return "===== INVOICE =====\n"
                 + "Session ID: " + sessionID + "\n"
                 + "Customer: " + customer.getName() + "\n"
@@ -137,4 +161,4 @@ public class Session implements Billable {
                 + String.format("Total Charge: %.2f\n", calculateTotalCharge())
                 + "===================";
     }
-}//END OF CLASS
+}

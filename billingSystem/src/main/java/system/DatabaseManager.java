@@ -109,7 +109,6 @@ public class DatabaseManager {
                     + "Monitor_Hz INTEGER NOT NULL, "
                     + "FOREIGN KEY (StationID) REFERENCES STATION(StationID) ON DELETE CASCADE);");
 
-            // 4. TRANSACTION
             stmt.execute("CREATE TABLE IF NOT EXISTS SESSIONS ("
                     + "SessionID INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + "CustomerID INTEGER NOT NULL, "
@@ -120,6 +119,17 @@ public class DatabaseManager {
                     + "HourlyRate REAL NOT NULL, "
                     + "DiscountRate REAL DEFAULT 0.0, "
                     + "TotalAmount REAL NOT NULL, "
+                    + "FOREIGN KEY (CustomerID) REFERENCES CUSTOMER(CustomerID), "
+                    + "FOREIGN KEY (StationID) REFERENCES STATION(StationID));");
+
+            stmt.execute("CREATE TABLE IF NOT EXISTS TRANSACTIONS ("
+                    + "TransactionID INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + "CustomerID INTEGER NOT NULL, "
+                    + "StationID TEXT, "
+                    + "TransactionType TEXT NOT NULL, "
+                    + "Amount REAL NOT NULL, "
+                    + "PaidBy TEXT NOT NULL, "
+                    + "DateAndTime TEXT DEFAULT(datetime('now', 'localtime')), "
                     + "FOREIGN KEY (CustomerID) REFERENCES CUSTOMER(CustomerID), "
                     + "FOREIGN KEY (StationID) REFERENCES STATION(StationID));");
 
