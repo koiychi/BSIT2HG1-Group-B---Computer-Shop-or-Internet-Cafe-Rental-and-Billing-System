@@ -193,12 +193,11 @@ public class transactionsTabPanel extends javax.swing.JPanel {
                            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                            .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addContainerGap()
-                                    .addComponent(amountEarnedLbl)
-                                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addContainerGap(19, Short.MAX_VALUE)
-                                    .addComponent(totalEarnLbl)
-                                    .addGap(15, 15, 15))
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                                      .addComponent(amountEarnedLbl)
+                                                      .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                             .addComponent(totalEarnLbl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)))
                   );
                   jPanel1Layout.setVerticalGroup(
                            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -320,7 +319,7 @@ public class transactionsTabPanel extends javax.swing.JPanel {
                                              .addGroup(upperPanelLayout.createSequentialGroup()
                                                       .addContainerGap()
                                                       .addComponent(jLabel1)))
-                                    .addContainerGap(187, Short.MAX_VALUE))
+                                    .addContainerGap(199, Short.MAX_VALUE))
                   );
                   upperPanelLayout.setVerticalGroup(
                            upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
