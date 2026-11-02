@@ -987,21 +987,19 @@ public class DatabaseManager {
                         rate = rs.getDouble("HourlyRate");
                     }
                 }
-                double discount = 0.0;
                 double balance = 0.0;
                 try (PreparedStatement ps = c.prepareStatement(
-                        "SELECT DiscountRate, CreditBalance FROM MEMBER_CUSTOMER WHERE CustomerID = ?")) {
+                        "SELECT CreditBalance FROM MEMBER_CUSTOMER WHERE CustomerID = ?")) {
                     ps.setInt(1, customerId);
                     try (ResultSet rs = ps.executeQuery()) {
                         if (rs.next()) {
-                            discount = rs.getDouble("DiscountRate");
                             balance = rs.getDouble("CreditBalance");
                         }
                     }
                 }
 
-                double appliedDiscount = "Member Credits".equals(paidBy) ? discount : 0.0;
-                double total = Math.round(rate * (durationMinutes / 60.0) * (1 - appliedDiscount) * 100.0) / 100.0;
+                double appliedDiscount = 0.0;
+                double total = Math.round(rate * (durationMinutes / 60.0) * 100.0) / 100.0;
 
                 if ("Member Credits".equals(paidBy)) {
                     if (balance < total) {

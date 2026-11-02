@@ -3,15 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package ui.Session;
-import service.SessionService;
 /**
  *
  * @author theo
  */
 
 public class NewSessionDialog3 extends javax.swing.JDialog {
-    private final SessionService sessionService = new SessionService();
-    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(NewSessionDialog3.class.getName());
 
     /**
@@ -42,28 +39,23 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
         String station = stationDlg.getSelectedStationName();
         String type = stationDlg.getStationType();
         String duration = stationDlg.getDuration();
-        boolean isMember = "Member".equals(customerDlg.getCustomerType());
-
-        
         double rate = stationDlg.getSelectedStation().getHourlyRate();   
         double hours = parseHours(duration);
         double subtotal = rate * hours;
-        double discount = isMember
-                ? subtotal * sessionService.getMemberDiscount(customerDlg.getResolvedCustomerID())
-                : 0;
-        double total = subtotal - discount;
 
         lblStation.setText(station);
         lblStationType.setText(type);
         lblRate.setText(String.format("PHP %.0f /hour", rate));
+        boolean isMember = "Member".equals(customerDlg.getCustomerType());
         lblCustomer.setText(isMember
             ? customerDlg.getCustomerName() + " (@" + customerDlg.getUsername() + ") - Member"
             : customerDlg.getCustomerName() + " - Regular");
         lblDuration.setText(duration);
         lblCalc.setText(String.format("PHP %.0f x %s", rate, duration));
-        lblDiscount.setText(String.format("- PHP %.2f", discount));
+        textDIs.setVisible(false);
+        lblDiscount.setVisible(false);
         lblSubtotal.setText(String.format("PHP %.2f", subtotal));
-        lblTotal.setText(String.format("PHP %.2f", total));
+        lblTotal.setText(String.format("PHP %.2f", subtotal));
     }
     
     /**

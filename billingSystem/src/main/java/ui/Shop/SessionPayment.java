@@ -51,19 +51,12 @@ public final class SessionPayment {
                     "Payment Failed", javax.swing.JOptionPane.ERROR_MESSAGE);
             return -1;
         }
-        double discountRate = sessionService.getMemberDiscount(customerId);
         BigDecimal balance = BigDecimal.valueOf(member.getCreditAmount()).setScale(2, RoundingMode.HALF_UP);
 
         int minutes = parseMinutes(duration);
         BigDecimal rate = BigDecimal.valueOf(hourlyRate).setScale(2, RoundingMode.HALF_UP);
         BigDecimal subtotal = rate.multiply(BigDecimal.valueOf(minutes))
                 .divide(BigDecimal.valueOf(60), 2, RoundingMode.HALF_UP);
-        BigDecimal discountedTotal = subtotal.multiply(BigDecimal.valueOf(1 - discountRate))
-                .setScale(2, RoundingMode.HALF_UP);
-        BigDecimal discount = subtotal.subtract(discountedTotal);
-        String percent = BigDecimal.valueOf(discountRate).multiply(BigDecimal.valueOf(100))
-                .stripTrailingZeros().toPlainString();
-
         int[] sessionId = {-1};
         PcMember dlg = new PcMember(owner);
         String fullName = system.DatabaseManager.getCustomerFullName(customerId);
@@ -71,11 +64,10 @@ public final class SessionPayment {
                 ? "@" + username
                 : fullName.trim() + " - @" + username);
         dlg.setCreditBalance(balance);
-        dlg.setDiscountText("Discount " + percent + "%");
         dlg.setCommitter(paidBy -> saveSession(customerId, stationId, minutes, paidBy, sessionId));
         dlg.setBill(stationId + " (" + stationType + ")",
                 duration + " x " + PaymentUtil.money(rate) + "/hr",
-                subtotal, discount, discountedTotal);
+                subtotal, BigDecimal.ZERO, subtotal);
         dlg.setVisible(true);
         if (dlg.isPaid()) {
             PaymentUtil.firePaymentSaved();   // tell the dashboard etc. to reload
