@@ -57,7 +57,7 @@ public class MemberCustomer extends Customer {
     public double getCreditAmount() {
         return creditAmount;
     }
-
+    @Override
     public double getDiscountRate() {
         return discountRate;
     }
@@ -90,6 +90,11 @@ public class MemberCustomer extends Customer {
         this.discountRate = discountRate;
         
     }
+    @Override
+    public Customer copy() {
+        return new MemberCustomer(this);
+    }
+    
 
     public boolean checkPassword(String inputPass) {
         if (inputPass == null || inputPass.isBlank()) {

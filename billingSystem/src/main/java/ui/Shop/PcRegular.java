@@ -5,6 +5,7 @@
 package ui.Shop;
 
 import java.math.BigDecimal;
+import logic.Billable;
 
 
 
@@ -39,7 +40,10 @@ public class PcRegular extends javax.swing.JDialog {
     private PaymentUtil.Committer committer;
 
     public void setCommitter(PaymentUtil.Committer committer) {
-        this.committer = committer;
+if (committer == null) {
+    throw new IllegalArgumentException("Committer cannot be null.");
+}
+this.committer = committer;
     }
 
     
@@ -301,16 +305,25 @@ public class PcRegular extends javax.swing.JDialog {
         applyTheme();
     }
         
-    public void setBill(String typeText, String calcText, BigDecimal subtotal, BigDecimal totalDue) {
-        typePcLbl.setText(typeText);                          
-        calcLbl.setText(calcText);                            
-        calcTotalLbl.setText(PaymentUtil.money(subtotal));
-        totalLbl.setText(PaymentUtil.money(totalDue));
-        total = totalDue;
-        updateChange();
-        pack();                               
-        setLocationRelativeTo(getOwner());    
+public void setBill(Billable bill) {
+    if (bill == null) {
+        throw new IllegalArgumentException("Bill cannot be null.");
     }
+    BigDecimal due = BigDecimal.valueOf(bill.calculateTotalCharge())
+            .setScale(2, java.math.RoundingMode.HALF_UP);
+    if (due.signum() <= 0) {
+        throw new IllegalArgumentException("Total amount due must be greater than 0.");
+    }
+    String invoice = bill.generateInvoice();
+    typePcLbl.setText(PaymentUtil.invoiceTitle(invoice));
+    calcLbl.setText(PaymentUtil.invoiceBody(invoice));
+    calcTotalLbl.setText(PaymentUtil.money(due));
+    totalLbl.setText(PaymentUtil.money(due));
+    total = due;
+    updateChange();
+    pack();
+    setLocationRelativeTo(getOwner());
+}
     public void setCustomerName(String name) {
         boolean hasName = name != null && !name.trim().isEmpty();
         customerNameLbl.setText(hasName ? name.trim() : "");
@@ -432,7 +445,15 @@ public class PcRegular extends javax.swing.JDialog {
         if (paymentDone) {
             return;   
         }
-        BigDecimal paid = PaymentUtil.parseAmount(payField.getText());
+        BigDecimal paid;
+try {
+    paid = PaymentUtil.parseAmountStrict(payField.getText());
+} catch (IllegalArgumentException ex) {
+    javax.swing.JOptionPane.showMessageDialog(this, ex.getMessage(),
+            "Input Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+    payField.requestFocusInWindow();
+    return;
+}
 
         
         if (paid.compareTo(BigDecimal.ZERO) <= 0) {
@@ -450,8 +471,9 @@ public class PcRegular extends javax.swing.JDialog {
             payField.requestFocusInWindow();
             return;
         }
-
-        
+        if (!PaymentUtil.confirmPayment(this, "this payment", total)) {
+    return;
+}
         if (committer != null) {
             ProceedPay.setEnabled(false);
             String error = committer.commit(PaymentUtil.paidBy(false));

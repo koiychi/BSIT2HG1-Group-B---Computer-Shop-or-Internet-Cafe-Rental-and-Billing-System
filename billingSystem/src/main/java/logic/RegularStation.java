@@ -44,6 +44,18 @@ public class RegularStation extends Station {
 
     @Override
     public String getType() { return "Regular"; }
+    
+    @Override
+    public double calculateTotalCost(double durationInHours) {
+    if (!Double.isFinite(durationInHours) || durationInHours < 0) {
+        throw new IllegalArgumentException("Duration cannot be negative.");
+    }
+    return Math.round(getHourlyRate() * durationInHours * 100.0) / 100.0;
+}
+    @Override
+    public Station copy() {
+    return new RegularStation(this);
+}
 
     public void setHasPrinter(boolean hasPrinter) {
         this.hasPrinter = hasPrinter;   

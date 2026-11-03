@@ -4,6 +4,7 @@
  */
 package ui.Shop;
 
+import logic.Billable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -299,9 +300,9 @@ public class PrintMember extends javax.swing.JDialog {
         
     }//GEN-LAST:event_payFieldActionPerformed
 private BigDecimal total = BigDecimal.ZERO;
-private BigDecimal subtotal = new BigDecimal("30.00");      
-private BigDecimal discountAmt = new BigDecimal("3.00");    
-private BigDecimal creditTotal = new BigDecimal("27.00");   
+private BigDecimal subtotal = BigDecimal.ZERO;
+private BigDecimal discountAmt = BigDecimal.ZERO;   
+private BigDecimal creditTotal = BigDecimal.ZERO;
 
     private void setupLogic() {
         
@@ -432,95 +433,43 @@ private void updateBill() {
         }
     }
 
-private String detailsPlain = "";   
+private String typePlain = "";
+private String detailsPlain = "";
+private logic.Customer customer = new logic.Customer();   // plain customer = no discount
 
-public void setBill(String typeText, String detailsText,
-                    BigDecimal subtotal, BigDecimal discount, BigDecimal creditTotal) {
-      typePlain = typeText;  
-      detailsPlain = detailsText;
-    this.subtotal = subtotal;          
-    this.discountAmt = discount;       
-    this.creditTotal = creditTotal;    
+public void setBill(Billable bill) {
+    if (bill == null) {
+        throw new IllegalArgumentException("Bill cannot be null.");
+    }
+    BigDecimal sub = BigDecimal.valueOf(bill.calculateTotalCharge()).setScale(2, RoundingMode.HALF_UP);
+    if (sub.signum() <= 0) {
+        throw new IllegalArgumentException("Total amount due must be greater than 0.");
+    }
+    String invoice = bill.generateInvoice();
+    typePlain = PaymentUtil.invoiceTitle(invoice);
+    detailsPlain = PaymentUtil.invoiceBody(invoice);
+    printLbl.setText(typePlain);
+    photocopyLbl.setText("<html>" + detailsPlain.replace("&", "&amp;").replace("<", "&lt;")
+            .replace("\n", "<br>") + "</html>");
+    printLbl.setVisible(true);
+    photocopyLbl.setVisible(true);
+    copyLbl.setText("Order total");
+    subtotal = sub;
+    applyDiscount();
     updateBill();
-    pack();                            
+    pack();
     setLocationRelativeTo(getOwner());
 }
 
-public void setDiscountText(String text) {
-    discountLbl.setText(text);         
+// the customer decides its own discount: 0 for a plain Customer, the saved rate for a MemberCustomer
+private void applyDiscount() {
+    double rate = customer.getDiscountRate();
+    discountAmt = subtotal.multiply(BigDecimal.valueOf(rate)).setScale(2, RoundingMode.HALF_UP);
+    creditTotal = subtotal.subtract(discountAmt);
+    String percent = BigDecimal.valueOf(rate).multiply(BigDecimal.valueOf(100))
+            .stripTrailingZeros().toPlainString();
+    dicountLbl.setText("Discount " + percent + "%");
 }
-public void setBill(String typeText, String detailsText, BigDecimal subtotalDue) {
-    setBill(typeText, detailsText, subtotalDue, BigDecimal.ZERO, subtotalDue);
-}
-
-private String typePlain = "";
-private int orderPages = 0;
-private final java.util.Set<BigDecimal> orderRates = new java.util.HashSet<>();
-
-
-private static final java.util.regex.Pattern ORDER_ROW = java.util.regex.Pattern.compile(
-        "^(.*?)\\s*-\\s*(.*?)\\s*x\\s*(\\d+)\\s*\\(PHP\\s*([0-9.,]+)\\)\\s*$");
-
-
-public void setOrders(java.util.List<String> printOrders,
-                      java.util.List<String> photocopyOrders, BigDecimal totalDue) {
-    orderPages = 0;
-    orderRates.clear();
-    boolean showPages = printOrders.size() + photocopyOrders.size() > 1;
-
-    StringBuilder plain = new StringBuilder();   
-    printLbl.setText(buildOrderLabel("Print", printOrders, showPages, plain));
-    photocopyLbl.setText(buildOrderLabel("Photocopy", photocopyOrders, showPages, plain));
-    printLbl.setVisible(!printOrders.isEmpty());
-    photocopyLbl.setVisible(!photocopyOrders.isEmpty());
-
-    String rate = orderRates.size() == 1
-            ? " x " + PaymentUtil.money(orderRates.iterator().next()) : "";
-    copyLbl.setText("Copy (" + orderPages + ")" + rate);
-
-    String type = printOrders.isEmpty() ? "Photocopy"
-            : photocopyOrders.isEmpty() ? "Print" : "Print + Photocopy";
-    setBill(type, plain.toString().trim(), totalDue);   
-}
-
-
-
-private String buildOrderLabel(String title, java.util.List<String> rows,
-                               boolean showPages, StringBuilder plain) {
-    java.util.Map<String, Integer> grouped = new java.util.LinkedHashMap<>();
-    for (String row : rows) {
-        java.util.regex.Matcher m = ORDER_ROW.matcher(row.trim());
-        if (!m.matches()) {
-            grouped.merge(row.trim(), 0, Integer::sum);   
-            continue;
-        }
-        String color = m.group(1).trim().isEmpty() ? "B/W" : m.group(1).trim();
-        String size = m.group(2).split("\\(")[0].trim();
-        int pages = Integer.parseInt(m.group(3));
-        BigDecimal lineTotal = PaymentUtil.parseAmount(m.group(4));
-        orderPages += pages;
-        if (pages > 0) {
-            orderRates.add(lineTotal.divide(BigDecimal.valueOf(pages), 2, RoundingMode.HALF_UP));
-        }
-        grouped.merge(size + " - " + color, pages, Integer::sum);
-    }
-
-    StringBuilder html = new StringBuilder("<html>");
-    boolean first = true;
-    for (java.util.Map.Entry<String, Integer> e : grouped.entrySet()) {
-        String line = e.getValue() > 0 ? e.getKey() + " (" + e.getValue() + ")" : e.getKey();
-        if (!first) {
-            html.append("<br>");
-        }
-        first = false;
-        html.append(title).append(": ")
-                .append(line.replace("&", "&amp;").replace("<", "&lt;"));
-        plain.append(title).append(": ").append(line).append("\n");
-    }
-    return html.append("</html>").toString();
-}
-
-
 
 private boolean memberMode = false;
 private int memberId = -1;
@@ -538,9 +487,9 @@ public int getMemberId() {
 private void applyRegularMode() {
     memberMode = false;
     memberId = -1;
+    customer = new logic.Customer();
     creditBalance = BigDecimal.ZERO;
-    discountAmt = BigDecimal.ZERO;
-    creditTotal = subtotal;
+    applyDiscount();
     creditRb.setText("Membership required");
     creditRb.setEnabled(false);
     cashRb.setSelected(true);
@@ -572,12 +521,8 @@ private boolean applyMember(String username) {
                 "Member Lookup", javax.swing.JOptionPane.ERROR_MESSAGE);
         return false;
     }
-    double rate = system.DatabaseManager.getMemberDiscount(id);
-    creditTotal = subtotal.multiply(BigDecimal.valueOf(1 - rate)).setScale(2, RoundingMode.HALF_UP);
-    discountAmt = subtotal.subtract(creditTotal);
-    String percent = BigDecimal.valueOf(rate).multiply(BigDecimal.valueOf(100))
-            .stripTrailingZeros().toPlainString();
-    setDiscountText("Discount " + percent + "%");
+    customer = member;
+    applyDiscount();
     setCreditBalance(BigDecimal.valueOf(member.getCreditAmount()).setScale(2, RoundingMode.HALF_UP));
     memberMode = true;
     memberId = id;
@@ -612,16 +557,22 @@ private boolean applyMember(String username) {
         updateBill();   
     }
 
-    
-    private void finishPayment() {
+        private void finishPayment() {
         if (paymentDone) {
-            return;   
+            return;
         }
-        BigDecimal paid = PaymentUtil.parseAmount(payField.getText());
         boolean useCredit = creditRb.isSelected();
+        BigDecimal paid = BigDecimal.ZERO;
 
         if (!useCredit) {
-            
+            try {
+                paid = PaymentUtil.parseAmountStrict(payField.getText());
+            } catch (IllegalArgumentException ex) {
+                javax.swing.JOptionPane.showMessageDialog(this, ex.getMessage(),
+                        "Invalid Payment", javax.swing.JOptionPane.WARNING_MESSAGE);
+                payField.requestFocusInWindow();
+                return;
+            }
             if (paid.compareTo(BigDecimal.ZERO) <= 0) {
                 javax.swing.JOptionPane.showMessageDialog(this,
                         "Please enter a payment amount greater than PHP 0.00.",
@@ -629,7 +580,6 @@ private boolean applyMember(String username) {
                 payField.requestFocusInWindow();
                 return;
             }
-            
             if (paid.compareTo(total) < 0) {
                 javax.swing.JOptionPane.showMessageDialog(this,
                         "The amount paid is less than the total amount due.",
@@ -639,7 +589,6 @@ private boolean applyMember(String username) {
             }
         }
 
-        
         if (useCredit && creditBalance.compareTo(total) < 0) {
             javax.swing.JOptionPane.showMessageDialog(this,
                     "Insufficient Shop Credit.\n\n"
@@ -648,11 +597,12 @@ private boolean applyMember(String username) {
                     "Insufficient Credit", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
-
-        
+        if (!PaymentUtil.confirmPayment(this, "this payment", total)) {
+            return;
+        }
         if (committer != null) {
             ProceedPay.setEnabled(false);
-            String error = committer.commit(PaymentUtil.paidBy(useCredit));
+            String error = PaymentUtil.safeCommit(committer, PaymentUtil.paidBy(useCredit));
             if (error != null) {
                 ProceedPay.setEnabled(true);
                 javax.swing.JOptionPane.showMessageDialog(this, error,
@@ -662,10 +612,9 @@ private boolean applyMember(String username) {
         }
         paymentDone = true;
         if (useCredit) {
-            creditBalance = creditBalance.subtract(total);   
+            creditBalance = creditBalance.subtract(total);
         }
 
-        
         String method = useCredit ? "Shop Credit" : "Cash";
         StringBuilder receipt = new StringBuilder("Payment successful.\n\n");
         receipt.append(memberMode ? "Service: Print - Member (" : "Service: Print - Regular (")
@@ -683,7 +632,6 @@ private boolean applyMember(String username) {
             receipt.append("Remaining Credit: ").append(PaymentUtil.money(creditBalance)).append("\n");
         }
         receipt.append("\nThis transaction has been recorded in Transactions.");
-
 
         java.awt.Window owner = getOwner();
         dispose();

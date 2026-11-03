@@ -4,6 +4,9 @@
  */
 package ui.Shop;
 
+import java.math.RoundingMode;
+import logic.Billable;
+import logic.Customer;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -427,18 +430,34 @@ public class PcMember extends javax.swing.JDialog {
         updateChange();
     }
 
-    
-    public void setBill(String typeText, String calcText,
-                        BigDecimal subtotal, BigDecimal discount, BigDecimal creditTotal) {
-        typePcLbl.setText(typeText);       
-        calcLbl.setText(calcText);         
-        this.subtotal = subtotal;          
-        this.discountAmt = discount;       
-        this.creditTotal = subtotal.subtract(discount);
-        updateBill();
-        pack();
-        setLocationRelativeTo(getOwner());
+public void setBill(Billable bill, Customer customer) {
+    if (bill == null) {
+        throw new IllegalArgumentException("Bill cannot be null.");
     }
+    if (customer == null) {
+        throw new IllegalArgumentException("Customer cannot be null.");
+    }
+    BigDecimal sub = BigDecimal.valueOf(bill.calculateTotalCharge()).setScale(2, RoundingMode.HALF_UP);
+    if (sub.signum() <= 0) {
+        throw new IllegalArgumentException("Total amount due must be greater than 0.");
+    }
+    // the customer decides its own discount (0 for a plain Customer, the stored rate for a MemberCustomer)
+    double rate = customer.getDiscountRate();
+    BigDecimal disc = sub.multiply(BigDecimal.valueOf(rate)).setScale(2, RoundingMode.HALF_UP);
+    String percent = BigDecimal.valueOf(rate).multiply(BigDecimal.valueOf(100))
+            .stripTrailingZeros().toPlainString();
+
+    String invoice = bill.generateInvoice();
+    typePcLbl.setText(PaymentUtil.invoiceTitle(invoice));
+    calcLbl.setText(PaymentUtil.invoiceBody(invoice));
+    discountLbl.setText("Discount " + percent + "%");
+    this.subtotal = sub;
+    this.discountAmt = disc;
+    this.creditTotal = sub.subtract(disc);
+    updateBill();
+    pack();
+    setLocationRelativeTo(getOwner());
+}
     public void setCustomerName(String name) {
         customerNameLbl.setText(name);
     }
@@ -507,8 +526,10 @@ public class PcMember extends javax.swing.JDialog {
                     "Insufficient Credit", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
+        if (!PaymentUtil.confirmPayment(this, "this payment", total)) {
+    return;
+}
 
-        
         if (committer != null) {
             ProceedPay.setEnabled(false);
             String error = committer.commit(PaymentUtil.paidBy(useCredit));

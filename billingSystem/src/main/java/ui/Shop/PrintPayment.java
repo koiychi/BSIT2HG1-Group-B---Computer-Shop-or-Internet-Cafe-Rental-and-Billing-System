@@ -4,10 +4,9 @@
  */
 package ui.Shop;
 
-
-
-
-
+import java.math.RoundingMode;
+import logic.PrintJob;
+import logic.PrintOrderBill;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -32,10 +31,27 @@ public final class PrintPayment {
         if (!system.ShopManager.ensureShopOpen()) {
             return false;
         }
-        
+        PrintOrderBill bill;
+        try {
+            bill = toBill(printOrders, photocopyOrders);
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(owner, ex.getMessage(),
+                    "Invalid Order", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        BigDecimal billTotal = BigDecimal.valueOf(bill.calculateTotalCharge())
+                .setScale(2, RoundingMode.HALF_UP);
+
         PrintMember dlg = new PrintMember(owner instanceof java.awt.Frame ? (java.awt.Frame) owner : null, true);
-        dlg.setCommitter(paidBy -> save(dlg, total, paidBy));
-        dlg.setOrders(printOrders, photocopyOrders, total);
+        dlg.setCommitter(paidBy -> save(dlg, billTotal, paidBy));
+        try {
+            dlg.setBill(bill);
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(owner, ex.getMessage(),
+                    "Invalid Order", JOptionPane.ERROR_MESSAGE);
+            dlg.dispose();
+            return false;
+        }
         dlg.setVisible(true);
 
         if (dlg.isPaid()) {
@@ -58,6 +74,44 @@ public final class PrintPayment {
             return null;
         } catch (java.sql.SQLException ex) {
             return ex.getMessage();
+        }
+    }
+        // a row looks like: Colored - Short (8.5 x 11) x 3 (PHP 30.00)
+    private static PrintOrderBill toBill(List<String> printOrders, List<String> photocopyOrders) {
+        PrintOrderBill bill = new PrintOrderBill();
+        addJobs(bill, "Print", printOrders);
+        addJobs(bill, "Photocopy", photocopyOrders);
+        return bill;
+    }
+
+    private static void addJobs(PrintOrderBill bill, String service, List<String> rows) {
+        for (String row : rows) {
+            int dash = row.indexOf(" - ");
+            int times = row.lastIndexOf(" x ");
+            int open = row.lastIndexOf("(PHP ");
+            int close = row.lastIndexOf(")");
+            if (dash < 0 || times < dash || open < times || close < open) {
+                throw new IllegalArgumentException("This order could not be read: " + row);
+            }
+
+            String color = row.substring(0, dash).trim();
+            String size = row.substring(dash + 3, times).trim();
+            int bracket = size.indexOf('(');
+            if (bracket > 0) {
+                size = size.substring(0, bracket).trim();
+            }
+
+            int pages;
+            try {
+                pages = Integer.parseInt(row.substring(times + 3, open).trim());
+            } catch (NumberFormatException ex) {
+                throw new IllegalArgumentException("This order could not be read: " + row);
+            }
+            double lineTotal = PaymentUtil.parseAmountStrict(row.substring(open + 5, close)).doubleValue();
+
+            // the panel has no paper type, so "Standard" fills the required field
+            bill.addJob(new PrintJob(service, size, "Standard", pages,
+                    "Colored".equalsIgnoreCase(color), lineTotal / pages));
         }
     }
 }

@@ -28,6 +28,13 @@ public class Customer {
         }
         this.name = name;
     }
+    public double getDiscountRate() {
+    return 0.0;
+    }
+
+    public Customer copy() {
+    return new Customer(this);
+    }
 
     public String getCustomerInfo() {
         return "Customer Name: " + name;
