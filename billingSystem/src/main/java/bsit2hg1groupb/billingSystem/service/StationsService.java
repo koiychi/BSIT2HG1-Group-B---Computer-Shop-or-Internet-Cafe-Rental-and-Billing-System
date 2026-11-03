@@ -1,17 +1,17 @@
 package bsit2hg1groupb.billingSystem.service;
 
-import bsit2hg1groupb.billingSystem.DatabaseManager; 
-import bsit2hg1groupb.billingSystem.system.GamingStation;
+import bsit2hg1groupb.billingSystem.DatabaseManager;
 import bsit2hg1groupb.billingSystem.system.Station;
 import java.util.Comparator;
 import java.util.List;
 
 /**
- * Bridge between the station screens (AddStation, stationsTabPanel) and DatabaseManager.
- * Business rules live here so every screen gets them automatically.
+ * Bridge between the station screens (AddStation, stationsTabPanel) and
+ * DatabaseManager. Business rules live here so every screen gets them
+ * automatically.
  *
- * Errors: IllegalArgumentException = bad input, IllegalStateException = a rule or the
- * database said no. The UI catches both and shows ex.getMessage().
+ * Errors: IllegalArgumentException = bad input, IllegalStateException = a rule
+ * or the database said no. The UI catches both and shows ex.getMessage().
  */
 public class StationsService {
 
@@ -107,7 +107,7 @@ public class StationsService {
     // ---------- SEARCH / FILTER / SORT (in memory, on a list already loaded) ----------
     // type: "All", "Regular" or "Gaming"; status: "All", "Available", "In Use" or "Maintenance"
     public List<Station> searchFilterSort(List<Station> stations, String searchText,
-                                          String type, String status, String sortBy) {
+            String type, String status, String sortBy) {
         String q = (searchText == null) ? "" : searchText.trim().toLowerCase();
 
         Comparator<Station> order;
@@ -121,36 +121,18 @@ public class StationsService {
 
         return stations.stream()
                 .filter(s -> q.isEmpty()
-                        || s.getStationID().toLowerCase().contains(q)
-                        || s.getCpu().toLowerCase().contains(q))
+                || s.getStationID().toLowerCase().contains(q)
+                || s.getCpu().toLowerCase().contains(q))
                 .filter(s -> type == null || "All".equals(type) || s.getType().equalsIgnoreCase(type))
                 .filter(s -> status == null || "All".equals(status) || s.getStatus().equals(status))
                 .sorted(order)
                 .toList();
     }
 
-    // ---------- BUSINESS RULES ----------
     private void validateReadyToSave(Station s) {
         if (s == null) {
             throw new IllegalArgumentException("There is no station to save.");
         }
-        if (s.getHourlyRate() <= 0) {
-            throw new IllegalArgumentException("Hourly rate must be greater than zero.");
-        }
-        if (s.getCpu() == null || s.getCpu().trim().isEmpty()) {
-            throw new IllegalArgumentException("CPU is required.");
-        }
-        if (s.getRamGb() <= 0) {
-            throw new IllegalArgumentException("RAM is required.");
-        }
-        if (s instanceof GamingStation) {
-            GamingStation g = (GamingStation) s;
-            if (g.getGpu() == null || g.getGpu().trim().isEmpty()) {
-                throw new IllegalArgumentException("GPU is required for a gaming station.");
-            }
-            if (g.getMonitorHz() <= 0) {
-                throw new IllegalArgumentException("Monitor refresh rate is required for a gaming station.");
-            }
-        }
+        s.validateComplete();
     }
 }

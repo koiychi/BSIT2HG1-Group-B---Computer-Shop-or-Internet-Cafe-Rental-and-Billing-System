@@ -10,7 +10,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -24,22 +23,21 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 /**
- * Form for adding a station (new AddStation()) or editing one (new AddStation(station)).
- * Saves through StationsService. The callback is called after a successful save so the
- * caller can refresh its screen.
+ * Form for adding a station. Saves through StationsService. The callback is
+ * called after a successful save so the caller can refresh its screen. (Editing
+ * an existing station is done in EditStation.)
  */
 public class AddStation extends JFrame {
 
     private final StationsService service = new StationsService();
-    private final Station editing;                 // null = add mode
     private Consumer<Station> onStationSaved;
 
     private final JTextField txtId = new JTextField(18);
     private final JComboBox<String> cboType = new JComboBox<>(new String[]{"Regular", "Gaming"});
     private final JCheckBox chkInternet = new JCheckBox("Has Internet");
     private final JTextField txtRate = new JTextField();
-    private final JComboBox<String> cboStatus =
-            new JComboBox<>(new String[]{Station.AVAILABLE, Station.IN_USE, Station.MAINTENANCE});
+    private final JComboBox<String> cboStatus
+            = new JComboBox<>(new String[]{Station.AVAILABLE, Station.IN_USE, Station.MAINTENANCE});
     private final JTextField txtCpu = new JTextField();
     private final JTextField txtRam = new JTextField();
     private final JLabel lblGpu = new JLabel("GPU");
@@ -49,16 +47,8 @@ public class AddStation extends JFrame {
     private final JCheckBox chkPrinter = new JCheckBox("Has Printer");
 
     public AddStation() {
-        this(null);
-    }
-
-    public AddStation(Station existing) {
-        this.editing = existing;
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         buildForm();
-        if (existing != null) {
-            fillFrom(existing);
-        }
         updateTypeFields();
         pack();
         setLocationRelativeTo(null);
@@ -72,9 +62,9 @@ public class AddStation extends JFrame {
         return (String) cboStatus.getSelectedItem();
     }
 
-    // ---------- layout ----------
+    //layout
     private void buildForm() {
-        setTitle(editing == null ? "Add Station" : "Edit Station");
+        setTitle("Add Station");
 
         JPanel form = new JPanel(new GridBagLayout());
         form.setBorder(BorderFactory.createEmptyBorder(20, 25, 20, 25));
@@ -143,26 +133,7 @@ public class AddStation extends JFrame {
         chkPrinter.setVisible(!gaming);
     }
 
-    private void fillFrom(Station s) {
-        txtId.setText(s.getStationID());
-        txtId.setEditable(false);                  // ID cannot change
-        cboType.setSelectedItem(s.getType());
-        cboType.setEnabled(false);                 // type cannot change
-        chkInternet.setSelected(s.hasInternet());
-        txtRate.setText(String.valueOf(s.getHourlyRate()));
-        cboStatus.setSelectedItem(s.getStatus());
-        txtCpu.setText(s.getCpu());
-        txtRam.setText(String.valueOf(s.getRamGb()));
-        if (s instanceof GamingStation) {
-            GamingStation g = (GamingStation) s;
-            txtGpu.setText(g.getGpu());
-            txtHz.setText(String.valueOf(g.getMonitorHz()));
-        } else if (s instanceof RegularStation) {
-            chkPrinter.setSelected(((RegularStation) s).hasPrinter());
-        }
-    }
-
-    // ---------- save ----------
+    //save
     private void save() {
         String id = txtId.getText().trim();
         String type = (String) cboType.getSelectedItem();
@@ -206,29 +177,17 @@ public class AddStation extends JFrame {
 
         try {
             boolean internet = chkInternet.isSelected();
-            Station station;
-            if (gaming) {
-                List<String> games = (editing instanceof GamingStation)
-                        ? ((GamingStation) editing).getGamesInstalled() : new ArrayList<String>();
-                station = new GamingStation(id, rate, internet, status, cpu, ram, gpu, hz, games);
-            } else {
-                List<String> software = (editing instanceof RegularStation)
-                        ? ((RegularStation) editing).getSoftwareList() : new ArrayList<String>();
-                station = new RegularStation(id, rate, internet, status, cpu, ram,
-                        software, chkPrinter.isSelected());
-            }
+            Station station = gaming
+                    ? new GamingStation(id, rate, internet, status, cpu, ram, gpu, hz, new ArrayList<String>())
+                    : new RegularStation(id, rate, internet, status, cpu, ram,
+                            new ArrayList<String>(), chkPrinter.isSelected());
 
-            if (editing == null) {
-                service.addStation(station);
-            } else {
-                service.editStation(station);
-            }
+            service.addStation(station);
 
             if (onStationSaved != null) {
                 onStationSaved.accept(station);
             }
-            JOptionPane.showMessageDialog(this,
-                    editing == null ? "Station added successfully!" : "Station updated successfully!");
+            JOptionPane.showMessageDialog(this, "Station added successfully!");
             dispose();
 
         } catch (IllegalArgumentException | IllegalStateException ex) {

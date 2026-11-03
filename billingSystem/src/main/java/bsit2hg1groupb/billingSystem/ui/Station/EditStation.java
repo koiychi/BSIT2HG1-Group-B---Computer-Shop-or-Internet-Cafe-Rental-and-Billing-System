@@ -4,10 +4,10 @@
  */
 package bsit2hg1groupb.billingSystem.ui.Station;
 
-import bsit2hg1groupb.billingSystem.system.GamingStation;
-import bsit2hg1groupb.billingSystem.system.RegularStation;
 import bsit2hg1groupb.billingSystem.system.Station;
 import javax.swing.DefaultComboBoxModel;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -22,8 +22,9 @@ public class EditStation extends javax.swing.JDialog {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(EditStation.class.getName());
 
-    public EditStation(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+        public EditStation(java.awt.Window parent, boolean modal) {
+        super(parent, modal ? java.awt.Dialog.ModalityType.APPLICATION_MODAL
+                            : java.awt.Dialog.ModalityType.MODELESS);
         initComponents();
         jLabel1.setText("Station ID: ");
         nameField.setEditable(false);          // the ID cannot change
@@ -43,18 +44,20 @@ public class EditStation extends javax.swing.JDialog {
         ramField.setText(String.valueOf(s.getRamGb()));
         internetCheck.setSelected(s.hasInternet());
 
-        boolean gaming = s instanceof GamingStation;
-        gpuLabel.setVisible(gaming);
-        gpuField.setVisible(gaming);
-        monitorLabel.setVisible(gaming);
-        monitorField.setVisible(gaming);
-        printerCheck.setVisible(!gaming);
-        if (gaming) {
-            gpuField.setText(((GamingStation) s).getGpu());
-            monitorField.setText(String.valueOf(((GamingStation) s).getMonitorHz()));
-        } else {
-            printerCheck.setSelected(((RegularStation) s).hasPrinter());
-        }
+        // The station tells us which specs it has, so there are no type checks here
+        Map<String, String> specs = s.getSpecs();
+        boolean showGpu = specs.containsKey("GPU");
+        boolean showHz = specs.containsKey("Monitor Hz");
+        boolean showPrinter = specs.containsKey("Has Printer");
+
+        gpuLabel.setVisible(showGpu);
+        gpuField.setVisible(showGpu);
+        gpuField.setText(specs.getOrDefault("GPU", ""));
+        monitorLabel.setVisible(showHz);
+        monitorField.setVisible(showHz);
+        monitorField.setText(specs.getOrDefault("Monitor Hz", ""));
+        printerCheck.setVisible(showPrinter);
+        printerCheck.setSelected(Boolean.parseBoolean(specs.getOrDefault("Has Printer", "false")));
         pack();
     }
 
@@ -272,19 +275,25 @@ public class EditStation extends javax.swing.JDialog {
             String cpu = cpuField.getText().trim();
             boolean internet = internetCheck.isSelected();
 
-            if (original instanceof GamingStation) {
-                int hz = Integer.parseInt(monitorField.getText().trim());
-                edited = new GamingStation(original.getStationID(), rate, internet, status, cpu, ram,
-                        gpuField.getText().trim(), hz, ((GamingStation) original).getGamesInstalled());
-            } else {
-                edited = new RegularStation(original.getStationID(), rate, internet, status, cpu, ram,
-                        ((RegularStation) original).getSoftwareList(), printerCheck.isSelected());
+            Map<String, String> specs = new HashMap<>();
+            if (gpuField.isVisible()) {
+                specs.put("GPU", gpuField.getText().trim());
             }
+            if (monitorField.isVisible()) {
+                specs.put("Monitor Hz", monitorField.getText().trim());
+            }
+            if (printerCheck.isVisible()) {
+                specs.put("Has Printer", String.valueOf(printerCheck.isSelected()));
+            }
+
+            edited = original.withChanges(rate, internet, status, cpu, ram, specs);
         } catch (NumberFormatException e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Rate, RAM and Hz must be valid numbers.");
+            javax.swing.JOptionPane.showMessageDialog(this, "Rate and RAM must be valid numbers.",
+                    "Input Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             return;
         } catch (IllegalArgumentException e) {
-            javax.swing.JOptionPane.showMessageDialog(this, e.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(this, e.getMessage(),
+                    "Validation Warning", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
         saved = true;
@@ -301,7 +310,7 @@ public class EditStation extends javax.swing.JDialog {
 
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
         // TODO add your handling code here:
-    dispose();
+        dispose();
     }//GEN-LAST:event_cancelBtnActionPerformed
 
     private void DeleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteBtnActionPerformed

@@ -2,15 +2,18 @@ package bsit2hg1groupb.billingSystem.system;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class RegularStation extends Station {
+
     private List<String> softwareList;
     private boolean hasPrinter;
 
     // CONSTRUCTORS
     public RegularStation(String stationID, double hourlyRate, boolean hasInternet,
-                          String status, String cpu, int ramGb,
-                          List<String> softwareList, boolean hasPrinter) {
+            String status, String cpu, int ramGb,
+            List<String> softwareList, boolean hasPrinter) {
         super(stationID, hourlyRate, hasInternet, status);
         setCpu(cpu);
         setRamGb(ramGb);
@@ -19,24 +22,25 @@ public class RegularStation extends Station {
     }
 
     public RegularStation(String stationID, double hourlyRate, boolean hasInternet,
-                          boolean isAvailable, List<String> softwareList, boolean hasPrinter) {
+            boolean isAvailable, List<String> softwareList, boolean hasPrinter) {
         super(stationID, hourlyRate, hasInternet, isAvailable);
         setSoftwareList(softwareList);
         setHasPrinter(hasPrinter);
     }
 
-    public RegularStation() {
-        super("PC 0", 0.00, false, false);
-        this.softwareList = new ArrayList<>();
-        this.hasPrinter = false;
+    // GETTERS
+    public List<String> getSoftwareList() {
+        return new ArrayList<>(softwareList);
     }
 
-    // GETTERS
-    public List<String> getSoftwareList() { return new ArrayList<>(softwareList); }
-    public boolean hasPrinter() { return hasPrinter; }
+    public boolean hasPrinter() {
+        return hasPrinter;
+    }
 
     @Override
-    public String getType() { return "Regular"; }
+    public String getType() {
+        return "Regular";
+    }
 
     // SETTERS (validated)
     public void setHasPrinter(boolean hasPrinter) {
@@ -57,7 +61,6 @@ public class RegularStation extends Station {
         this.softwareList = cleaned;
     }
 
-    // OTHER METHODS
     public void addSoftware(String softwareName) {
         if (softwareName == null || softwareName.trim().isEmpty()) {
             throw new IllegalArgumentException("Software name cannot be blank.");
@@ -71,6 +74,27 @@ public class RegularStation extends Station {
     @Override
     public String getStationInfo() {
         return "CPU: " + getCpu() + "\nRAM: " + getRamGb() + " GB"
-             + "\nSoftware List: " + softwareList + "\nHas Printer: " + hasPrinter;
+                + "\nSoftware List: " + softwareList + "\nHas Printer: " + hasPrinter;
+    }
+
+    // OTHER METHODS
+    @Override
+    public double calculateTotalCost(double durationInHours) {
+        return baseCost(durationInHours);
+    }
+
+    @Override
+    public Map<String, String> getSpecs() {
+        Map<String, String> specs = new LinkedHashMap<>();
+        specs.put("Has Printer", String.valueOf(hasPrinter));
+        return specs;
+    }
+
+    @Override
+    public Station withChanges(double hourlyRate, boolean hasInternet, String status,
+            String cpu, int ramGb, Map<String, String> specs) {
+        boolean printer = Boolean.parseBoolean(specs.getOrDefault("Has Printer", "false"));
+        return new RegularStation(getStationID(), hourlyRate, hasInternet, status, cpu, ramGb,
+                getSoftwareList(), printer);
     }
 } //END OF CLASS

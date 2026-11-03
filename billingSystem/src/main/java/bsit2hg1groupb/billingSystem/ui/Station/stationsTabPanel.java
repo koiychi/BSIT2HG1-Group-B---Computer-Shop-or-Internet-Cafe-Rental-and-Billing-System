@@ -8,9 +8,7 @@ package bsit2hg1groupb.billingSystem.ui.Station;
  *
  * @author koi
  */
-
 import bsit2hg1groupb.billingSystem.service.StationsService;
-import bsit2hg1groupb.billingSystem.system.GamingStation;
 import bsit2hg1groupb.billingSystem.system.Station;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -36,9 +34,11 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.util.HashMap;
+import java.util.Map;
 
-public class stationsTabPanel extends javax.swing.JPanel
-{
+public class stationsTabPanel extends javax.swing.JPanel {
+
     // ---------- colors ----------
     private static final Color BG = new Color(10, 10, 15);
     private static final Color PANEL = new Color(22, 26, 34);
@@ -52,24 +52,27 @@ public class stationsTabPanel extends javax.swing.JPanel
 
     // ---------- data ----------
     private final StationsService service = new StationsService();
+    private final Map<String, JPanel> sections = new HashMap<>();
     private JPanel selectedCard = null;
     private String selectedId = null;          // remembered across reloads
 
     // ---------- controls ----------
     private final JTextField txtSearch = new JTextField(14);
-    private final JComboBox<String> cboTypeFilter =
-            new JComboBox<>(new String[]{"All", "Regular", "Gaming"});
-    private final JComboBox<String> cboStatusFilter =
-            new JComboBox<>(new String[]{"All", Station.AVAILABLE, Station.IN_USE, Station.MAINTENANCE});
-    private final JComboBox<String> cboSort =
-            new JComboBox<>(new String[]{StationsService.SORT_ID,
-                StationsService.SORT_RATE, StationsService.SORT_STATUS});
+    private final JComboBox<String> cboTypeFilter
+            = new JComboBox<>(new String[]{"All", "Regular", "Gaming"});
+    private final JComboBox<String> cboStatusFilter
+            = new JComboBox<>(new String[]{"All", Station.AVAILABLE, Station.IN_USE, Station.MAINTENANCE});
+    private final JComboBox<String> cboSort
+            = new JComboBox<>(new String[]{StationsService.SORT_ID,
+        StationsService.SORT_RATE, StationsService.SORT_STATUS});
     private final JButton addBtn = new JButton("+ Add Station");
-    private final JButton statusBtn = new JButton("Set Status \u25BE");
+    private final JButton statusBtn = new JButton("Set Status");
     private final JButton deleteBtn = new JButton("Delete");
 
     public stationsTabPanel() {
         initComponents();
+        sections.put("Regular", regularcardsPanel);
+        sections.put("Gaming", regularcardsPanel2);
         applyTheme();
         setupToolbar();
         loadStations();
@@ -128,10 +131,14 @@ public class stationsTabPanel extends javax.swing.JPanel
 
         JPanel filterBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 8));
         filterBar.setOpaque(false);
-        filterBar.add(whiteLabel("Search:"));  filterBar.add(txtSearch);
-        filterBar.add(whiteLabel("Type:"));    filterBar.add(cboTypeFilter);
-        filterBar.add(whiteLabel("Status:"));  filterBar.add(cboStatusFilter);
-        filterBar.add(whiteLabel("Sort:"));    filterBar.add(cboSort);
+        filterBar.add(whiteLabel("Search:"));
+        filterBar.add(txtSearch);
+        filterBar.add(whiteLabel("Type:"));
+        filterBar.add(cboTypeFilter);
+        filterBar.add(whiteLabel("Status:"));
+        filterBar.add(cboStatusFilter);
+        filterBar.add(whiteLabel("Sort:"));
+        filterBar.add(cboSort);
 
         JPanel buttonBar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 8));
         buttonBar.setOpaque(false);
@@ -147,9 +154,20 @@ public class stationsTabPanel extends javax.swing.JPanel
         jPanel1.add(buttonBar, BorderLayout.EAST);
 
         txtSearch.getDocument().addDocumentListener(new DocumentListener() {
-            @Override public void insertUpdate(DocumentEvent e)  { loadStations(); }
-            @Override public void removeUpdate(DocumentEvent e)  { loadStations(); }
-            @Override public void changedUpdate(DocumentEvent e) { loadStations(); }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                loadStations();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                loadStations();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                loadStations();
+            }
         });
         cboTypeFilter.addActionListener(e -> loadStations());
         cboStatusFilter.addActionListener(e -> loadStations());
@@ -157,7 +175,7 @@ public class stationsTabPanel extends javax.swing.JPanel
     }
 
     // ---------- load cards from the database ----------
-        private void loadStations() {
+    private void loadStations() {
         regularcardsPanel.removeAll();
         regularcardsPanel2.removeAll();
         selectedCard = null;
@@ -171,11 +189,7 @@ public class stationsTabPanel extends javax.swing.JPanel
 
         for (Station s : shown) {
             JPanel card = buildCard(s);
-            if (s instanceof GamingStation) {
-                regularcardsPanel2.add(card);
-            } else {
-                regularcardsPanel.add(card);
-            }
+            sections.get(s.getType()).add(card);
             if (s.getStationID().equals(selectedId)) {
                 selectCard(card);
             }
@@ -251,7 +265,9 @@ public class stationsTabPanel extends javax.swing.JPanel
     }
 
     private void selectCard(JPanel card) {
-        if (selectedCard != null) selectedCard.setBackground(normalColor);
+        if (selectedCard != null) {
+            selectedCard.setBackground(normalColor);
+        }
         selectedCard = card;
         selectedId = (String) card.getClientProperty("stationId");
         card.setBackground(selectedColor);
@@ -268,10 +284,14 @@ public class stationsTabPanel extends javax.swing.JPanel
     }
 
     private void deleteStation() {
-        if (!hasSelection()) return;
+        if (!hasSelection()) {
+            return;
+        }
         int choice = JOptionPane.showConfirmDialog(this,
                 "Delete " + selectedId + "?", "Confirm", JOptionPane.YES_NO_OPTION);
-        if (choice != JOptionPane.YES_OPTION) return;
+        if (choice != JOptionPane.YES_OPTION) {
+            return;
+        }
         try {
             service.deleteStation(selectedId);
             selectedId = null;
@@ -283,7 +303,9 @@ public class stationsTabPanel extends javax.swing.JPanel
     }
 
     private void showStatusMenu() {
-        if (!hasSelection()) return;
+        if (!hasSelection()) {
+            return;
+        }
         JPopupMenu menu = new JPopupMenu();
         for (String st : new String[]{Station.AVAILABLE, Station.IN_USE, Station.MAINTENANCE}) {
             JMenuItem item = new JMenuItem(st);
@@ -310,9 +332,10 @@ public class stationsTabPanel extends javax.swing.JPanel
         }
         return true;
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
-        * WARNING: Do NOT modify this code. The content of this method is always
+     * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
@@ -596,7 +619,9 @@ public class stationsTabPanel extends javax.swing.JPanel
 
     private void editStationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editStationBtnActionPerformed
         // TODO add your handling code here:
-         if (!hasSelection()) return;
+        if (!hasSelection()) {
+            return;
+        }
         Station s = service.findStation(selectedId);
         if (s == null) {
             selectedId = null;
@@ -604,9 +629,7 @@ public class stationsTabPanel extends javax.swing.JPanel
             return;
         }
 
-        java.awt.Window w = javax.swing.SwingUtilities.getWindowAncestor(this);
-        java.awt.Frame owner = (w instanceof java.awt.Frame) ? (java.awt.Frame) w : null;
-        EditStation dialog = new EditStation(owner, true);
+        EditStation dialog = new EditStation(javax.swing.SwingUtilities.getWindowAncestor(this), true);
         dialog.setStation(s);
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);                       // modal: waits here until it closes
@@ -619,6 +642,8 @@ public class stationsTabPanel extends javax.swing.JPanel
             } else if (dialog.isSaved()) {
                 service.editStation(dialog.getEditedStation());
                 loadStations();
+                JOptionPane.showMessageDialog(this, "Station updated successfully!",
+                        "Success", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (IllegalArgumentException | IllegalStateException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(),
@@ -631,13 +656,7 @@ public class stationsTabPanel extends javax.swing.JPanel
     }
 
     private int countCards(JPanel container) {
-        int n = 0;
-        for (Component c : container.getComponents()) {
-            if (c instanceof JPanel) {
-                n++;
-            }
-        }
-        return n;
+        return container.getComponentCount();   // each container only holds station cards
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

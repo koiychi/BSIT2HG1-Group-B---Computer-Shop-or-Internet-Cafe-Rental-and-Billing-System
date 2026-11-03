@@ -2,16 +2,19 @@ package bsit2hg1groupb.billingSystem.system;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class GamingStation extends Station {
+
     private List<String> gamesInstalled;
     private String gpu = "";
     private int monitorHz = 0;
 
     // CONSTRUCTORS
     public GamingStation(String stationID, double hourlyRate, boolean hasInternet,
-                         String status, String cpu, int ramGb,
-                         String gpu, int monitorHz, List<String> gamesInstalled) {
+            String status, String cpu, int ramGb,
+            String gpu, int monitorHz, List<String> gamesInstalled) {
         super(stationID, hourlyRate, hasInternet, status);
         setCpu(cpu);
         setRamGb(ramGb);
@@ -22,14 +25,9 @@ public class GamingStation extends Station {
 
     // original constructor, kept
     public GamingStation(String stationID, double hourlyRate, boolean hasInternet,
-                         boolean isAvailable, List<String> gamesInstalled) {
+            boolean isAvailable, List<String> gamesInstalled) {
         super(stationID, hourlyRate, hasInternet, isAvailable);
         setGamesInstalled(gamesInstalled);
-    }
-
-    public GamingStation() {
-        super("PC 0", 0.00, false, false);
-        this.gamesInstalled = new ArrayList<>();
     }
 
     // GETTERS
@@ -79,7 +77,6 @@ public class GamingStation extends Station {
         this.monitorHz = monitorHz;
     }
 
-    // OTHER METHODS
     public void addGame(String gameName) {
         if (gameName == null || gameName.trim().isEmpty()) {
             throw new IllegalArgumentException("Game name cannot be blank.");
@@ -101,7 +98,45 @@ public class GamingStation extends Station {
     @Override
     public String getStationInfo() {
         return "CPU: " + getCpu() + "\nRAM: " + getRamGb() + " GB"
-             + "\nGPU: " + gpu + "\nMonitor: " + monitorHz + " Hz"
-             + "\nGames Installed: " + gamesInstalled;
+                + "\nGPU: " + gpu + "\nMonitor: " + monitorHz + " Hz"
+                + "\nGames Installed: " + gamesInstalled;
+    }
+
+    // OTHER METHODS
+    @Override
+    public double calculateTotalCost(double durationInHours) {
+        return baseCost(durationInHours);
+    }
+
+    @Override
+    public Map<String, String> getSpecs() {
+        Map<String, String> specs = new LinkedHashMap<>();
+        specs.put("GPU", gpu);
+        specs.put("Monitor Hz", String.valueOf(monitorHz));
+        return specs;
+    }
+
+    @Override
+    public Station withChanges(double hourlyRate, boolean hasInternet, String status,
+            String cpu, int ramGb, Map<String, String> specs) {
+        int hz;
+        try {
+            hz = Integer.parseInt(specs.getOrDefault("Monitor Hz", "").trim());
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Monitor refresh rate must be a whole number.");
+        }
+        return new GamingStation(getStationID(), hourlyRate, hasInternet, status, cpu, ramGb,
+                specs.getOrDefault("GPU", ""), hz, getGamesInstalled());
+    }
+
+    @Override
+    public void validateComplete() {
+        super.validateComplete();
+        if (gpu == null || gpu.trim().isEmpty()) {
+            throw new IllegalArgumentException("GPU is required for a gaming station.");
+        }
+        if (monitorHz <= 0) {
+            throw new IllegalArgumentException("Monitor refresh rate is required for a gaming station.");
+        }
     }
 } //END OF CLASS
