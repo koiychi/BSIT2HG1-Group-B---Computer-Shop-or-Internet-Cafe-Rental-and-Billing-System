@@ -39,7 +39,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import system.ShopManager;
 
-public class stationsTabPanel extends javax.swing.JPanel
+public class StationsTabPanel extends javax.swing.JPanel
 {
     
     private static final Color BG = new Color(10, 10, 15);
@@ -72,7 +72,7 @@ public class stationsTabPanel extends javax.swing.JPanel
     private final javax.swing.Timer stationRefreshTimer =
             new javax.swing.Timer(1000, event -> loadStations());
 
-    public stationsTabPanel() {
+    public StationsTabPanel() {
         initComponents();
         applyTheme();
         setupToolbar();

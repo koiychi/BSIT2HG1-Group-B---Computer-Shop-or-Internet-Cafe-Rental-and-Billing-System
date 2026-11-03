@@ -3,14 +3,14 @@ package system;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import service.StationsService;
-import ui.Shop.dashboardTabPanel;
-import ui.Station.stationsTabPanel;
+import ui.Shop.DashboardTabPanel;
+import ui.Station.StationsTabPanel;
 
 public final class ShopManager {
 
     private static AdminAppWindow adminWindow;
-    private static dashboardTabPanel dashboard;
-    private static stationsTabPanel stations;
+    private static DashboardTabPanel dashboard;
+    private static StationsTabPanel stations;
     private static boolean shopOpen;
     private static boolean statusLoaded;
     private static final StationsService stationsService = new StationsService();
@@ -35,12 +35,12 @@ public final class ShopManager {
         window.updateShopStatus(isShopOpen());
     }
 
-    public static void setDashboard(dashboardTabPanel panel) {
+    public static void setDashboard(DashboardTabPanel panel) {
         dashboard = panel;
         panel.updateShopState(isShopOpen());
     }
 
-    public static void setStations(stationsTabPanel panel) {
+    public static void setStations(StationsTabPanel panel) {
         stations = panel;
         panel.updateShopState(isShopOpen());
     }
