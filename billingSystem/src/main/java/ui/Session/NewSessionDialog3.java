@@ -287,44 +287,48 @@ public class NewSessionDialog3 extends javax.swing.JDialog {
     }//GEN-LAST:event_previousBTNActionPerformed
 
     private void strtSessBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_strtSessBTNActionPerformed
-         NewSessionDialog2 customerDlg = (NewSessionDialog2) previous;
-    NewSessionDialog1 stationDlg = customerDlg.getStationDialog();
-    
-    
-     boolean isMember = "Member".equals(customerDlg.getCustomerType());
-    int customerId = customerDlg.getResolvedCustomerID();
-    if (customerId <= 0) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-                "Could not identify the customer. Go back and try again.");
-        return;
-    }
+          try {
+        NewSessionDialog2 customerDlg = (NewSessionDialog2) previous;
+        NewSessionDialog1 stationDlg = customerDlg.getStationDialog();
 
-    int sessionId;
-    if (isMember) {
-        String name = customerDlg.getCustomerName().isEmpty()
-                ? "@" + customerDlg.getUsername()
-                : customerDlg.getCustomerName() + " (@" + customerDlg.getUsername() + ")";
-        sessionId = ui.Shop.SessionPayment.payMember(this, customerId, name,
-                customerDlg.getUsername(),
-                stationDlg.getSelectedStationName(),
-                stationDlg.getStationType(),
-                stationDlg.getSelectedStation().getHourlyRate(),
-                stationDlg.getDuration());
-    } else {
-        sessionId = ui.Shop.SessionPayment.payRegular(this, customerId,
-                customerDlg.getCustomerName(),
-                stationDlg.getSelectedStationName(),
-                stationDlg.getStationType(),
-                stationDlg.getSelectedStation().getHourlyRate(),
-                stationDlg.getDuration());
-    }
-    if (sessionId < 0) {
-        return;   
-    }
+        boolean isMember = "Member".equals(customerDlg.getCustomerType());
+        int customerId = customerDlg.getResolvedCustomerID();
+        if (customerId <= 0) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Could not identify the customer. Go back and try again.");
+            return;
+        }
 
-    dispose();
-    customerDlg.dispose();
-    stationDlg.dispose();
+        int sessionId;
+        if (isMember) {
+            String name = customerDlg.getCustomerName().isEmpty()
+                    ? "@" + customerDlg.getUsername()
+                    : customerDlg.getCustomerName() + " (@" + customerDlg.getUsername() + ")";
+            sessionId = ui.Shop.SessionPayment.payMember(this, customerId, name,
+                    customerDlg.getUsername(),
+                    stationDlg.getSelectedStationName(),
+                    stationDlg.getStationType(),
+                    stationDlg.getSelectedStation().getHourlyRate(),
+                    stationDlg.getDuration());
+        } else {
+            sessionId = ui.Shop.SessionPayment.payRegular(this, customerId,
+                    customerDlg.getCustomerName(),
+                    stationDlg.getSelectedStationName(),
+                    stationDlg.getStationType(),
+                    stationDlg.getSelectedStation().getHourlyRate(),
+                    stationDlg.getDuration());
+        }
+        if (sessionId < 0) {
+            return;
+        }
+
+        dispose();
+        customerDlg.dispose();
+        stationDlg.dispose();
+    } catch (IllegalArgumentException iae) {
+        javax.swing.JOptionPane.showMessageDialog(this, iae.getMessage(),
+                "Validation Warning", javax.swing.JOptionPane.WARNING_MESSAGE);
+    }
     }//GEN-LAST:event_strtSessBTNActionPerformed
 
     
