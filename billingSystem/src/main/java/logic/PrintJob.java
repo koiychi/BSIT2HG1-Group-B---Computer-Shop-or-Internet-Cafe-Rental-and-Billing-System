@@ -8,6 +8,7 @@ package logic;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 public class PrintJob implements Billable {
 
  
@@ -87,11 +88,11 @@ public class PrintJob implements Billable {
         this.paperType = paperType.trim();
     }
 
-    public void setPageCount(int pageCount) {
-        if (pageCount <= 0) {
-            throw new IllegalArgumentException("Page count must be greater than zero.");
+    public void setPageCount(int pages) {
+        if (pages <= 0) {
+            throw new IllegalArgumentException("Page count must be atleast 1.");
         }
-        this.pageCount = pageCount;
+        this.pageCount = pages;
     }
 
     public void setColored(boolean colored) {
