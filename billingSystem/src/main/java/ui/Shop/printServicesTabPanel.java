@@ -10,13 +10,13 @@ import javax.swing.JOptionPane;
 
 
 
-public class PrintServicesTabPanel extends javax.swing.JPanel {
+public class printServicesTabPanel extends javax.swing.JPanel {
     private double runningTotal = 0.0;
     private javax.swing.DefaultListModel<String> printListModel = new javax.swing.DefaultListModel<>();
     private javax.swing.DefaultListModel<String> photocopyListModel = new javax.swing.DefaultListModel<>();
 
     
-    public PrintServicesTabPanel() {
+    public printServicesTabPanel() {
 
     initComponents();
     

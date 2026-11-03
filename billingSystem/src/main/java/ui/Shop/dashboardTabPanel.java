@@ -24,7 +24,7 @@ import java.awt.CardLayout;
 
 
 
-public class DashboardTabPanel extends javax.swing.JPanel {
+public class dashboardTabPanel extends javax.swing.JPanel {
          private final MembershipService membershipService = new MembershipService();
          private final StationsService stationsService = new StationsService();
          private final TransactionService transactionService = new TransactionService();
@@ -32,7 +32,7 @@ public class DashboardTabPanel extends javax.swing.JPanel {
          
 
 
-         public DashboardTabPanel() {
+         public dashboardTabPanel() {
                   initComponents();
                   
                   ShopManager.setDashboard(this);
@@ -71,13 +71,13 @@ public class DashboardTabPanel extends javax.swing.JPanel {
                            protected void paintComponent(java.awt.Graphics g) {
                                     java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
 
-                                    // Anti-aliasing para smooth at hindi pampag ang gilid ng curve
+                                    
                                     g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
                                              java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
 
                                     g2.setColor(getBackground());
 
-                                    // Bawasan ng 1 px ang width at height para eksakto sa bounds
+                                    
                                     g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 35, 35);
 
                                     g2.dispose();
@@ -93,7 +93,7 @@ public class DashboardTabPanel extends javax.swing.JPanel {
                                     java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
                                     g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
                                     g2.setColor(getBackground());
-                                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 35, 35); // 35 = roundness
+                                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 35, 35); 
                                     g2.dispose();
                            }
                   };
@@ -107,7 +107,7 @@ public class DashboardTabPanel extends javax.swing.JPanel {
                                     java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
                                     g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
                                     g2.setColor(getBackground());
-                                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 35, 35); // 35 = roundness
+                                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 35, 35); 
                                     g2.dispose();
                            }
                   };
@@ -150,13 +150,13 @@ public class DashboardTabPanel extends javax.swing.JPanel {
                            protected void paintComponent(java.awt.Graphics g) {
                                     java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
 
-                                    // Anti-aliasing para smooth at hindi pampag ang gilid ng curve
+                                    
                                     g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
                                              java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
 
                                     g2.setColor(getBackground());
 
-                                    // Bawasan ng 1 px ang width at height para eksakto sa bounds
+                                    
                                     g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 35, 35);
 
                                     g2.dispose();
@@ -172,7 +172,7 @@ public class DashboardTabPanel extends javax.swing.JPanel {
                                     java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
                                     g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
                                     g2.setColor(getBackground());
-                                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 35, 35); // 35 = roundness
+                                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 35, 35); 
                                     g2.dispose();
                            }
                   };
@@ -186,7 +186,7 @@ public class DashboardTabPanel extends javax.swing.JPanel {
                                     java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
                                     g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
                                     g2.setColor(getBackground());
-                                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 35, 35); // 35 = roundness
+                                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 35, 35); 
                                     g2.dispose();
                            }
                   };
@@ -570,7 +570,7 @@ public class DashboardTabPanel extends javax.swing.JPanel {
                   quickStatisticsHeading.setLayout(flowLayout1);
 
                   dashboardHeadingText.setFont(dashboardHeadingText.getFont().deriveFont((float)24));
-                  dashboardHeadingText.setText("Overview");
+                  dashboardHeadingText.setText("Quick Statistics");
                   dashboardHeadingText.setVerticalAlignment(javax.swing.SwingConstants.TOP);
                   dashboardHeadingText.setAlignmentX(0.5F);
                   dashboardHeadingText.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
@@ -692,7 +692,7 @@ public class DashboardTabPanel extends javax.swing.JPanel {
 
                   add(quickStatistics, java.awt.BorderLayout.NORTH);
 
-                  lowerSegments.setBorder(javax.swing.BorderFactory.createEmptyBorder(30, 1, 1, 1));
+                  lowerSegments.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 1, 1, 1));
                   lowerSegments.setLayout(new java.awt.BorderLayout(15, 0));
 
                   activeSessions.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 30, 1));
@@ -733,18 +733,6 @@ public class DashboardTabPanel extends javax.swing.JPanel {
 
                   activeSessionsMainPanel.setLayout(new java.awt.CardLayout());
                   activeSessionsMainPanel.add(activeSessionsPanel1, "shopIsOpen");
-
-                  javax.swing.GroupLayout shopIsClosed2Layout = new javax.swing.GroupLayout(shopIsClosed2);
-                  shopIsClosed2.setLayout(shopIsClosed2Layout);
-                  shopIsClosed2Layout.setHorizontalGroup(
-                           shopIsClosed2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                           .addGap(0, 473, Short.MAX_VALUE)
-                  );
-                  shopIsClosed2Layout.setVerticalGroup(
-                           shopIsClosed2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                           .addGap(0, 387, Short.MAX_VALUE)
-                  );
-
                   activeSessionsMainPanel.add(shopIsClosed2, "shopIsClosed");
 
                   activeSessions.add(activeSessionsMainPanel, java.awt.BorderLayout.CENTER);
@@ -752,12 +740,13 @@ public class DashboardTabPanel extends javax.swing.JPanel {
                   lowerSegments.add(activeSessions, java.awt.BorderLayout.CENTER);
 
                   scrollPane.setForeground(new java.awt.Color(255, 102, 0));
-                  scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                  scrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+                  scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
                   quickActions.setBackground(new java.awt.Color(23, 26, 33));
                   quickActions.setAlignmentX(0.0F);
-                  quickActions.setMaximumSize(new java.awt.Dimension(400, 48));
-                  quickActions.setPreferredSize(new java.awt.Dimension(400, 229));
+                  quickActions.setMaximumSize(new java.awt.Dimension(400, 520));
+                  quickActions.setPreferredSize(new java.awt.Dimension(400, 520));
                   quickActions.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
                   quickActionsLabelPanel.setMaximumSize(new java.awt.Dimension(170, 40));
@@ -805,9 +794,9 @@ public class DashboardTabPanel extends javax.swing.JPanel {
                   newPrintOrderBtn.setText("New Print Order");
                   newPrintOrderBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
                   newPrintOrderBtn.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-                  newPrintOrderBtn.setMaximumSize(new java.awt.Dimension(450, 50));
+                  newPrintOrderBtn.setMaximumSize(new java.awt.Dimension(380, 50));
                   newPrintOrderBtn.setMinimumSize(new java.awt.Dimension(200, 26));
-                  newPrintOrderBtn.setPreferredSize(new java.awt.Dimension(450, 50));
+                  newPrintOrderBtn.setPreferredSize(new java.awt.Dimension(380, 50));
                   newPrintOrderBtn.addActionListener(this::newPrintOrderBtnActionPerformed);
                   printingServicesGroup.add(newPrintOrderBtn);
 
@@ -831,9 +820,9 @@ public class DashboardTabPanel extends javax.swing.JPanel {
                   topUpMemberBtn.setForeground(new java.awt.Color(255, 255, 255));
                   topUpMemberBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add_card_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
                   topUpMemberBtn.setText("Top Up Member Credits");
-                  topUpMemberBtn.setMaximumSize(new java.awt.Dimension(450, 50));
+                  topUpMemberBtn.setMaximumSize(new java.awt.Dimension(380, 50));
                   topUpMemberBtn.setMinimumSize(new java.awt.Dimension(200, 26));
-                  topUpMemberBtn.setPreferredSize(new java.awt.Dimension(450, 50));
+                  topUpMemberBtn.setPreferredSize(new java.awt.Dimension(380, 50));
                   topUpMemberBtn.addActionListener(this::topUpMemberBtnActionPerformed);
                   shopMembersGroup.add(topUpMemberBtn);
                   shopMembersGroup.add(filler1);
@@ -843,9 +832,9 @@ public class DashboardTabPanel extends javax.swing.JPanel {
                   addMemberBtn.setForeground(new java.awt.Color(255, 255, 255));
                   addMemberBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/person_add_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
                   addMemberBtn.setText("Add New Member");
-                  addMemberBtn.setMaximumSize(new java.awt.Dimension(450, 50));
+                  addMemberBtn.setMaximumSize(new java.awt.Dimension(380, 50));
                   addMemberBtn.setMinimumSize(new java.awt.Dimension(200, 26));
-                  addMemberBtn.setPreferredSize(new java.awt.Dimension(450, 50));
+                  addMemberBtn.setPreferredSize(new java.awt.Dimension(380, 50));
                   addMemberBtn.addActionListener(this::addMemberBtnActionPerformed);
                   shopMembersGroup.add(addMemberBtn);
 
@@ -867,9 +856,9 @@ public class DashboardTabPanel extends javax.swing.JPanel {
                   ViewTodaysSales.setForeground(new java.awt.Color(255, 255, 255));
                   ViewTodaysSales.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/payments_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
                   ViewTodaysSales.setText("View Today's Sales");
-                  ViewTodaysSales.setMaximumSize(new java.awt.Dimension(450, 50));
+                  ViewTodaysSales.setMaximumSize(new java.awt.Dimension(380, 50));
                   ViewTodaysSales.setMinimumSize(new java.awt.Dimension(200, 26));
-                  ViewTodaysSales.setPreferredSize(new java.awt.Dimension(450, 50));
+                  ViewTodaysSales.setPreferredSize(new java.awt.Dimension(380, 50));
                   ViewTodaysSales.addActionListener(this::ViewTodaysSalesActionPerformed);
                   shopManagementGroup.add(ViewTodaysSales);
                   shopManagementGroup.add(filler2);
@@ -879,16 +868,15 @@ public class DashboardTabPanel extends javax.swing.JPanel {
                   CloseShopBtn.setForeground(new java.awt.Color(255, 255, 255));
                   CloseShopBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/door_front_30dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png"))); // NOI18N
                   CloseShopBtn.setText("Close Shop");
-                  CloseShopBtn.setMaximumSize(new java.awt.Dimension(450, 50));
+                  CloseShopBtn.setMaximumSize(new java.awt.Dimension(380, 50));
                   CloseShopBtn.setMinimumSize(new java.awt.Dimension(200, 26));
-                  CloseShopBtn.setPreferredSize(new java.awt.Dimension(450, 50));
+                  CloseShopBtn.setPreferredSize(new java.awt.Dimension(380, 50));
                   CloseShopBtn.addActionListener(this::CloseShopBtnActionPerformed);
                   shopManagementGroup.add(CloseShopBtn);
 
                   quickActionsGroup.add(shopManagementGroup);
 
                   quickActions.add(quickActionsGroup);
-
                   scrollPane.setViewportView(quickActions);
 
                   lowerSegments.add(scrollPane, java.awt.BorderLayout.EAST);

@@ -29,7 +29,7 @@ import ui.Shop.PaymentUtil;
 
 
 
-public class MembersTabPanel extends javax.swing.JPanel {
+public class membersTabPanel extends javax.swing.JPanel {
 
     
     private DefaultTableModel membersTableModel;
@@ -41,7 +41,7 @@ public class MembersTabPanel extends javax.swing.JPanel {
     
 
 
-    public MembersTabPanel() {
+    public membersTabPanel() {
         initComponents();
         buildMembersUI();
     }
@@ -65,114 +65,114 @@ public class MembersTabPanel extends javax.swing.JPanel {
 
 
     @SuppressWarnings("unchecked")
-         // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-         private void initComponents() {
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
 
-                  topPanel = new javax.swing.JPanel();
-                  membersTitle = new javax.swing.JLabel();
-                  toolbarPanel = new javax.swing.JPanel();
-                  searchAndSortPanel = new javax.swing.JPanel();
-                  searchUsernameField = new javax.swing.JTextField();
-                  memberSortCombo = new javax.swing.JComboBox<>();
-                  addMemberBtn = new javax.swing.JPanel();
-                  addMemberButton = new javax.swing.JButton();
-                  tableScroll = new javax.swing.JScrollPane();
-                  membersTable = new javax.swing.JTable();
+        topPanel = new javax.swing.JPanel();
+        membersTitle = new javax.swing.JLabel();
+        toolbarPanel = new javax.swing.JPanel();
+        searchAndSortPanel = new javax.swing.JPanel();
+        searchUsernameField = new javax.swing.JTextField();
+        memberSortCombo = new javax.swing.JComboBox<>();
+        addMemberBtn = new javax.swing.JPanel();
+        addMemberButton = new javax.swing.JButton();
+        tableScroll = new javax.swing.JScrollPane();
+        membersTable = new javax.swing.JTable();
 
-                  setLayout(new java.awt.BorderLayout(25, 0));
+        setLayout(new java.awt.BorderLayout(25, 0));
 
-                  topPanel.setBackground(new java.awt.Color(11, 11, 15));
-                  topPanel.setLayout(new java.awt.BorderLayout());
+        topPanel.setBackground(new java.awt.Color(11, 11, 15));
+        topPanel.setLayout(new java.awt.BorderLayout());
 
-                  membersTitle.setFont(membersTitle.getFont().deriveFont(membersTitle.getFont().getStyle() | java.awt.Font.BOLD, 24));
-                  membersTitle.setForeground(new java.awt.Color(240, 240, 240));
-                  membersTitle.setText("Shop Members");
-                  topPanel.add(membersTitle, java.awt.BorderLayout.WEST);
+        membersTitle.setFont(membersTitle.getFont().deriveFont(membersTitle.getFont().getStyle() | java.awt.Font.BOLD, 24));
+        membersTitle.setForeground(new java.awt.Color(240, 240, 240));
+        membersTitle.setText("Shop Members");
+        topPanel.add(membersTitle, java.awt.BorderLayout.WEST);
 
-                  toolbarPanel.setOpaque(false);
-                  toolbarPanel.setPreferredSize(new java.awt.Dimension(413, 40));
-                  toolbarPanel.setLayout(new java.awt.BorderLayout());
+        toolbarPanel.setOpaque(false);
+        toolbarPanel.setPreferredSize(new java.awt.Dimension(413, 40));
+        toolbarPanel.setLayout(new java.awt.BorderLayout());
 
-                  searchAndSortPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 10, 1));
-                  searchAndSortPanel.setOpaque(false);
-                  searchAndSortPanel.setPreferredSize(new java.awt.Dimension(815, 150));
-                  searchAndSortPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        searchAndSortPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 10, 1));
+        searchAndSortPanel.setOpaque(false);
+        searchAndSortPanel.setPreferredSize(new java.awt.Dimension(815, 150));
+        searchAndSortPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-                  searchUsernameField.setColumns(15);
-                  searchUsernameField.setFont(searchUsernameField.getFont().deriveFont((float)18));
-                  searchUsernameField.setText("Search Username...");
-                  searchAndSortPanel.add(searchUsernameField);
+        searchUsernameField.setColumns(15);
+        searchUsernameField.setFont(searchUsernameField.getFont().deriveFont((float)18));
+        searchUsernameField.setText("Search Username...");
+        searchAndSortPanel.add(searchUsernameField);
 
-                  memberSortCombo.setFont(memberSortCombo.getFont().deriveFont((float)18));
-                  memberSortCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Descending", "Ascending" }));
-                  searchAndSortPanel.add(memberSortCombo);
+        memberSortCombo.setFont(memberSortCombo.getFont().deriveFont((float)18));
+        memberSortCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Descending", "Ascending" }));
+        searchAndSortPanel.add(memberSortCombo);
 
-                  addMemberBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 10, 1));
-                  addMemberBtn.setPreferredSize(new java.awt.Dimension(400, 42));
-                  addMemberBtn.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        addMemberBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 10, 1));
+        addMemberBtn.setPreferredSize(new java.awt.Dimension(400, 42));
+        addMemberBtn.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-                  addMemberButton.setBackground(new java.awt.Color(255, 102, 0));
-                  addMemberButton.setFont(addMemberButton.getFont().deriveFont((float)18));
-                  addMemberButton.setForeground(new java.awt.Color(255, 255, 255));
-                  addMemberButton.setText("+ Add Member");
-                  addMemberButton.addActionListener(new java.awt.event.ActionListener() {
-                           public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                    addMemberButtonActionPerformed(evt);
-                           }
-                  });
-                  addMemberBtn.add(addMemberButton);
+        addMemberButton.setBackground(new java.awt.Color(255, 102, 0));
+        addMemberButton.setFont(addMemberButton.getFont().deriveFont((float)18));
+        addMemberButton.setForeground(new java.awt.Color(255, 255, 255));
+        addMemberButton.setText("+ Add Member");
+        addMemberButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addMemberButtonActionPerformed(evt);
+            }
+        });
+        addMemberBtn.add(addMemberButton);
 
-                  searchAndSortPanel.add(addMemberBtn);
+        searchAndSortPanel.add(addMemberBtn);
 
-                  toolbarPanel.add(searchAndSortPanel, java.awt.BorderLayout.WEST);
+        toolbarPanel.add(searchAndSortPanel, java.awt.BorderLayout.WEST);
 
-                  topPanel.add(toolbarPanel, java.awt.BorderLayout.SOUTH);
+        topPanel.add(toolbarPanel, java.awt.BorderLayout.SOUTH);
 
-                  add(topPanel, java.awt.BorderLayout.NORTH);
+        add(topPanel, java.awt.BorderLayout.NORTH);
 
-                  tableScroll.setPreferredSize(new java.awt.Dimension(1040, 434));
+        tableScroll.setPreferredSize(new java.awt.Dimension(1040, 434));
 
-                  membersTable.setModel(new javax.swing.table.DefaultTableModel(
-                           new Object [][] {
-                                    {null, null, null, null, null},
-                                    {null, null, null, null, null},
-                                    {null, null, null, null, null},
-                                    {null, null, null, null, null}
-                           },
-                           new String [] {
-                                    "Username", "Name", "Credit Balance", "Discount Rate", "Action"
-                           }
-                  ) {
-                           boolean[] canEdit = new boolean [] {
-                                    false, false, false, false, true
-                           };
+        membersTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Username", "Name", "Credit Balance", "Discount Rate", "Action"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true
+            };
 
-                           public boolean isCellEditable(int rowIndex, int columnIndex) {
-                                    return canEdit [columnIndex];
-                           }
-                  });
-                  tableScroll.setViewportView(membersTable);
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tableScroll.setViewportView(membersTable);
 
-                  add(tableScroll, java.awt.BorderLayout.CENTER);
-         }// </editor-fold>//GEN-END:initComponents
+        add(tableScroll, java.awt.BorderLayout.CENTER);
+    }// </editor-fold>//GEN-END:initComponents
 
     private void addMemberButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMemberButtonActionPerformed
         
     }//GEN-LAST:event_addMemberButtonActionPerformed
 
 
-         // Variables declaration - do not modify//GEN-BEGIN:variables
-         private javax.swing.JPanel addMemberBtn;
-         private javax.swing.JButton addMemberButton;
-         private javax.swing.JComboBox<String> memberSortCombo;
-         private javax.swing.JTable membersTable;
-         private javax.swing.JLabel membersTitle;
-         private javax.swing.JPanel searchAndSortPanel;
-         private javax.swing.JTextField searchUsernameField;
-         private javax.swing.JScrollPane tableScroll;
-         private javax.swing.JPanel toolbarPanel;
-         private javax.swing.JPanel topPanel;
-         // End of variables declaration//GEN-END:variables
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel addMemberBtn;
+    private javax.swing.JButton addMemberButton;
+    private javax.swing.JComboBox<String> memberSortCombo;
+    private javax.swing.JTable membersTable;
+    private javax.swing.JLabel membersTitle;
+    private javax.swing.JPanel searchAndSortPanel;
+    private javax.swing.JTextField searchUsernameField;
+    private javax.swing.JScrollPane tableScroll;
+    private javax.swing.JPanel toolbarPanel;
+    private javax.swing.JPanel topPanel;
+    // End of variables declaration//GEN-END:variables
 
     private void buildMembersUI() {
         Color bg = new Color(11, 11, 15);
