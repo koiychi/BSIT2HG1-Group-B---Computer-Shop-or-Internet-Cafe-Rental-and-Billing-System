@@ -1005,7 +1005,7 @@
                     <Font component="dashboardHeadingText" property="font" relativeSize="false" size="24"/>
                   </FontInfo>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Quick Statistics"/>
+                <Property name="text" type="java.lang.String" value="Overview"/>
                 <Property name="verticalAlignment" type="int" value="1"/>
                 <Property name="alignmentX" type="float" value="0.5"/>
                 <Property name="horizontalTextPosition" type="int" value="2"/>

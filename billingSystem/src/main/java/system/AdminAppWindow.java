@@ -5,12 +5,12 @@
 package system;
 
 import ui.Session.NewSession;
-import ui.Shop.transactionsTabPanel;
-import ui.Shop.printServicesTabPanel;
+import ui.Shop.TransactionsTabPanel;
+import ui.Shop.PrintServicesTabPanel;
 
-import ui.Members.membersTabPanel;
-import ui.Shop.dashboardTabPanel;
-import ui.Station.stationsTabPanel;
+import ui.Members.MembersTabPanel;
+import ui.Shop.DashboardTabPanel;
+import ui.Station.StationsTabPanel;
 import javax.swing.*;
 import java.awt.*;
 
@@ -20,8 +20,8 @@ import java.awt.*;
 
 public class AdminAppWindow extends javax.swing.JFrame {
 
-    private membersTabPanel membersPanel;
-    private stationsTabPanel stationsPanel;
+    private MembersTabPanel membersPanel;
+    private StationsTabPanel stationsPanel;
 
     public AdminAppWindow() {
         initComponents();
@@ -29,13 +29,13 @@ public class AdminAppWindow extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
 
         
-        mainTabGroup.insertTab("Dashboard", null, new dashboardTabPanel(), null, 0);
-        stationsPanel = new stationsTabPanel();
+        mainTabGroup.insertTab("Dashboard", null, new DashboardTabPanel(), null, 0);
+        stationsPanel = new StationsTabPanel();
         mainTabGroup.insertTab("Stations", null, stationsPanel, null, 1);
-        membersPanel = new membersTabPanel();
+        membersPanel = new MembersTabPanel();
         mainTabGroup.insertTab("Members", null, membersPanel, null, 2);
-        mainTabGroup.insertTab("Print Services", null, new printServicesTabPanel(), null, 3);
-        mainTabGroup.insertTab("Transactions", null, new transactionsTabPanel(), null, 4);
+        mainTabGroup.insertTab("Print Services", null, new PrintServicesTabPanel(), null, 3);
+        mainTabGroup.insertTab("Transactions", null, new TransactionsTabPanel(), null, 4);
 
 
         mainTabGroup.setSelectedIndex(0);

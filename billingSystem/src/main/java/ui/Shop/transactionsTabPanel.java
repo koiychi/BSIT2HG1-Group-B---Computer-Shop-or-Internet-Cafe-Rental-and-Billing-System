@@ -17,13 +17,13 @@ import javax.swing.table.*;
 
 
 
-public class transactionsTabPanel extends javax.swing.JPanel {
+public class TransactionsTabPanel extends javax.swing.JPanel {
     private final TransactionService transactionService = new TransactionService();
 
     
 
 
-    public transactionsTabPanel() {
+    public TransactionsTabPanel() {
         initComponents();
         setupLogic();
     }
