@@ -4,18 +4,9 @@
  */
 package ui.Shop;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dialog;
-import java.awt.Dimension;
-import java.awt.Window;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import javax.swing.BorderFactory;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+import java.awt.*;
+import java.math.*;
+import javax.swing.*;
 
 
 
@@ -25,12 +16,6 @@ public final class PaymentUtil {
     private PaymentUtil() {
     }
 
-    
-    public static final BigDecimal PC_RATE_GAMING = new BigDecimal("40.00");    
-    public static final BigDecimal PC_RATE_REGULAR = new BigDecimal("30.00");   
-    public static final BigDecimal PRICE_BW = new BigDecimal("2.00");           
-    public static final BigDecimal PRICE_COLOR = new BigDecimal("5.00");        
-    public static final BigDecimal MEMBER_DISCOUNT = new BigDecimal("0.10");
 
     public interface Committer {
         String commit(String paidBy);
@@ -56,14 +41,99 @@ public final class PaymentUtil {
     public static String paidBy(boolean usingCredit) {
         return usingCredit ? "Member Credits" : "Cash";
     }
+    public static BigDecimal parseAmountStrict(String text) {
+    if (text == null || text.isBlank()) {
+        throw new IllegalArgumentException("Please enter an amount.");
+    }
+    BigDecimal value;
+    try {
+        value = new BigDecimal(text.replace("PHP", "").replace(",", "").trim());
+    } catch (NumberFormatException ex) {
+        throw new IllegalArgumentException("Please enter a valid numeric amount.");
+    }
+    if (value.signum() < 0) {
+        throw new IllegalArgumentException("Amount cannot be negative.");
+    }
+    return value;
+}
+
+// runs the committer and turns a validation error into a message instead of a crash
+public static String safeCommit(Committer committer, String paidBy) {
+    if (committer == null) {
+        return null;
+    }
+    try {
+        return committer.commit(paidBy);
+    } catch (IllegalArgumentException | IllegalStateException ex) {
+        return ex.getMessage();
+    }
+}
+
+// confirmation before money moves
+public static boolean confirmPayment(Component parent, String what, BigDecimal total) {
+    int answer = JOptionPane.showConfirmDialog(parent,
+            "Confirm " + what + " of " + money(total) + "?\nThis will be recorded in Transactions.",
+            "Confirm Payment",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+    return answer == JOptionPane.YES_OPTION;
+}
 
     public static BigDecimal parseAmount(String text) {
+        if (text == null) {
+            return BigDecimal.ZERO;
+        }
         try {
             return new BigDecimal(text.replace("PHP", "").replace(",", "").trim());
         } catch (NumberFormatException ex) {
             return BigDecimal.ZERO;
         }
     }
+    // "Discount 10%" label text: 0.1 -> "10", 0.125 -> "12.5", 0 -> "0"
+public static String percent(double rate) {
+    return BigDecimal.valueOf(rate).multiply(BigDecimal.valueOf(100))
+            .stripTrailingZeros().toPlainString();
+}
+
+public static BigDecimal readCash(Component parent, JTextField field, BigDecimal total) {
+    try {
+        BigDecimal paid = parseAmountStrict(field.getText());
+        if (paid.signum() <= 0) {
+            throw new IllegalArgumentException("Please enter a payment amount greater than PHP 0.00.");
+        }
+        if (paid.compareTo(total) < 0) {
+            throw new IllegalArgumentException("The amount paid is less than the total amount due.");
+        }
+        return paid;
+    } catch (IllegalArgumentException ex) {
+        JOptionPane.showMessageDialog(parent, ex.getMessage(),
+                "Invalid Payment", JOptionPane.WARNING_MESSAGE);
+        field.requestFocusInWindow();
+        return null;
+    }
+}
+
+// confirm, then save; returns true only when the payment was saved
+public static boolean confirmAndCommit(Component parent, JButton payButton, Committer committer,
+        String paidBy, String what, BigDecimal total) {
+    if (!confirmPayment(parent, what, total)) {
+        return false;
+    }
+    if (committer == null) {
+        JOptionPane.showMessageDialog(parent, "Payment could not be saved: no save action was set.",
+                "Payment Failed", JOptionPane.ERROR_MESSAGE);
+        return false;
+    }
+    payButton.setEnabled(false);
+    
+    String error = safeCommit(committer, paidBy);
+    if (error != null) {
+        payButton.setEnabled(true);
+        JOptionPane.showMessageDialog(parent, error, "Payment Failed", JOptionPane.ERROR_MESSAGE);
+        return false;
+    }
+    return true;
+}
 
     
     public static String money(BigDecimal value) {

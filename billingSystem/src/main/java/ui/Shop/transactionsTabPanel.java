@@ -9,7 +9,6 @@ import service.TransactionService;
 import java.math.*;
 import java.text.*;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -361,7 +360,6 @@ public class transactionsTabPanel extends javax.swing.JPanel {
     
     private DefaultTableModel model;
     private TableRowSorter<DefaultTableModel> sorter;
-    private static final DateTimeFormatter STAMP = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final DecimalFormat PESO = new DecimalFormat("#,##0.00");
     private static final boolean COUNT_CREDIT_PAYMENTS = false;
     private boolean loading = false;   
@@ -403,7 +401,7 @@ public class transactionsTabPanel extends javax.swing.JPanel {
         dataTable.getColumnModel().getColumn(6).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             protected void setValue(Object value) {
-                setText(value instanceof BigDecimal ? PaymentUtil.money((BigDecimal) value) : "");
+                setText(value == null ? "" : PaymentUtil.money(PaymentUtil.parseAmount(value.toString())));
                 setHorizontalAlignment(SwingConstants.RIGHT);
             }
         });
@@ -442,15 +440,21 @@ public class transactionsTabPanel extends javax.swing.JPanel {
 
     
     private void loadFromDatabase() {
-        if (model == null) {
+    if (model == null) {
             return;
         }
-        loading = true;   
+        loading = true; 
+        
         try {
             model.setRowCount(0);
             for (Object[] row : transactionService.getHistory()) {
                 model.addRow(row);
             }
+        } catch (RuntimeException ex) {
+            // a database problem must not crash the screen
+            JOptionPane.showMessageDialog(this,
+                    "Could not load transactions: " + ex.getMessage(),
+                    "Transactions", JOptionPane.ERROR_MESSAGE);
         } finally {
             loading = false;
         }
@@ -474,17 +478,16 @@ public class transactionsTabPanel extends javax.swing.JPanel {
         BigDecimal month = BigDecimal.ZERO;
  
         for (int r = 0; r < model.getRowCount(); r++) {
-            Object amountObj = model.getValueAt(r, 6);
-            if (!(amountObj instanceof BigDecimal)) {
-                continue;
+            LocalDate d = dateOf(String.valueOf(model.getValueAt(r, 0)));
+            if (d == null) {
+                continue;   // a row with a bad date is skipped, it must not crash the stats
             }
             String payment = String.valueOf(model.getValueAt(r, 5));
             if (!COUNT_CREDIT_PAYMENTS && norm(payment).contains("credit")) {
                 continue;
             }
  
-            BigDecimal amount = (BigDecimal) amountObj;
-            LocalDate d = LocalDateTime.parse(String.valueOf(model.getValueAt(r, 0)), STAMP).toLocalDate();
+            BigDecimal amount = PaymentUtil.parseAmount(String.valueOf(model.getValueAt(r, 6)));
  
             overall = overall.add(amount);
             if (d.equals(today)) {
@@ -505,7 +508,16 @@ public class transactionsTabPanel extends javax.swing.JPanel {
         upperPanel.revalidate();
         upperPanel.repaint();
     }
- 
+        private static LocalDate dateOf(String stamp) {
+        if (stamp == null || stamp.length() < 10) {
+            return null;
+        }
+        try {
+            return LocalDate.parse(stamp.substring(0, 10));
+        } catch (DateTimeException ex) {
+            return null;
+        }
+    }
     private static String peso(BigDecimal value) {
         PESO.setRoundingMode(RoundingMode.HALF_UP);
         return "PHP " + PESO.format(value);
@@ -546,7 +558,8 @@ public class transactionsTabPanel extends javax.swing.JPanel {
 
                 
                 if (!"All".equals(range)) {
-                    LocalDate d = LocalDate.parse(entry.getStringValue(0).substring(0, 10));
+                    LocalDate d = dateOf(entry.getStringValue(0));
+                    if (d == null) return false;
                     if ("Today".equals(range) && !d.equals(today)) return false;
                     if ("Last 7 days".equals(range) && (d.isBefore(weekStart) || d.isAfter(today))) return false;
                     if ("This Month".equals(range) && (d.isBefore(monthStart) || d.isAfter(monthEnd))) return false;
