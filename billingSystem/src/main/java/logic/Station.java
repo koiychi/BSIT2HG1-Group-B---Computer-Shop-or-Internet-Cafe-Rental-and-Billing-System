@@ -108,5 +108,8 @@ public abstract class Station {
 
     public abstract String getType();
     public abstract String getStationInfo();
+    //NEW
+    public abstract double calculateTotalCost(double durationInHours);
+    public abstract Station copy();
 
 } 

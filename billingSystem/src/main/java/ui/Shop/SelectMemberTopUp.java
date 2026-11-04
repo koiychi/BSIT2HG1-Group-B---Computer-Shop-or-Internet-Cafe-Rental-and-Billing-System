@@ -39,9 +39,14 @@ public class SelectMemberTopUp extends javax.swing.JDialog {
 
         searchBar.setText("");   
         searchBar.putClientProperty("JTextField.placeholderText", "Search Member...");
-        allMembers.addAll(membershipService.getMembers());
+        try {
+            allMembers.addAll(membershipService.getMembers());
+        } catch (RuntimeException ex) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Could not load members: " + ex.getMessage(),
+                    "Select Member", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
 
-        
         searchBar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override public void insertUpdate(javax.swing.event.DocumentEvent e) { applyFilter(); }
             @Override public void removeUpdate(javax.swing.event.DocumentEvent e) { applyFilter(); }

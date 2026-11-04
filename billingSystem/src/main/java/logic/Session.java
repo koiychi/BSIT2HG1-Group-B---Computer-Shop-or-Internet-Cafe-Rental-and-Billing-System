@@ -40,22 +40,13 @@ public class Session implements Billable {
         this.isActive = other.isActive;
     }
 
-    private static Customer copyCustomer(Customer customer) {
-        if (customer instanceof MemberCustomer member) {
-            return new MemberCustomer(member);
-        }
-        return new Customer(customer);
-    }
+private static Customer copyCustomer(Customer customer) {
+    return customer.copy();
+}
 
-    private static Station copyStation(Station station) {
-        if (station instanceof GamingStation gaming) {
-            return new GamingStation(gaming);
-        }
-        if (station instanceof RegularStation regular) {
-            return new RegularStation(regular);
-        }
-        throw new IllegalArgumentException("Unsupported station type.");
-    }
+private static Station copyStation(Station station) {
+    return station.copy();
+}
 
     public int getSessionID() {
         return sessionID;
@@ -147,7 +138,7 @@ public class Session implements Billable {
 
 
     public double calculateTotalCharge() {
-        return calculateDuration() * station.getHourlyRate();
+        return station.calculateTotalCost(calculateDuration());
     }
 
     @Override

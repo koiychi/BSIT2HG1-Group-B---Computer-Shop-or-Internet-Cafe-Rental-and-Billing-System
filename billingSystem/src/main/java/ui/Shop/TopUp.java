@@ -33,23 +33,22 @@ public TopUp(java.awt.Frame parent, boolean modal) {
     }
 
     public void setCommitter(PaymentUtil.Committer committer) {
+        if (committer == null) {
+            throw new IllegalArgumentException("Committer cannot be null.");
+        }
         this.committer = committer;
     }
 
-    
     public void setCurrentBalance(BigDecimal balance) {
+        if (balance == null || balance.signum() < 0) {
+            throw new IllegalArgumentException("Balance cannot be negative.");
+        }
         currentBalance = balance;
     }
 
-    
     public BigDecimal getTotal() {
         return total;
     }
-
-    
-
-
-
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -304,8 +303,6 @@ private void setupLogic() {
 }
 
 
-
-
 public void setAccount(String username, String fullName) {
     usernameLbl.setText("@" + username);
     nameCustomerLbl.setText(fullName);
@@ -342,7 +339,7 @@ private void payMethodChanged() {
     updateChange();
 }
 
-
+//COLORSS!!
 private void applyTheme() {
     final java.awt.Color ORANGE = new java.awt.Color(0xFF6600);
     final java.awt.Color BG = new java.awt.Color(0x0B0B0F);
@@ -432,37 +429,21 @@ private void finishPayment() {
     if (paymentDone) {
         return;   
     }
-    BigDecimal paid = PaymentUtil.parseAmount(payField.getText());
-
-    
-    if (paid.compareTo(BigDecimal.ZERO) <= 0) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-                "Please enter a payment amount greater than PHP 0.00.",
-                "Invalid Payment", javax.swing.JOptionPane.WARNING_MESSAGE);
-        payField.requestFocusInWindow();
+    if (total.signum() <= 0) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Please choose a top-up amount.",
+                "Invalid Amount", javax.swing.JOptionPane.WARNING_MESSAGE);
         return;
     }
-    
-    if (paid.compareTo(total) < 0) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-                "The amount paid is less than the total amount due.",
-                "Insufficient Payment", javax.swing.JOptionPane.WARNING_MESSAGE);
-        payField.requestFocusInWindow();
-        return;
+    BigDecimal paid = PaymentUtil.readCash(this, payField, total);
+    if (paid == null) {
+        return;   // readCash already showed the reason
     }
-
-    
-    if (committer != null) {
-        ProceedPay.setEnabled(false);
-        String error = committer.commit(PaymentUtil.paidBy(false));   
-        if (error != null) {
-            ProceedPay.setEnabled(true);
-            javax.swing.JOptionPane.showMessageDialog(this, error,
-                    "Payment Failed", javax.swing.JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+    if (!PaymentUtil.confirmAndCommit(this, ProceedPay, committer,
+            PaymentUtil.paidBy(false), "this top up", total)) {
+        return;
     }
     paymentDone = true;
+    
     BigDecimal newBalance = currentBalance.add(total);   
 
     

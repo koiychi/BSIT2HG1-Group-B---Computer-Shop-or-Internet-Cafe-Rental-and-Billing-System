@@ -12,7 +12,7 @@ public class PrintJob implements Billable {
     private int pageCount;
     private boolean isColored;
     private double pricePerPage;
-    private final List<Object> printJobs;
+    private final List<PrintJob> printJobs;
 
     public PrintJob(String serviceType, String pageSize, String paperType, int pageCount, boolean isColored, double pricePerPage) {
         this.printJobs = new ArrayList<>();
@@ -27,8 +27,8 @@ public class PrintJob implements Billable {
     public PrintJob(PrintJob other) {
         this(other.getServiceType(), other.getPageSize(), other.getPaperType(),
                 other.getPageCount(), other.getIsColored(), other.getPricePerPage());
-        for (Object job : other.getPrintJobs()) {
-            addPrintJob(new PrintJob((PrintJob) job));
+        for (PrintJob job : other.getPrintJobs()) {
+            addPrintJob(new PrintJob(job));
         }
     }
  
@@ -56,7 +56,7 @@ public class PrintJob implements Billable {
         return pricePerPage;
     }
     
-    public List<Object> getPrintJobs() {
+    public List<PrintJob> getPrintJobs() {
         return Collections.unmodifiableList(printJobs);
     }
 
@@ -109,8 +109,8 @@ public class PrintJob implements Billable {
     @Override
     public double calculateTotalCharge() {
         double total = pageCount * pricePerPage;
-        for (Object job : printJobs) {
-            total += ((PrintJob) job).calculateTotalCharge();
+        for (PrintJob job : printJobs) {
+            total += job.calculateTotalCharge();
         }
         return total;
     }

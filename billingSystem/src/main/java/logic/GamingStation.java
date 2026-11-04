@@ -56,6 +56,17 @@ public class GamingStation extends Station {
     public String getType() {
         return "Gaming";
     }
+    @Override
+    public double calculateTotalCost(double durationInHours) {
+    if (!Double.isFinite(durationInHours) || durationInHours < 0) {
+        throw new IllegalArgumentException("Duration cannot be negative.");
+    }
+    return Math.round(getHourlyRate() * durationInHours * 100.0) / 100.0;
+}
+    @Override
+    public Station copy() {
+    return new GamingStation(this);
+}
 
     public void setGamesInstalled(List<String> gamesInstalled) {
         if (gamesInstalled == null) {
