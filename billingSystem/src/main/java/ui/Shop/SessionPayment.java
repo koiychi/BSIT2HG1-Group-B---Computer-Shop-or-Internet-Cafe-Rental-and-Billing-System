@@ -5,7 +5,6 @@
 package ui.Shop;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import service.SessionService;
 import logic.PcRentalBill;
 import service.SessionService;
 import service.StationsService;
@@ -96,7 +95,9 @@ public static int payMember(java.awt.Window owner, int customerId, String custom
             if (station == null) {
                 throw new IllegalArgumentException("Station " + stationId + " was not found.");
             }
-            return new PcRentalBill(station, parseMinutes(duration));
+            PcRentalBill bill = new PcRentalBill(station, parseMinutes(duration));
+            bill.getAmountDue();  
+            return bill;
         } catch (IllegalArgumentException ex) {
             javax.swing.JOptionPane.showMessageDialog(owner, ex.getMessage(),
                     "Payment Failed", javax.swing.JOptionPane.ERROR_MESSAGE);
@@ -105,11 +106,18 @@ public static int payMember(java.awt.Window owner, int customerId, String custom
     }
    
     public static int parseMinutes(String duration) {
+        if (duration == null || duration.isBlank()) {
+            throw new IllegalArgumentException("Please choose a duration.");
+        }
         int minutes = 0;
         String[] p = duration.trim().toLowerCase().split("\\s+");
-        for (int i = 0; i + 1 < p.length; i += 2) {
-            int n = Integer.parseInt(p[i]);
-            minutes += p[i + 1].startsWith("min") ? n : n * 60;
+        try {
+            for (int i = 0; i + 1 < p.length; i += 2) {
+                int n = Integer.parseInt(p[i]);
+                minutes += p[i + 1].startsWith("min") ? n : n * 60;
+            }
+        } catch (NumberFormatException ex) {
+            throw new IllegalArgumentException("The duration could not be read: " + duration);
         }
         return minutes;
     }

@@ -309,14 +309,9 @@ public void setBill(Billable bill) {
     if (bill == null) {
         throw new IllegalArgumentException("Bill cannot be null.");
     }
-    BigDecimal due = BigDecimal.valueOf(bill.calculateTotalCharge())
-            .setScale(2, java.math.RoundingMode.HALF_UP);
-    if (due.signum() <= 0) {
-        throw new IllegalArgumentException("Total amount due must be greater than 0.");
-    }
-    String invoice = bill.generateInvoice();
-    typePcLbl.setText(PaymentUtil.invoiceTitle(invoice));
-    calcLbl.setText(PaymentUtil.invoiceBody(invoice));
+    BigDecimal due = bill.getAmountDue();
+    typePcLbl.setText(bill.getInvoiceTitle());
+    calcLbl.setText(bill.getInvoiceDetails());
     calcTotalLbl.setText(PaymentUtil.money(due));
     totalLbl.setText(PaymentUtil.money(due));
     total = due;
@@ -445,44 +440,13 @@ public void setBill(Billable bill) {
         if (paymentDone) {
             return;   
         }
-        BigDecimal paid;
-try {
-    paid = PaymentUtil.parseAmountStrict(payField.getText());
-} catch (IllegalArgumentException ex) {
-    javax.swing.JOptionPane.showMessageDialog(this, ex.getMessage(),
-            "Input Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    payField.requestFocusInWindow();
-    return;
-}
-
-        
-        if (paid.compareTo(BigDecimal.ZERO) <= 0) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Please enter a payment amount greater than PHP 0.00.",
-                    "Invalid Payment", javax.swing.JOptionPane.WARNING_MESSAGE);
-            payField.requestFocusInWindow();
-            return;
+        BigDecimal paid = PaymentUtil.readCash(this, payField, total);
+        if (paid == null) {
+            return;   // readCash already showed the reason
         }
-        
-        if (paid.compareTo(total) < 0) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "The amount paid is less than the total amount due.",
-                    "Insufficient Payment", javax.swing.JOptionPane.WARNING_MESSAGE);
-            payField.requestFocusInWindow();
+        if (!PaymentUtil.confirmAndCommit(this, ProceedPay, committer,
+                PaymentUtil.paidBy(false), "this payment", total)) {
             return;
-        }
-        if (!PaymentUtil.confirmPayment(this, "this payment", total)) {
-    return;
-}
-        if (committer != null) {
-            ProceedPay.setEnabled(false);
-            String error = committer.commit(PaymentUtil.paidBy(false));
-            if (error != null) {
-                ProceedPay.setEnabled(true);
-                javax.swing.JOptionPane.showMessageDialog(this, error,
-                        "Payment Failed", javax.swing.JOptionPane.ERROR_MESSAGE);
-                return;
-            }
         }
         paymentDone = true;
 

@@ -79,23 +79,6 @@ public static boolean confirmPayment(Component parent, String what, BigDecimal t
     return answer == JOptionPane.YES_OPTION;
 }
 
-// a Billable invoice
-public static String invoiceTitle(String invoice) {
-    if (invoice == null) {
-        throw new IllegalArgumentException("Invoice cannot be null.");
-    }
-    int i = invoice.indexOf('\n');
-    return i < 0 ? invoice : invoice.substring(0, i);
-}
-
-public static String invoiceBody(String invoice) {
-    if (invoice == null) {
-        throw new IllegalArgumentException("Invoice cannot be null.");
-    }
-    int i = invoice.indexOf('\n');
-    return i < 0 ? "" : invoice.substring(i + 1);
-}
-
     public static BigDecimal parseAmount(String text) {
         if (text == null) {
             return BigDecimal.ZERO;
@@ -106,6 +89,51 @@ public static String invoiceBody(String invoice) {
             return BigDecimal.ZERO;
         }
     }
+    // "Discount 10%" label text: 0.1 -> "10", 0.125 -> "12.5", 0 -> "0"
+public static String percent(double rate) {
+    return BigDecimal.valueOf(rate).multiply(BigDecimal.valueOf(100))
+            .stripTrailingZeros().toPlainString();
+}
+
+public static BigDecimal readCash(Component parent, JTextField field, BigDecimal total) {
+    try {
+        BigDecimal paid = parseAmountStrict(field.getText());
+        if (paid.signum() <= 0) {
+            throw new IllegalArgumentException("Please enter a payment amount greater than PHP 0.00.");
+        }
+        if (paid.compareTo(total) < 0) {
+            throw new IllegalArgumentException("The amount paid is less than the total amount due.");
+        }
+        return paid;
+    } catch (IllegalArgumentException ex) {
+        JOptionPane.showMessageDialog(parent, ex.getMessage(),
+                "Invalid Payment", JOptionPane.WARNING_MESSAGE);
+        field.requestFocusInWindow();
+        return null;
+    }
+}
+
+// confirm, then save; returns true only when the payment was saved
+public static boolean confirmAndCommit(Component parent, JButton payButton, Committer committer,
+        String paidBy, String what, BigDecimal total) {
+    if (!confirmPayment(parent, what, total)) {
+        return false;
+    }
+    if (committer == null) {
+        JOptionPane.showMessageDialog(parent, "Payment could not be saved: no save action was set.",
+                "Payment Failed", JOptionPane.ERROR_MESSAGE);
+        return false;
+    }
+    payButton.setEnabled(false);
+    
+    String error = safeCommit(committer, paidBy);
+    if (error != null) {
+        payButton.setEnabled(true);
+        JOptionPane.showMessageDialog(parent, error, "Payment Failed", JOptionPane.ERROR_MESSAGE);
+        return false;
+    }
+    return true;
+}
 
     
     public static String money(BigDecimal value) {

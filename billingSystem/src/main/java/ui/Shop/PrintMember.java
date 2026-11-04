@@ -22,6 +22,13 @@ public class PrintMember extends javax.swing.JDialog {
         setupLogic();
         setLocationRelativeTo(parent);
     }
+    public PrintMember(java.awt.Window owner) {
+        super(owner, java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        setUndecorated(true);
+        initComponents();
+        setupLogic();
+        setLocationRelativeTo(owner);
+    }
     private boolean paymentDone = false;
     private PaymentUtil.Committer committer;
     private BigDecimal creditBalance = BigDecimal.ZERO;
@@ -31,11 +38,17 @@ public class PrintMember extends javax.swing.JDialog {
     }
 
     public void setCommitter(PaymentUtil.Committer committer) {
+        if (committer == null) {
+            throw new IllegalArgumentException("Committer cannot be null.");
+        }
         this.committer = committer;
     }
 
     
     public void setCreditBalance(BigDecimal balance) {
+    if (balance == null || balance.signum() < 0) {
+            throw new IllegalArgumentException("Credit balance cannot be negative.");
+        }
         creditBalance = balance;
         creditRb.setText("Credit (" + PaymentUtil.money(balance) + ")");
         creditRb.setEnabled(balance.compareTo(BigDecimal.ZERO) > 0);
@@ -436,25 +449,23 @@ private void updateBill() {
 private String typePlain = "";
 private String detailsPlain = "";
 private logic.Customer customer = new logic.Customer();   // plain customer = no discount
+private Billable bill;
 
 public void setBill(Billable bill) {
     if (bill == null) {
         throw new IllegalArgumentException("Bill cannot be null.");
     }
-    BigDecimal sub = BigDecimal.valueOf(bill.calculateTotalCharge()).setScale(2, RoundingMode.HALF_UP);
-    if (sub.signum() <= 0) {
-        throw new IllegalArgumentException("Total amount due must be greater than 0.");
-    }
-    String invoice = bill.generateInvoice();
-    typePlain = PaymentUtil.invoiceTitle(invoice);
-    detailsPlain = PaymentUtil.invoiceBody(invoice);
+    subtotal = bill.getAmountDue();   // rejects a bill of 0 or less
+    this.bill = bill;
+    typePlain = bill.getInvoiceTitle();
+    detailsPlain = bill.getInvoiceDetails();
+    
     printLbl.setText(typePlain);
     photocopyLbl.setText("<html>" + detailsPlain.replace("&", "&amp;").replace("<", "&lt;")
             .replace("\n", "<br>") + "</html>");
     printLbl.setVisible(true);
     photocopyLbl.setVisible(true);
     copyLbl.setText("Order total");
-    subtotal = sub;
     applyDiscount();
     updateBill();
     pack();
@@ -463,12 +474,14 @@ public void setBill(Billable bill) {
 
 // the customer decides its own discount: 0 for a plain Customer, the saved rate for a MemberCustomer
 private void applyDiscount() {
-    double rate = customer.getDiscountRate();
-    discountAmt = subtotal.multiply(BigDecimal.valueOf(rate)).setScale(2, RoundingMode.HALF_UP);
-    creditTotal = subtotal.subtract(discountAmt);
-    String percent = BigDecimal.valueOf(rate).multiply(BigDecimal.valueOf(100))
-            .stripTrailingZeros().toPlainString();
-    dicountLbl.setText("Discount " + percent + "%");
+    if (bill == null) {
+        discountAmt = BigDecimal.ZERO;   // dialog is still starting, nothing to discount
+        creditTotal = subtotal;
+    } else {
+        discountAmt = bill.getDiscountFor(customer);
+        creditTotal = subtotal.subtract(discountAmt);
+    }
+    dicountLbl.setText("Discount " + PaymentUtil.percent(customer.getDiscountRate()) + "%");
 }
 
 private boolean memberMode = false;
@@ -564,28 +577,10 @@ private boolean applyMember(String username) {
         boolean useCredit = creditRb.isSelected();
         BigDecimal paid = BigDecimal.ZERO;
 
-        if (!useCredit) {
-            try {
-                paid = PaymentUtil.parseAmountStrict(payField.getText());
-            } catch (IllegalArgumentException ex) {
-                javax.swing.JOptionPane.showMessageDialog(this, ex.getMessage(),
-                        "Invalid Payment", javax.swing.JOptionPane.WARNING_MESSAGE);
-                payField.requestFocusInWindow();
-                return;
-            }
-            if (paid.compareTo(BigDecimal.ZERO) <= 0) {
-                javax.swing.JOptionPane.showMessageDialog(this,
-                        "Please enter a payment amount greater than PHP 0.00.",
-                        "Invalid Payment", javax.swing.JOptionPane.WARNING_MESSAGE);
-                payField.requestFocusInWindow();
-                return;
-            }
-            if (paid.compareTo(total) < 0) {
-                javax.swing.JOptionPane.showMessageDialog(this,
-                        "The amount paid is less than the total amount due.",
-                        "Insufficient Payment", javax.swing.JOptionPane.WARNING_MESSAGE);
-                payField.requestFocusInWindow();
-                return;
+         if (!useCredit) {
+            paid = PaymentUtil.readCash(this, payField, total);
+            if (paid == null) {
+                return;   // readCash already showed the reason
             }
         }
 
@@ -597,20 +592,12 @@ private boolean applyMember(String username) {
                     "Insufficient Credit", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if (!PaymentUtil.confirmPayment(this, "this payment", total)) {
+        if (!PaymentUtil.confirmAndCommit(this, ProceedPay, committer,
+                PaymentUtil.paidBy(useCredit), "this payment", total)) {
             return;
         }
-        if (committer != null) {
-            ProceedPay.setEnabled(false);
-            String error = PaymentUtil.safeCommit(committer, PaymentUtil.paidBy(useCredit));
-            if (error != null) {
-                ProceedPay.setEnabled(true);
-                javax.swing.JOptionPane.showMessageDialog(this, error,
-                        "Payment Failed", javax.swing.JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        }
         paymentDone = true;
+        
         if (useCredit) {
             creditBalance = creditBalance.subtract(total);
         }

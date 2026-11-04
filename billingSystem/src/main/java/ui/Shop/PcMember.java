@@ -4,15 +4,10 @@
  */
 package ui.Shop;
 
-import java.math.RoundingMode;
 import logic.Billable;
 import logic.Customer;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-
-
-
-
 
 public class PcMember extends javax.swing.JDialog {
     
@@ -43,11 +38,17 @@ public class PcMember extends javax.swing.JDialog {
     private BigDecimal creditBalance = BigDecimal.ZERO;
 
     public void setCommitter(PaymentUtil.Committer committer) {
+        if (committer == null) {
+            throw new IllegalArgumentException("Committer cannot be null.");
+        }
         this.committer = committer;
     }
 
     
     public void setCreditBalance(BigDecimal balance) {
+    if (balance == null || balance.signum() < 0) {
+            throw new IllegalArgumentException("Credit balance cannot be negative.");
+        }
         creditBalance = balance;
         creditRb.setText("Credit (" + PaymentUtil.money(balance) + ")");
         creditRb.setEnabled(balance.compareTo(BigDecimal.ZERO) > 0);
@@ -437,32 +438,22 @@ public void setBill(Billable bill, Customer customer) {
     if (customer == null) {
         throw new IllegalArgumentException("Customer cannot be null.");
     }
-    BigDecimal sub = BigDecimal.valueOf(bill.calculateTotalCharge()).setScale(2, RoundingMode.HALF_UP);
-    if (sub.signum() <= 0) {
-        throw new IllegalArgumentException("Total amount due must be greater than 0.");
-    }
-    // the customer decides its own discount (0 for a plain Customer, the stored rate for a MemberCustomer)
-    double rate = customer.getDiscountRate();
-    BigDecimal disc = sub.multiply(BigDecimal.valueOf(rate)).setScale(2, RoundingMode.HALF_UP);
-    String percent = BigDecimal.valueOf(rate).multiply(BigDecimal.valueOf(100))
-            .stripTrailingZeros().toPlainString();
-
-    String invoice = bill.generateInvoice();
-    typePcLbl.setText(PaymentUtil.invoiceTitle(invoice));
-    calcLbl.setText(PaymentUtil.invoiceBody(invoice));
-    discountLbl.setText("Discount " + percent + "%");
-    this.subtotal = sub;
-    this.discountAmt = disc;
-    this.creditTotal = sub.subtract(disc);
+    this.subtotal = bill.getAmountDue();
+    this.discountAmt = bill.getDiscountFor(customer);
+    this.creditTotal = subtotal.subtract(discountAmt);
+    typePcLbl.setText(bill.getInvoiceTitle());
+    calcLbl.setText(bill.getInvoiceDetails());
+    discountLbl.setText("Discount " + PaymentUtil.percent(customer.getDiscountRate()) + "%");
+            
     updateBill();
     pack();
     setLocationRelativeTo(getOwner());
 }
     public void setCustomerName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Customer name cannot be empty.");
+        }
         customerNameLbl.setText(name);
-    }
-    public void setDiscountText(String text) {
-        discountLbl.setText(text);
     }
         
     private void updateChange() {
@@ -495,25 +486,13 @@ public void setBill(Billable bill, Customer customer) {
         if (paymentDone) {
             return;   
         }
-        BigDecimal paid = PaymentUtil.parseAmount(payField.getText());
         boolean useCredit = creditRb.isSelected();
+        BigDecimal paid = BigDecimal.ZERO;   
 
         if (!useCredit) {
-            
-            if (paid.compareTo(BigDecimal.ZERO) <= 0) {
-                javax.swing.JOptionPane.showMessageDialog(this,
-                        "Please enter a payment amount greater than PHP 0.00.",
-                        "Invalid Payment", javax.swing.JOptionPane.WARNING_MESSAGE);
-                payField.requestFocusInWindow();
-                return;
-            }
-            
-            if (paid.compareTo(total) < 0) {
-                javax.swing.JOptionPane.showMessageDialog(this,
-                        "The amount paid is less than the total amount due.",
-                        "Insufficient Payment", javax.swing.JOptionPane.WARNING_MESSAGE);
-                payField.requestFocusInWindow();
-                return;
+            paid = PaymentUtil.readCash(this, payField, total);
+            if (paid == null) {
+                return;   // readCash already showed the reason
             }
         }
 
@@ -526,21 +505,12 @@ public void setBill(Billable bill, Customer customer) {
                     "Insufficient Credit", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if (!PaymentUtil.confirmPayment(this, "this payment", total)) {
-    return;
-}
-
-        if (committer != null) {
-            ProceedPay.setEnabled(false);
-            String error = committer.commit(PaymentUtil.paidBy(useCredit));
-            if (error != null) {
-                ProceedPay.setEnabled(true);
-                javax.swing.JOptionPane.showMessageDialog(this, error,
-                        "Payment Failed", javax.swing.JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+        if (!PaymentUtil.confirmAndCommit(this, ProceedPay, committer,
+                PaymentUtil.paidBy(useCredit), "this payment", total)) {
+            return;
         }
         paymentDone = true;
+        
         if (useCredit) {
             creditBalance = creditBalance.subtract(total);   
         }

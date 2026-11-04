@@ -4,7 +4,6 @@
  */
 package ui.Shop;
 
-import java.math.RoundingMode;
 import logic.PrintJob;
 import logic.PrintOrderBill;
 import java.math.BigDecimal;
@@ -32,26 +31,19 @@ public final class PrintPayment {
             return false;
         }
         PrintOrderBill bill;
+        BigDecimal billTotal;
         try {
             bill = toBill(printOrders, photocopyOrders);
+            billTotal = bill.getAmountDue();   // also rejects a bill of 0 or less
         } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(owner, ex.getMessage(),
                     "Invalid Order", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        BigDecimal billTotal = BigDecimal.valueOf(bill.calculateTotalCharge())
-                .setScale(2, RoundingMode.HALF_UP);
 
-        PrintMember dlg = new PrintMember(owner instanceof java.awt.Frame ? (java.awt.Frame) owner : null, true);
+        PrintMember dlg = new PrintMember(owner);
         dlg.setCommitter(paidBy -> save(dlg, billTotal, paidBy));
-        try {
-            dlg.setBill(bill);
-        } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(owner, ex.getMessage(),
-                    "Invalid Order", JOptionPane.ERROR_MESSAGE);
-            dlg.dispose();
-            return false;
-        }
+        dlg.setBill(bill);
         dlg.setVisible(true);
 
         if (dlg.isPaid()) {
@@ -105,6 +97,12 @@ public final class PrintPayment {
             try {
                 pages = Integer.parseInt(row.substring(times + 3, open).trim());
             } catch (NumberFormatException ex) {
+                throw new IllegalArgumentException("This order could not be read: " + row);
+            }
+            if (pages <= 0) {
+                throw new IllegalArgumentException("This order could not be read: " + row);
+            }
+            if (pages <= 0) {
                 throw new IllegalArgumentException("This order could not be read: " + row);
             }
             double lineTotal = PaymentUtil.parseAmountStrict(row.substring(open + 5, close)).doubleValue();
