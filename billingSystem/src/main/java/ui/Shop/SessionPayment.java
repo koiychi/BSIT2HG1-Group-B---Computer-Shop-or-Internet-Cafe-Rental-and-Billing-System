@@ -29,7 +29,7 @@ public static int payRegular(java.awt.Window owner, int customerId, String custo
     int[] sessionId = {-1};
     PcRegular dlg = new PcRegular(owner);
     dlg.setCustomerName(customerName);
-    dlg.setCommitter(paidBy -> saveSession(customerId, stationId, minutes, paidBy, sessionId));
+    dlg.setCommitter(paidBy -> saveSession(customerId, stationId, bill, null, paidBy, sessionId));
     dlg.setBill(bill);
     dlg.setVisible(true);
     if (dlg.isPaid()) {
@@ -68,7 +68,7 @@ public static int payMember(java.awt.Window owner, int customerId, String custom
             ? "@" + username
             : fullName.trim() + " - @" + username);
     dlg.setCreditBalance(balance);
-    dlg.setCommitter(paidBy -> saveSession(customerId, stationId, minutes, paidBy, sessionId));
+    dlg.setCommitter(paidBy -> saveSession(customerId, stationId, bill, member, paidBy, sessionId));
     dlg.setBill(bill, member);
     dlg.setVisible(true);
     if (dlg.isPaid()) {
@@ -77,12 +77,18 @@ public static int payMember(java.awt.Window owner, int customerId, String custom
     }
     return -1;
 }
-
     
-    private static String saveSession(int customerId, String stationId, int minutes,
-            String paidBy, int[] out) {
+    // payer = the member (or null for a walk-in); the member discount only applies when paying with credit
+    private static String saveSession(int customerId, String stationId, PcRentalBill bill,
+            logic.Customer payer, String paidBy, int[] out) {
         try {
-            out[0] = sessionService.startSession(customerId, stationId, minutes, paidBy);
+            boolean usingCredit = PaymentUtil.paidBy(true).equals(paidBy);
+            BigDecimal discount = (usingCredit && payer != null)
+                    ? bill.getDiscountFor(payer) : BigDecimal.ZERO;
+            double discountRate = (usingCredit && payer != null) ? payer.getDiscountRate() : 0.0;
+            BigDecimal total = bill.getAmountDue().subtract(discount);   // same amount the dialog showed
+            out[0] = sessionService.startSession(customerId, stationId, bill.getMinutes(),
+                    paidBy, total.doubleValue(), discountRate);
             return null;
         } catch (java.sql.SQLException ex) {
             return ex.getMessage();

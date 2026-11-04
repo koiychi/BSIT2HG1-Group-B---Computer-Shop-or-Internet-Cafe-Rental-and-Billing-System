@@ -1050,7 +1050,11 @@ public class DatabaseManager {
     }
 
     // START A SESSION: charges credit (if paying by credit), creates the session
-    public static int startSession(int customerId, String stationId, int durationMinutes, String paidBy) throws SQLException {
+    public static int startSession(int customerId, String stationId, int durationMinutes, String paidBy,
+            double total, double appliedDiscount) throws SQLException {
+        if (total <= 0) {
+            throw new IllegalArgumentException("Total amount must be greater than 0.");
+        }
         if (!ShopManager.isShopOpen()) {
             throw new SQLException("The shop is closed. New sessions cannot be created.");
         }
@@ -1097,9 +1101,6 @@ public class DatabaseManager {
                         }
                     }
                 }
-
-                double appliedDiscount = 0.0;
-                double total = Math.round(rate * (durationMinutes / 60.0) * 100.0) / 100.0;
 
                 if ("Member Credits".equals(paidBy)) {
                     if (balance < total) {

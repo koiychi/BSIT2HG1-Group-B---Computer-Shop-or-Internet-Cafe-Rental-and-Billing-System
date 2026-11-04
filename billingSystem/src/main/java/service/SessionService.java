@@ -16,7 +16,13 @@ public class SessionService {
     }
 
     public int startSession(int customerId, String stationId, int durationMinutes,
-            String paidBy) throws SQLException {
+            String paidBy, double total, double appliedDiscount) throws SQLException {
+        if (total <= 0) {
+            throw new IllegalArgumentException("Total amount must be greater than 0.");
+        }
+        if (appliedDiscount < 0 || appliedDiscount > 1) {
+            throw new IllegalArgumentException("Discount rate must be between 0 and 1.");
+        }
         if (customerId <= 0) {
             throw new IllegalArgumentException("A valid customer is required.");
         }
@@ -29,7 +35,8 @@ public class SessionService {
         if (paidBy == null || paidBy.isBlank()) {
             throw new IllegalArgumentException("A payment method is required.");
         }
-        return DatabaseManager.startSession(customerId, stationId.trim(), durationMinutes, paidBy);
+        return DatabaseManager.startSession(customerId, stationId.trim(), durationMinutes, paidBy,
+                total, appliedDiscount);
     }
 
     public int getCustomerIdByUsername(String username) {
