@@ -39,6 +39,18 @@ public String getCustomerName() {
     return txtName.getText().trim();
 }
 
+private boolean isValidUsername() {
+    String username = getUsername();
+    if (username.length() < 3 || username.length() > 15) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+                "Username must be 3 to 15 characters long.",
+                "Validation Warning",
+                javax.swing.JOptionPane.WARNING_MESSAGE);
+        return false;
+    }
+    return true;
+}
+
 public String getUsername() {
     return txtUsername.getText().trim();
 }
@@ -317,10 +329,9 @@ return resolvedCustomerID;
         boolean isMember = "Member".equals(getCustomerType());
         
         if (isMember){
-        if (getUsername().isEmpty()){
-        javax.swing.JOptionPane.showMessageDialog(this, "Please enter a username.");
-        return;
-        }
+       if (!isValidUsername()) {
+    return;
+}
         
         if (!lookupMember(true)){
         return;
@@ -355,11 +366,9 @@ next.setVisible(true);
     }//GEN-LAST:event_previousBTNMouseClicked
 
     private void searchMemberButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        if (getUsername().isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Please enter a username.");
-            return;
-        }
-        lookupMember(true);
+       if (!isValidUsername()) {
+    return;
+}
     }
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed

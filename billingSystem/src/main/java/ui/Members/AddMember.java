@@ -45,6 +45,26 @@ public class AddMember extends javax.swing.JDialog {
         hint(lastNField, LAST_HINT);
         hint(firstNField, FIRST_HINT);
         hint(usernameField, USER_HINT);
+        ((javax.swing.text.AbstractDocument) usernameField.getDocument()).setDocumentFilter(
+                new javax.swing.text.DocumentFilter() {
+                    private String validCharacters(String text) {
+                        return text == null ? "" : text.replaceAll("[^A-Za-z0-9_]", "");
+                    }
+
+                    @Override
+                    public void insertString(FilterBypass fb, int offset, String string,
+                            javax.swing.text.AttributeSet attr)
+                            throws javax.swing.text.BadLocationException {
+                        super.insertString(fb, offset, validCharacters(string), attr);
+                    }
+
+                    @Override
+                    public void replace(FilterBypass fb, int offset, int length, String text,
+                            javax.swing.text.AttributeSet attrs)
+                            throws javax.swing.text.BadLocationException {
+                        super.replace(fb, offset, length, validCharacters(text), attrs);
+                    }
+                });
 
         
         passwordField = new javax.swing.JPasswordField();
@@ -375,6 +395,13 @@ public class AddMember extends javax.swing.JDialog {
         if (lastName.isEmpty() || firstName.isEmpty() || username.isEmpty() || password.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "Please fill in all fields.",
                     "Missing Information", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (!username.matches("[A-Za-z0-9_]+")) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Username may contain only letters, numbers, and underscores.",
+                    "Invalid Username", javax.swing.JOptionPane.WARNING_MESSAGE);
+            usernameField.requestFocusInWindow();
             return;
         }
         if (!system.ShopManager.ensureShopOpen()) {
